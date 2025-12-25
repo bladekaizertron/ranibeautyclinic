@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rani Beauty Clinic - Award Winning Medical Aesthetics</title>
+    <meta name="description" content="Award Winning Medical Aesthetics. Elevate Radiance. Unlock Aura. Explore laser hair removal, Hydrafacial, microneedling and more at Rani Beauty Clinic.">
+    <meta name="theme-color" content="#0F1D2C">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -31,6 +33,10 @@
             /* Border Radius */
             --radius-sm: 15px;
             --radius-pill: 30px;
+
+            /* Layout */
+            --max-w: 1200px;
+            --section-pad: 64px;
         }
 
         * {
@@ -53,11 +59,110 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                radial-gradient(700px 420px at 15% 10%, rgba(243, 214, 190, 0.55) 0%, rgba(243, 214, 190, 0.0) 55%),
+                radial-gradient(520px 360px at 85% 20%, rgba(15, 29, 44, 0.10) 0%, rgba(15, 29, 44, 0.0) 60%),
+                radial-gradient(520px 420px at 70% 85%, rgba(243, 214, 190, 0.35) 0%, rgba(243, 214, 190, 0.0) 60%);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        :focus-visible {
+            outline: 3px solid rgba(243, 214, 190, 0.9);
+            outline-offset: 3px;
+            border-radius: 10px;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            padding: 10px 14px;
+            background: var(--pure-white);
+            color: var(--primary-navy);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-140%);
+            transition: transform 0.2s ease;
+            z-index: 9999;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .skip-link:focus {
+            transform: translateY(0);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(243, 214, 190, 0.75);
+            color: var(--primary-navy);
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            border: 1px solid rgba(15, 29, 44, 0.08);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: var(--radius-pill);
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .btn--primary {
+            background: var(--primary-navy);
+            color: var(--pure-white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn--secondary {
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            border-color: rgba(15, 29, 44, 0.12);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn--secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10);
+        }
+
         /* --- HEADER --- */
         header {
             background: var(--primary-navy);
-            padding: 25px 0;
-            text-align: center;
+            padding: 16px 0;
             color: var(--pure-white);
             position: sticky;
             top: 0;
@@ -65,8 +170,50 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .header-inner {
+            width: 100%;
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .header-left {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .brand-name {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .brand-name strong {
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-size: 16px;
+        }
+
+        .brand-name span {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .header-actions {
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+        }
+
         .logo {
-            height: 70px;
+            height: 48px;
             width: auto;
             max-width: 100%;
             object-fit: contain;
@@ -76,9 +223,128 @@
         /* --- MAIN CONTAINER --- */
         .container {
             width: 100%;
-            max-width: 1400px;
+            max-width: var(--max-w);
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 42px 24px var(--section-pad);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 34px;
+            align-items: center;
+            margin: 26px 0 34px 0;
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            padding: 34px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-card--compact {
+            padding: 28px;
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: -40px -60px auto auto;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle at 30% 30%, rgba(243, 214, 190, 0.75) 0%, rgba(243, 214, 190, 0.0) 60%);
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-family: var(--font-secondary);
+            font-size: 54px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin: 14px 0 14px 0;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(90deg, var(--primary-navy) 0%, rgba(15, 29, 44, 0.75) 60%, rgba(15, 29, 44, 0.55) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: rgba(42, 42, 42, 0.82);
+            max-width: 52ch;
+        }
+
+        .hero-cta {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .hero-cta--tight {
+            margin-top: 0;
+        }
+
+        .hero-media {
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            background: var(--pure-white);
+        }
+
+        .hero-media img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: cover;
+        }
+
+        .cta-section {
+            margin-top: 42px;
+        }
+
+        .cta-title {
+            font-family: var(--font-secondary);
+            font-size: 28px;
+            color: var(--primary-navy);
+            margin: 14px 0 10px 0;
+            line-height: 1.2;
+        }
+
+        .cta-copy {
+            margin-bottom: 16px;
+            color: rgba(42, 42, 42, 0.82);
+        }
+
+        footer.site-footer {
+            margin-top: 56px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(15, 29, 44, 0.08);
+            color: rgba(42, 42, 42, 0.78);
+            font-size: 14px;
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
         }
 
         /* --- LOCATION INFO SECTION --- */
@@ -118,7 +384,7 @@
 
         .location-info h1 {
             font-family: var(--font-secondary);
-            font-size: 42px;
+            font-size: 34px;
             font-weight: 700;
             margin-bottom: 24px;
             color: var(--primary-navy);
@@ -301,11 +567,12 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 24px;
-            background: var(--pure-white);
+            background: rgba(255, 255, 255, 0.78);
             padding: 40px;
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-lg);
             border: 1px solid rgba(15, 29, 44, 0.05);
+            backdrop-filter: blur(10px);
         }
 
         .service-card {
@@ -383,6 +650,28 @@
             .container {
                 padding: 24px 16px;
             }
+
+            .header-inner {
+                padding: 0 16px;
+            }
+
+            .brand-name {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 18px;
+                margin-top: 18px;
+            }
+
+            .hero-card {
+                padding: 22px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
             
             .services-grid {
                 grid-template-columns: 1fr;
@@ -430,6 +719,11 @@
             .location-info h1 { 
                 font-size: 28px; 
             }
+
+            .header-actions .btn {
+                padding: 12px 14px;
+                font-size: 13px;
+            }
             
             .tab {
                 font-size: 12px;
@@ -444,16 +738,47 @@
 </head>
 <body>
 
+    <a class="skip-link" href="#main">Skip to content</a>
+
     <header>
-        <img src="assets/images/logo.png" alt="RANI BEAUTY CLINIC" class="logo">
+        <div class="header-inner">
+            <div class="header-left">
+                <img src="assets/images/logo.png" alt="Rani Beauty Clinic" class="logo">
+                <div class="brand-name" aria-hidden="true">
+                    <strong>Rani Beauty Clinic</strong>
+                    <span>Award Winning Medical Aesthetics</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a class="btn btn--secondary" href="#services">Explore Services</a>
+                <a class="btn btn--primary" href="#consultation">Book Consultation</a>
+            </div>
+        </div>
     </header>
 
-    <div class="container">
+    <main id="main" class="container">
+
+        <section class="hero" aria-label="Hero">
+            <div class="hero-card">
+                <span class="badge">Award Winning Medical Aesthetics</span>
+                <h1><em>Elevate</em> Radiance. <em>Unlock</em> Aura.</h1>
+                <p>
+                    A scientific ethereal medspa designed to nurture your confidence and reveal a heavenly glow—through results-driven treatments and elevated care.
+                </p>
+                <div class="hero-cta">
+                    <a class="btn btn--primary" href="#consultation">Book a Consultation</a>
+                    <a class="btn btn--secondary" href="#services">Browse Treatments</a>
+                </div>
+            </div>
+            <div class="hero-media" aria-hidden="true">
+                <img src="assets/images/images/1.webp" alt="" loading="lazy" decoding="async">
+            </div>
+        </section>
         
         <div class="top-nav">
             <a href="#" class="back-arrow">←</a>
             <div class="location-info">
-                <h1>What Services Are You Interested In?</h1>
+                <h1 id="services">What services are you interested in?</h1>
                 <div class="location-name">MN Apple Valley</div>
                 <div class="location-address">14960 Florence Trail Apple Valley, MN 55124</div>
             </div>
@@ -485,16 +810,16 @@
         <div class="services-grid">
             
             <div class="service-card" data-service-tab="laser-hair">
-                <img src="../assets/images/images/1.webp?auto=format&fit=crop&w=150&q=80" alt="Brazilian" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Upper lip laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
-                    <div class="card-title">✨ $29 Upper Lip Laser Hair Removal</div>
+                    <div class="card-title">$29 Upper Lip Laser Hair Removal</div>
                     <div class="card-desc">Brazilian | Bikini (Full & Line)</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
 
             <div class="service-card" data-service-tab="laser-hair">
-                <img src="../assets/images/images/2.webp?auto=format&fit=crop&w=150&q=80" alt="Arms" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Eyebrows laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Eyebrows</div>
                     <div class="card-desc">Pain free laser hair removal done using the Gentlemax Pro by Candela and Cryo 7 machine.</div>
@@ -503,7 +828,7 @@
             </div>
 
             <div class="service-card" data-service-tab="laser-hair">
-                <img src="../assets/images/images/3.webp?auto=format&fit=crop&w=150&q=80" alt="Chest" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Sideburns laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Sideburns</div>
                     <div class="card-desc">Pain free laser hair removal done on the sideburns using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -512,7 +837,7 @@
             </div>
 
             <div class="service-card">
-                <img src="../assets/images/images/4.webp?auto=format&fit=crop&w=150&q=80" alt="Buttocks" class="card-image">
+                <img src="assets/images/images/4.webp" alt="Full back laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Full Back</div>
                     <div class="card-desc">Pain free laser hair removal done using the Gentlemax Pro by Candela and Cryo 7 machine.</div>
@@ -521,7 +846,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Pantyline laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Pantyline</div>
                     <div class="card-desc">Pain free laser hair removal done on the pantyliner using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -530,7 +855,7 @@
             </div>
 
              <div class="service-card" data-service-tab="laser-hair">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Neck laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Neck</div>
                     <div class="card-desc">Pain free laser hair removal done on the neck using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -538,7 +863,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Full face laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Full Face Laser Hair Removal</div>
                     <div class="card-desc">Pain free laser hair removal done on the full face using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -547,7 +872,7 @@
             </div>
 
              <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/4.webp" alt="Hands and fingers laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Hands and fingers</div>
                     <div class="card-desc">Pain free laser hair removal done on the hands and fingers using the Gentlemax Pro Plus by Candela and air technology!
@@ -556,7 +881,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Full chest laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Full Chest</div>
                     <div class="card-desc">Pain free laser hair removal done on the chest using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -565,7 +890,7 @@
             </div>
 
              <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Happy trail laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Happy Trail</div>
                     <div class="card-desc">Pain free laser hair removal done on the Happy Trail using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -573,7 +898,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Areolas laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Areolas</div>
                     <div class="card-desc">Pain free laser hair removal done on the areolas using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -582,7 +907,7 @@
             </div>
 
              <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/4.webp" alt="Forehead laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Forehead</div>
                     <div class="card-desc">Pain free laser hair removal done using the Gentlemax Pro by Candela and Cryo 7 machine.</div>
@@ -590,7 +915,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Jawline laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Jawline</div>
                     <div class="card-desc">Pain free laser hair removal done on the jawline using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -599,7 +924,7 @@
             </div>
 
              <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Underarms laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Underarms</div>
                     <div class="card-desc">Pain free laser hair removal done on the underarms using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -607,16 +932,16 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Upper lip laser hair removal limited time offer" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
-                    <div class="card-title">✨LIMITED TIME $99 Upper Lip✨</div>
+                    <div class="card-title">Limited Time $99 Upper Lip</div>
                     <div class="card-desc">Pain free laser hair removal done on the upper lip using the Gentlemax Pro Plus by Candela and air technology!</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
 
              <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/4.webp" alt="Feet and toes laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Feet & Toes</div>
                     <div class="card-desc">Pain free laser hair removal done on the feet and toes using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -624,7 +949,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Full Brazilian laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Full Brazilian</div>
                     <div class="card-desc">Pain free laser hair removal done on full Brazilian using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -633,7 +958,7 @@
             </div>
 
              <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Ears laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Ears</div>
                     <div class="card-desc">Pain free laser hair removal done on the ears using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -641,7 +966,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=150&q=80" alt="Legs" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Full body laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Full Body Laser Hair Removal</div>
                     <div class="card-desc">Complete head to toe of pain free laser hair removal done using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -650,7 +975,7 @@
             </div>
 
              <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/4.webp" alt="Ponytail laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Ponytail Laser</div>
                     <div class="card-desc">Pain free laser hair removal done on the ponytail using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -658,7 +983,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Full abs laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Full Abs</div>
                     <div class="card-desc">Pain free laser hair removal done on the abs using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -666,7 +991,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Full legs laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Full Legs</div>
                     <div class="card-desc">Pain free laser hair removal done on the legs using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -674,7 +999,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Cheeks laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Cheeks</div>
                     <div class="card-desc">Pain free laser hair removal done on the cheeks using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -682,7 +1007,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/4.webp" alt="Chin laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Chin</div>
                     <div class="card-desc">Pain free laser hair removal done on the chin using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -690,7 +1015,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Buttocks laser hair removal" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Buttocks</div>
                     <div class="card-desc">Pain free laser hair removal done on the buttocks using the Gentlemax Pro Plus by Candela and air technology!</div>
@@ -698,7 +1023,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card" data-service-tab="hydrafacial">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Underarm Hydrafacial" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Underarm Hydrafacial</div>
                     <div class="card-desc">Experience a new level of skin care with our specialized Underarm Hydrafacial! This innovative treatment is designed to cleanse, hydrate, and rejuvenate your underarm area, promoting...</div>
@@ -706,7 +1031,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card" data-service-tab="hydrafacial">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Keravive Hydrafacial" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Kerevive Hydrafacial</div>
                     <div class="card-desc">Restore your hair’s natural beauty and promote a healthy scalp with the innovative Keravive Hair Hydrafacial! This advanced treatment is designed to cleanse, nourish, and rejuvenate your scalp, setting the foundation for healthier, fuller hair.</div>
@@ -714,7 +1039,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card" data-service-tab="hydrafacial">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/4.webp" alt="Signature Hydrafacial" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Signature Hydrafacial</div>
                     <div class="card-desc">A medical grade facial which does that which manual hands cannot do alone with its proprietary vortex tip. Deep clean with steam and massage, dermaplane, enzyme peel, four step Hydrafacial: cleanse, extract, exfoliate, & deeply infuses hyaluronic acid, antioxidants & peptides and finish with red light therapy!</div>
@@ -722,7 +1047,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card" data-service-tab="hydrafacial">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/1.webp" alt="Back Hydrafacial" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Back Hydrafacial</div>
                     <div class="card-desc">Experience a new level of skin care with our specialized Back Hydrafacial! This innovative treatment is designed to cleanse, hydrate, and rejuvenate your back area, promoting...</div>
@@ -730,7 +1055,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card" data-service-tab="hydrafacial">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/2.webp" alt="Dior Hydrafacial" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Dior Hydrafacial</div>
                     <div class="card-desc">Combine the French beauty products of the Dior Prestige line in combination with the world renowned Hydrafacial MD.</div>
@@ -738,7 +1063,7 @@
                 <div class="card-arrow">→</div>
             </div>
             <div class="service-card" data-service-tab="hydrafacial">
-                <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=150&q=80" alt="Back" class="card-image">
+                <img src="assets/images/images/3.webp" alt="Eye perks Hydrafacial MD" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Eye perks by Hydrafacial MD</div>
                     <div class="card-desc">Eye revitalization treatment with Hydrafacial MD to boost circulation and infuse serum into the undereyes!</div>
@@ -746,11 +1071,36 @@
                 <div class="card-arrow">→</div>
             </div>
         </div>
-    </div>
+
+        <section id="consultation" class="cta-section" aria-label="Consultation">
+            <div class="hero-card hero-card--compact">
+                <span class="badge">Consultation</span>
+                <h2 class="cta-title">Start with a plan designed for you.</h2>
+                <p class="cta-copy">
+                    Share your goals and we’ll recommend the most effective treatment path—nurturing, empowering, and results-focused.
+                </p>
+                <div class="hero-cta hero-cta--tight">
+                    <a class="btn btn--primary" href="#">Request a Consultation</a>
+                    <a class="btn btn--secondary" href="#services">View Services</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div><strong style="color: var(--primary-navy);">Rani Beauty Clinic</strong> — Award Winning Medical Aesthetics</div>
+                <div>© <span id="year"></span> All rights reserved.</div>
+            </div>
+        </footer>
+
+    </main>
 
     <script>
         // Tab functionality
         document.addEventListener('DOMContentLoaded', function() {
+            const yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
             const tabs = document.querySelectorAll('.tab:not(.more-tab)');
             const moreTab = document.querySelector('.more-tab');
             const dropdownItems = document.querySelectorAll('.dropdown-item');
