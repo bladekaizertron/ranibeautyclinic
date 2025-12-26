@@ -1171,6 +1171,96 @@
             margin-bottom: 4px;
         }
 
+        /* Gift Tier Progress Bar */
+        .cart-gift-progress {
+            background: #F3D6BE;
+            padding: 12px 16px 16px;
+            flex-shrink: 0;
+        }
+
+        .cart-gift-progress__message {
+            color: #0F1D2C;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-gift-progress__message::before {
+            content: "🎁";
+            font-size: 14px;
+        }
+
+        .cart-gift-progress__track {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .cart-gift-progress__tier {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            flex: 0 0 auto;
+        }
+
+        .cart-gift-progress__amount {
+            font-size: 11px;
+            font-weight: 700;
+            color: #0F1D2C;
+            margin-bottom: 4px;
+        }
+
+        .cart-gift-progress__label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #0F1D2C;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .cart-gift-progress__arrow {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 2px;
+            margin: 0 4px;
+            margin-bottom: 14px;
+        }
+
+        .cart-gift-progress__arrow::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 8px;
+            height: 2px;
+            background: linear-gradient(90deg, #F3D6BE 0%, #F3D6BE 100%);
+        }
+
+        .cart-gift-progress__arrow::after {
+            content: "›";
+            position: absolute;
+            right: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0F1D2C;
+            line-height: 1;
+        }
+
+        .cart-gift-progress__tier.is-unlocked .cart-gift-progress__amount {
+            color: #FFD700;
+        }
+
+        .cart-gift-progress__tier.is-unlocked .cart-gift-progress__label {
+            color: #FFD700;
+        }
+
         .cart-pill {
             display: none;
         }
@@ -2708,6 +2798,32 @@
         </div>
         <div class="cart-promo">
             Add Your Favorite Treatments to Cart to Unlock Savings <span>›</span>
+        </div>
+        <div class="cart-gift-progress">
+            <div class="cart-gift-progress__message">
+                Spend <strong id="giftAmountRemaining">$1,000.00</strong> more and receive a free gift
+            </div>
+            <div class="cart-gift-progress__track">
+                <div class="cart-gift-progress__tier" data-tier="1">
+                    <span class="cart-gift-progress__amount">$1,000.00</span>
+                    <span class="cart-gift-progress__label">Tier 1 Gift</span>
+                </div>
+                <div class="cart-gift-progress__arrow"></div>
+                <div class="cart-gift-progress__tier" data-tier="2">
+                    <span class="cart-gift-progress__amount">$2,500.00</span>
+                    <span class="cart-gift-progress__label">Tier 2 Gift</span>
+                </div>
+                <div class="cart-gift-progress__arrow"></div>
+                <div class="cart-gift-progress__tier" data-tier="3">
+                    <span class="cart-gift-progress__amount">$5,000.00</span>
+                    <span class="cart-gift-progress__label">Tier 3 Gift</span>
+                </div>
+                <div class="cart-gift-progress__arrow"></div>
+                <div class="cart-gift-progress__tier" data-tier="4">
+                    <span class="cart-gift-progress__amount">$10,000.00</span>
+                    <span class="cart-gift-progress__label">Tier 4 Gift</span>
+                </div>
+            </div>
         </div>
         <div class="cart-body">
             <div id="cartEmpty" class="cart-empty">Your cart is empty.<br>Add treatments to get started!</div>
