@@ -47,6 +47,8 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         body {
@@ -57,6 +59,10 @@
             line-height: 1.8;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            padding-top: 80px;
         }
 
         body::before {
@@ -170,21 +176,29 @@
             background: var(--primary-navy);
             padding: 16px 0;
             color: var(--pure-white);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 2000;
             box-shadow: var(--shadow-lg);
+            width: 100%;
+            overflow: visible;
         }
 
         .header-inner {
             width: 100%;
-            max-width: none;
+            max-width: 100%;
             margin: 0;
             padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 18px;
+            flex-wrap: nowrap;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2001;
         }
 
         .header-left {
@@ -192,6 +206,7 @@
             align-items: center;
             gap: 14px;
             min-width: 0;
+            flex-shrink: 0;
         }
 
         .brand-name {
@@ -216,17 +231,19 @@
             display: inline-flex;
             gap: 10px;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .main-nav {
             display: flex;
             align-items: center;
             gap: 40px;
-            margin-left: 780px;
-            margin-right: auto;
-            flex: 0 1 auto;
+            flex: 1 1 auto;
             min-width: 0;
-            justify-content: flex-start;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2100;
         }
 
         .nav-link {
@@ -252,25 +269,27 @@
         /* Header Nav Dropdown */
         .nav-dropdown {
             position: relative;
+            z-index: 2100;
         }
 
         .nav-dropdown__menu {
             display: none;
-            position: absolute;
-            top: 100%;
+            position: fixed;
+            top: 54px;
             left: 50%;
             transform: translateX(-50%);
-            padding-top: 16px;
-            z-index: 3000;
+            padding-top: 0;
+            z-index: 99999;
         }
 
         .nav-dropdown__menu::before {
             content: '';
             position: absolute;
-            top: 0;
+            top: -20px;
             left: 0;
             right: 0;
-            height: 16px;
+            height: 40px;
+            background: transparent;
         }
 
         .nav-dropdown__inner {
@@ -280,13 +299,24 @@
             padding: 20px;
             min-width: 280px;
             animation: navDropdownIn 0.2s ease;
+            position: relative;
+            z-index: 99999;
+            pointer-events: auto;
         }
 
+        .nav-dropdown__menu--2col {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
         .nav-dropdown__menu--2col .nav-dropdown__inner {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px 20px;
             min-width: 420px;
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
         }
 
         @keyframes navDropdownIn {
@@ -325,12 +355,13 @@
         /* Mega Menu Styles - Centered on Page */
         .nav-dropdown__menu--mega {
             position: fixed;
-            left: 60%;
+            left: 50%;
             transform: translateX(-50%);
             width: 100%;
             max-width: 1200px;
             padding-top: 0;
             top: 54px;
+            z-index: 99999;
         }
 
         .nav-dropdown__menu--mega::before {
@@ -357,6 +388,7 @@
             background: var(--pure-white);
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+            max-width: calc(100vw - 32px);
         }
 
         .nav-dropdown__column {
@@ -524,6 +556,7 @@
             max-width: 100%;
             object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            flex-shrink: 0;
         }
 
         /* --- MAIN CONTAINER --- */
@@ -535,18 +568,18 @@
         }
 
         .hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            margin: 0 0 60px 0;
+            display: block;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
+            margin-top: 0;
+            margin-bottom: 60px;
             padding: 80px 60px;
             background: linear-gradient(135deg, var(--primary-navy) 0%, #1a2d3d 50%, #0a1520 100%);
             border-radius: 0;
             width: 100vw;
-            margin-left: calc(50% - 50vw);
             position: relative;
             overflow: hidden;
+            box-sizing: border-box;
         }
 
         .hero::before {
@@ -1531,7 +1564,7 @@
 
         @media (max-width: 480px) {
             .cart-panel {
-                width: 100vw;
+                width: 100%;
             }
         }
 
@@ -1586,12 +1619,15 @@
 
         /* --- TABS --- */
         .tabs-wrapper {
-            margin: 40px 0 60px 0;
+            margin: 40px calc(50% - 50vw) 60px calc(50% - 50vw);
             position: relative;
             display: flex;
             justify-content: center;
             overflow: visible;
-            width: 100%;
+            width: 100vw;
+            max-width: 100vw;
+            padding: 0 24px;
+            box-sizing: border-box;
         }
 
         .triangle-indicator {
@@ -1621,34 +1657,64 @@
             background: var(--pure-white);
             position: relative;
             box-shadow: var(--shadow-lg);
+            max-width: 100%;
+            width: fit-content;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+            gap: 0;
+            padding: 2px;
         }
 
         .tab {
-            flex: 1 1 0;
-            padding: 16px 20px;
+            flex: 0 0 auto;
+            padding: 12px 16px;
             text-align: center;
             font-family: var(--font-primary);
             font-weight: 600;
-            font-size: 14px;
-            line-height: 1.2;
+            font-size: 11px;
+            line-height: 1.3;
             cursor: pointer;
             color: var(--primary-navy);
             background: var(--pure-white);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             position: relative;
+            min-width: fit-content;
+            overflow: visible;
+        }
+        
+        .tab:not(:last-child) {
             border-right: 1px solid rgba(18, 32, 48, 0.1);
         }
 
         .tab:first-child {
-            border-top-left-radius: var(--radius-pill);
-            border-bottom-left-radius: var(--radius-pill);
+            border-top-left-radius: calc(var(--radius-pill) - 2px);
+            border-bottom-left-radius: calc(var(--radius-pill) - 2px);
         }
 
-        .tab:last-child {
+        .tab:last-child:not(.more-tab),
+        .tab:last-of-type:not(.more-tab) {
             border-right: none;
-            border-top-right-radius: var(--radius-pill);
-            border-bottom-right-radius: var(--radius-pill);
+            border-top-right-radius: calc(var(--radius-pill) - 2px);
+            border-bottom-right-radius: calc(var(--radius-pill) - 2px);
+            padding-right: 24px;
+            overflow: visible;
+        }
+        
+        .more-tab:last-child,
+        .more-tab:last-of-type {
+            border-top-right-radius: calc(var(--radius-pill) - 2px);
+            border-bottom-right-radius: calc(var(--radius-pill) - 2px);
+            padding-right: 24px;
+            overflow: visible;
+        }
+        
+        /* Ensure last visible tab gets rounded corner when More tab is hidden */
+        .tab.is-last-visible,
+        .tab[data-tab="add-ons"]:not(.more-tab) {
+            border-top-right-radius: calc(var(--radius-pill) - 2px) !important;
+            border-bottom-right-radius: calc(var(--radius-pill) - 2px) !important;
+            border-right: none !important;
         }
 
         .tab:hover {
@@ -1668,6 +1734,11 @@
         .more-tab {
             position: relative;
             z-index: 10;
+            cursor: pointer;
+        }
+        
+        .more-tab:hover {
+            background-color: rgba(15, 29, 44, 0.05);
         }
 
         .tabs-wrapper {
@@ -1686,11 +1757,12 @@
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-xl);
             min-width: 220px;
-            z-index: 9999;
+            z-index: 99999;
             overflow: hidden;
             backdrop-filter: blur(10px);
-            animation: slideDown 0.2s ease;
             pointer-events: auto;
+            visibility: visible;
+            opacity: 1;
         }
 
         @keyframes slideDown {
@@ -1731,9 +1803,11 @@
 
         /* --- SERVICE GRID --- */
         .services-section {
-            width: 100vw;
+            width: 100%;
             margin-left: calc(50% - 50vw);
-            padding: 0 18px;
+            margin-right: calc(50% - 50vw);
+            padding: 0;
+            box-sizing: border-box;
         }
 
         .services-grid {
@@ -1746,8 +1820,16 @@
             box-shadow: var(--shadow-lg);
             border: 1px solid rgba(15, 29, 44, 0.05);
             backdrop-filter: blur(10px);
-            max-width: 1920px;
-            margin: 0 auto;
+            width: calc(100vw - 24px);
+            margin: 0 12px;
+        }
+        
+        @media (max-width: 1200px) {
+            .services-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 28px;
+                padding: 40px;
+            }
         }
 
         .service-card {
@@ -1879,6 +1961,76 @@
         }
 
         /* --- RESPONSIVE --- */
+        @media (max-width: 1200px) {
+            .main-nav {
+                gap: 24px;
+            }
+            
+            .nav-link {
+                font-size: 15px;
+                padding: 10px 6px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-nav {
+                gap: 18px;
+            }
+            
+            .nav-link {
+                font-size: 14px;
+                padding: 10px 4px;
+            }
+            
+            .brand-name strong {
+                font-size: 14px;
+            }
+            
+            .brand-name span {
+                font-size: 11px;
+            }
+            
+            .nav-dropdown__menu--mega .nav-dropdown__inner {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
+                padding: 24px 32px;
+            }
+            
+            .nav-dropdown__menu--2col .nav-dropdown__inner {
+                min-width: 360px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .header-inner {
+                padding: 0 20px;
+                gap: 12px;
+            }
+            
+            .main-nav {
+                gap: 12px;
+            }
+            
+            .nav-link {
+                font-size: 13px;
+                padding: 8px 4px;
+            }
+            
+            .logo {
+                height: 40px;
+            }
+            
+            .nav-dropdown__menu--mega .nav-dropdown__inner {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 20px 24px;
+            }
+            
+            .nav-dropdown__menu--2col .nav-dropdown__inner {
+                min-width: 320px;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 24px 16px;
@@ -1886,6 +2038,7 @@
             
             .header-inner {
                 padding: 0 16px;
+                gap: 10px;
             }
 
             .brand-name {
@@ -1899,11 +2052,32 @@
             .nav-toggle {
                 display: inline-flex;
             }
+            
+            .logo {
+                height: 36px;
+            }
+            
+            .header-actions {
+                gap: 8px;
+            }
+            
+            .nav-toggle,
+            .cart-btn {
+                width: 40px;
+                height: 40px;
+            }
+            
+            body {
+                padding-top: 72px;
+            }
 
             .hero {
-                grid-template-columns: 1fr;
-                gap: 30px;
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                margin-top: 0;
+                margin-bottom: 60px;
                 padding: 50px 24px;
+                width: 100vw;
             }
 
             .hero-card {
@@ -1929,8 +2103,8 @@
             
             .services-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                padding: 24px;
-                gap: 18px;
+                padding: 32px 24px;
+                gap: 24px;
             }
             
             .location-info h1 { 
@@ -1949,15 +2123,27 @@
                 font-size: 13px; 
             }
             
+            .tabs-wrapper {
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                width: 100vw;
+                padding: 0 16px;
+                overflow: visible;
+            }
+            
             .tabs-container {
                 max-width: 100%;
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 border-radius: 20px;
+                width: fit-content;
             }
             
             .tab {
-                font-size: 13px;
-                padding: 12px 18px;
+                font-size: 10px;
+                padding: 10px 12px;
+                flex: 0 0 auto;
+                min-width: fit-content;
+                overflow: visible;
             }
             
             .service-card {
@@ -1969,9 +2155,48 @@
                 width: 100%;
                 height: 260px;
             }
+            
+            .services-section {
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                padding: 0;
+            }
+            
+            .services-grid {
+                padding: 24px 16px;
+            }
+            
+            .back-to-top {
+                bottom: 24px;
+                right: 24px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
         }
 
         @media (max-width: 480px) {
+            .header-inner {
+                padding: 0 12px;
+                gap: 8px;
+            }
+            
+            .logo {
+                height: 32px;
+            }
+            
+            .nav-toggle,
+            .cart-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .nav-toggle svg,
+            .cart-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+            
             .location-info h1 { 
                 font-size: 28px; 
             }
@@ -1982,13 +2207,17 @@
             }
             
             .tab {
-                font-size: 11px;
-                padding: 10px 14px;
+                font-size: 10px;
+                padding: 10px 10px;
+                flex: 0 0 auto;
+                min-width: fit-content;
+                overflow: visible;
             }
             
             .services-grid {
-                padding: 18px;
+                padding: 24px 18px;
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .card-image {
@@ -1996,15 +2225,11 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .services-section {
-                padding: 0 16px;
-            }
-        }
-
         @media (min-width: 1400px) {
             .services-section {
-                padding: 0 10px;
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                padding: 0;
             }
         }
 
@@ -2050,13 +2275,80 @@
             transform: translateY(-2px);
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--primary-navy);
+            color: var(--pure-white);
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-navy);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 14px;
+            margin: 0 0 4px 0;
+            line-height: 1.3;
+        }
+
+        .toast-message {
+            font-family: var(--font-primary);
+            font-weight: 400;
+            font-size: 13px;
+            margin: 0;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
         @media (max-width: 768px) {
-            .back-to-top {
+            .toast {
                 bottom: 24px;
-                right: 24px;
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
+                left: 50%;
+                transform: translateX(-50%) translateY(20px);
+                max-width: calc(100% - 32px);
+                padding: 14px 20px;
+            }
+            
+            .toast.show {
+                transform: translateX(-50%) translateY(0);
             }
         }
     </style>
@@ -2064,6 +2356,15 @@
 <body>
 
     <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="alert" aria-live="polite">
+        <div class="toast-icon">✓</div>
+        <div class="toast-content">
+            <div class="toast-title">Added to Cart</div>
+            <div class="toast-message" id="toastMessage">Item added successfully</div>
+        </div>
+    </div>
 
     <header>
         <div class="header-inner">
@@ -2222,6 +2523,10 @@
                 <div class="tab" data-tab="vi-peel">VI Peel</div>
                 <div class="tab" data-tab="skin-boosters">Skin Boosters & Wellness</div>
                 <div class="tab" data-tab="add-ons">Add Ons</div>
+                <div class="tab more-tab" style="display: none;">
+                    More
+                    <div class="dropdown-menu"></div>
+                </div>
             </div>
            </div>
 
@@ -3181,7 +3486,21 @@
                 if (!exists) cart.push(item);
                 saveCart();
                 renderCart();
+                showToast(item.name);
                 openCart();
+            }
+
+            function showToast(itemName) {
+                const toast = document.getElementById('toast');
+                const toastMessage = document.getElementById('toastMessage');
+                if (!toast || !toastMessage) return;
+
+                toastMessage.textContent = `${itemName} added to your cart`;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
             }
 
             function renderCart() {
@@ -3473,12 +3792,165 @@
                 });
             }
 
-            const tabs = document.querySelectorAll('.tab:not(.more-tab)');
-            const moreTab = document.querySelector('.more-tab');
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            const tabsContainer = document.querySelector('.tabs-container');
             const tabsWrapper = document.querySelector('.tabs-wrapper');
             const triangleIndicator = document.querySelector('.triangle-indicator');
             const serviceCards = document.querySelectorAll('.service-card');
+            
+            // Get tabs and more tab - these will be updated dynamically
+            let tabs = document.querySelectorAll('.tab:not(.more-tab)');
+            let moreTab = document.querySelector('.more-tab');
+            let dropdownMenu = moreTab ? moreTab.querySelector('.dropdown-menu') : null;
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            
+            // Function to handle responsive tab overflow
+            function handleTabOverflow() {
+                if (!tabsContainer || !moreTab || !dropdownMenu || !tabsWrapper) return;
+                
+                // Reset: show all tabs, hide more tab
+                tabs.forEach(tab => {
+                    tab.style.display = '';
+                });
+                moreTab.style.display = 'none';
+                dropdownMenu.innerHTML = '';
+                
+                // Force a reflow to get accurate measurements
+                void tabsContainer.offsetWidth;
+                
+                // Get the available width (viewport width minus padding)
+                const viewportWidth = window.innerWidth;
+                const availableWidth = viewportWidth - 48; // Subtract padding (24px each side)
+                
+                // Calculate total width of all visible tabs (without More tab)
+                let totalTabsWidth = 0;
+                tabs.forEach((tab) => {
+                    // Temporarily ensure tab is visible to measure
+                    const wasHidden = tab.style.display === 'none';
+                    if (wasHidden) tab.style.display = '';
+                    
+                    if (tab.offsetWidth > 0) {
+                        totalTabsWidth += tab.offsetWidth;
+                    } else {
+                        totalTabsWidth += tab.scrollWidth || 100; // Fallback estimate
+                    }
+                    
+                    if (wasHidden) tab.style.display = 'none';
+                });
+                
+                // Only show More tab if tabs actually overflow the available width
+                // Check if all tabs fit WITHOUT the More tab first
+                if (totalTabsWidth > availableWidth) {
+                    const moreTabWidth = 80; // Approximate width of "More" tab
+                    let currentWidth = moreTabWidth;
+                    const visibleTabs = [];
+                    const hiddenTabs = [];
+                    
+                    // Try to fit as many tabs as possible from the start
+                    for (let i = 0; i < tabs.length; i++) {
+                        const tab = tabs[i];
+                        const tabWidth = tab.offsetWidth || tab.scrollWidth;
+                        
+                        if (currentWidth + tabWidth <= availableWidth) {
+                            currentWidth += tabWidth;
+                            visibleTabs.push(tab);
+                        } else {
+                            // From this point on, all remaining tabs go to dropdown
+                            for (let j = i; j < tabs.length; j++) {
+                                hiddenTabs.push(tabs[j]);
+                            }
+                            break;
+                        }
+                    }
+                    
+                    // If we couldn't fit any tabs, show at least the first one
+                    if (visibleTabs.length === 0 && tabs.length > 0) {
+                        visibleTabs.push(tabs[0]);
+                        for (let i = 1; i < tabs.length; i++) {
+                            hiddenTabs.push(tabs[i]);
+                        }
+                    }
+                    
+                    // Show More tab and populate dropdown with last tabs only
+                    if (hiddenTabs.length > 0) {
+                        // Remove is-last-visible class from all tabs
+                        tabs.forEach(tab => tab.classList.remove('is-last-visible'));
+                        
+                        const currentMoreTab = document.querySelector('.more-tab');
+                        if (currentMoreTab) {
+                            currentMoreTab.style.display = '';
+                            
+                            const currentDropdownMenu = currentMoreTab.querySelector('.dropdown-menu');
+                            if (currentDropdownMenu) {
+                                // Clear existing items
+                                currentDropdownMenu.innerHTML = '';
+                                
+                                // Hide overflow tabs (only the last ones)
+                                hiddenTabs.forEach(tab => {
+                                    tab.style.display = 'none';
+                                });
+                                
+                                // Populate dropdown with hidden tabs (last part of list)
+                                hiddenTabs.forEach(tab => {
+                                    const item = document.createElement('div');
+                                    item.className = 'dropdown-item';
+                                    item.textContent = tab.textContent;
+                                    item.setAttribute('data-tab', tab.getAttribute('data-tab'));
+                                    currentDropdownMenu.appendChild(item);
+                                });
+                                
+                                // Attach click handler directly to More tab
+                                if (!currentMoreTab.dataset.handlerAttached) {
+                                    currentMoreTab.addEventListener('click', function(e) {
+                                        e.stopPropagation();
+                                        e.preventDefault();
+                                        
+                                        const isActive = this.classList.contains('active');
+                                        const menu = this.querySelector('.dropdown-menu');
+                                        
+                                        // Remove active from regular tabs
+                                        const allTabs = document.querySelectorAll('.tab:not(.more-tab)');
+                                        allTabs.forEach(t => t.classList.remove('active'));
+                                        
+                                        if (isActive) {
+                                            this.classList.remove('active');
+                                            menu.style.display = 'none';
+                                        } else {
+                                            this.classList.add('active');
+                                            if (tabsWrapper) tabsWrapper.classList.remove('has-active');
+                                            menu.style.display = 'block';
+                                            menu.style.visibility = 'visible';
+                                            menu.style.opacity = '1';
+                                            menu.style.zIndex = '99999';
+                                        }
+                                    });
+                                    currentMoreTab.dataset.handlerAttached = 'true';
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // All tabs fit, ensure More tab is hidden
+                    const currentMoreTab = document.querySelector('.more-tab');
+                    if (currentMoreTab) {
+                        currentMoreTab.style.display = 'none';
+                    }
+                    // Add class to last tab to ensure rounded corner
+                    const lastTab = tabs[tabs.length - 1];
+                    if (lastTab) {
+                        lastTab.classList.add('is-last-visible');
+                    }
+                }
+            }
+            
+            // Handle window resize
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(handleTabOverflow, 100);
+            });
+            
+            // Initial check after a short delay to ensure layout is complete
+            setTimeout(handleTabOverflow, 200);
             
             // Add data attributes to Laser Hair Removal service cards (first 24 cards)
             serviceCards.forEach((card, index) => {
@@ -3557,96 +4029,102 @@
                 filterServices('laser-hair');
             }
 
-            // Handle More tab (click-to-open)
-            if (moreTab) {
-                const dropdownMenu = moreTab.querySelector('.dropdown-menu');
-                
-                // Function to show dropdown
-                function showDropdown() {
-                    if (dropdownMenu) {
-                        moreTab.classList.add('active');
-                        tabsWrapper.classList.remove('has-active');
-                        // CSS handles positioning via .more-tab.active .dropdown-menu
-                    }
-                }
-                
-                // Function to hide dropdown
-                function hideDropdown() {
-                    if (dropdownMenu) {
-                        moreTab.classList.remove('active');
-                        // Clear all inline styles so CSS takes over
-                        dropdownMenu.removeAttribute('style');
-                    }
-                }
-                
-                // Track if click was handled to prevent outside click handler from interfering
-                let clickHandled = false;
-                
-                // Handle click - show/hide dropdown
-                moreTab.addEventListener('click', function(e) {
+            // Use event delegation on tabs-container for More tab clicks
+            if (tabsContainer) {
+                tabsContainer.addEventListener('click', function(e) {
+                    // Check if clicked element is the More tab or inside it
+                    const clickedTab = e.target.closest('.more-tab');
+                    if (!clickedTab) return;
+                    
                     e.stopPropagation();
-                    clickHandled = true;
+                    e.preventDefault();
+                    
+                    const clickedDropdownMenu = clickedTab.querySelector('.dropdown-menu');
+                    if (!clickedDropdownMenu) {
+                        console.log('Dropdown menu not found');
+                        return;
+                    }
                     
                     // Remove active from regular tabs
-                    tabs.forEach(t => t.classList.remove('active'));
+                    const currentTabs = document.querySelectorAll('.tab:not(.more-tab)');
+                    currentTabs.forEach(t => t.classList.remove('active'));
                     
                     // Toggle dropdown
-                    const isActive = this.classList.contains('active');
+                    const isActive = clickedTab.classList.contains('active');
                     
                     if (isActive) {
-                        hideDropdown();
+                        clickedTab.classList.remove('active');
+                        clickedDropdownMenu.style.display = 'none';
+                        clickedDropdownMenu.style.visibility = 'hidden';
                     } else {
-                        showDropdown();
-                    }
-                    
-                    // Reset flag after a short delay
-                    setTimeout(() => { clickHandled = false; }, 100);
-                });
-                
-                // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
-                    // Skip if click was just handled
-                    if (clickHandled) return;
-                    
-                    // Don't close if clicking on the more tab or dropdown menu
-                    if (moreTab && dropdownMenu) {
-                        const clickedOnMoreTab = moreTab.contains(e.target);
-                        const clickedOnDropdown = dropdownMenu.contains(e.target);
-                        
-                        if (!clickedOnMoreTab && !clickedOnDropdown) {
-                            if (moreTab.classList.contains('active')) {
-                                moreTab.classList.remove('active');
-                                hideDropdown();
-                            }
-                        }
+                        clickedTab.classList.add('active');
+                        if (tabsWrapper) tabsWrapper.classList.remove('has-active');
+                        clickedDropdownMenu.style.display = 'block';
+                        clickedDropdownMenu.style.visibility = 'visible';
+                        clickedDropdownMenu.style.opacity = '1';
+                        clickedDropdownMenu.style.zIndex = '9999';
                     }
                 });
             }
-
-            // Handle dropdown item clicks
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.stopPropagation();
+            
+            // Close dropdown when clicking outside
+            if (!document.moreTabOutsideClickHandler) {
+                document.moreTabOutsideClickHandler = function(e) {
+                    const moreTabEl = document.querySelector('.more-tab');
+                    if (!moreTabEl) return;
                     
-                    // Remove active from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    if (moreTab) moreTab.classList.remove('active');
+                    const dropdownMenuEl = moreTabEl.querySelector('.dropdown-menu');
+                    if (!dropdownMenuEl) return;
                     
-                    // Hide triangle indicator
-                    tabsWrapper.classList.remove('has-active');
+                    const clickedOnMoreTab = moreTabEl.contains(e.target);
+                    const clickedOnDropdown = dropdownMenuEl.contains(e.target);
                     
-                    // Filter services based on selected dropdown item
-                    const tabName = this.getAttribute('data-tab');
-                    filterServices(tabName);
-
-                    // Close dropdown (clear inline styles so CSS takes over)
-                    if (moreTab) {
-                        const dm = moreTab.querySelector('.dropdown-menu');
-                        if (dm) {
-                            dm.removeAttribute('style');
+                    if (!clickedOnMoreTab && !clickedOnDropdown) {
+                        if (moreTabEl.classList.contains('active')) {
+                            moreTabEl.classList.remove('active');
+                            dropdownMenuEl.style.display = 'none';
+                            dropdownMenuEl.style.visibility = 'hidden';
                         }
                     }
-                });
+                };
+                document.addEventListener('click', document.moreTabOutsideClickHandler);
+            }
+
+            // Handle dropdown item clicks using event delegation
+            function handleDropdownItemClick(e) {
+                if (!e.target.classList.contains('dropdown-item')) return;
+                
+                e.stopPropagation();
+                
+                // Remove active from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                if (moreTab) moreTab.classList.remove('active');
+                
+                // Hide triangle indicator
+                tabsWrapper.classList.remove('has-active');
+                
+                // Filter services based on selected dropdown item
+                const tabName = e.target.getAttribute('data-tab');
+                filterServices(tabName);
+
+                // Close dropdown
+                if (moreTab) {
+                    moreTab.classList.remove('active');
+                    const dm = moreTab.querySelector('.dropdown-menu');
+                    if (dm) {
+                        dm.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Setup event delegation on dropdown menu for dynamic items
+            if (dropdownMenu) {
+                dropdownMenu.addEventListener('click', handleDropdownItemClick);
+            }
+            
+            // Also setup existing dropdown items if any
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', handleDropdownItemClick);
             });
 
             // Initialize cart from storage (cart remains hidden until user opens it)
