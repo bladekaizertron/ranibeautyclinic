@@ -1024,6 +1024,88 @@
             }
         }
 
+        /* Booking Modal Cart Display */
+        #bookingCartSlot {
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            position: sticky;
+            top: 0;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .booking-cart__title {
+            font-family: var(--font-primary);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin: 0 0 16px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        .booking-cart__empty {
+            text-align: center;
+            padding: 32px 16px;
+            color: rgba(42, 42, 42, 0.6);
+            font-size: 14px;
+        }
+
+        .booking-cart__items {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .booking-cart__item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.08);
+        }
+
+        .booking-cart__item:last-child {
+            border-bottom: none;
+        }
+
+        .booking-cart__item-name {
+            font-family: var(--font-primary);
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin: 0 0 6px 0;
+        }
+
+        .booking-cart__item-meta {
+            font-size: 13px;
+            color: rgba(42, 42, 42, 0.7);
+        }
+
+        .booking-cart__total {
+            padding-top: 16px;
+            border-top: 2px solid rgba(15, 29, 44, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .booking-cart__total-label {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-navy);
+        }
+
+        .booking-cart__total-amount {
+            font-family: var(--font-primary);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-navy);
+        }
+
         /* --- CART DRAWER (SLIDE FROM RIGHT) --- */
         .cart-backdrop {
             position: fixed;
@@ -2025,7 +2107,7 @@
                             </div>
                             <div class="nav-dropdown__column">
                                 <div class="nav-dropdown__heading">Technology</div>
-                                <a class="nav-dropdown__item" href="#softwave">Softwave</a>
+                                <a class="nav-dropdown__item" href="#sofwave">Sofwave</a>
                                 <a class="nav-dropdown__item" href="#pain-free-laser">Pain Free Laser Hair Removal</a>
                                 <a class="nav-dropdown__item" href="#hydrafacial-syndeo">Hydrafacial Syndeo</a>
                                 <a class="nav-dropdown__item" href="#aura-skin-scan">Aura Skin Scan</a>
@@ -3188,6 +3270,42 @@
                     li.appendChild(actions);
                     cartItemsEl.appendChild(li);
                 });
+                
+                // Also render cart in booking modal if it's open
+                renderBookingCart();
+            }
+
+            function renderBookingCart() {
+                const bookingCartSlot = document.getElementById('bookingCartSlot');
+                if (!bookingCartSlot) return;
+
+                const count = cart.length;
+                const total = cart.reduce((sum, i) => sum + Number(i.price || 0), 0);
+
+                let html = '<h3 class="booking-cart__title">Your Appointment</h3>';
+
+                if (count === 0) {
+                    html += '<div class="booking-cart__empty">Your cart is empty.<br>Add treatments to get started!</div>';
+                } else {
+                    html += '<ul class="booking-cart__items">';
+                    cart.forEach(item => {
+                        html += `
+                            <li class="booking-cart__item">
+                                <div class="booking-cart__item-name">${item.name}</div>
+                                <div class="booking-cart__item-meta">${toMoney(item.price)} • ${item.duration} min</div>
+                            </li>
+                        `;
+                    });
+                    html += '</ul>';
+                    html += `
+                        <div class="booking-cart__total">
+                            <span class="booking-cart__total-label">Subtotal</span>
+                            <strong class="booking-cart__total-amount">${toMoney(total)}</strong>
+                        </div>
+                    `;
+                }
+
+                bookingCartSlot.innerHTML = html;
             }
 
             if (cartBtn) cartBtn.addEventListener('click', toggleCart);
@@ -3309,6 +3427,7 @@
 
                 renderCalendar();
                 renderSchedule();
+                renderBookingCart();
 
                 // Focus close button for accessibility
                 if (bookingCloseBtn) bookingCloseBtn.focus();
