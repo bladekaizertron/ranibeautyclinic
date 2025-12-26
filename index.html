@@ -172,14 +172,14 @@
             color: var(--pure-white);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 2000;
             box-shadow: var(--shadow-lg);
         }
 
         .header-inner {
             width: 100%;
-            max-width: var(--max-w);
-            margin: 0 auto;
+            max-width: none;
+            margin: 0;
             padding: 0 24px;
             display: flex;
             align-items: center;
@@ -218,6 +218,296 @@
             align-items: center;
         }
 
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-left: 780px;
+            margin-right: auto;
+            flex: 0 1 auto;
+            min-width: 0;
+            justify-content: flex-start;
+        }
+
+        .nav-link {
+            font-family: var(--font-primary);
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.90);
+            padding: 10px 8px;
+            border-radius: 999px;
+            transition: background 0.18s ease, transform 0.18s ease, color 0.18s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(243, 214, 190, 0.16);
+            color: var(--pure-white);
+            transform: translateY(-1px);
+        }
+
+        /* Header Nav Dropdown */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown__menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding-top: 16px;
+            z-index: 3000;
+        }
+
+        .nav-dropdown__menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 16px;
+        }
+
+        .nav-dropdown__inner {
+            background: var(--pure-white);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+            padding: 20px;
+            min-width: 280px;
+            animation: navDropdownIn 0.2s ease;
+        }
+
+        .nav-dropdown__menu--2col .nav-dropdown__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 20px;
+            min-width: 420px;
+        }
+
+        @keyframes navDropdownIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-dropdown:hover .nav-dropdown__menu {
+            display: block;
+        }
+
+        .nav-dropdown__item {
+            display: block;
+            padding: 12px 16px;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background 0.15s ease, color 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .nav-dropdown__item:hover {
+            background: rgba(243, 214, 190, 0.35);
+            color: var(--primary-navy);
+        }
+
+        /* Mega Menu Styles - Centered on Page */
+        .nav-dropdown__menu--mega {
+            position: fixed;
+            left: 60%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1200px;
+            padding-top: 16px;
+            top: 70px;
+        }
+
+        .nav-dropdown:hover .nav-dropdown__menu--mega {
+            display: block;
+        }
+
+        .nav-dropdown__menu--mega .nav-dropdown__inner {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 32px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 28px 40px;
+            background: var(--pure-white);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+        }
+
+        .nav-dropdown__column {
+            min-width: 0;
+        }
+
+        .nav-dropdown__heading {
+            font-family: var(--font-primary);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--primary-navy);
+            padding: 10px 0;
+            margin-bottom: 8px;
+            border-bottom: 2px solid var(--accent-gold);
+            white-space: nowrap;
+        }
+
+        .nav-dropdown__column .nav-dropdown__item {
+            font-size: 14px;
+            padding: 10px 0;
+            white-space: normal;
+            line-height: 1.4;
+        }
+
+        .nav-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--pure-white);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .nav-toggle:hover {
+            transform: translateY(-2px);
+            background: rgba(243, 214, 190, 0.16);
+            border-color: rgba(243, 214, 190, 0.55);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+        }
+
+        .nav-drawer {
+            position: fixed;
+            inset: 0;
+            display: none;
+            z-index: 2600;
+        }
+
+        .nav-drawer.is-open {
+            display: block;
+        }
+
+        .nav-drawer__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 29, 44, 0.55);
+            backdrop-filter: blur(6px);
+        }
+
+        .nav-drawer__panel {
+            position: absolute;
+            top: 72px;
+            right: 16px;
+            width: min(360px, calc(100vw - 32px));
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(15, 29, 44, 0.10);
+            border-radius: 16px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .nav-drawer__head {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.08);
+        }
+
+        .nav-drawer__head strong {
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            color: var(--primary-navy);
+        }
+
+        .nav-drawer__links {
+            display: grid;
+            padding: 10px;
+            gap: 6px;
+        }
+
+        .nav-drawer__links a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 12px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-family: var(--font-primary);
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-size: 12px;
+            color: var(--primary-navy);
+            background: rgba(250, 248, 245, 0.9);
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .nav-drawer__links a:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: rgba(243, 214, 190, 0.30);
+        }
+
+        .cart-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--pure-white);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(243, 214, 190, 0.16);
+            border-color: rgba(243, 214, 190, 0.55);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 999px;
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            font-weight: 900;
+            font-size: 11px;
+            line-height: 20px;
+            text-align: center;
+            border: 1px solid rgba(15, 29, 44, 0.15);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+        }
+
         .logo {
             height: 48px;
             width: auto;
@@ -236,28 +526,52 @@
 
         .hero {
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 34px;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
             align-items: center;
-            margin: 26px 0 34px 0;
+            margin: 0 0 60px 0;
+            padding: 80px 60px;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #1a2d3d 50%, #0a1520 100%);
+            border-radius: 0;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(243, 214, 190, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .hero-card {
-            background: rgba(255, 255, 255, 0.72);
-            border: 1px solid rgba(15, 29, 44, 0.06);
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-lg);
-            padding: 34px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 0;
             position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
+            overflow: visible;
+            backdrop-filter: none;
+            z-index: 1;
         }
 
         .hero-card--compact {
             padding: 28px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
         }
 
-        .hero-card::before {
+        .hero-card--compact::before {
             content: "";
             position: absolute;
             inset: -40px -60px auto auto;
@@ -270,34 +584,63 @@
 
         .hero h1 {
             font-family: var(--font-secondary);
-            font-size: 54px;
+            font-size: 72px;
             font-weight: 700;
-            color: var(--primary-navy);
+            color: var(--pure-white);
             letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin: 14px 0 14px 0;
+            line-height: 1.05;
+            margin: 20px 0 24px 0;
+            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.15);
         }
 
         .hero h1 em {
             font-style: normal;
-            background: linear-gradient(90deg, var(--primary-navy) 0%, rgba(15, 29, 44, 0.75) 60%, rgba(15, 29, 44, 0.55) 100%);
+            background: linear-gradient(90deg, var(--accent-gold) 0%, #e8c4a8 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
         .hero p {
-            font-size: 16px;
-            color: rgba(42, 42, 42, 0.82);
-            max-width: 52ch;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 54ch;
+            line-height: 1.7;
+        }
+
+        .hero .badge {
+            background: rgba(243, 214, 190, 0.15);
+            color: var(--accent-gold);
+            border: 1px solid rgba(243, 214, 190, 0.3);
         }
 
         .hero-cta {
-            margin-top: 18px;
+            margin-top: 32px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
             align-items: center;
+        }
+
+        .hero .btn--primary {
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            font-weight: 700;
+        }
+
+        .hero .btn--primary:hover {
+            background: #e8c4a8;
+        }
+
+        .hero .btn--secondary {
+            background: transparent;
+            color: var(--pure-white);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .hero .btn--secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
         }
 
         .hero-cta--tight {
@@ -305,11 +648,13 @@
         }
 
         .hero-media {
-            border-radius: var(--radius-sm);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid rgba(15, 29, 44, 0.06);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             background: var(--pure-white);
+            position: relative;
+            z-index: 1;
         }
 
         .hero-media img {
@@ -669,20 +1014,40 @@
             }
         }
 
-        /* --- FLOATING CART / APPOINTMENT SUMMARY --- */
+        /* --- CART DRAWER (SLIDE FROM RIGHT) --- */
+        .cart-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 29, 44, 0.6);
+            z-index: 2900;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .cart-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .cart-panel {
             position: fixed;
-            right: 18px;
-            top: 388px;
-            width: 340px;
-            max-width: calc(100vw - 36px);
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid rgba(15, 29, 44, 0.08);
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-xl);
-            backdrop-filter: blur(12px);
-            overflow: hidden;
-            z-index: 2000;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 420px;
+            max-width: 100vw;
+            background: var(--light-bg);
+            box-shadow: -10px 0 40px rgba(15, 29, 44, 0.12);
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cart-panel.is-open {
+            transform: translateX(0);
         }
 
         .cart-panel.in-modal {
@@ -694,81 +1059,179 @@
             width: 100%;
             max-width: none;
             box-shadow: var(--shadow-lg);
+            transform: none;
         }
 
         .cart-head {
-            padding: 16px 16px 12px 16px;
+            padding: 24px 24px 20px 24px;
+            background: var(--pure-white);
             border-bottom: 1px solid rgba(15, 29, 44, 0.06);
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .cart-title {
             font-family: var(--font-secondary);
+            font-size: 24px;
             font-weight: 700;
-            font-size: 18px;
             color: var(--primary-navy);
-            line-height: 1.2;
+        }
+
+        .cart-title span {
+            color: rgba(15, 29, 44, 0.4);
+            font-weight: 400;
+            font-family: var(--font-primary);
+            font-size: 20px;
+        }
+
+        .cart-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--accent-gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--primary-navy);
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(243, 214, 190, 0.4);
+        }
+
+        .cart-close:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 16px rgba(243, 214, 190, 0.5);
+        }
+
+        .cart-promo {
+            background: var(--primary-navy);
+            color: var(--pure-white);
+            padding: 16px 24px;
+            font-family: var(--font-primary);
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            flex-shrink: 0;
+            letter-spacing: 0.02em;
+        }
+
+        .cart-promo span {
+            color: var(--accent-gold);
+            margin-left: 8px;
+        }
+
+        .cart-rewards {
+            padding: 20px 24px;
+            background: var(--pure-white);
+            border-bottom: 1px solid rgba(15, 29, 44, 0.06);
+            flex-shrink: 0;
+        }
+
+        .cart-rewards__title {
+            font-family: var(--font-primary);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-bottom: 16px;
+        }
+
+        .cart-rewards__title strong {
+            color: var(--accent-gold);
+            background: var(--primary-navy);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .cart-rewards__tiers {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .cart-rewards__tier {
+            text-align: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(15, 29, 44, 0.6);
+            letter-spacing: 0.03em;
+        }
+
+        .cart-rewards__tier strong {
+            display: block;
+            font-family: var(--font-primary);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin-bottom: 4px;
         }
 
         .cart-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border-radius: 999px;
-            background: rgba(15, 29, 44, 0.06);
-            color: rgba(15, 29, 44, 0.9);
-            font-weight: 700;
-            font-size: 12px;
+            display: none;
         }
 
         .cart-body {
-            padding: 12px 16px 0 16px;
-            max-height: 42vh;
+            padding: 24px;
+            flex: 1 1 auto;
             overflow: auto;
+            background: var(--light-bg);
         }
 
         .cart-empty {
-            padding: 12px 0 16px 0;
-            color: rgba(42, 42, 42, 0.75);
-            font-size: 14px;
+            padding: 48px 20px;
+            color: var(--text-dark);
+            font-size: 15px;
+            text-align: center;
+            line-height: 1.6;
+            opacity: 0.7;
         }
 
         .cart-items {
             list-style: none;
             display: grid;
-            gap: 10px;
-            padding: 0 0 12px 0;
+            gap: 12px;
+            padding: 0;
             margin: 0;
         }
 
         .cart-item {
-            background: rgba(250, 248, 245, 0.9);
+            background: var(--pure-white);
             border: 1px solid rgba(15, 29, 44, 0.06);
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 15px;
+            padding: 16px;
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(15, 29, 44, 0.04);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .cart-item:hover {
+            box-shadow: 0 6px 20px rgba(15, 29, 44, 0.08);
+            transform: translateY(-1px);
         }
 
         .cart-item h4 {
             font-family: var(--font-primary);
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--primary-navy);
-            line-height: 1.2;
-            margin: 0 0 4px 0;
+            line-height: 1.3;
+            margin: 0 0 6px 0;
         }
 
         .cart-item-meta {
+            font-family: var(--font-primary);
             font-size: 13px;
-            color: rgba(42, 42, 42, 0.72);
-            line-height: 1.4;
+            color: var(--text-dark);
+            opacity: 0.7;
+            line-height: 1.5;
         }
 
         .cart-item-actions {
@@ -781,9 +1244,9 @@
             width: 36px;
             height: 36px;
             border-radius: 999px;
-            border: 1px solid rgba(15, 29, 44, 0.10);
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(15, 29, 44, 0.08);
+            background: var(--light-bg);
+            box-shadow: 0 2px 8px rgba(15, 29, 44, 0.06);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -798,10 +1261,12 @@
         }
 
         .cart-foot {
-            padding: 12px 16px 16px 16px;
+            padding: 24px;
             border-top: 1px solid rgba(15, 29, 44, 0.06);
             display: grid;
-            gap: 12px;
+            gap: 18px;
+            flex-shrink: 0;
+            background: var(--pure-white);
         }
 
         .cart-total {
@@ -809,51 +1274,82 @@
             align-items: baseline;
             justify-content: space-between;
             gap: 10px;
-            color: rgba(42, 42, 42, 0.78);
-            font-size: 13px;
-        }
-
-        .cart-total strong {
             font-family: var(--font-primary);
-            font-weight: 800;
             font-size: 16px;
+            font-weight: 600;
             color: var(--primary-navy);
         }
 
-        .cart-next {
+        .cart-total strong {
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--primary-navy);
+        }
+
+        .cart-terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-family: var(--font-primary);
+            font-size: 13px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .cart-terms input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin: 0;
+            accent-color: var(--primary-navy);
+            flex-shrink: 0;
+            border-radius: 4px;
+        }
+
+        .cart-checkout {
             width: 100%;
+            padding: 18px 28px;
+            background: var(--primary-navy);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 30px;
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 6px 20px rgba(15, 29, 44, 0.25);
         }
 
-        .cart-fab {
-            display: none;
-            position: fixed;
-            right: 18px;
-            top: 88px;
-            transform: none;
-            z-index: 2100;
+        .cart-checkout:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(15, 29, 44, 0.35);
         }
 
-        .cart-collapsed {
-            display: none;
+        .cart-continue {
+            text-align: center;
+            font-family: var(--font-primary);
+            font-size: 14px;
+            color: var(--text-dark);
+            opacity: 0.7;
         }
 
-        @media (max-width: 900px) {
+        .cart-continue a {
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid var(--accent-gold);
+            transition: border-color 0.2s ease;
+        }
+
+        .cart-continue a:hover {
+            border-color: var(--primary-navy);
+        }
+
+        @media (max-width: 480px) {
             .cart-panel {
-                left: 16px;
-                right: 16px;
-                top: 76px;
-                width: auto;
-                max-width: none;
-            }
-
-            .cart-fab {
-                display: inline-flex;
-                right: 16px;
-                top: 76px;
-            }
-
-            .cart-panel.cart-collapsed {
-                display: none;
+                width: 100vw;
             }
         }
 
@@ -865,27 +1361,6 @@
             position: relative;
         }
 
-        .back-arrow {
-            font-size: 28px;
-            color: var(--primary-navy);
-            cursor: pointer;
-            margin-right: 16px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(15, 29, 44, 0.05);
-        }
-
-        .back-arrow:hover {
-            background: var(--accent-gold);
-            color: var(--primary-navy);
-            transform: translateX(-3px);
-        }
 
         .location-info {
             text-align: center;
@@ -934,6 +1409,7 @@
             display: flex;
             justify-content: center;
             overflow: visible;
+            width: 100%;
         }
 
         .triangle-indicator {
@@ -957,24 +1433,21 @@
 
         .tabs-container {
             display: flex;
-            border: 2px solid var(--primary-navy);
+            border: 3px solid var(--primary-navy);
             border-radius: var(--radius-pill);
-            overflow: hidden;
+            overflow: visible;
             background: var(--pure-white);
             position: relative;
-            width: fit-content;
-            max-width: 100%;
-            margin: 0 auto;
             box-shadow: var(--shadow-lg);
         }
 
         .tab {
-            flex: 0 1 auto;
-            padding: 14px 20px;
+            flex: 1 1 0;
+            padding: 16px 20px;
             text-align: center;
             font-family: var(--font-primary);
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.2;
             cursor: pointer;
             color: var(--primary-navy);
@@ -982,7 +1455,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             position: relative;
-            border-right: 1px solid rgba(15, 29, 44, 0.1);
+            border-right: 1px solid rgba(18, 32, 48, 0.1);
         }
 
         .tab:first-child {
@@ -1012,10 +1485,13 @@
         /* More Tab Dropdown */
         .more-tab {
             position: relative;
+            z-index: 10;
         }
 
         .tabs-wrapper {
             overflow: visible !important;
+            position: relative;
+            z-index: 100;
         }
 
         .dropdown-menu {
@@ -1028,7 +1504,7 @@
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-xl);
             min-width: 220px;
-            z-index: 1000;
+            z-index: 9999;
             overflow: hidden;
             backdrop-filter: blur(10px);
             animation: slideDown 0.2s ease;
@@ -1046,8 +1522,7 @@
             }
         }
 
-        .more-tab.active .dropdown-menu,
-        .more-tab:hover .dropdown-menu {
+        .more-tab.active .dropdown-menu {
             display: block;
         }
 
@@ -1073,86 +1548,152 @@
         }
 
         /* --- SERVICE GRID --- */
+        .services-section {
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            padding: 0 18px;
+        }
+
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 34px;
             background: rgba(255, 255, 255, 0.78);
-            padding: 40px;
+            padding: 46px;
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-lg);
             border: 1px solid rgba(15, 29, 44, 0.05);
             backdrop-filter: blur(10px);
+            max-width: 1920px;
+            margin: 0 auto;
         }
 
         .service-card {
             background: var(--pure-white);
             border-radius: var(--radius-sm);
             display: flex;
-            align-items: center;
-            padding: 20px;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 0;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 110px;
+            min-height: 0;
             border: 1px solid rgba(15, 29, 44, 0.08);
             box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            position: relative;
         }
 
         .service-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
             border-color: var(--accent-gold);
             background: var(--light-bg);
         }
 
+        .card-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
         .card-image {
-            width: 90px;
-            height: 90px;
-            border-radius: var(--radius-sm);
+            width: 100%;
+            height: 320px;
+            border-radius: 0;
             object-fit: cover;
             flex-shrink: 0;
-            box-shadow: var(--shadow-md);
-            transition: transform 0.3s ease;
+            box-shadow: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            background: rgba(15, 29, 44, 0.03);
+        }
+
+        .card-image-wrapper .card-image--default {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-image-wrapper .card-image--hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            opacity: 0;
+        }
+
+        .service-card:hover .card-image-wrapper .card-image--hover {
+            opacity: 1;
+        }
+
+        .service-card:hover .card-image-wrapper .card-image--default {
+            opacity: 0;
         }
 
         .service-card:hover .card-image {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .card-content {
             flex-grow: 1;
-            padding: 0 18px;
+            padding: 22px 22px 26px 22px;
+            text-align: center;
         }
 
         .card-title {
             font-family: var(--font-primary);
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
             color: var(--primary-navy);
-            line-height: 1.4;
+            line-height: 1.25;
         }
 
         .card-desc {
             font-family: var(--font-primary);
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-gray);
             line-height: 1.6;
             font-weight: 400;
         }
 
-        .card-arrow {
+        .card-meta {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(15, 29, 44, 0.08);
+            font-family: var(--font-primary);
+            font-size: 14px;
+            font-weight: 700;
             color: var(--primary-navy);
-            font-size: 24px;
-            margin-right: 8px;
-            transition: all 0.3s ease;
-            opacity: 0.6;
+            letter-spacing: 0.02em;
+        }
+
+        .card-arrow {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-navy);
+            font-size: 22px;
+            transition: all 0.25s ease;
+            opacity: 0.85;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(15, 29, 44, 0.10);
+            box-shadow: var(--shadow-md);
         }
 
         .service-card:hover .card-arrow {
-            transform: translateX(4px);
+            transform: translateX(0) translateY(-1px);
             opacity: 1;
             color: var(--accent-gold);
+            background: rgba(15, 29, 44, 0.92);
+            border-color: rgba(15, 29, 44, 0.92);
         }
 
         /* --- RESPONSIVE --- */
@@ -1160,7 +1701,7 @@
             .container {
                 padding: 24px 16px;
             }
-
+            
             .header-inner {
                 padding: 0 16px;
             }
@@ -1169,24 +1710,45 @@
                 display: none;
             }
 
+            .main-nav {
+                display: none;
+            }
+
+            .nav-toggle {
+                display: inline-flex;
+            }
+
             .hero {
                 grid-template-columns: 1fr;
-                gap: 18px;
-                margin-top: 18px;
+                gap: 30px;
+                padding: 50px 24px;
             }
 
             .hero-card {
-                padding: 22px;
+                text-align: center;
             }
 
             .hero h1 {
-                font-size: 38px;
+                font-size: 42px;
+            }
+
+            .hero p {
+                margin: 0 auto;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-media {
+                max-width: 400px;
+                margin: 0 auto;
             }
             
             .services-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 padding: 24px;
-                gap: 16px;
+                gap: 18px;
             }
             
             .location-info h1 { 
@@ -1198,7 +1760,7 @@
             }
             
             .card-title { 
-                font-size: 16px; 
+                font-size: 20px; 
             }
             
             .card-desc { 
@@ -1207,21 +1769,23 @@
             
             .tabs-container {
                 max-width: 100%;
+                flex-wrap: wrap;
+                border-radius: 20px;
             }
             
             .tab {
-                font-size: 14px;
-                padding: 12px 14px;
+                font-size: 13px;
+                padding: 12px 18px;
             }
             
             .service-card {
-                padding: 14px;
-                min-height: 100px;
+                padding: 0;
+                min-height: 0;
             }
             
             .card-image {
-                width: 80px;
-                height: 80px;
+                width: 100%;
+                height: 260px;
             }
         }
 
@@ -1236,12 +1800,29 @@
             }
             
             .tab {
-                font-size: 12px;
-                padding: 10px 12px;
+                font-size: 11px;
+                padding: 10px 14px;
             }
             
             .services-grid {
-                padding: 20px;
+                padding: 18px;
+                grid-template-columns: 1fr;
+            }
+
+            .card-image {
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-section {
+                padding: 0 16px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .services-section {
+                padding: 0 10px;
             }
         }
     </style>
@@ -1259,12 +1840,116 @@
                     <span>Award Winning Medical Aesthetics</span>
                 </div>
             </div>
+
+            <nav class="main-nav" aria-label="Primary navigation">
+                <a class="nav-link" href="https://ranibeautyclinic.com/">Home</a>
+                <div class="nav-dropdown">
+                    <a class="nav-link" href="#shop">Shop</a>
+                    <div class="nav-dropdown__menu nav-dropdown__menu--2col">
+                        <div class="nav-dropdown__inner">
+                            <a class="nav-dropdown__item" href="#face-fixes">Face Fixes</a>
+                            <a class="nav-dropdown__item" href="#body-fixes">Body Fixes</a>
+                            <a class="nav-dropdown__item" href="#skin-fixes">Skin Fixes</a>
+                            <a class="nav-dropdown__item" href="#laser-hair">Laser Hair Removal</a>
+                            <a class="nav-dropdown__item" href="#skin-boosters">Skin Boosters & Wellness</a>
+                            <a class="nav-dropdown__item" href="#salmon-dna">Salmon DNA</a>
+                            <a class="nav-dropdown__item" href="#exosomes">Exosomes</a>
+                            <a class="nav-dropdown__item" href="#nad-therapy">NAD+ Therapy</a>
+                            <a class="nav-dropdown__item" href="#glow-iv">Glow IV</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a class="nav-link" href="#learn">Learn</a>
+                    <div class="nav-dropdown__menu nav-dropdown__menu--mega">
+                        <div class="nav-dropdown__inner nav-dropdown__inner--mega">
+                            <div class="nav-dropdown__column">
+                                <div class="nav-dropdown__heading">Learn</div>
+                                <a class="nav-dropdown__item" href="#injectables">Injectables</a>
+                                <a class="nav-dropdown__item" href="#sculptra">Sculptra</a>
+                                <a class="nav-dropdown__item" href="#radiesse">Radiesse</a>
+                                <a class="nav-dropdown__item" href="#toxins">Toxins</a>
+                                <a class="nav-dropdown__item" href="#fillers">Fillers</a>
+                            </div>
+                            <div class="nav-dropdown__column">
+                                <div class="nav-dropdown__heading">Technology</div>
+                                <a class="nav-dropdown__item" href="#softwave">Softwave</a>
+                                <a class="nav-dropdown__item" href="#pain-free-laser">Pain Free Laser Hair Removal</a>
+                                <a class="nav-dropdown__item" href="#hydrafacial-syndeo">Hydrafacial Syndeo</a>
+                                <a class="nav-dropdown__item" href="#aura-skin-scan">Aura Skin Scan</a>
+                            </div>
+                            <div class="nav-dropdown__column">
+                                <div class="nav-dropdown__heading">Skin</div>
+                                <a class="nav-dropdown__item" href="#salmon-dna">Salmon DNA</a>
+                                <a class="nav-dropdown__item" href="#exosomes">Exosomes</a>
+                                <a class="nav-dropdown__item" href="#hydrafacials">Hydrafacials</a>
+                                <a class="nav-dropdown__item" href="#vi-peel">VI Peel</a>
+                                <a class="nav-dropdown__item" href="#dermaplanning">Dermaplanning</a>
+                            </div>
+                            <div class="nav-dropdown__column">
+                                <div class="nav-dropdown__heading">About</div>
+                                <a class="nav-dropdown__item" href="#who-we-are">Who We Are</a>
+                                <a class="nav-dropdown__item" href="#our-providers">Our Providers</a>
+                                <a class="nav-dropdown__item" href="#careers">Careers</a>
+                                <a class="nav-dropdown__item" href="#rani-rewards">Rani Rewards</a>
+                                <a class="nav-dropdown__item" href="#recent-press">Recent Press</a>
+                                <a class="nav-dropdown__item" href="#blog">Blog</a>
+                                <a class="nav-dropdown__item" href="#angel-membership">Angel Membership</a>
+                            </div>
+                            <div class="nav-dropdown__column">
+                                <div class="nav-dropdown__heading">Support</div>
+                                <a class="nav-dropdown__item" href="#contact-us">Contact Us</a>
+                                <a class="nav-dropdown__item" href="#financing">Financing</a>
+                                <a class="nav-dropdown__item" href="#pre-post-care">Pre and Post Care</a>
+                                <a class="nav-dropdown__item" href="#faqs">FAQs</a>
+                                <a class="nav-dropdown__item" href="#cancellation-policy">Cancellation Policy</a>
+                                <a class="nav-dropdown__item" href="#influencer-application">Influencer Application</a>
+                                <a class="nav-dropdown__item" href="#client-reviews">Client Reviews</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
             <div class="header-actions">
-                <a class="btn btn--secondary" href="#services">Explore Services</a>
-                <a class="btn btn--primary" href="#consultation">Book Consultation</a>
+                <button id="navToggle" class="nav-toggle" type="button" aria-controls="navDrawer" aria-expanded="false" aria-label="Open menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M4 7h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M4 12h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <button id="cartBtn" class="cart-btn" type="button" aria-controls="cartPanel" aria-expanded="false" aria-label="Open cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M7 6h15l-2 9H8L7 6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M7 6 6.4 3.8A1.5 1.5 0 0 0 5 3H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M9 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" fill="currentColor"/>
+                        <path d="M19 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" fill="currentColor"/>
+                    </svg>
+                    <span id="cartNavBadge" class="cart-badge" style="display:none;">0</span>
+                </button>
             </div>
         </div>
     </header>
+
+    <div id="navDrawer" class="nav-drawer" aria-hidden="true">
+        <div class="nav-drawer__backdrop" data-nav-close="true"></div>
+        <div class="nav-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+            <div class="nav-drawer__head">
+                <strong>Menu</strong>
+                <button id="navClose" class="nav-btn" type="button" aria-label="Close menu">×</button>
+            </div>
+            <div class="nav-drawer__links">
+                <a href="#shop">Home <span aria-hidden="true">→</span></a>
+                <a href="#shop">Shop <span aria-hidden="true">→</span></a>
+                <a href="#learn">Learn <span aria-hidden="true">→</span></a>
+                <a href="#technology">Technology <span aria-hidden="true">→</span></a>
+                <a href="#skin">Skin <span aria-hidden="true">→</span></a>
+                <a href="#about">About <span aria-hidden="true">→</span></a>
+                <a href="#support">Support <span aria-hidden="true">→</span></a>
+            </div>
+        </div>
+    </div>
 
     <main id="main" class="container">
 
@@ -1280,13 +1965,9 @@
                     <a class="btn btn--secondary" href="#services">Browse Treatments</a>
                 </div>
             </div>
-            <div class="hero-media" aria-hidden="true">
-                <img src="assets/images/images/1.webp" alt="" loading="lazy" decoding="async">
-            </div>
         </section>
         
         <div class="top-nav">
-            <a href="#" class="back-arrow">←</a>
             <div class="location-info">
                 <h1 id="services">What services are you interested in?</h1>
                 <div class="location-name">MN Apple Valley</div>
@@ -1297,290 +1978,589 @@
         <div class="tabs-wrapper">
             <div class="triangle-indicator"></div>
         <div class="tabs-container">
-                <div class="tab active" data-tab="laser-hair">Laser Hair Removal</div>
+                <div class="tab" data-tab="face-fixes">Face Fixes</div>
+                <div class="tab" data-tab="body-fixes">Body Fixes</div>
+                <div class="tab" data-tab="skin-fixes">Skin Fixes</div>
+                <div class="tab" data-tab="laser">Laser Hair Removal</div>
+                <div class="tab" data-tab="rf-microneedling">Radiofrequency Microneedling</div>
                 <div class="tab" data-tab="hydrafacial">Hydrafacial</div>
-                <div class="tab" data-tab="microneedling">Radiofrequency Microneedling</div>
-                <div class="tab" data-tab="discoloration">Skin Discoloration Correction</div>
-                <div class="tab" data-tab="consultation">Consultation</div>
-                
-                <div class="tab more-tab" data-tab="more">
-                    More
-                    <div class="dropdown-menu">
-                        <div class="dropdown-item" data-tab="laser-facials">Laser Facials</div>
-                        <div class="dropdown-item" data-tab="vip-facials">VIP Facials</div>
-                        <div class="dropdown-item" data-tab="addons">Add ons</div>
-                        <div class="dropdown-item" data-tab="iv-drip">IV Drip Therapy</div>
-                        <div class="dropdown-item" data-tab="vi-peel">VI Peel</div>
-                        <div class="dropdown-item" data-tab="others">Others</div>
-                    </div>
-                </div>
+                <div class="tab" data-tab="chemical-peels">Chemical Peels</div>
+                <div class="tab" data-tab="vi-peel">VI Peel</div>
+                <div class="tab" data-tab="skin-boosters">Skin Boosters & Wellness</div>
+                <div class="tab" data-tab="add-ons">Add Ons</div>
             </div>
            </div>
 
+        <section class="services-section" aria-label="Services list">
         <div class="services-grid">
             
-            <div class="service-card" data-service-tab="laser-hair">
-                <img src="assets/images/images/1.webp" alt="Upper lip laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <!-- Skin Fixes -->
+            <div class="service-card" data-service-tab="skin-fixes" data-price="850" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/laserfacial/1.webp" alt="Laser Facials" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/laserfacial/2.jpg" alt="Laser Facials Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
                 <div class="card-content">
-                    <div class="card-title">$29 Upper Lip Laser Hair Removal</div>
-                    <div class="card-desc">Brazilian | Bikini (Full & Line)</div>
+                    <div class="card-title">Laser Facials</div>
+                    <div class="card-desc">Achieve a brighter, more even complexion with our laser facials. Target hyperpigmentation, sun damage, and uneven skin tone while revealing fresh, luminous skin beneath.</div>
+                    <div class="card-meta">$850 per session · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="skin-fixes" data-price="2500" data-duration="60">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/hydrafacial/1.webp" alt="Hydrafacial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/hydrafacial/2.webp" alt="Hydrafacial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Hydrafacial</div>
+                    <div class="card-desc">Experience a new level of skin care with our specialized Hydrafacial! This innovative treatment is designed to cleanse, hydrate, and rejuvenate your skin, promoting a more radiant, healthy appearance.</div>
+                    <div class="card-meta">$2,500 per session · 60 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="skin-fixes" data-price="1200" data-duration="30">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/vipeel/1.png" alt="VI PEEL" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/vipeel/2.webp" alt="VI PEEL Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">VI PEEL</div>
+                    <div class="card-desc">Experience a deep, professional-grade chemical peel that revitalizes your skin, reducing acne, fine lines, and uneven texture for a smoother, more radiant complexion.</div>
+                    <div class="card-meta">$1,200 per treatment · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="skin-fixes" data-price="795" data-duration="60">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/cosmelan/1.png" alt="Cosmelan" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/cosmelan/2.jpg" alt="Cosmelan Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Cosmelan</div>
+                    <div class="card-desc">Achieve a brighter, more even complexion with our laser facials. Target hyperpigmentation, sun damage, and uneven skin tone while revealing fresh, luminous skin beneath.</div>
+                    <div class="card-meta">$795 per session · 60 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="skin-fixes" data-price="495" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/softwave/1.jpg" alt="Softwave" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/softwave/2.webp" alt="Softwave Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Sofwave</div>
+                    <div class="card-desc">Harness the power of acoustic wave technology with Softwave therapy. This non-invasive treatment stimulates cellular regeneration, improves skin elasticity, and promotes natural healing for firmer, more youthful-looking skin.</div>
+                    <div class="card-meta">$495 per session · 45 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
 
-            <div class="service-card" data-service-tab="laser-hair">
-                <img src="assets/images/images/2.webp" alt="Eyebrows laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <!-- Body Fixes - Injectables -->
+            <div class="service-card" data-service-tab="body-fixes" data-price="950" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/radiesse/1.jpg" alt="Radiesse" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/radiesse/2.jpeg" alt="Radiesse Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
                 <div class="card-content">
-                    <div class="card-title">Eyebrows</div>
-                    <div class="card-desc">Pain free laser hair removal done using the Gentlemax Pro by Candela and Cryo 7 machine.</div>
+                    <div class="card-title">Radiesse</div>
+                    <div class="card-desc">Immediate volume restoration with long-term collagen stimulation. Calcium hydroxylapatite filler lifts and contours with results lasting up to 18 months.</div>
+                    <div class="card-meta">$950 · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="body-fixes" data-price="895" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/skulptraBBL/1.jpg" alt="Sculptra Skinny BBL" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/skulptraBBL/2.jpg" alt="Sculptra Skinny BBL Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Sculptra Skinny BBL</div>
+                    <div class="card-desc">Non-surgical butt lift stimulating collagen to naturally enhance curves, add volume, and create a more contoured silhouette.</div>
+                    <div class="card-meta">$895 · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="body-fixes" data-price="895" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/traptox/1.png" alt="Sculptra Skinny BBL" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/traptox/2.jpg" alt="Sculptra Skinny BBL Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Traptox</div>
+                    <div class="card-desc">Slim and elongate neck and shoulders with strategic Botox injections into trapezius muscles. Creates an elegant, swan-like silhouette.</div>
+                    <div class="card-meta">$895 · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="body-fixes" data-price="895" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/cutera/1.jpg" alt="Cutera Secret" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/cutera/2.webp" alt="Cutera Secret Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Cutera Secret</div>
+                    <div class="card-desc">RF microneedling combining precision needles with radiofrequency energy. Tightens skin, reduces scars and wrinkles, stimulates collagen.</div>
+                    <div class="card-meta">$895 · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="body-fixes" data-price="495" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/softwave/1.jpg" alt="Softwave" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/softwave/2.webp" alt="Softwave Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Sofwave</div>
+                    <div class="card-desc">Acoustic wave technology stimulating cellular regeneration and improving skin elasticity for firmer, more youthful-looking skin.</div>
+                    <div class="card-meta">$495 · 45 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
 
-            <div class="service-card" data-service-tab="laser-hair">
-                <img src="assets/images/images/3.webp" alt="Sideburns laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <!-- Face Fixes - Injectables -->
+            <div class="service-card" data-service-tab="face-fixes" data-price="14" data-duration="30">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/botox/1.png" alt="Botox Facial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/botox/2.webp" alt="Botox Facial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
                 <div class="card-content">
-                    <div class="card-title">Sideburns</div>
-                    <div class="card-desc">Pain free laser hair removal done on the sideburns using the Gentlemax Pro Plus by Candela and air technology!</div>
+                    <div class="card-title">Botox / Botox Facial</div>
+                    <div class="card-desc">Smooth away fine lines and wrinkles with our precision Botox treatment. Our expert injectors use advanced techniques to relax targeted muscles, delivering natural-looking results that refresh your appearance while maintaining your expressive beauty.</div>
+                    <div class="card-meta">$14.00 per unit · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="face-fixes" data-price="950" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/facesculptra/1.webp" alt="Sculptra" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/facesculptra/2.jpg" alt="Sculptra Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Sculptra</div>
+                    <div class="card-desc">Restore youthful volume and stimulate your body's natural collagen production with Sculptra. This bio-stimulating treatment gradually rebuilds facial structure, smoothing deep wrinkles and folds for results that last up to two years.</div>
+                    <div class="card-meta">$950 per vial · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="face-fixes" data-price="650" data-duration="30">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/lipfiller/1.jpg" alt="Lip Filler" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/lipfiller/2.jpg" alt="Lip Filler Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Lip Filler</div>
+                    <div class="card-desc">Enhance your natural pout with premium hyaluronic acid lip fillers. Our skilled injectors create beautifully balanced, hydrated lips with improved definition and volume, tailored to your unique facial harmony and aesthetic goals.</div>
+                    <div class="card-meta">$650 per syringe · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="face-fixes" data-price="750" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/eyefiller/1.webp" alt="Eye Filler" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/eyefiller/2.webp" alt="Eye Filler Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Eye Filler</div>
+                    <div class="card-desc">Revitalize tired-looking eyes and diminish dark circles with our delicate under-eye filler treatment. Using advanced cannula techniques, we restore lost volume to the tear trough area for a refreshed, well-rested appearance.</div>
+                    <div class="card-meta">$750 per syringe · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="face-fixes" data-price="850" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/cheekfiller/1.webp" alt="Cheek Filler" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/cheekfiller/2.webp" alt="Cheek Filler Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Cheek Filler</div>
+                    <div class="card-desc">Sculpt and define your cheekbones with expertly placed dermal fillers. Our customized approach restores youthful mid-face volume, lifts sagging skin, and creates beautiful contours that enhance your natural bone structure.</div>
+                    <div class="card-meta">$850 per syringe · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="face-fixes" data-price="795" data-duration="30">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/nosefiller/1.webp" alt="Nose Filler" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/nosefiller/2.webp" alt="Nose Filler Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Nose Filler</div>
+                    <div class="card-desc">Achieve a more refined nose profile without surgery with our non-surgical rhinoplasty. Using precise filler placement, we smooth bumps, lift the tip, and improve symmetry for instant, natural-looking results with zero downtime.</div>
+                    <div class="card-meta">$795 per treatment · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="face-fixes" data-price="795" data-duration="30">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/jawlinefiller/1.webp" alt="Jawline Filler" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/jawlinefiller/2.webp" alt="Jawline Filler Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Jawline Filler</div>
+                    <div class="card-desc">Define and sculpt a chiseled, contoured jawline with strategic filler placement. Our expert injectors enhance jaw definition, create sharper angles, and restore youthful structure for a more balanced, striking profile.</div>
+                    <div class="card-meta">$795 per treatment · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="face-fixes" data-price="795" data-duration="30">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/neckfiller/1.webp" alt="Nose Filler" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/neckfiller/2.webp" alt="Nose Filler Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Neck Filler</div>
+                    <div class="card-desc">Rejuvenate your neck and décolletage with precision filler treatments. Smooth horizontal neck lines, restore lost volume, and achieve a more youthful, elegant neckline that beautifully complements your refreshed facial appearance.</div>
+                    <div class="card-meta">$795 per treatment · 30 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
 
-            <div class="service-card">
-                <img src="assets/images/images/4.webp" alt="Full back laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <!-- VI Peel -->
+            <div class="service-card" data-service-tab="vi-peel" data-price="350" data-duration="60">
+                <img src="assets/images/images/1.webp" alt="Acne VI Peel" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
-                    <div class="card-title">Full Back</div>
-                    <div class="card-desc">Pain free laser hair removal done using the Gentlemax Pro by Candela and Cryo 7 machine.</div>
+                    <div class="card-title">Acne VI Peel</div>
+                    <div class="card-desc">VI Peel Purify with TCA, salicylic acid, and vitamin C. Penetrates deep into pores to dissolve impurities, prevent breakouts, regulate oil production, and promote cellular turnover. Reveal a smoother, clearer complexion with a flawless, vibrant glow!</div>
+                    <div class="card-meta">$350 · 60 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="vi-peel" data-price="350" data-duration="60">
+                <img src="assets/images/images/2.webp" alt="Acne Scarring VI Peel" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Acne Scarring VI Peel</div>
+                    <div class="card-desc">VI Peel Purify with Precision Plus combines TCA, salicylic acid, and vitamin C. Unclogs pores, reduces inflammation, brightens complexion, and promotes collagen production for improved skin texture. Say goodbye to breakouts and reveal fresh, vibrant skin!</div>
+                    <div class="card-meta">$350 · 60 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="vi-peel" data-price="350" data-duration="60">
+                <img src="assets/images/images/3.webp" alt="Rosacea Peel" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Rosacea Peel</div>
+                    <div class="card-desc">VI Peel Original with TCA, salicylic acid, and vitamin C targets inflammation and clears impurities. Soothes visible rosacea symptoms, stimulates collagen production, and improves skin health. Reveal a smoother, more balanced complexion with reduced redness.</div>
+                    <div class="card-meta">$350 · 60 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="vi-peel" data-price="350" data-duration="60">
+                <img src="assets/images/images/4.webp" alt="Sensitive Skin Peel" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Sensitive Skin Peel</div>
+                    <div class="card-desc">VI Peel Original tailored for sensitive skin. Gentle blend of TCA, salicylic acid, and vitamin C exfoliates and nourishes while minimizing redness and discomfort. Improves texture, tone, and hydration for a smoother, healthier complexion.</div>
+                    <div class="card-meta">$350 · 60 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="vi-peel" data-price="350" data-duration="60">
+                <img src="assets/images/images/1.webp" alt="VI Hyperpigmentation Peel" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">VI Hyperpigmentation Peel</div>
+                    <div class="card-desc">VI Peel Precision Plus with TCA, salicylic acid, and vitamin C. Treats hyperpigmentation, sun damage, and melasma while reducing fine lines. Enhances collagen production for long-lasting improvements. Achieve radiant, youthful, glowing skin!</div>
+                    <div class="card-meta">$350 · 60 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
 
-            <div class="service-card">
-                <img src="assets/images/images/1.webp" alt="Pantyline laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <!-- Chemical Peels -->
+            <div class="service-card" data-service-tab="chemical-peels" data-price="295" data-duration="45">
+                <img src="assets/images/images/1.webp" alt="BioRePeel" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
-                    <div class="card-title">Pantyline</div>
-                    <div class="card-desc">Pain free laser hair removal done on the pantyliner using the Gentlemax Pro Plus by Candela and air technology!</div>
+                    <div class="card-title">BioRePeel</div>
+                    <div class="card-desc">Experience the revolutionary BioRePeel—a patented bi-phasic treatment combining TCA with bio-stimulating ingredients. This no-downtime peel exfoliates, stimulates collagen, and delivers immediate radiance while treating acne, fine lines, and uneven texture without peeling or redness.</div>
+                    <div class="card-meta">$295 · 45 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
-
-             <div class="service-card" data-service-tab="laser-hair">
-                <img src="assets/images/images/2.webp" alt="Neck laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <div class="service-card" data-service-tab="chemical-peels" data-price="225" data-duration="45">
+                <img src="assets/images/images/2.webp" alt="Face & Neck Chemical Peel" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
-                    <div class="card-title">Neck</div>
-                    <div class="card-desc">Pain free laser hair removal done on the neck using the Gentlemax Pro Plus by Candela and air technology!</div>
+                    <div class="card-title">Face & Neck</div>
+                    <div class="card-desc">Rejuvenate your face and neck with our professional-grade chemical peel. This treatment targets fine lines, sun damage, hyperpigmentation, and uneven texture. Reveal smoother, brighter, more youthful-looking skin as dead cells are gently exfoliated away.</div>
+                    <div class="card-meta">$225 · 45 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
-            <div class="service-card">
-                <img src="assets/images/images/3.webp" alt="Full face laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <div class="service-card" data-service-tab="chemical-peels" data-price="275" data-duration="45">
+                <img src="assets/images/images/3.webp" alt="Back Chemical Peel" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
-                    <div class="card-title">Full Face Laser Hair Removal</div>
-                    <div class="card-desc">Pain free laser hair removal done on the full face using the Gentlemax Pro Plus by Candela and air technology!</div>
+                    <div class="card-title">Back</div>
+                    <div class="card-desc">Transform your back with our specialized chemical peel treatment. Target stubborn back acne, scarring, hyperpigmentation, and rough texture. This deep exfoliation clears congested pores, smooths skin, and promotes cell renewal for a clearer, more even complexion.</div>
+                    <div class="card-meta">$275 · 45 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
-
-             <div class="service-card">
-                <img src="assets/images/images/4.webp" alt="Hands and fingers laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Hands and fingers</div>
-                    <div class="card-desc">Pain free laser hair removal done on the hands and fingers using the Gentlemax Pro Plus by Candela and air technology!
-                    </div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/1.webp" alt="Full chest laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Full Chest</div>
-                    <div class="card-desc">Pain free laser hair removal done on the chest using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-
-             <div class="service-card">
-                <img src="assets/images/images/2.webp" alt="Happy trail laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Happy Trail</div>
-                    <div class="card-desc">Pain free laser hair removal done on the Happy Trail using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/3.webp" alt="Areolas laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Areolas</div>
-                    <div class="card-desc">Pain free laser hair removal done on the areolas using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-
-             <div class="service-card">
-                <img src="assets/images/images/4.webp" alt="Forehead laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Forehead</div>
-                    <div class="card-desc">Pain free laser hair removal done using the Gentlemax Pro by Candela and Cryo 7 machine.</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/1.webp" alt="Jawline laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Jawline</div>
-                    <div class="card-desc">Pain free laser hair removal done on the jawline using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-
-             <div class="service-card">
-                <img src="assets/images/images/2.webp" alt="Underarms laser hair removal" class="card-image" loading="lazy" decoding="async">
+            <div class="service-card" data-service-tab="chemical-peels" data-price="175" data-duration="30">
+                <img src="assets/images/images/4.webp" alt="Underarms Chemical Peel" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Underarms</div>
-                    <div class="card-desc">Pain free laser hair removal done on the underarms using the Gentlemax Pro Plus by Candela and air technology!</div>
+                    <div class="card-desc">Brighten and smooth your underarms with our gentle yet effective chemical peel. This treatment targets dark discoloration, rough texture, and ingrown hairs. Reveal lighter, softer underarm skin and boost your confidence in sleeveless styles.</div>
+                    <div class="card-meta">$175 · 30 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
-            <div class="service-card">
-                <img src="assets/images/images/3.webp" alt="Upper lip laser hair removal limited time offer" class="card-image" loading="lazy" decoding="async">
+            <div class="service-card" data-service-tab="chemical-peels" data-price="195" data-duration="30">
+                <img src="assets/images/images/1.webp" alt="Intimate Area Chemical Peel" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
-                    <div class="card-title">Limited Time $99 Upper Lip</div>
-                    <div class="card-desc">Pain free laser hair removal done on the upper lip using the Gentlemax Pro Plus by Candela and air technology!</div>
+                    <div class="card-title">Intimate Area</div>
+                    <div class="card-desc">Gently rejuvenate sensitive intimate areas with our specialized peel designed for delicate skin. This treatment addresses hyperpigmentation, uneven tone, and texture concerns. Experience renewed confidence with brighter, smoother, healthier-looking skin.</div>
+                    <div class="card-meta">$195 · 30 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
 
-             <div class="service-card">
-                <img src="assets/images/images/4.webp" alt="Feet and toes laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Feet & Toes</div>
-                    <div class="card-desc">Pain free laser hair removal done on the feet and toes using the Gentlemax Pro Plus by Candela and air technology!</div>
+            <!-- Hydrafacial -->
+            <div class="service-card" data-service-tab="hydrafacial" data-price="250" data-duration="60">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/signaturehydrafacial/1.jpg" alt="Signature Hydrafacial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/signaturehydrafacial/2.jpeg" alt="Signature Hydrafacial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
                 </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/1.webp" alt="Full Brazilian laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Full Brazilian</div>
-                    <div class="card-desc">Pain free laser hair removal done on full Brazilian using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-
-             <div class="service-card">
-                <img src="assets/images/images/2.webp" alt="Ears laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Ears</div>
-                    <div class="card-desc">Pain free laser hair removal done on the ears using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/3.webp" alt="Full body laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Full Body Laser Hair Removal</div>
-                    <div class="card-desc">Complete head to toe of pain free laser hair removal done using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-
-             <div class="service-card">
-                <img src="assets/images/images/4.webp" alt="Ponytail laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Ponytail Laser</div>
-                    <div class="card-desc">Pain free laser hair removal done on the ponytail using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/1.webp" alt="Full abs laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Full Abs</div>
-                    <div class="card-desc">Pain free laser hair removal done on the abs using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/2.webp" alt="Full legs laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Full Legs</div>
-                    <div class="card-desc">Pain free laser hair removal done on the legs using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/3.webp" alt="Cheeks laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Cheeks</div>
-                    <div class="card-desc">Pain free laser hair removal done on the cheeks using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/4.webp" alt="Chin laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Chin</div>
-                    <div class="card-desc">Pain free laser hair removal done on the chin using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card">
-                <img src="assets/images/images/1.webp" alt="Buttocks laser hair removal" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Buttocks</div>
-                    <div class="card-desc">Pain free laser hair removal done on the buttocks using the Gentlemax Pro Plus by Candela and air technology!</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card" data-service-tab="hydrafacial">
-                <img src="assets/images/images/2.webp" alt="Underarm Hydrafacial" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Underarm Hydrafacial</div>
-                    <div class="card-desc">Experience a new level of skin care with our specialized Underarm Hydrafacial! This innovative treatment is designed to cleanse, hydrate, and rejuvenate your underarm area, promoting...</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card" data-service-tab="hydrafacial">
-                <img src="assets/images/images/3.webp" alt="Keravive Hydrafacial" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Kerevive Hydrafacial</div>
-                    <div class="card-desc">Restore your hair’s natural beauty and promote a healthy scalp with the innovative Keravive Hair Hydrafacial! This advanced treatment is designed to cleanse, nourish, and rejuvenate your scalp, setting the foundation for healthier, fuller hair.</div>
-                </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card" data-service-tab="hydrafacial">
-                <img src="assets/images/images/4.webp" alt="Signature Hydrafacial" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Signature Hydrafacial</div>
-                    <div class="card-desc">A medical grade facial which does that which manual hands cannot do alone with its proprietary vortex tip. Deep clean with steam and massage, dermaplane, enzyme peel, four step Hydrafacial: cleanse, extract, exfoliate, & deeply infuses hyaluronic acid, antioxidants & peptides and finish with red light therapy!</div>
+                    <div class="card-desc">A medical grade facial with proprietary vortex tip technology. Deep clean with steam and massage, dermaplane, enzyme peel, four-step Hydrafacial: cleanse, extract, exfoliate & infuse hyaluronic acid, antioxidants & peptides. Finish with red light therapy for radiant, glowing skin!</div>
+                    <div class="card-meta">$250 · 60 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
-            <div class="service-card" data-service-tab="hydrafacial">
-                <img src="assets/images/images/1.webp" alt="Back Hydrafacial" class="card-image" loading="lazy" decoding="async">
-                <div class="card-content">
-                    <div class="card-title">Back Hydrafacial</div>
-                    <div class="card-desc">Experience a new level of skin care with our specialized Back Hydrafacial! This innovative treatment is designed to cleanse, hydrate, and rejuvenate your back area, promoting...</div>
+            <div class="service-card" data-service-tab="hydrafacial" data-price="399" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/diorhydrafacial/1.jpg" alt="Dior Hydrafacial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/diorhydrafacial/2.webp" alt="Dior Hydrafacial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
                 </div>
-                <div class="card-arrow">→</div>
-            </div>
-            <div class="service-card" data-service-tab="hydrafacial">
-                <img src="assets/images/images/2.webp" alt="Dior Hydrafacial" class="card-image" loading="lazy" decoding="async">
                 <div class="card-content">
                     <div class="card-title">Dior Hydrafacial</div>
-                    <div class="card-desc">Combine the French beauty products of the Dior Prestige line in combination with the world renowned Hydrafacial MD.</div>
+                    <div class="card-desc">Luxury French beauty meets Hydrafacial MD. Includes Dior Prestige La Mousse cleanser, La Baume Demaquillant, dermaplaning, four-step Hydrafacial, deep lymphatic drainage massage, red light therapy, and full Dior Prestige line: La Micro-Lotion, Le Micro-Sérum de Rose Yeux, and La Crème.</div>
+                    <div class="card-meta">$399 · 90 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
-            <div class="service-card" data-service-tab="hydrafacial">
-                <img src="assets/images/images/3.webp" alt="Eye perks Hydrafacial MD" class="card-image" loading="lazy" decoding="async">
+            <div class="service-card" data-service-tab="hydrafacial" data-price="450" data-duration="120">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/keravive/1.webp" alt="Keravive Hydrafacial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/keravive/2.jpg" alt="Keravive Hydrafacial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
                 <div class="card-content">
-                    <div class="card-title">Eye perks by Hydrafacial MD</div>
-                    <div class="card-desc">Eye revitalization treatment with Hydrafacial MD to boost circulation and infuse serum into the undereyes!</div>
+                    <div class="card-title">Keravive Hydrafacial (Hair)</div>
+                    <div class="card-desc">Restore your hair's natural beauty with this innovative scalp treatment. Deep cleansing removes impurities and buildup, specialized exfoliation stimulates circulation, growth factors and hydration serums promote optimal hair growth. Finished with red light therapy for thicker, healthier hair.</div>
+                    <div class="card-meta">$450 · 120 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="hydrafacial" data-price="199" data-duration="45">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/underarm/1.png" alt="Underarm Hydrafacial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/underarm/2.webp" alt="Underarm Hydrafacial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Underarm Hydrafacial</div>
+                    <div class="card-desc">Specialized underarm skincare! Deep cleansing removes impurities and sweat residue, gentle exfoliation sloughs away dead skin cells, nourishing serums hydrate and soothe, followed by red light therapy. Improve skin texture and tone for smooth, confident underarms.</div>
+                    <div class="card-meta">$199 · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="hydrafacial" data-price="375" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/back/1.avif" alt="Back Hydrafacial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/back/2.jpg" alt="Back Hydrafacial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Back Hydrafacial</div>
+                    <div class="card-desc">Give your back the rejuvenating care it deserves! Deep cleansing removes impurities, sweat and excess oil. Gentle exfoliation reveals fresh skin, nourishing serums deeply hydrate, and red light therapy enhances healing. Prevent breakouts and uneven texture for a smoother, healthier back.</div>
+                    <div class="card-meta">$375 · 90 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+
+            <!-- Radiofrequency Microneedling -->
+            <div class="service-card" data-service-tab="rf-microneedling" data-price="495" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/fullface/1.jpg" alt="Full Face RF Microneedling" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/fullface/2.jpg" alt="Full Face RF Microneedling Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Full Face</div>
+                    <div class="card-desc">RF Microneedling with the world-famous Cutera Secret Pro! Gold-plated needles at 1.5-3.5MM depth stimulate collagen and cell regeneration. Includes deep cleaning, extractions, numbing, stem cell serum, and red light therapy for thicker, smoother, tighter skin.</div>
+                    <div class="card-meta">$495 · 90 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="rf-microneedling" data-price="495" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/neck/1.jpg" alt="Neck RF Microneedling" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/neck/2.jpg" alt="Neck RF Microneedling Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Neck</div>
+                    <div class="card-desc">Tighten the neck and melt fat for good! Gold-plated needles at 1.5-3.5MM depth cause cell regeneration for thicker, smoother skin. Includes deep cleaning, extractions, numbing, stem cell serum, and red light therapy. Enjoy a tight, smooth neck!</div>
+                    <div class="card-meta">$495 · 90 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="rf-microneedling" data-price="595" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/arms/1.jpg" alt="Arms RF Microneedling" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/arms/2.jpeg" alt="Arms RF Microneedling Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Arms</div>
+                    <div class="card-desc">Sculpt and firm your arms with RF Microneedling. Achieve sleek, ballerina-like arms! Gold-plated needles at 1.5-3.5MM stimulate collagen production. Includes deep cleansing, numbing, stem cell serum, and red light therapy for beautifully toned arms.</div>
+                    <div class="card-meta">$595 · 90 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="rf-microneedling" data-price="1100" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/abdomen/1.jpg" alt="Abdomen RF Microneedling" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/abdomen/2.jpg" alt="Abdomen RF Microneedling Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Abdomen</div>
+                    <div class="card-desc">Regenerate new tissue and achieve the tummy you dream of naturally! Gold-plated needles at 1.5-3.5MM depth trigger collagen growth for thicker, smoother, tighter skin. Includes deep cleaning, extractions, numbing, stem cell serum, and red light therapy.</div>
+                    <div class="card-meta">$1,100 · 90 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="rf-microneedling" data-price="695" data-duration="120">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/brafatsculp/1.jpg" alt="Bra Fat Sculp RF Microneedling" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/brafatsculp/2.png" alt="Bra Fat Sculp RF Microneedling Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Bra Fat Sculp</div>
+                    <div class="card-desc">Melt stubborn bra fat for good! Gold-plated needles penetrate the dermal layer, stimulating collagen growth for tighter, smoother skin. Includes deep cleaning, extractions, numbing, stem cell serum, and red light therapy for a toned body.</div>
+                    <div class="card-meta">$695 · 120 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="rf-microneedling" data-price="1500" data-duration="120">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/legs/1.webp" alt="Legs RF Microneedling" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/legs/2.webp" alt="Legs RF Microneedling Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Legs</div>
+                    <div class="card-desc">Permanently eliminate cellulite dents! Gold-plated needles at 1.5-3.5MM depth cause cell regeneration for thicker, smoother skin. Includes deep cleaning, extractions, numbing, stem cell serum, and red light therapy.</div>
+                    <div class="card-meta">$1,500 · 120 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+
+            <!-- Add Ons -->
+            <div class="service-card" data-service-tab="add-ons" data-price="75" data-duration="15">
+                <img src="assets/images/images/1.webp" alt="Hydrafacial Skin Booster" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Hydrafacial Skin Booster</div>
+                    <div class="card-desc">Enhance any treatment with our Hydrafacial Skin Booster add-on. This powerful infusion of targeted serums—antioxidants, peptides, and hyaluronic acid—amplifies hydration and nourishment, maximizing your results for an extra radiant, dewy glow.</div>
+                    <div class="card-meta">$75 · 15 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="add-ons" data-price="70" data-duration="30">
+                <img src="assets/images/images/2.webp" alt="Dermaplaning" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Dermaplaning</div>
+                    <div class="card-desc">Gentle exfoliation using a sterile surgical scalpel to remove dead skin cells and peach fuzz. Reveals live tissue for better product absorption and flawless makeup application. Includes hydrating serum and red light therapy. Results last 30 days!</div>
+                    <div class="card-meta">$70 · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="add-ons" data-price="50" data-duration="30">
+                <img src="assets/images/images/3.webp" alt="Red Light Therapy" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Red Light Therapy</div>
+                    <div class="card-desc">Elipsa LightStim therapy uses low-level red light wavelengths to stimulate cellular activity and collagen production. Improves skin tone, diminishes fine lines, increases circulation, and reduces redness. Perfect for sensitive skin, rosacea, and acne.</div>
+                    <div class="card-meta">$50 · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="add-ons" data-price="50" data-duration="30">
+                <img src="assets/images/images/4.webp" alt="Blue Light Therapy" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Blue Light Therapy</div>
+                    <div class="card-desc">Elipsa LightStim blue light therapy kills acne bacteria and prevents future breakouts. Reduces inflammation, redness, and excess oil production while minimizing pores. Achieve clearer, healthier skin without harsh traditional treatments.</div>
+                    <div class="card-meta">$50 · 30 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+
+            <!-- Skin Boosters & Wellness - Advanced Treatments -->
+            <div class="service-card" data-service-tab="skin-boosters" data-price="450" data-duration="45">
+                <img src="assets/images/images/3.webp" alt="Salmon DNA" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Salmon DNA</div>
+                    <div class="card-desc">Experience the K-beauty sensation! PDRN (Polydeoxyribonucleotide) extracted from salmon DNA promotes cellular regeneration, boosts collagen production, and deeply hydrates skin. This powerful treatment improves elasticity, reduces fine lines, and restores a youthful, dewy glow.</div>
+                    <div class="card-meta">$450 · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="skin-boosters" data-price="595" data-duration="60">
+                <img src="assets/images/images/4.webp" alt="Exosomes" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Exosomes</div>
+                    <div class="card-desc">Cutting-edge regenerative therapy using exosomes—powerful cell-signaling molecules that accelerate healing and rejuvenation. This advanced treatment stimulates stem cell activity, promotes collagen synthesis, and delivers transformative anti-aging results at the cellular level.</div>
+                    <div class="card-meta">$595 · 60 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="skin-boosters" data-price="495" data-duration="90">
+                <img src="assets/images/images/1.webp" alt="NAD+ Therapy" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">NAD+ Therapy</div>
+                    <div class="card-desc">Replenish your body at the cellular level with NAD+ (Nicotinamide Adenine Dinucleotide) IV therapy. This powerful coenzyme boosts energy, enhances mental clarity, supports DNA repair, and promotes anti-aging benefits. Feel revitalized from the inside out.</div>
+                    <div class="card-meta">$495 · 90 Minutes</div>
+        </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="skin-boosters" data-price="299" data-duration="45">
+                <img src="assets/images/images/2.webp" alt="Glow IV" class="card-image" loading="lazy" decoding="async">
+                <div class="card-content">
+                    <div class="card-title">Glow IV</div>
+                    <div class="card-desc">Illuminate your skin from within with our signature Glow IV drip. This radiance-boosting infusion delivers a powerful blend of glutathione, vitamin C, biotin, and hydrating nutrients directly into your bloodstream for brighter, clearer, luminous skin.</div>
+                    <div class="card-meta">$299 · 45 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+    </div>
+
+            <!-- Laser Facials -->
+            <div class="service-card" data-service-tab="laser" data-price="495" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/laserfacialacne/1.webp" alt="Laser Acne Facial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/laserfacialacne/2.jpg" alt="Laser Acne Facial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Laser Acne Facial</div>
+                    <div class="card-desc">Say goodbye to stubborn acne forever with our 1064 ND Yag Laser Facial. Includes deep clean, numbing cream, laser treatment to tighten skin, remove acne-causing bacteria, and resurface the skin, finishing with red light therapy and stem cell serums.</div>
+                    <div class="card-meta">$495 · 90 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="laser" data-price="495" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/laserrosacea/1.webp" alt="Laser Rosacea Facial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/laserrosacea/2.png" alt="Laser Rosacea Facial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Laser Rosacea Facial</div>
+                    <div class="card-desc">Wave goodbye to stubborn redness and visible veins with our advanced 1064 Nd YAG laser. This treatment calms inflammation, reduces redness, and targets dilated blood vessels to even out your complexion. Finished with red light therapy and stem cell serums.</div>
+                    <div class="card-meta">$495 · 90 Minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="service-card" data-service-tab="laser" data-price="795" data-duration="90">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/laserresurfacing/1.webp" alt="Laser Resurfacing Facial" class="card-image card-image--default" loading="lazy" decoding="async">
+                    <img src="assets/images/laserresurfacing/2.webp" alt="Laser Resurfacing Facial Hover" class="card-image card-image--hover" loading="lazy" decoding="async">
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Laser Resurfacing Facial</div>
+                    <div class="card-desc">Transform your skin with our advanced 1064 Nd YAG laser. Reduces fine lines, wrinkles, and uneven texture. Includes deep cleanse, numbing cream, laser to resurface skin and stimulate collagen production, finished with red light therapy and stem cell serums.</div>
+                    <div class="card-meta">$795 · 90 Minutes</div>
                 </div>
                 <div class="card-arrow">→</div>
             </div>
         </div>
+        </section>
 
         <section id="consultation" class="cta-section" aria-label="Consultation">
             <div class="hero-card hero-card--compact">
@@ -1666,30 +2646,32 @@
         </div>
     </div>
 
-    <aside id="cartPanel" class="cart-panel cart-collapsed" aria-label="Appointment summary">
+    <div id="cartBackdrop" class="cart-backdrop"></div>
+    <aside id="cartPanel" class="cart-panel" aria-label="Cart">
         <div class="cart-head">
-            <div class="cart-title">Appointment summary</div>
-            <div class="cart-pill" aria-live="polite">
-                <span id="cartCount">0</span>
-                <span>selected</span>
-            </div>
+            <div class="cart-title">Cart <span id="cartCount">0</span></div>
+            <button id="cartClose" class="cart-close" type="button" aria-label="Close cart">×</button>
+        </div>
+        <div class="cart-promo">
+            Add Your Favorite Treatments to Cart to Unlock Savings <span>›</span>
         </div>
         <div class="cart-body">
-            <div id="cartEmpty" class="cart-empty">Click a service to add it to your appointment.</div>
+            <div id="cartEmpty" class="cart-empty">Your cart is empty.<br>Add treatments to get started!</div>
             <ul id="cartItems" class="cart-items"></ul>
         </div>
         <div class="cart-foot">
             <div class="cart-total">
-                <span>Total</span>
+                <span>Subtotal</span>
                 <strong id="cartTotal">$0.00</strong>
             </div>
-            <a id="cartNext" class="btn btn--primary cart-next" href="#booking">Next</a>
+            <div class="cart-terms">
+                <input type="checkbox" id="cartTerms" checked>
+                <label for="cartTerms">I agree to the store's polices, terms & conditions</label>
+            </div>
+            <button id="cartCheckout" class="cart-checkout" type="button">Checkout</button>
+            <div class="cart-continue">Or <a href="#services">continue to add more treatments</a></div>
         </div>
     </aside>
-
-    <button id="cartFab" class="btn btn--secondary cart-fab" type="button" aria-controls="cartPanel" aria-expanded="false">
-        Add to Cart · <span id="cartFabCount">0</span>
-    </button>
 
     <script>
         // Tab functionality
@@ -1697,20 +2679,68 @@
             const yearEl = document.getElementById('year');
             if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-            // Floating cart / appointment summary
+            // Cart drawer (slides from right)
             const cartPanel = document.getElementById('cartPanel');
-            const cartFab = document.getElementById('cartFab');
+            const cartBackdrop = document.getElementById('cartBackdrop');
+            const cartCloseBtn = document.getElementById('cartClose');
+            const cartBtn = document.getElementById('cartBtn');
+            const cartCheckoutBtn = document.getElementById('cartCheckout');
+            // Header menu (mobile drawer)
+            const navDrawer = document.getElementById('navDrawer');
+            const navToggle = document.getElementById('navToggle');
+            const navClose = document.getElementById('navClose');
+
+            function openNav() {
+                if (!navDrawer || !navToggle) return;
+                navDrawer.classList.add('is-open');
+                navDrawer.setAttribute('aria-hidden', 'false');
+                navToggle.setAttribute('aria-expanded', 'true');
+                document.body.classList.add('modal-open');
+                if (navClose) navClose.focus();
+            }
+
+            function closeNav() {
+                if (!navDrawer || !navToggle) return;
+                navDrawer.classList.remove('is-open');
+                navDrawer.setAttribute('aria-hidden', 'true');
+                navToggle.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('modal-open');
+            }
+
+            if (navToggle) navToggle.addEventListener('click', () => {
+                if (!navDrawer) return;
+                const isOpen = navDrawer.classList.contains('is-open');
+                if (isOpen) closeNav();
+                else openNav();
+            });
+
+            if (navClose) navClose.addEventListener('click', closeNav);
+
+            if (navDrawer) {
+                navDrawer.addEventListener('click', (e) => {
+                    const t = e.target;
+                    if (t && t.getAttribute && t.getAttribute('data-nav-close') === 'true') closeNav();
+                });
+
+                navDrawer.querySelectorAll('a').forEach(a => {
+                    a.addEventListener('click', closeNav);
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (!navDrawer.classList.contains('is-open')) return;
+                    if (e.key === 'Escape') closeNav();
+                });
+            }
             const cartItemsEl = document.getElementById('cartItems');
             const cartEmptyEl = document.getElementById('cartEmpty');
             const cartCountEl = document.getElementById('cartCount');
-            const cartFabCountEl = document.getElementById('cartFabCount');
             const cartTotalEl = document.getElementById('cartTotal');
             const cartNext = document.getElementById('cartNext');
+            const cartNavBadgeEl = document.getElementById('cartNavBadge');
 
             // Booking (modal) UI elements
             const bookingModal = document.getElementById('bookingModal');
             const bookingCloseBtn = document.getElementById('bookingClose');
-            const bookingCartSlot = document.getElementById('bookingCartSlot');
             const bookingMonthEl = document.getElementById('bookingMonth');
             const calendarDaysEl = document.getElementById('calendarDays');
             const prevMonthBtn = document.getElementById('prevMonth');
@@ -1724,8 +2754,6 @@
             let bookingMonth = null; // Date at first of month
             let selectedDate = null; // Date
             let selectedTime = null; // string
-            let cartOriginalParent = null;
-            let cartOriginalNextSibling = null;
 
             function toMoney(n) {
                 return `$${Number(n).toFixed(2)}`;
@@ -1796,19 +2824,26 @@
             }
 
             function openCart() {
-                if (!cartPanel || !cartFab) return;
-                cartPanel.classList.remove('cart-collapsed');
-                cartFab.setAttribute('aria-expanded', 'true');
+                if (!cartPanel) return;
+                cartPanel.classList.add('is-open');
+                if (cartBackdrop) cartBackdrop.classList.add('is-open');
+                document.body.classList.add('modal-open');
+                if (cartBtn) cartBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeCart() {
+                if (!cartPanel) return;
+                cartPanel.classList.remove('is-open');
+                if (cartBackdrop) cartBackdrop.classList.remove('is-open');
+                document.body.classList.remove('modal-open');
+                if (cartBtn) cartBtn.setAttribute('aria-expanded', 'false');
             }
 
             function toggleCart() {
-                if (!cartPanel || !cartFab) return;
-                const collapsed = cartPanel.classList.contains('cart-collapsed');
-                if (collapsed) openCart();
-                else {
-                    cartPanel.classList.add('cart-collapsed');
-                    cartFab.setAttribute('aria-expanded', 'false');
-                }
+                if (!cartPanel) return;
+                const isOpen = cartPanel.classList.contains('is-open');
+                if (isOpen) closeCart();
+                else openCart();
             }
 
             function removeFromCart(id) {
@@ -1836,13 +2871,17 @@
             }
 
             function renderCart() {
-                if (!cartItemsEl || !cartEmptyEl || !cartCountEl || !cartFabCountEl || !cartTotalEl) return;
+                if (!cartItemsEl || !cartEmptyEl || !cartCountEl || !cartTotalEl) return;
 
                 cartItemsEl.innerHTML = '';
 
                 const count = cart.length;
                 cartCountEl.textContent = String(count);
-                cartFabCountEl.textContent = String(count);
+
+                if (cartNavBadgeEl) {
+                    cartNavBadgeEl.textContent = String(count);
+                    cartNavBadgeEl.style.display = count > 0 ? 'inline-block' : 'none';
+                }
 
                 const total = cart.reduce((sum, i) => sum + Number(i.price || 0), 0);
                 cartTotalEl.textContent = toMoney(total);
@@ -1919,9 +2958,13 @@
                 });
             }
 
-            if (cartFab) {
-                cartFab.addEventListener('click', toggleCart);
-            }
+            if (cartBtn) cartBtn.addEventListener('click', toggleCart);
+            if (cartCloseBtn) cartCloseBtn.addEventListener('click', closeCart);
+            if (cartBackdrop) cartBackdrop.addEventListener('click', closeCart);
+            if (cartCheckoutBtn) cartCheckoutBtn.addEventListener('click', function() {
+                closeCart();
+                openBookingModal();
+            });
 
             function monthLabel(d) {
                 return d.toLocaleString(undefined, { month: 'short', year: 'numeric' });
@@ -2020,17 +3063,8 @@
             function openBookingModal() {
                 if (!bookingModal) return;
 
-                // Move appointment summary into modal (right column) to match screenshot layout
-                if (cartPanel && bookingCartSlot && !cartPanel.classList.contains('in-modal')) {
-                    cartOriginalParent = cartPanel.parentElement;
-                    cartOriginalNextSibling = cartPanel.nextSibling;
-                    bookingCartSlot.appendChild(cartPanel);
-                    cartPanel.classList.add('in-modal');
-                    cartPanel.classList.remove('cart-collapsed');
-                }
-
-                // Hide the floating toggle while modal is open (mobile)
-                if (cartFab) cartFab.style.display = 'none';
+                // Close the cart drawer if open
+                closeCart();
 
                 bookingModal.classList.add('is-open');
                 document.body.classList.add('modal-open');
@@ -2050,21 +3084,8 @@
 
             function closeBookingModal() {
                 if (!bookingModal) return;
-
                 bookingModal.classList.remove('is-open');
                 document.body.classList.remove('modal-open');
-
-                // Restore appointment summary back to floating position
-                if (cartPanel && cartPanel.classList.contains('in-modal')) {
-                    cartPanel.classList.remove('in-modal');
-                    if (cartOriginalParent) {
-                        if (cartOriginalNextSibling) cartOriginalParent.insertBefore(cartPanel, cartOriginalNextSibling);
-                        else cartOriginalParent.appendChild(cartPanel);
-                    }
-                }
-
-                // Restore floating toggle
-                if (cartFab) cartFab.style.display = '';
             }
 
             if (prevMonthBtn) {
@@ -2125,14 +3146,23 @@
             
             // Function to filter service cards
             function filterServices(tabName) {
+                let anyMatch = false;
                 serviceCards.forEach(card => {
                     const cardTab = card.getAttribute('data-service-tab');
                     if (cardTab === tabName) {
+                        anyMatch = true;
                         card.style.display = 'flex';
                     } else {
                         card.style.display = 'none';
                     }
                 });
+
+                // If nothing matches this tab, don't blank the UI — show all cards instead.
+                if (!anyMatch) {
+                    serviceCards.forEach(card => {
+                        card.style.display = 'flex';
+                    });
+                }
             }
             
             // Function to position triangle indicator
@@ -2176,32 +3206,16 @@
                 filterServices('laser-hair');
             }
 
-            // Handle More tab click and hover
+            // Handle More tab (click-to-open)
             if (moreTab) {
                 const dropdownMenu = moreTab.querySelector('.dropdown-menu');
-                let hideTimeout = null;
                 
                 // Function to show dropdown
                 function showDropdown() {
-                    if (hideTimeout) {
-                        clearTimeout(hideTimeout);
-                        hideTimeout = null;
-                    }
-                    
                     if (dropdownMenu) {
                         moreTab.classList.add('active');
                         tabsWrapper.classList.remove('has-active');
-                        
-                        // Position dropdown to escape overflow clipping
-                        const rect = moreTab.getBoundingClientRect();
-                        
-                        dropdownMenu.style.position = 'fixed';
-                        dropdownMenu.style.top = (rect.bottom + 8) + 'px';
-                        dropdownMenu.style.right = (window.innerWidth - rect.right) + 'px';
-                        dropdownMenu.style.display = 'block';
-                        dropdownMenu.style.visibility = 'visible';
-                        dropdownMenu.style.opacity = '1';
-                        dropdownMenu.style.zIndex = '1000';
+                        // CSS handles positioning via .more-tab.active .dropdown-menu
                     }
                 }
                 
@@ -2209,43 +3223,9 @@
                 function hideDropdown() {
                     if (dropdownMenu) {
                         moreTab.classList.remove('active');
-                        dropdownMenu.style.position = '';
-                        dropdownMenu.style.top = '';
-                        dropdownMenu.style.right = '';
-                        dropdownMenu.style.display = 'none';
+                        // Clear all inline styles so CSS takes over
+                        dropdownMenu.removeAttribute('style');
                     }
-                }
-                
-                // Show dropdown on hover over tab
-                moreTab.addEventListener('mouseenter', function(e) {
-                    e.stopPropagation();
-                    showDropdown();
-                });
-                
-                // Hide dropdown when mouse leaves tab (with delay to allow moving to dropdown)
-                moreTab.addEventListener('mouseleave', function() {
-                    hideTimeout = setTimeout(() => {
-                        hideDropdown();
-                    }, 200);
-                });
-                
-                // Keep dropdown open when hovering over it
-                if (dropdownMenu) {
-                    dropdownMenu.addEventListener('mouseenter', function(e) {
-                        e.stopPropagation();
-                        if (hideTimeout) {
-                            clearTimeout(hideTimeout);
-                            hideTimeout = null;
-                        }
-                        moreTab.classList.add('active');
-                        dropdownMenu.style.display = 'block';
-                    });
-                    
-                    dropdownMenu.addEventListener('mouseleave', function() {
-                        hideTimeout = setTimeout(() => {
-                            hideDropdown();
-                        }, 200);
-                    });
                 }
                 
                 // Track if click was handled to prevent outside click handler from interfering
@@ -2263,38 +3243,9 @@
                     const isActive = this.classList.contains('active');
                     
                     if (isActive) {
-                        // Already active, hide it
-                        this.classList.remove('active');
-                        if (hideTimeout) {
-                            clearTimeout(hideTimeout);
-                            hideTimeout = null;
-                        }
                         hideDropdown();
                     } else {
-                        // Not active, show it
-                        this.classList.add('active');
-                        tabsWrapper.classList.remove('has-active');
-                        serviceCards.forEach(card => {
-                            card.style.display = 'none';
-                        });
-                        
-                        // Clear any pending hide timeout
-                        if (hideTimeout) {
-                            clearTimeout(hideTimeout);
-                            hideTimeout = null;
-                        }
-                        
-                        // Show dropdown immediately
-                        if (dropdownMenu) {
-                            const rect = moreTab.getBoundingClientRect();
-                            dropdownMenu.style.position = 'fixed';
-                            dropdownMenu.style.top = (rect.bottom + 8) + 'px';
-                            dropdownMenu.style.right = (window.innerWidth - rect.right) + 'px';
-                            dropdownMenu.style.display = 'block';
-                            dropdownMenu.style.visibility = 'visible';
-                            dropdownMenu.style.opacity = '1';
-                            dropdownMenu.style.zIndex = '1000';
-                        }
+                        showDropdown();
                     }
                     
                     // Reset flag after a short delay
@@ -2314,10 +3265,6 @@
                         if (!clickedOnMoreTab && !clickedOnDropdown) {
                             if (moreTab.classList.contains('active')) {
                                 moreTab.classList.remove('active');
-                                if (hideTimeout) {
-                                    clearTimeout(hideTimeout);
-                                    hideTimeout = null;
-                                }
                                 hideDropdown();
                             }
                         }
@@ -2340,16 +3287,20 @@
                     // Filter services based on selected dropdown item
                     const tabName = this.getAttribute('data-tab');
                     filterServices(tabName);
+
+                    // Close dropdown (clear inline styles so CSS takes over)
+                    if (moreTab) {
+                        const dm = moreTab.querySelector('.dropdown-menu');
+                        if (dm) {
+                            dm.removeAttribute('style');
+                        }
+                    }
                 });
             });
 
-            // Initialize cart from storage and show on desktop by default
+            // Initialize cart from storage (cart remains hidden until user opens it)
             loadCart();
             renderCart();
-            if (window.matchMedia && window.matchMedia('(min-width: 901px)').matches) {
-                if (cartPanel) cartPanel.classList.remove('cart-collapsed');
-                if (cartFab) cartFab.setAttribute('aria-expanded', 'true');
-            }
 
             if (cartNext) {
                 cartNext.addEventListener('click', (e) => {
