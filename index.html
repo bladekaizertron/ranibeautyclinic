@@ -329,8 +329,18 @@
             transform: translateX(-50%);
             width: 100%;
             max-width: 1200px;
-            padding-top: 16px;
-            top: 70px;
+            padding-top: 0;
+            top: 54px;
+        }
+
+        .nav-dropdown__menu--mega::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: transparent;
         }
 
         .nav-dropdown:hover .nav-dropdown__menu--mega {
@@ -1915,6 +1925,58 @@
                 padding: 0 10px;
             }
         }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 56px;
+            height: 56px;
+            background: var(--primary-navy);
+            color: var(--pure-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            border: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 24px;
+                right: 24px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1934,18 +1996,19 @@
             <nav class="main-nav" aria-label="Primary navigation">
                 <a class="nav-link" href="https://ranibeautyclinic.com/">Home</a>
                 <div class="nav-dropdown">
-                    <a class="nav-link" href="#shop">Shop</a>
+                    <a class="nav-link" href="/index.html">Shop</a>
                     <div class="nav-dropdown__menu nav-dropdown__menu--2col">
                         <div class="nav-dropdown__inner">
-                            <a class="nav-dropdown__item" href="#face-fixes">Face Fixes</a>
-                            <a class="nav-dropdown__item" href="#body-fixes">Body Fixes</a>
-                            <a class="nav-dropdown__item" href="#skin-fixes">Skin Fixes</a>
-                            <a class="nav-dropdown__item" href="#laser-hair">Laser Hair Removal</a>
-                            <a class="nav-dropdown__item" href="#skin-boosters">Skin Boosters & Wellness</a>
-                            <a class="nav-dropdown__item" href="#salmon-dna">Salmon DNA</a>
-                            <a class="nav-dropdown__item" href="#exosomes">Exosomes</a>
-                            <a class="nav-dropdown__item" href="#nad-therapy">NAD+ Therapy</a>
-                            <a class="nav-dropdown__item" href="#glow-iv">Glow IV</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="face-fixes">Face Fixes</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="body-fixes">Body Fixes</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="skin-fixes">Skin Fixes</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="laser">Laser Hair Removal</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="skin-boosters">Skin Boosters & Wellness</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="chemical-peels">Chemical Peels</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="rf-microneedling">Radiofrequency Microneedling</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="hydrafacial">Hydrafacial</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="vi-peel">VI Peel</a>
+                            <a class="nav-dropdown__item" href="#services" data-filter-tab="add-ons">Add Ons</a>
                         </div>
                     </div>
                 </div>
@@ -1954,8 +2017,7 @@
                     <div class="nav-dropdown__menu nav-dropdown__menu--mega">
                         <div class="nav-dropdown__inner nav-dropdown__inner--mega">
                             <div class="nav-dropdown__column">
-                                <div class="nav-dropdown__heading">Learn</div>
-                                <a class="nav-dropdown__item" href="#injectables">Injectables</a>
+                                <div class="nav-dropdown__heading">Injectables</div>
                                 <a class="nav-dropdown__item" href="#sculptra">Sculptra</a>
                                 <a class="nav-dropdown__item" href="#radiesse">Radiesse</a>
                                 <a class="nav-dropdown__item" href="#toxins">Toxins</a>
@@ -2065,7 +2127,7 @@
             </div>
         </div>
 
-        <div class="tabs-wrapper">
+        <div id="services" class="tabs-wrapper">
             <div class="triangle-indicator"></div>
         <div class="tabs-container">
                 <div class="tab" data-tab="face-fixes">Face Fixes</div>
@@ -3472,6 +3534,60 @@
             loadCart();
             renderCart();
 
+            // Back to Top Button
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            if (backToTopBtn && tabsWrapper) {
+                // Show/hide button based on scroll position
+                function toggleBackToTop() {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    // Show button when scrolled down more than 300px
+                    if (scrollY > 300) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                }
+                
+                // Scroll to tabs wrapper when button is clicked
+                backToTopBtn.addEventListener('click', function() {
+                    tabsWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+                
+                // Listen for scroll events
+                window.addEventListener('scroll', toggleBackToTop);
+                // Check initial scroll position
+                toggleBackToTop();
+            }
+
+            // Handle nav dropdown links that filter services
+            document.querySelectorAll('[data-filter-tab]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabName = this.getAttribute('data-filter-tab');
+                    const targetTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+                    
+                    if (targetTab) {
+                        // Remove active class from all tabs
+                        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                        if (moreTab) moreTab.classList.remove('active');
+                        
+                        // Add active class to target tab
+                        targetTab.classList.add('active');
+                        
+                        // Position triangle and filter services
+                        positionTriangle(targetTab);
+                        filterServices(tabName);
+                        
+                        // Scroll to services section
+                        const servicesSection = document.getElementById('services');
+                        if (servicesSection) {
+                            servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+
             if (cartNext) {
                 cartNext.addEventListener('click', (e) => {
                     const disabled = cart.length === 0;
@@ -3488,6 +3604,9 @@
 
         });
     </script>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top" type="button">↑</button>
 
 </body>
 </html>
