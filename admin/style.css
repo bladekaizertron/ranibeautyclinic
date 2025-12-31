@@ -222,8 +222,8 @@ input[type="password"] {
   margin-bottom: 2rem;
 }
 
-.sidebar-logo {
-  width: 36px;
+  .sidebar-logo {
+   width: 210px;
   height: auto;
 }
 

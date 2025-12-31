@@ -23,7 +23,6 @@ if (!isset($_SESSION['user'])) {
             <aside class="sidebar">
                 <div class="sidebar-brand">
                     <img src="../assets/images/logo.png" alt="Rani Beauty Clinic Logo" class="sidebar-logo" />
-                    <h2>Rani Beauty</h2>
                 </div>
 
                 <nav class="sidebar-nav">
