@@ -20,15 +20,26 @@ if (!isset($_SESSION['user'])) {
 </head>
 <body>
     <header class="dash-header">
-        <h2>WELCOME, <?= htmlspecialchars($_SESSION['user']) ?>!</h2>
-        <nav class="dash-nav">
-            <a href="edit_media.php" class="nav-link">Edit Media</a>
-            <a href="edit_content.php" class="nav-link">Edit Content</a>
-            <a href="logout.php" class="btn-secondary">Logout</a>
-        </nav>
+        <div class="dash-brand">
+            <img src="../assets/images/logo.png" alt="Rani Beauty Clinic Logo" class="dash-logo" />
+            <h2>Rani Beauty Clinic CMS</h2>
+        </div>
+        <div class="dash-user">
+            <p>Welcome <?php echo isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']) : 'Admin'; ?></p>
+        </div>
     </header>
 
     <main class="dash-main">
+        <section class="dash-grid">
+            <a href="edit_media.php" class="dash-card">
+                <h3>Edit Media</h3>
+                <p>Replace product & gallery images</p>
+            </a>
+            <a href="edit_content.php" class="dash-card">
+                <h3>Edit Content</h3>
+                <p>Modify texts & layout of homepage</p>
+            </a>
+        </section>
     </main>
 </body>
 </html>

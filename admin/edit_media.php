@@ -33,8 +33,17 @@ $successMsg = '';
 $errorMsg = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['target_path'])) {
-    $targetPath = realpath($_POST['target_path']);
-    if (!$targetPath || strpos($targetPath, $baseDir) !== 0) {
+        $inputPath = $_POST['target_path'];
+    // If provided path is relative, prepend baseDir
+    if (strpos($inputPath, $baseDir) !== 0) {
+        $inputPath = $baseDir . DIRECTORY_SEPARATOR . ltrim($inputPath, '\\/');
+    }
+    $targetPath = realpath($inputPath);
+    if (!$targetPath) {
+        // If file does not yet exist or realpath fails due to slashes, build manually
+        $targetPath = $inputPath;
+    }
+    if (strpos($targetPath, $baseDir) !== 0) {
         $errorMsg = 'Invalid target path.';
     } elseif (!is_uploaded_file($_FILES['new_image']['tmp_name'])) {
         $errorMsg = 'Please select a file to upload.';
@@ -44,7 +53,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['target_path'])) {
             $errorMsg = 'Invalid file type.';
         } else {
             if (move_uploaded_file($_FILES['new_image']['tmp_name'], $targetPath)) {
+                // Bust cache by adding timestamp param to index.html for this src
                 $successMsg = 'Image replaced successfully!';
+                $relativeSrc = str_replace(realpath(__DIR__ . '/..') . DIRECTORY_SEPARATOR, '', $targetPath);
+                $relativeSrc = str_replace('\\', '/', $relativeSrc); // normalize slashes
+                $indexPath = realpath(__DIR__ . '/../index.html');
+                if ($indexPath && is_writable($indexPath)) {
+                    $html = file_get_contents($indexPath);
+                    $timestamp = time();
+                    // remove previous ?t param if present
+                    $pattern = '/src="' . preg_quote($relativeSrc, '/') . '(\?t=\d+)?"/i';
+                    $replacement = 'src="' . $relativeSrc . '?t=' . $timestamp . '"';
+                    $htmlUpdated = preg_replace($pattern, $replacement, $html);
+                    if ($htmlUpdated !== null) {
+                        file_put_contents($indexPath, $htmlUpdated);
+                    }
+                }
             } else {
                 $errorMsg = 'Failed to move uploaded file.';
             }
@@ -69,11 +93,24 @@ $images = getImages($baseDir);
         .img-card img { max-width:100%; height:100px; object-fit:cover; border-radius:8px; }
         .img-card form { margin-top:0.5rem; }
         .img-card input[type="file"] { font-size:0.8rem; }
+        #preview-frame { width: 100%; height: 90vh; border: none; margin-bottom: 1.5rem; }
+        .mode-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .btn-small { padding: 0.4rem 0.9rem; font-size: 0.85rem; }
+        .btn-small.active { background-color: #28a745; color: #ffffff; }
+        /* modal */
+        .choice-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:9999; }
+        .choice-box { background:#fff; padding:1.5rem 2rem; border-radius:12px; text-align:center; display:flex; flex-direction:column; gap:0.8rem; }
+        .choice-box h3 { margin-bottom:0.5rem; }
     </style>
 </head>
 <body>
     <header class="dash-header">
         <h2>Edit Media</h2>
+        <div class="mode-actions">
+            <button type="button" id="preview-btn" class="btn-secondary btn-small">Preview Mode</button>
+            <button type="button" id="edit-btn" class="btn-secondary btn-small">Edit Mode</button>
+            <button type="button" id="save-refresh-btn" class="btn-primary btn-small">Save Changes</button>
+        </div>
         <nav class="dash-nav">
             <a href="dashboard.php" class="nav-link">Dashboard</a>
             <a href="edit_content.php" class="nav-link">Edit Content</a>
@@ -81,23 +118,26 @@ $images = getImages($baseDir);
         </nav>
     </header>
     <main class="dash-main">
+        <!-- Live preview of site -->
+        <iframe id="preview-frame" src="../index.html"></iframe>
         <?php if ($successMsg): ?>
             <div class="success-msg"><?= htmlspecialchars($successMsg) ?></div>
         <?php elseif ($errorMsg): ?>
             <div class="error-msg"><?= htmlspecialchars($errorMsg) ?></div>
         <?php endif; ?>
-        <div class="images-grid">
-            <?php foreach ($images as $imgPath): $relPath = str_replace(realpath(__DIR__ . '/..') . DIRECTORY_SEPARATOR, '', $imgPath); ?>
-                <div class="img-card">
-                    <img src="../<?= htmlspecialchars($relPath) ?>" alt="Image" />
-                    <form method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="target_path" value="<?= htmlspecialchars($imgPath) ?>" />
-                        <input type="file" name="new_image" accept="image/*" required />
-                        <button type="submit" class="btn-primary" style="margin-top:0.3rem">Replace</button>
-                    </form>
-                </div>
-            <?php endforeach; ?>
-        </div>
     </main>
+
+<!-- Choice modal -->
+    <div id="img-choice-modal" class="choice-modal" style="display:none">
+        <div class="choice-box">
+            <h3>Select Image Type</h3>
+            <button type="button" class="btn-primary btn-small" data-choice="main">Main Image</button>
+            <button type="button" class="btn-primary btn-small" data-choice="hover">Hover Image</button>
+            <button type="button" class="btn-secondary btn-small" id="choice-cancel">Cancel</button>
+        </div>
+    </div>
+
+    <input type="file" id="hidden-file" accept="image/*" style="display:none" />
+<script src="editor_media.js"></script>
 </body>
 </html>

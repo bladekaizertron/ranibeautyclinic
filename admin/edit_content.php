@@ -38,12 +38,24 @@ $currentContent = file_get_contents($siteFile);
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <style>
-        textarea#html_content { width: 100%; min-height: 75vh; font-family: monospace; font-size: 0.9rem; }
+        #preview-frame { width: 100%; height: 90vh; border: none; }
+        #save-btn { margin-top: 0; }
+        .btn-small { padding: 0.4rem 0.9rem; font-size: 0.85rem; }
+        .btn-small.active { background-color: #28a745; color: #ffffff; }
+        .mode-actions { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; }
+        /* Override CMS layout styles for clean preview-only look */
+        body { background: #ffffff; }
+        .dash-main { padding: 0; }
     </style>
 </head>
 <body>
     <header class="dash-header">
         <h2>Edit Content</h2>
+        <div class="mode-actions">
+            <button type="button" id="preview-btn" class="btn-secondary btn-small active">Preview Mode</button>
+            <button type="button" id="edit-btn" class="btn-secondary btn-small">Edit Mode</button>
+            <button type="button" id="save-btn" class="btn-primary btn-small">Save Changes</button>
+        </div>
         <nav class="dash-nav">
             <a href="dashboard.php" class="nav-link">Dashboard</a>
             <a href="edit_media.php" class="nav-link">Edit Media</a>
@@ -57,9 +69,18 @@ $currentContent = file_get_contents($siteFile);
             <div class="error-msg"><?= htmlspecialchars($errorMsg) ?></div>
         <?php endif; ?>
         <form method="POST" action="">
-            <textarea id="html_content" name="html_content" required><?= htmlspecialchars($currentContent) ?></textarea>
-            <button type="submit" class="btn-primary" style="margin-top:1rem">Save Changes</button>
+            <iframe id="preview-frame" src="../index.html"></iframe>
+            <textarea id="html_content" name="html_content" hidden></textarea>
         </form>
+        <script src="editor.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded',()=>{
+                const msg=document.querySelector('.success-msg, .error-msg');
+                if(msg){
+                    setTimeout(()=>msg.remove(),3000);
+                }
+            });
+        </script>
     </main>
 </body>
 </html>
