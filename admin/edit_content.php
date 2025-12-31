@@ -49,18 +49,16 @@ $currentContent = file_get_contents($siteFile);
     </style>
 </head>
 <body>
-    <header class="dash-header">
-        <h2>Edit Content</h2>
+    <header class="dash-header edit-content-header">
+        <div class="header-left">
+            <h2 class="header-title">Edit Content</h2>
+            <a href="dashboard.php" class="btn-secondary btn-small logout-btn">Back to Dashboard</a>
+        </div>
         <div class="mode-actions">
             <button type="button" id="preview-btn" class="btn-secondary btn-small active">Preview Mode</button>
             <button type="button" id="edit-btn" class="btn-secondary btn-small">Edit Mode</button>
             <button type="button" id="save-btn" class="btn-primary btn-small">Save Changes</button>
         </div>
-        <nav class="dash-nav">
-            <a href="dashboard.php" class="nav-link">Dashboard</a>
-            <a href="edit_media.php" class="nav-link">Edit Media</a>
-            <a href="logout.php" class="btn-secondary">Logout</a>
-        </nav>
     </header>
     <main class="dash-main">
         <?php if ($successMsg): ?>

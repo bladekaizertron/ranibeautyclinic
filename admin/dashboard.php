@@ -18,28 +18,42 @@ if (!isset($_SESSION['user'])) {
 
     <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-    <header class="dash-header">
-        <div class="dash-brand">
-            <img src="../assets/images/logo.png" alt="Rani Beauty Clinic Logo" class="dash-logo" />
-            <h2>Rani Beauty Clinic CMS</h2>
-        </div>
-        <div class="dash-user">
-            <p>Welcome <?php echo isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']) : 'Admin'; ?></p>
-        </div>
-    </header>
+    <body>
+        <div class="dash-wrapper">
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <img src="../assets/images/logo.png" alt="Rani Beauty Clinic Logo" class="sidebar-logo" />
+                    <h2>Rani Beauty</h2>
+                </div>
 
-    <main class="dash-main">
-        <section class="dash-grid">
-            <a href="edit_media.php" class="dash-card">
-                <h3>Edit Media</h3>
-                <p>Replace product & gallery images</p>
-            </a>
-            <a href="edit_content.php" class="dash-card">
-                <h3>Edit Content</h3>
-                <p>Modify texts & layout of homepage</p>
-            </a>
-        </section>
-    </main>
-</body>
+                <nav class="sidebar-nav">
+                    <a href="dashboard.php" class="sidebar-link active"><i class="fa fa-home"></i> Dashboard</a>
+                    <a href="edit_media.php" class="sidebar-link"><i class="fa fa-image"></i> Media</a>
+                    <a href="edit_content.php" class="sidebar-link"><i class="fa fa-file-alt"></i> Content</a>
+                    <a href="logout.php" class="sidebar-link"><i class="fa fa-sign-out-alt"></i> Logout</a>
+                </nav>
+            </aside>
+
+            <div class="dash-content">
+                <header class="dash-header">
+                    <h2>Welcome <?php echo isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']) : 'Admin'; ?></h2>
+                </header>
+
+                <main class="dash-main">
+                    <!-- Quick links -->
+
+                    <section class="preview-wrapper">
+                        <div class="preview-header">
+                            <h3>Homepage Preview</h3>
+                            <a href="../index.html" target="_blank" class="btn-secondary small">Open in new tab</a>
+                        </div>
+                        <iframe src="../index.html" title="Site Preview" class="site-preview" loading="lazy"></iframe>
+                    </section>
+                </main>
+            </div>
+        </div>
+
+        <!-- Font Awesome for icons -->
+        <script src="https://kit.fontawesome.com/25e8e2a0e0.js" crossorigin="anonymous"></script>
+    </body>
 </html>
