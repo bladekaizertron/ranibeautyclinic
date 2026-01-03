@@ -64,6 +64,8 @@
 
     <script>
         const PROXY_URL = '/api/boulevard-proxy.php';
+        // Ponytail Laser
+        const ITEM_ID = 'urn:blvd:Service:02c334c0-2737-450b-8f6d-22dc07fff07f';
 
         async function gql(query, variables = {}) {
             const res = await fetch(PROXY_URL, {
@@ -83,77 +85,64 @@
             try {
                 // 1. Find Location
                 status.innerText = 'Step 1: Finding location...';
-                const locData = await gql(`
-                    query {
-                        locations(first: 1) {
-                            edges {
-                                node {
-                                    id
-                                    name
-                                }
-                            }
-                        }
-                    }
-                `);
-
+                const locData = await gql(`query { locations(first: 1) { edges { node { id name tz } } } }`);
                 const location = locData.locations?.edges?.[0]?.node;
-                if (!location) throw new Error('No locations found!');
+                const tz = location.tz || 'America/Los_Angeles';
 
-                status.innerHTML = `<div class="success">Connected to: <strong>${location.name}</strong></div>`;
+                status.innerHTML = `<div class="success">Connected to: <strong>${location.name}</strong> (${tz})</div>`;
 
                 // 2. Create Cart
-                status.innerHTML += 'Step 2: Creating temporary cart...';
-                const cartData = await gql(`
-                    mutation ($loc: ID!) {
-                        createCart(input: { locationId: $loc }) { cart { id } }
-                    }
-                `, { loc: location.id });
-
+                status.innerHTML += 'Step 2: Creating cart...';
+                const cartData = await gql(`mutation ($loc: ID!) { createCart(input: { locationId: $loc }) { cart { id } } }`, { loc: location.id });
                 const cartId = cartData.createCart?.cart?.id;
-                if (!cartId) throw new Error('Failed to create cart');
 
-
-                // 3. Find Services via Cart
-                status.innerHTML += '<br>Step 3: Fetching available items...';
-                const menuData = await gql(`
-                    query($id: ID!) {
-                        cart(id: $id) {
-                            availableCategories {
-                                name
-                                availableItems {
-                                    id
-                                    name
-                                    description
-                                }
-                            }
+                // 3. Add Item
+                status.innerHTML += ' Adding Item...';
+                await gql(`
+                    mutation ($cartId: ID!, $itemId: ID!) {
+                        addCartSelectedBookableItem(input: { id: $cartId, itemId: $itemId }) {
+                            cart { id }
                         }
                     }
-                `, { id: cartId });
+                `, { cartId: cartId, itemId: ITEM_ID });
+                status.innerHTML += ' <strong style="color:green">Added!</strong><br>';
 
-                let html = '';
-                const categories = menuData.cart?.availableCategories || [];
+                // 4. Debug Bookable Times Schema
+                status.innerHTML += '<br><strong>Checking Availability for next 7 days...</strong><br>';
 
-                if (categories.length === 0) {
-                    html = '<p>No services found in this cart.</p>';
+                // Get next 7 dates
+                const dates = [];
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date();
+                    d.setDate(d.getDate() + i);
+                    dates.push(d.toISOString().split('T')[0]);
                 }
 
-                categories.forEach(cat => {
-                    html += `<h3>${cat.name}</h3>`;
-                    cat.availableItems.forEach(item => {
-                        html += `
-                            <div class="card">
-                                <h4>${item.name}</h4>
-                                <div>ID: <span class="id" title="Click to select">${item.id}</span></div>
-                            </div>
-                        `;
-                    });
-                });
+                output.innerHTML = '';
 
-                output.innerHTML = html;
-                status.innerHTML += ' <strong style="color:green">Done!</strong>';
+                // Try "Attempt A" Schema on all dates
+                output.innerHTML += '<h3>Checking Dates (Schema A: Direct List)</h3>';
+                for (const d of dates) {
+                    try {
+                        const res = await gql(`
+                            query ($id:ID!, $d:Date!, $tz:String!) {
+                                cartBookableTimes(id:$id, searchDate:$d, tz:$tz) {
+                                    id startTime
+                                }
+                            }
+                        `, { id: cartId, d: d, tz: tz });
+
+                        const times = res.cartBookableTimes || [];
+                        const timeStr = times.length > 0 ? times.map(t => t.startTime.split('T')[1].substring(0, 5)).join(', ') : 'None';
+
+                        output.innerHTML += `<div style="${times.length > 0 ? 'background:#efe;font-weight:bold' : ''}">${d}: ${times.length} slots (${timeStr})</div>`;
+                    } catch (e) {
+                        output.innerHTML += `<div class="error">${d}: Error - ${e.message}</div>`;
+                    }
+                }
 
             } catch (e) {
-                status.innerHTML += `<div class="error"><pre>${e.message}</pre></div>`;
+                status.innerHTML += `<div class="error">Critical Error: ${e.message}</div>`;
             }
         }
 

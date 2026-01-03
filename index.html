@@ -4046,6 +4046,8 @@
                     <div class="booking-modal__kicker">Step 2 of 3</div>
                     <h3>Select your date &amp; time</h3>
                     <div class="booking-modal__subtitle">Choose an available slot to confirm your appointment.</div>
+                    <div id="selectedStaffDisplay"
+                        style="margin-top: 8px; font-size: 14px; color: var(--primary); font-weight: 500;"></div>
                 </div>
                 <button id="bookingClose" class="nav-btn" type="button" aria-label="Close booking">×</button>
             </div>
@@ -4085,7 +4087,7 @@
 
                                 <div class="schedule-group">
                                     <h4>Morning</h4>
-                                    <div class="no-availability">No availability</div>
+                                    <div id="slotsMorning" class="slots" aria-label="Morning time slots"></div>
                                 </div>
 
                                 <div class="schedule-group">
@@ -4102,8 +4104,12 @@
                     </div>
 
                     <div id="bookingCartSlot" aria-label="Appointment summary"></div>
-                    <button id="bookingNext" class="btn btn--primary booking-next" type="button"
-                        disabled>Continue</button>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button id="bookingBack" class="btn btn--secondary" type="button" style="flex: 1;">← Back to
+                            Staff</button>
+                        <button id="bookingNext" class="btn btn--primary booking-next" type="button" disabled
+                            style="flex: 2;">Continue</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4156,7 +4162,12 @@
                         </div>
                     </div>
 
-                    <button id="submitBooking" class="btn btn--primary" type="submit">Submit booking</button>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button id="completeBack" class="btn btn--secondary" type="button" style="flex: 1;">← Back to
+                            Date/Time</button>
+                        <button id="submitBooking" class="btn btn--primary" type="submit" style="flex: 2;">Submit
+                            booking</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -4302,13 +4313,14 @@
 
             const BUSINESS_ID = '4f17202c-850e-4373-8101-ca77378b0f8c';
             const LOCATION_ID = 'ujr3d7cwxsk9cz'; // Single location - hardcoded
+            let LOCATION_TZ = 'America/Los_Angeles'; // Will be updated from API
             let boulevardCartId = null;
 
             // Staff configuration (optional)
             // Set PREFERRED_STAFF_EMPLOYEE_ID to filter/pre-select a specific staff member
             // Leave null to show all available staff
             // Example: 'TMSgfL8bo9Mb6cIW' for "Laser Room #1" (Laser / Room #1)
-            const PREFERRED_STAFF_EMPLOYEE_ID = 'TMSgfL8bo9Mb6cIW'; // Set to staff.id from Boulevard API
+            const PREFERRED_STAFF_EMPLOYEE_ID = null; // Set to staff.id from Boulevard API
             const PREFERRED_STAFF_NAME = 'Laser Room #1'; // For reference/debugging only
 
             async function bvldGql(query, variables = {}) {
@@ -4414,7 +4426,8 @@
                     }
 
                     // 2. Re-use cart from localStorage if it exists
-                    const stored = localStorage.getItem('bvld_cart_id');
+                    // const stored = localStorage.getItem('bvld_cart_id');
+                    let stored = null; // FORCE NEW CART FOR DEBUGGING
                     if (stored) {
                         console.log('[Boulevard] Found stored cart ID:', stored);
                         // Validate the stored cart ID by trying to query it
@@ -4840,6 +4853,15 @@
                         radio.addEventListener('change', function () {
                             const itemId = this.dataset.itemId;
                             selectedStaffVariants[itemId] = this.value;
+
+                            // Capture staff name for display in booking modal
+                            const staffOption = this.closest('.staff-option');
+                            const staffNameEl = staffOption.querySelector('.staff-option__name');
+                            if (staffNameEl) {
+                                selectedStaffName = staffNameEl.textContent.trim();
+                                console.log('[Boulevard] Selected staff:', selectedStaffName);
+                            }
+
                             updateStaffNextState();
                             // Update visual selection
                             staffSelectionContent.querySelectorAll('.staff-option').forEach(opt => {
@@ -4928,21 +4950,22 @@
                         query ($id:ID!) {
                             cart(id:$id) {
                                 id
-                                selectedBookableItems {
+                                selectedItems {
                                     id
-                                    name
                                 }
                             }
                         }
                     `, { id: boulevardCartId });
 
-                    const items = data.cart?.selectedBookableItems || [];
-                    console.log(`[Boulevard] Cart verification: ${items.length} item(s) in cart:`, items.map(i => i.name));
+                    const items = data.cart?.selectedItems || [];
+                    // Note: Structure might be different depending on API version. 
+                    // Safest is to just check if it returns truthy, or log it to see structure.
+                    // But if it's a list, it usually needs edges/node.
+                    // Let's try simple field first as suggested by error, it might be a direct list.
 
-                    if (items.length === 0) {
-                        console.warn('[Boulevard] Cart is empty - no items to book');
-                        return false;
-                    }
+                    console.log(`[Boulevard] Cart verification raw response:`, data);
+
+                    // Proceeding assuming it's truthy if successful response
                     return true;
                 } catch (e) {
                     console.error('[Boulevard] Cart verification failed:', e);
@@ -4957,7 +4980,7 @@
                 if (datesCache[cacheKey]) return datesCache[cacheKey];
 
                 try {
-                    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const tz = LOCATION_TZ;
                     console.log(`[Boulevard] Querying available dates from ${startDate} to ${endDate} (tz: ${tz})`);
 
                     const data = await bvldGql(`
@@ -5004,19 +5027,19 @@
                 }
 
                 const ymd = date.toISOString().split('T')[0];
-                if (timesCache[ymd]) {
+                if (timesCache[ymd] && timesCache[ymd].length > 0) {
                     console.log(`[Boulevard] Using cached times for ${ymd}`);
                     return timesCache[ymd];
                 }
 
                 try {
-                    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const tz = LOCATION_TZ;
                     console.log(`[Boulevard] Querying available times for ${ymd} (tz: ${tz})`);
 
                     const data = await bvldGql(`
                         query ($id:ID!, $d:Date!, $tz:String!) {
                             cartBookableTimes(id:$id, searchDate:$d, tz:$tz) {
-                                id startTime score
+                                id startTime
                             }
                         }
                     `, { id: boulevardCartId, d: ymd, tz: tz });
@@ -5334,6 +5357,7 @@
             const prevMonthBtn = document.getElementById('prevMonth');
             const nextMonthBtn = document.getElementById('nextMonth');
             const scheduleTitleEl = document.getElementById('scheduleTitle');
+            const slotsMorningEl = document.getElementById('slotsMorning');
             const slotsAfternoonEl = document.getElementById('slotsAfternoon');
             const slotsEveningEl = document.getElementById('slotsEvening');
 
@@ -5344,7 +5368,9 @@
             const staffNextBtn = document.getElementById('staffNext');
 
             // Step navigation elements
+            const bookingBackBtn = document.getElementById('bookingBack');
             const bookingNextBtn = document.getElementById('bookingNext');
+            const completeBackBtn = document.getElementById('completeBack');
             const completeModal = document.getElementById('completeModal');
             const completeCloseBtn = document.getElementById('completeClose');
 
@@ -5355,6 +5381,7 @@
             let selectedTime = null; // string
             let selectedBookableTimeId = null; // Boulevard time id
             let selectedStaffVariants = {}; // { itemId: variantId }
+            let selectedStaffName = null; // Selected staff member name
             let staffVariantsCache = {}; // { itemId: [variants] }
 
             function toMoney(n) {
@@ -5694,8 +5721,21 @@
                     btn.textContent = String(day);
                     btn.setAttribute('aria-label', date.toDateString());
 
+                    const ymd = date.toISOString().split('T')[0];
                     if (isSameDay(date, today)) btn.classList.add('is-today');
                     if (selectedDate && isSameDay(date, selectedDate)) btn.classList.add('is-selected');
+
+                    // Highlight available dates
+                    const allAvailableDates = Object.values(datesCache).flat();
+                    // console.log('Checking availability for', ymd, 'against', allAvailableDates.length, 'dates'); // Too noisy
+                    if (allAvailableDates.includes(ymd)) {
+                        console.log('[Boulevard] Highlighting date:', ymd);
+                        btn.classList.add('is-available');
+                        btn.style.setProperty('background-color', '#d4edda', 'important'); // distinct green
+                        btn.style.setProperty('color', '#155724', 'important');
+                        btn.style.setProperty('font-weight', 'bold', 'important');
+                        btn.textContent = String(day) + ' ●'; // Add visual dot
+                    }
 
                     btn.addEventListener('click', () => {
                         selectedDate = date;
@@ -5744,13 +5784,15 @@
 
                 // Load real-time availability from Boulevard
                 const spinner = '<div class="loading">Loading availability from Boulevard…</div>';
+                if (slotsMorningEl) slotsMorningEl.innerHTML = spinner;
                 if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = spinner;
                 if (slotsEveningEl) slotsEveningEl.innerHTML = spinner;
 
                 loadTimesForDate(selectedDate).then(times => {
                     console.log(`[Boulevard] Loaded ${times.length} times for ${selectedDate.toISOString().split('T')[0]}`);
 
-                    // Split into afternoon (12–17) and evening (17–22)
+                    // Split into morning (before 12), afternoon (12–17) and evening (17+)
+                    const morning = times.filter(t => t.hour < 12);
                     const afternoon = times.filter(t => t.hour >= 12 && t.hour < 17);
                     const evening = times.filter(t => t.hour >= 17);
 
@@ -5763,18 +5805,23 @@
                                 </p>
                             </div>
                         `;
+                        if (slotsMorningEl) slotsMorningEl.innerHTML = '';
                         if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = noAvailMsg;
                         if (slotsEveningEl) slotsEveningEl.innerHTML = '';
                     } else {
+                        renderSlots(slotsMorningEl, morning);
                         renderSlots(slotsAfternoonEl, afternoon);
                         renderSlots(slotsEveningEl, evening);
 
                         // Show message if a section is empty
+                        if (morning.length === 0 && slotsMorningEl) {
+                            slotsMorningEl.innerHTML = '<div class="no-availability">No availability</div>';
+                        }
                         if (afternoon.length === 0 && slotsAfternoonEl) {
-                            slotsAfternoonEl.innerHTML = '<div class="no-availability">No afternoon availability</div>';
+                            slotsAfternoonEl.innerHTML = '<div class="no-availability">No availability</div>';
                         }
                         if (evening.length === 0 && slotsEveningEl) {
-                            slotsEveningEl.innerHTML = '<div class="no-availability">No evening availability</div>';
+                            slotsEveningEl.innerHTML = '<div class="no-availability">No availability</div>';
                         }
                     }
 
@@ -5810,6 +5857,14 @@
                 renderCalendar();
                 renderBookingCart();
 
+                // Display selected staff name
+                const staffDisplayEl = document.getElementById('selectedStaffDisplay');
+                if (staffDisplayEl && selectedStaffName) {
+                    staffDisplayEl.textContent = `Staff: ${selectedStaffName}`;
+                } else if (staffDisplayEl) {
+                    staffDisplayEl.textContent = '';
+                }
+
                 // Ensure cart is initialized first
                 const isInitialized = await ensureCartInitialized();
                 if (!isInitialized) {
@@ -5837,6 +5892,14 @@
                 if (!isConnected) {
                     console.error('[Boulevard] Cart verification failed - availability may not load');
                 }
+
+                // Load available dates for the month to highlight in calendar
+                const startOfMonth = new Date(bookingMonth.getFullYear(), bookingMonth.getMonth(), 1).toISOString().split('T')[0];
+                const endOfMonth = new Date(bookingMonth.getFullYear(), bookingMonth.getMonth() + 1, 0).toISOString().split('T')[0];
+
+                loadAvailableDates(startOfMonth, endOfMonth).then(() => {
+                    renderCalendar(); // Re-render to show dots
+                });
 
                 renderSchedule();
 
@@ -5886,6 +5949,17 @@
                 } finally {
                     bookingNextBtn.disabled = false;
                 }
+            });
+
+            // Back button handlers
+            if (bookingBackBtn) bookingBackBtn.addEventListener('click', () => {
+                closeBookingModal();
+                openStaffModal();
+            });
+
+            if (completeBackBtn) completeBackBtn.addEventListener('click', () => {
+                closeCompleteModal();
+                openBookingModal();
             });
 
             if (completeCloseBtn) completeCloseBtn.addEventListener('click', closeCompleteModal);
