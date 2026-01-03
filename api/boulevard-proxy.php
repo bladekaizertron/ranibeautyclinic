@@ -52,9 +52,12 @@ function proxyToBoulevard($query, $variables = [])
     $apiUrl = BOULEVARD_API_URL;
 
     // Prepare the GraphQL request
+    // Ensure variables is an empty object if empty (for json_encode to output {})
+    $safeVariables = empty($variables) ? new stdClass() : $variables;
+    
     $requestBody = json_encode([
         'query' => $query,
-        'variables' => $variables
+        'variables' => $safeVariables
     ]);
 
     // Initialize cURL
@@ -107,7 +110,7 @@ function proxyToBoulevard($query, $variables = [])
     if ($httpCode !== 200) {
         return [
             'success' => false,
-            'error' => 'HTTP ' . $httpCode . ': ' . $response,
+            'error' => 'HTTP ' . $httpCode . ': ' . $response . ' (URL: ' . $apiUrl . ')',
             'httpCode' => $httpCode
         ];
     }

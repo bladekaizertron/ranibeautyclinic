@@ -4379,7 +4379,6 @@
                     console.log('[Boulevard] Initializing connection...');
                     console.log('[Boulevard] Business ID:', BUSINESS_ID);
                     console.log('[Boulevard] Location ID:', LOCATION_ID);
-                    console.log('[Boulevard] API Key:', BVLD_KEY.substring(0, 10) + '...');
 
                     // Re-use cart from localStorage if it exists, but validate it first
                     const stored = localStorage.getItem('bvld_cart_id');
@@ -4431,7 +4430,6 @@
                         message: e.message || e,
                         businessId: BUSINESS_ID,
                         locationId: LOCATION_ID,
-                        hasApiKey: !!BVLD_KEY,
                         endpoint: BVLD_URL
                     });
 
