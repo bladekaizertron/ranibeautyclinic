@@ -1148,6 +1148,100 @@
             color: var(--primary-navy);
         }
 
+        /* Staff Selection Styles */
+        .staff-selection {
+            padding: 20px 0;
+        }
+
+        .staff-item-group {
+            margin-bottom: 32px;
+        }
+
+        .staff-item-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .staff-item-group h4 {
+            font-family: var(--font-primary);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin: 0 0 16px 0;
+        }
+
+        .staff-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .staff-option {
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .staff-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .staff-option__content {
+            padding: 16px;
+            border: 2px solid rgba(15, 29, 44, 0.1);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.2s ease;
+        }
+
+        .staff-option:hover .staff-option__content {
+            border-color: var(--accent-gold);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .staff-option.is-selected .staff-option__content {
+            border-color: var(--accent-gold);
+            background: rgba(243, 214, 190, 0.2);
+            box-shadow: 0 2px 8px rgba(243, 214, 190, 0.3);
+        }
+
+        .staff-option__name {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin: 0 0 6px 0;
+        }
+
+        .staff-option__bio {
+            font-size: 13px;
+            color: rgba(42, 42, 42, 0.7);
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+
+        .staff-option__meta {
+            font-size: 13px;
+            color: rgba(42, 42, 42, 0.6);
+            font-weight: 500;
+        }
+
+        .no-staff {
+            padding: 24px;
+            text-align: center;
+            color: rgba(42, 42, 42, 0.6);
+            font-size: 14px;
+            background: rgba(15, 29, 44, 0.03);
+            border-radius: var(--radius-sm);
+        }
+
+        .loading {
+            padding: 40px;
+            text-align: center;
+            color: rgba(42, 42, 42, 0.6);
+            font-size: 14px;
+        }
+
         /* --- CART DRAWER (SLIDE FROM RIGHT) --- */
         .cart-backdrop {
             position: fixed;
@@ -3790,7 +3884,7 @@
                     <div class="card-arrow">→</div>
                 </div>
 
-                <div class="service-card" data-service-tab="laser" data-price="125" data-duration="15">
+                <div class="service-card" data-service-tab="laser" data-price="125" data-duration="15" data-bv-id="02c334c0-2737-450b-8f6d-22dc07fff07f">
                     <div class="card-image-wrapper">
                         <img src="assets/images/laserhairremovals/ponytaillaser.jpeg" alt="Ponytail Laser Hair Removal"
                             class="card-image card-image--default" loading="lazy" decoding="async">
@@ -3917,12 +4011,33 @@
 
     </main>
 
+    <!-- Staff Selection Modal -->
+    <div id="staffModal" class="booking-modal" role="dialog" aria-modal="true" aria-label="Select staff member">
+        <div class="booking-modal__backdrop" data-staff-close="true"></div>
+        <div class="booking-modal__dialog">
+            <div class="booking-modal__head">
+                <div class="booking-modal__title-wrap">
+                    <div class="booking-modal__kicker">Step 1 of 3</div>
+                    <h3>Select your staff member</h3>
+                    <div class="booking-modal__subtitle">Choose a staff member for your appointment.</div>
+                </div>
+                <button id="staffClose" class="nav-btn" type="button" aria-label="Close staff selection">×</button>
+            </div>
+            <div class="booking-modal__body">
+                <div id="staffSelectionContent" class="staff-selection">
+                    <div class="loading">Loading staff members...</div>
+                </div>
+                <button id="staffNext" class="btn btn--primary booking-next" type="button" disabled>Continue</button>
+            </div>
+        </div>
+    </div>
+
     <div id="bookingModal" class="booking-modal" role="dialog" aria-modal="true" aria-label="Booking date and time">
         <div class="booking-modal__backdrop" data-booking-close="true"></div>
         <div class="booking-modal__dialog">
             <div class="booking-modal__head">
                 <div class="booking-modal__title-wrap">
-                    <div class="booking-modal__kicker">Step 2 of 2</div>
+                    <div class="booking-modal__kicker">Step 2 of 3</div>
                     <h3>Select your date &amp; time</h3>
                     <div class="booking-modal__subtitle">Choose an available slot to confirm your appointment.</div>
                 </div>
@@ -4096,6 +4211,924 @@
             const yearEl = document.getElementById('year');
             if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
+            /* === Boulevard API Integration === */
+            // ⚠️ ACTION REQUIRED: The endpoint below is NOT resolving (ERR_NAME_NOT_RESOLVED)
+            // You MUST contact Boulevard support to get the correct GraphQL API endpoint URL
+            //
+            // Contact Boulevard Support with:
+            // - API Key: 90c28c66-092d-423e-bfaa-86e2a1d8ced2
+            // - Business ID: 4f17202c-850e-4373-8101-ca77378b0f8c
+            // - Ask: "What is the correct GraphQL API endpoint URL for my account?"
+            //
+            // Possible endpoint formats (verify with Boulevard):
+            // - https://api.boulevard.io/graphql (currently failing)
+            // - https://api-gateway.boulevard.io/graphql
+            // - https://graphql.boulevard.io
+            // - https://[region].boulevard.io/graphql
+            // - Or a completely different domain
+            //
+            // NOTE: Boulevard API might require server-side implementation due to CORS/DNS
+            // Check Boulevard documentation for client-side vs server-side API access
+            let BVLD_URL = 'https://api.boulevard.io/graphql'; // ⚠️ THIS ENDPOINT IS NOT WORKING - GET CORRECT URL FROM BOULEVARD
+            
+            // Alternative endpoints to try (uncomment one at a time):
+            // let BVLD_URL = 'https://api-gateway.boulevard.io/graphql';
+            // let BVLD_URL = 'https://graphql.boulevard.io';
+            const BVLD_KEY = '90c28c66-092d-423e-bfaa-86e2a1d8ced2'; // Provided by user
+            const BUSINESS_ID = '4f17202c-850e-4373-8101-ca77378b0f8c'; // Provided by user
+            const LOCATION_ID = 'ujr3d7cwxsk9cz'; // Single location - hardcoded
+            let boulevardCartId = null;
+
+            // Staff configuration (optional)
+            // Set PREFERRED_STAFF_EMPLOYEE_ID to filter/pre-select a specific staff member
+            // Leave null to show all available staff
+            // Example: 'TMSgfL8bo9Mb6cIW' for "Laser Room #1" (Laser / Room #1)
+            const PREFERRED_STAFF_EMPLOYEE_ID = 'TMSgfL8bo9Mb6cIW'; // Set to staff.id from Boulevard API
+            const PREFERRED_STAFF_NAME = 'Laser Room #1'; // For reference/debugging only
+
+            async function bvldGql(query, variables = {}) {
+                try {
+                    console.log('[Boulevard] Making request to:', BVLD_URL);
+                    console.log('[Boulevard] Query:', query.substring(0, 100) + '...');
+                    
+                    const res = await fetch(BVLD_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${BVLD_KEY}`
+                        },
+                        body: JSON.stringify({ query, variables })
+                    });
+                    
+                    if (!res.ok) {
+                        const errorText = await res.text();
+                        console.error('[Boulevard] HTTP Error:', res.status, res.statusText);
+                        console.error('[Boulevard] Response:', errorText);
+                        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                    }
+                    
+                    const json = await res.json();
+                    if (json.errors) {
+                        console.error('[Boulevard] GraphQL Errors:', json.errors);
+                        throw json.errors;
+                    }
+                    return json.data;
+                } catch (e) {
+                    if (e.message && e.message.includes('Failed to fetch')) {
+                        console.error('[Boulevard] Network Error - Cannot reach API endpoint');
+                        console.error('[Boulevard] This could mean:');
+                        console.error('  1. The endpoint URL is incorrect');
+                        console.error('  2. Network/DNS issue');
+                        console.error('  3. CORS blocking (if testing locally)');
+                        console.error('[Boulevard] Endpoint:', BVLD_URL);
+                        throw new Error(`Cannot connect to Boulevard API at ${BVLD_URL}. Check network connection and endpoint URL.`);
+                    }
+                    throw e;
+                }
+            }
+
+            async function bvldInit() {
+                try {
+                    // Prevent double-init
+                    if (boulevardCartId) {
+                        console.log('[Boulevard] Cart already initialized:', boulevardCartId);
+                        return;
+                    }
+
+                    console.log('[Boulevard] Initializing connection...');
+                    console.log('[Boulevard] Business ID:', BUSINESS_ID);
+                    console.log('[Boulevard] Location ID:', LOCATION_ID);
+                    console.log('[Boulevard] API Key:', BVLD_KEY.substring(0, 10) + '...');
+
+                    // Re-use cart from localStorage if it exists, but validate it first
+                    const stored = localStorage.getItem('bvld_cart_id');
+                    if (stored) {
+                        console.log('[Boulevard] Found stored cart ID:', stored);
+                        // Validate the stored cart ID by trying to query it
+                        try {
+                            await bvldGql(`
+                                query ($id:ID!) {
+                                    cart(id:$id) { id }
+                                }
+                            `, { id: stored });
+                            boulevardCartId = stored;
+                            console.log('[Boulevard] Using validated stored cart ID');
+                            return;
+                        } catch (e) {
+                            console.warn('[Boulevard] Stored cart ID is invalid, creating new cart:', e);
+                            localStorage.removeItem('bvld_cart_id');
+                        }
+                    }
+
+                    // 3. Otherwise create a new cart
+                    console.log('[Boulevard] Creating new cart...');
+                    const cartData = await bvldGql(`
+                        mutation ($loc: ID!) {
+                            createCart(input: { locationId: $loc }) { cart { id } }
+                        }
+                    `, { loc: LOCATION_ID });
+
+                    boulevardCartId = cartData.createCart.cart.id;
+                    if (!boulevardCartId) {
+                        throw new Error('Failed to create cart - no cart ID returned');
+                    }
+                    
+                    localStorage.setItem('bvld_cart_id', boulevardCartId);
+                    console.log('[Boulevard] Cart created successfully:', boulevardCartId);
+                    console.log('[Boulevard] Cart ID is stored in localStorage. To view it:');
+                    console.log('[Boulevard]   1. Open browser DevTools (F12)');
+                    console.log('[Boulevard]   2. Go to Application/Storage tab');
+                    console.log('[Boulevard]   3. Check localStorage for key: bvld_cart_id');
+                    console.log('[Boulevard]   Or type in console: localStorage.getItem("bvld_cart_id")');
+
+                    // After cart is ready, fetch menu and map service cards
+                    await mapCardsWithBoulevardItems();
+                    console.log('[Boulevard] Initialization complete');
+                } catch (e) {
+                    console.error('[Boulevard] Init failed:', e);
+                    console.error('[Boulevard] Error details:', {
+                        message: e.message || e,
+                        businessId: BUSINESS_ID,
+                        locationId: LOCATION_ID,
+                        hasApiKey: !!BVLD_KEY,
+                        endpoint: BVLD_URL
+                    });
+                    
+                    // Show detailed error message for DNS/connection issues
+                    if (e.message && e.message.includes('ERR_NAME_NOT_RESOLVED')) {
+                        console.error('');
+                        console.error('═══════════════════════════════════════════════════════════');
+                        console.error('BOULEVARD API CONNECTION ERROR');
+                        console.error('═══════════════════════════════════════════════════════════');
+                        console.error('The API endpoint cannot be reached:', BVLD_URL);
+                        console.error('');
+                        console.error('POSSIBLE SOLUTIONS:');
+                        console.error('1. Verify the correct endpoint URL with Boulevard:');
+                        console.error('   - Check: https://docs.boulevard.io or https://developer.boulevard.io');
+                        console.error('   - Contact Boulevard support');
+                        console.error('   - Check your Boulevard account dashboard for API settings');
+                        console.error('');
+                        console.error('2. Try alternative endpoints (update BVLD_URL in code):');
+                        console.error('   - https://api-gateway.boulevard.io/graphql');
+                        console.error('   - https://graphql.boulevard.io');
+                        console.error('   - Or check for region-specific endpoints');
+                        console.error('');
+                        console.error('3. Network/DNS issues:');
+                        console.error('   - Check internet connection');
+                        console.error('   - Try flushing DNS: ipconfig /flushdns (Windows)');
+                        console.error('   - Check firewall/antivirus settings');
+                        console.error('   - Try a different network');
+                        console.error('');
+                        console.error('4. If testing locally:');
+                        console.error('   - CORS might be blocking - may need a proxy or server-side implementation');
+                        console.error('═══════════════════════════════════════════════════════════');
+                        console.error('');
+                    }
+                    
+                    // Clear invalid cart ID if it exists
+                    if (boulevardCartId) {
+                        localStorage.removeItem('bvld_cart_id');
+                        boulevardCartId = null;
+                    }
+                }
+            }
+
+            // Initialize immediately
+            bvldInit();
+
+            // Also re-initialize if cart ID is missing when needed
+            async function ensureCartInitialized() {
+                if (!boulevardCartId) {
+                    console.warn('[Boulevard] Cart ID missing, re-initializing...');
+                    await bvldInit();
+                }
+                
+                // If still no cart ID, log detailed diagnostics
+                if (!boulevardCartId) {
+                    console.error('[Boulevard] Initialization failed - cannot proceed');
+                    console.error('[Boulevard] Current configuration:');
+                    console.error('  - Endpoint:', BVLD_URL);
+                    console.error('  - Business ID:', BUSINESS_ID);
+                    console.error('  - Location ID:', LOCATION_ID);
+                    console.error('  - API Key:', BVLD_KEY ? 'Set (' + BVLD_KEY.substring(0, 10) + '...)' : 'Missing');
+                    console.error('[Boulevard] Check the console above for specific error messages');
+                }
+                
+                return !!boulevardCartId;
+            }
+            
+            // Helper function to test endpoint connectivity (can be called from console)
+            window.testBoulevardConnection = async function() {
+                console.log('[Boulevard] Testing connection to:', BVLD_URL);
+                try {
+                    const testQuery = `query { __typename }`;
+                    const result = await bvldGql(testQuery);
+                    console.log('[Boulevard] ✅ Connection successful!', result);
+                    return true;
+                } catch (e) {
+                    console.error('[Boulevard] ❌ Connection failed:', e);
+                    return false;
+                }
+            };
+            
+            // Helper to test DNS resolution (can be called from console)
+            window.testBoulevardDNS = async function() {
+                const domain = BVLD_URL.replace('https://', '').split('/')[0];
+                console.log('[Boulevard] Testing DNS resolution for:', domain);
+                console.log('[Boulevard] If this fails, the domain does not exist or cannot be resolved');
+                console.log('[Boulevard] Try running in terminal: nslookup ' + domain);
+                console.log('[Boulevard] Or: ping ' + domain);
+                console.log('[Boulevard] If DNS fails, you need the correct endpoint URL from Boulevard');
+                
+                // Try to fetch (will fail if DNS doesn't resolve)
+                try {
+                    const response = await fetch(`https://${domain}`, { 
+                        method: 'HEAD',
+                        mode: 'no-cors' 
+                    });
+                    console.log('[Boulevard] Domain appears to resolve (but may have CORS)');
+                    return true;
+                } catch (e) {
+                    if (e.message && e.message.includes('Failed to fetch')) {
+                        console.error('[Boulevard] ❌ DNS resolution failed - domain does not exist or cannot be reached');
+                        console.error('[Boulevard] This confirms you need the correct endpoint URL from Boulevard');
+                    } else {
+                        console.warn('[Boulevard] DNS test inconclusive:', e.message);
+                    }
+                    return false;
+                }
+            };
+
+            async function addToCartBoulevard(itemId, variantId = null) {
+                if (!boulevardCartId || !itemId) return;
+                try {
+                    await bvldGql(`
+                        mutation ($id: ID!, $item: ID!, $variant: ID) {
+                            addCartSelectedBookableItem(input: {
+                                id: $id,
+                                itemId: $item,
+                                itemStaffVariantId: $variant
+                            }) { cart { id } }
+                        }
+                    `, { id: boulevardCartId, item: itemId, variant: variantId });
+                } catch (e) {
+                    console.error('[Boulevard] Failed to add item', e);
+                }
+            }
+
+            // === Staff selection helpers ===
+            async function fetchStaffVariantsForItem(itemId) {
+                if (!boulevardCartId || !itemId) {
+                    console.warn('[Boulevard] Cannot fetch staff variants: missing cartId or itemId', { cartId: boulevardCartId, itemId });
+                    return [];
+                }
+                if (staffVariantsCache[itemId]) {
+                    console.log(`[Boulevard] Using cached staff variants for item ${itemId}`);
+                    return staffVariantsCache[itemId];
+                }
+                try {
+                    console.log(`[Boulevard] Querying staff variants for item ${itemId} from cart ${boulevardCartId}`);
+                    const data = await bvldGql(`
+                        query ($id:ID!, $item:ID!) {
+                            cart(id:$id) {
+                                availableItem(id:$item) {
+                                    ... on CartAvailableBookableItem {
+                                        staffVariants {
+                                            id
+                                            price
+                                            duration
+                                            staff {
+                                                id
+                                                firstName
+                                                lastName
+                                                bio
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    `, { id: boulevardCartId, item: itemId });
+                    
+                    const availableItem = data.cart?.availableItem;
+                    if (!availableItem) {
+                        console.warn(`[Boulevard] availableItem is null for item ${itemId}. Item may not be in cart yet.`);
+                        return [];
+                    }
+                    
+                    const variants = availableItem.staffVariants || [];
+                    console.log(`[Boulevard] Found ${variants.length} staff variants for item ${itemId}`);
+                    if (variants.length > 0) {
+                        console.log('[Boulevard] Staff variants:', variants.map(v => ({
+                            id: v.id,
+                            staff: `${v.staff.firstName} ${v.staff.lastName}`,
+                            price: v.price,
+                            duration: v.duration
+                        })));
+                    }
+                    staffVariantsCache[itemId] = variants;
+                    return variants;
+                } catch (e) {
+                    console.error('[Boulevard] Failed to fetch staff variants', e);
+                    console.error('[Boulevard] Error details:', {
+                        cartId: boulevardCartId,
+                        itemId: itemId,
+                        error: e
+                    });
+                    return [];
+                }
+            }
+
+            async function loadStaffForCart() {
+                if (!staffSelectionContent) return;
+                staffSelectionContent.innerHTML = '<div class="loading">Loading staff members...</div>';
+                
+                // Ensure cart is initialized first
+                const isInitialized = await ensureCartInitialized();
+                if (!isInitialized) {
+                    staffSelectionContent.innerHTML = `
+                        <div class="no-staff">
+                            <p><strong>⚠️ Connection Error</strong></p>
+                            <p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                Unable to connect to Boulevard API.
+                            </p>
+                            <p style="margin-top: 12px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                <strong>Endpoint:</strong> ${BVLD_URL}
+                            </p>
+                            <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                <strong>Possible causes:</strong>
+                            </p>
+                            <ul style="margin-top: 4px; font-size: 12px; color: rgba(42, 42, 42, 0.6); padding-left: 20px;">
+                                <li>Incorrect API endpoint URL</li>
+                                <li>Network/DNS issue</li>
+                                <li>API endpoint may be blocked</li>
+                            </ul>
+                            <p style="margin-top: 12px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                <strong>Check browser console (F12) for detailed error messages.</strong>
+                            </p>
+                            <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                Please verify the correct endpoint URL with Boulevard support or documentation.
+                            </p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // First, immediately check manual mappings (synchronous, no API needed)
+                let immediateMapped = 0;
+                cart.forEach(item => {
+                    if (!item.bvId && item.name) {
+                        // Check manual mappings first
+                        const normalizedName = normalizeName(item.name);
+                        for (const [manualName, itemId] of Object.entries(manualServiceMappings)) {
+                            if (normalizeName(manualName) === normalizedName) {
+                                item.bvId = itemId;
+                                immediateMapped++;
+                                console.log(`[Boulevard] Applied manual mapping to cart item "${item.name}" → ${itemId}`);
+                                break;
+                            }
+                        }
+                    }
+                });
+                if (immediateMapped > 0) {
+                    saveCart();
+                }
+                
+                // Then, ensure cart items have bvId by re-mapping if needed (includes API fetch)
+                await ensureCartItemsHaveBvId();
+                
+                const itemsWithBvId = cart.filter(item => item.bvId);
+                if (itemsWithBvId.length === 0) {
+                    const cartItemNames = cart.map(item => item.name).join(', ');
+                    const availableItems = boulevardItemsList.map(it => it.name).slice(0, 20); // Show first 20
+                    const availableItemsText = availableItems.length > 0 
+                        ? availableItems.join(', ') + (boulevardItemsList.length > 20 ? ` (and ${boulevardItemsList.length - 20} more...)` : '')
+                        : 'None loaded';
+                    const manualMappingsList = Object.keys(manualServiceMappings).join(', ');
+                    
+                    staffSelectionContent.innerHTML = `
+                        <div class="no-staff">
+                            <p><strong>No bookable items found in cart.</strong></p>
+                            <p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                <strong>Items in cart:</strong> ${cart.length > 0 ? cartItemNames : 'Cart is empty'}
+                            </p>
+                            <p style="margin-top: 12px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                <strong>Available Boulevard items:</strong> ${availableItemsText}
+                            </p>
+                            ${manualMappingsList ? `<p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                <strong>Manual mappings configured:</strong> ${manualMappingsList}
+                            </p>` : ''}
+                            <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                Service names must match Boulevard menu items. Check the console for detailed matching attempts.
+                            </p>
+                        </div>
+                    `;
+                    console.warn('[Boulevard] Cart items without bvId:', cart.filter(item => !item.bvId).map(item => ({ name: item.name, id: item.id })));
+                    console.log('[Boulevard] Available Boulevard items:', boulevardItemsList.map(it => it.name));
+                    console.log('[Boulevard] Manual mappings:', manualServiceMappings);
+                    console.log('[Boulevard] Attempting to match:', cart.map(item => item.name));
+                    return;
+                }
+
+                // Pre-populate selectedStaffVariants from cart items that already have variants
+                itemsWithBvId.forEach(item => {
+                    if (item.bvVariantId) {
+                        selectedStaffVariants[item.bvId] = item.bvVariantId;
+                    }
+                });
+
+                // Ensure all items are added to Boulevard cart before querying staff variants
+                console.log('[Boulevard] Ensuring items are in Boulevard cart...');
+                for (const item of itemsWithBvId) {
+                    if (item.bvId) {
+                        try {
+                            await addToCartBoulevard(item.bvId, item.bvVariantId || null);
+                            console.log(`[Boulevard] Added "${item.name}" to Boulevard cart`);
+                        } catch (e) {
+                            console.error(`[Boulevard] Failed to add "${item.name}" to Boulevard cart:`, e);
+                        }
+                    }
+                }
+
+                let html = '';
+                for (const item of itemsWithBvId) {
+                    console.log(`[Boulevard] Fetching staff variants for "${item.name}" (bvId: ${item.bvId})...`);
+                    let variants = await fetchStaffVariantsForItem(item.bvId);
+                    console.log(`[Boulevard] Found ${variants.length} staff variants for "${item.name}"`);
+                    
+                    if (variants.length === 0) {
+                        // Ensure cache is set to empty array so updateStaffNextState knows this item is ready
+                        if (!staffVariantsCache[item.bvId]) {
+                            staffVariantsCache[item.bvId] = [];
+                        }
+                        html += `
+                            <div class="staff-item-group">
+                                <h4>${item.name}</h4>
+                                <div class="no-staff" style="background: rgba(243, 214, 190, 0.1); border: 1px solid rgba(243, 214, 190, 0.3); border-radius: var(--radius-sm); padding: 16px;">
+                                    <p style="margin: 0; font-weight: 500;">✓ This service doesn't require staff selection</p>
+                                    <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6); margin-bottom: 0;">
+                                        You can continue to the next step. The service will be assigned to the first available staff member.
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                        continue;
+                    }
+
+                    // Log staff information for debugging
+                    console.log(`[Boulevard] Staff variants for "${item.name}":`, variants.map(v => ({
+                        variantId: v.id,
+                        staff: `${v.staff.firstName} ${v.staff.lastName}`,
+                        staffId: v.staff.id,
+                        price: v.price,
+                        duration: v.duration
+                    })));
+
+                    // Filter to preferred staff if configured
+                    if (PREFERRED_STAFF_EMPLOYEE_ID) {
+                        const filtered = variants.filter(v => v.staff.id === PREFERRED_STAFF_EMPLOYEE_ID);
+                        if (filtered.length > 0) {
+                            variants = filtered;
+                            console.log(`[Boulevard] Filtered to preferred staff: ${PREFERRED_STAFF_NAME}`);
+                        }
+                    }
+
+                    // Pre-select preferred staff if not already selected
+                    if (PREFERRED_STAFF_EMPLOYEE_ID && !selectedStaffVariants[item.bvId]) {
+                        const preferredVariant = variants.find(v => v.staff.id === PREFERRED_STAFF_EMPLOYEE_ID);
+                        if (preferredVariant) {
+                            selectedStaffVariants[item.bvId] = preferredVariant.id;
+                            console.log(`[Boulevard] Pre-selected staff: ${PREFERRED_STAFF_NAME}`);
+                        }
+                    }
+
+                    html += `<div class="staff-item-group">`;
+                    html += `<h4>${item.name}</h4>`;
+                    html += `<div class="staff-options">`;
+                    variants.forEach(variant => {
+                        const staff = variant.staff;
+                        const name = `${staff.firstName} ${staff.lastName}`;
+                        const isSelected = selectedStaffVariants[item.bvId] === variant.id;
+                        html += `
+                            <label class="staff-option ${isSelected ? 'is-selected' : ''}">
+                                <input type="radio" name="staff-${item.bvId}" value="${variant.id}" 
+                                    data-item-id="${item.bvId}" ${isSelected ? 'checked' : ''}>
+                                <div class="staff-option__content">
+                                    <div class="staff-option__name">${name}</div>
+                                    ${staff.bio ? `<div class="staff-option__bio">${staff.bio}</div>` : ''}
+                                    <div class="staff-option__meta">$${Number(variant.price).toFixed(2)} • ${variant.duration} min</div>
+                                </div>
+                            </label>
+                        `;
+                    });
+                    html += `</div></div>`;
+                }
+
+                staffSelectionContent.innerHTML = html;
+
+                // Attach change handlers
+                staffSelectionContent.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', function() {
+                        const itemId = this.dataset.itemId;
+                        selectedStaffVariants[itemId] = this.value;
+                        updateStaffNextState();
+                        // Update visual selection
+                        staffSelectionContent.querySelectorAll('.staff-option').forEach(opt => {
+                            opt.classList.remove('is-selected');
+                        });
+                        this.closest('.staff-option').classList.add('is-selected');
+                    });
+                });
+
+                updateStaffNextState();
+            }
+
+            function updateStaffNextState() {
+                if (!staffNextBtn) return;
+                const itemsWithBvId = cart.filter(item => item.bvId);
+                if (itemsWithBvId.length === 0) {
+                    staffNextBtn.disabled = true;
+                    return;
+                }
+                // Check if each item either has a selected variant OR has no variants available
+                // Items with no variants (empty array in cache) are ready - will use first available
+                const allReady = itemsWithBvId.every(item => {
+                    // If item already has a variant selected from previous session, it's ready
+                    if (selectedStaffVariants[item.bvId]) return true;
+                    // If cache shows no variants for this item, it's ready (will use first available)
+                    const variants = staffVariantsCache[item.bvId];
+                    if (variants && variants.length === 0) return true;
+                    // If variants exist but none selected, not ready
+                    if (variants && variants.length > 0) return false;
+                    // If not yet cached, assume not ready (will be ready once loaded)
+                    return false;
+                });
+                staffNextBtn.disabled = !allReady;
+            }
+
+            function openStaffModal() {
+                if (!staffModal) return;
+                closeCart();
+                staffModal.classList.add('is-open');
+                document.body.classList.add('modal-open');
+                loadStaffForCart();
+                if (staffCloseBtn) staffCloseBtn.focus();
+            }
+
+            function closeStaffModal() {
+                if (!staffModal) return;
+                staffModal.classList.remove('is-open');
+                document.body.classList.remove('modal-open');
+            }
+
+            // === Boule­vard availability helpers ===
+            const timesCache = {};
+            const datesCache = {};
+
+            // Verify cart connection and state
+            async function verifyCartConnection() {
+                // Ensure cart is initialized first
+                const isInitialized = await ensureCartInitialized();
+                if (!isInitialized) {
+                    console.error('[Boulevard] Failed to initialize cart');
+                    return false;
+                }
+                
+                if (!boulevardCartId) {
+                    console.error('[Boulevard] No cart ID available after initialization');
+                    return false;
+                }
+                try {
+                    const data = await bvldGql(`
+                        query ($id:ID!) {
+                            cart(id:$id) {
+                                id
+                                selectedBookableItems {
+                                    id
+                                    name
+                                }
+                            }
+                        }
+                    `, { id: boulevardCartId });
+                    
+                    const items = data.cart?.selectedBookableItems || [];
+                    console.log(`[Boulevard] Cart verification: ${items.length} item(s) in cart:`, items.map(i => i.name));
+                    
+                    if (items.length === 0) {
+                        console.warn('[Boulevard] Cart is empty - no items to book');
+                        return false;
+                    }
+                    return true;
+                } catch (e) {
+                    console.error('[Boulevard] Cart verification failed:', e);
+                    return false;
+                }
+            }
+
+            // Get available dates for the cart
+            async function loadAvailableDates(startDate, endDate) {
+                if (!boulevardCartId) return [];
+                const cacheKey = `${startDate}_${endDate}`;
+                if (datesCache[cacheKey]) return datesCache[cacheKey];
+                
+                try {
+                    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    console.log(`[Boulevard] Querying available dates from ${startDate} to ${endDate} (tz: ${tz})`);
+                    
+                    const data = await bvldGql(`
+                        query ($id:ID!, $start:Date!, $end:Date!, $tz:String!) {
+                            cartBookableDates(id:$id, searchRangeLower:$start, searchRangeUpper:$end, tz:$tz) {
+                                date
+                            }
+                        }
+                    `, { 
+                        id: boulevardCartId, 
+                        start: startDate, 
+                        end: endDate,
+                        tz: tz
+                    });
+                    
+                    const dates = (data.cartBookableDates || []).map(d => d.date);
+                    console.log(`[Boulevard] Found ${dates.length} available dates:`, dates);
+                    datesCache[cacheKey] = dates;
+                    return dates;
+                } catch (e) {
+                    console.error('[Boulevard] loadAvailableDates failed:', e);
+                    return [];
+                }
+            }
+
+            async function loadTimesForDate(date) {
+                // Ensure cart is initialized first
+                const isInitialized = await ensureCartInitialized();
+                if (!isInitialized) {
+                    console.error('[Boulevard] Cannot load times: cart initialization failed');
+                    return [];
+                }
+                
+                if (!boulevardCartId) {
+                    console.warn('[Boulevard] Cannot load times: no cart ID after initialization');
+                    return [];
+                }
+                
+                // Verify cart has items first
+                const hasItems = await verifyCartConnection();
+                if (!hasItems) {
+                    console.warn('[Boulevard] Cannot load times: cart has no items');
+                    return [];
+                }
+                
+                const ymd = date.toISOString().split('T')[0];
+                if (timesCache[ymd]) {
+                    console.log(`[Boulevard] Using cached times for ${ymd}`);
+                    return timesCache[ymd];
+                }
+                
+                try {
+                    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    console.log(`[Boulevard] Querying available times for ${ymd} (tz: ${tz})`);
+                    
+                    const data = await bvldGql(`
+                        query ($id:ID!, $d:Date!, $tz:String!) {
+                            cartBookableTimes(id:$id, searchDate:$d, tz:$tz) {
+                                id startTime score
+                            }
+                        }
+                    `, { id: boulevardCartId, d: ymd, tz: tz });
+                    
+                    const times = data.cartBookableTimes || [];
+                    console.log(`[Boulevard] Found ${times.length} available times for ${ymd}`);
+                    
+                    if (times.length === 0) {
+                        console.warn(`[Boulevard] No times available for ${ymd}. Check if:`);
+                        console.warn('  - Items are properly added to Boulevard cart');
+                        console.warn('  - Staff have availability configured in Boulevard');
+                        console.warn('  - The date is within booking window');
+                    }
+                    
+                    const arr = times.map(t => ({
+                        id: t.id,
+                        label: new Date(t.startTime).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+                        hour: new Date(t.startTime).getHours(),
+                        startTime: t.startTime
+                    }));
+                    timesCache[ymd] = arr;
+                    return arr;
+                } catch (e) {
+                    console.error('[Boulevard] loadTimesForDate failed:', e);
+                    console.error('[Boulevard] Error details:', {
+                        cartId: boulevardCartId,
+                        date: ymd,
+                        error: e
+                    });
+                    return [];
+                }
+            }
+
+            let boulevardItemsMap = {}; // Cache the name->id mapping
+            let boulevardItemsList = []; // Full list for fuzzy matching
+
+            // Manual mappings for services that don't match automatically
+            // Format: 'Service Name': 'Boulevard Item ID'
+            // You can add more mappings here as needed
+            const manualServiceMappings = {
+                'Ponytail Laser': '02c334c0-2737-450b-8f6d-22dc07fff07f',
+                'Pony Tail Laser': '02c334c0-2737-450b-8f6d-22dc07fff07f',
+                'Ponytail Laser Hair Removal': '02c334c0-2737-450b-8f6d-22dc07fff07f'
+            };
+
+            // Apply manual mappings to service cards immediately (runs on page load)
+            function applyManualMappings() {
+                document.querySelectorAll('.service-card').forEach(card => {
+                    // Skip if already has data-bv-id
+                    if (card.dataset.bvId) return;
+                    
+                    const titleEl = card.querySelector('.card-title');
+                    const name = titleEl ? titleEl.textContent.trim() : '';
+                    if (!name) return;
+                    
+                    // Check manual mappings
+                    const normalizedName = normalizeName(name);
+                    for (const [manualName, itemId] of Object.entries(manualServiceMappings)) {
+                        if (normalizeName(manualName) === normalizedName) {
+                            card.dataset.bvId = itemId;
+                            console.log(`[Boulevard] Applied manual mapping: "${name}" → ${itemId}`);
+                            break;
+                        }
+                    }
+                });
+            }
+
+            // Normalize a name for matching (lowercase, remove punctuation, normalize spaces)
+            function normalizeName(name) {
+                return name.toLowerCase()
+                    .replace(/[^\w\s]/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            // Check if two names are similar (fuzzy match)
+            function namesMatch(name1, name2) {
+                const n1 = normalizeName(name1);
+                const n2 = normalizeName(name2);
+                
+                // Exact match after normalization
+                if (n1 === n2) return true;
+                
+                // One contains the other (e.g., "Ponytail Laser" in "Pony Tail Laser Hair Removal")
+                if (n1.includes(n2) || n2.includes(n1)) return true;
+                
+                // Check if key words match (split into words and check overlap)
+                const words1 = n1.split(/\s+/).filter(w => w.length > 2); // Ignore short words
+                const words2 = n2.split(/\s+/).filter(w => w.length > 2);
+                
+                if (words1.length === 0 || words2.length === 0) return false;
+                
+                // If all words from shorter name appear in longer name
+                const shorter = words1.length <= words2.length ? words1 : words2;
+                const longer = words1.length > words2.length ? words1 : words2;
+                const matches = shorter.filter(w => longer.some(lw => lw.includes(w) || w.includes(lw)));
+                
+                // If most words match, consider it a match
+                return matches.length >= Math.min(shorter.length, 2);
+            }
+
+            // Find best matching Boulevard item for a given name
+            function findBestMatch(cardName) {
+                // First check manual mappings (highest priority)
+                const normalizedCardName = normalizeName(cardName);
+                for (const [manualName, itemId] of Object.entries(manualServiceMappings)) {
+                    if (normalizeName(manualName) === normalizedCardName) {
+                        console.log(`[Boulevard] Manual mapping found for "${cardName}" → ID: ${itemId}`);
+                        return itemId;
+                    }
+                }
+                
+                // Then try exact match from API
+                const exact = boulevardItemsMap[normalizedCardName];
+                if (exact) {
+                    console.log(`[Boulevard] Exact match found for "${cardName}"`);
+                    return exact;
+                }
+                
+                // Then try fuzzy matching
+                for (const item of boulevardItemsList) {
+                    if (namesMatch(cardName, item.name)) {
+                        console.log(`[Boulevard] Fuzzy match: "${cardName}" → "${item.name}"`);
+                        return item.id;
+                    }
+                }
+                
+                console.log(`[Boulevard] No match found for "${cardName}" (checked ${boulevardItemsList.length} items)`);
+                return null;
+            }
+
+            async function mapCardsWithBoulevardItems() {
+                try {
+                    if (!boulevardCartId) return {};
+                    const data = await bvldGql(`
+                        query ($id:ID!) {
+                            cart(id:$id) {
+                                availableCategories {
+                                    availableItems { id name }
+                                }
+                            }
+                        }
+                    `, { id: boulevardCartId });
+                    const items = (data.cart?.availableCategories || []).flatMap(c => c.availableItems);
+                    boulevardItemsList = items; // Store full list for fuzzy matching
+                    boulevardItemsMap = {};
+                    
+                    // Build exact match map with variations
+                    items.forEach(it => { 
+                        boulevardItemsMap[it.name.toLowerCase()] = it.id;
+                        const normalized = normalizeName(it.name);
+                        boulevardItemsMap[normalized] = it.id;
+                        // Also try without common suffixes
+                        const withoutSuffix = normalized.replace(/\s+(hair\s+removal|laser|treatment|service)$/i, '').trim();
+                        if (withoutSuffix && withoutSuffix !== normalized) {
+                            boulevardItemsMap[withoutSuffix] = it.id;
+                        }
+                    });
+
+                    console.log('[Boulevard] Available items:', items.map(it => it.name));
+
+                    // Map service cards with fuzzy matching
+                    let mappedCount = 0;
+                    document.querySelectorAll('.service-card').forEach(card => {
+                        const titleEl = card.querySelector('.card-title');
+                        const name = titleEl ? titleEl.textContent.trim() : '';
+                        if (!name) return;
+                        
+                        let id = boulevardItemsMap[normalizeName(name)] || findBestMatch(name);
+                        if (id) {
+                            card.dataset.bvId = id;
+                            mappedCount++;
+                            console.log(`[Boulevard] Mapped "${name}" → Boulevard item ID: ${id}`);
+                        } else {
+                            console.warn(`[Boulevard] No match found for "${name}"`);
+                        }
+                    });
+
+                    // Retroactively add bvId to cart items that don't have it
+                    let cartMappedCount = 0;
+                    cart.forEach(item => {
+                        if (!item.bvId && item.name) {
+                            const id = boulevardItemsMap[normalizeName(item.name)] || findBestMatch(item.name);
+                            if (id) {
+                                item.bvId = id;
+                                cartMappedCount++;
+                                console.log(`[Boulevard] Mapped cart item "${item.name}" → Boulevard item ID: ${id}`);
+                            } else {
+                                console.warn(`[Boulevard] No match found for cart item "${item.name}"`);
+                            }
+                        }
+                    });
+                    
+                    if (cartMappedCount > 0) {
+                        saveCart();
+                    }
+
+                    console.log('[Boulevard] Mapped', Object.keys(boulevardItemsMap).length, 'items');
+                    return boulevardItemsMap;
+                } catch (e) {
+                    console.error('[Boulevard] mapCardsWithBoulevardItems failed', e);
+                    return {};
+                }
+            }
+
+            async function ensureCartItemsHaveBvId() {
+                // First, check manual mappings (works immediately, no API call needed)
+                let manualMappedCount = 0;
+                cart.forEach(item => {
+                    if (!item.bvId && item.name) {
+                        const id = findBestMatch(item.name);
+                        if (id) {
+                            item.bvId = id;
+                            manualMappedCount++;
+                            console.log(`[Boulevard] Applied manual/fallback mapping to cart item "${item.name}" → ${id}`);
+                        }
+                    }
+                });
+                if (manualMappedCount > 0) {
+                    saveCart();
+                }
+
+                // Then, if still missing bvIds or mapping is empty, fetch from API
+                const itemsNeedingBvId = cart.filter(item => !item.bvId && item.name);
+                const mappingIsEmpty = Object.keys(boulevardItemsMap).length === 0;
+                
+                if (itemsNeedingBvId.length > 0 || mappingIsEmpty) {
+                    if (mappingIsEmpty) {
+                        console.log('[Boulevard] Mapping is empty, re-fetching menu items from API');
+                    } else {
+                        console.log('[Boulevard] Re-mapping', itemsNeedingBvId.length, 'items without bvId from API');
+                    }
+                    await mapCardsWithBoulevardItems();
+                }
+            }
+            /* === End Boulevard Integration === */
+
             // Enhance card-meta elements with better structure
             const cardMetas = document.querySelectorAll('.card-meta');
             cardMetas.forEach(function (metaEl) {
@@ -4179,6 +5212,12 @@
             const slotsAfternoonEl = document.getElementById('slotsAfternoon');
             const slotsEveningEl = document.getElementById('slotsEvening');
 
+            // Staff selection modal elements
+            const staffModal = document.getElementById('staffModal');
+            const staffCloseBtn = document.getElementById('staffClose');
+            const staffSelectionContent = document.getElementById('staffSelectionContent');
+            const staffNextBtn = document.getElementById('staffNext');
+
             // Step navigation elements
             const bookingNextBtn = document.getElementById('bookingNext');
             const completeModal = document.getElementById('completeModal');
@@ -4189,6 +5228,9 @@
             let bookingMonth = null; // Date at first of month
             let selectedDate = null; // Date
             let selectedTime = null; // string
+            let selectedBookableTimeId = null; // Boulevard time id
+            let selectedStaffVariants = {}; // { itemId: variantId }
+            let staffVariantsCache = {}; // { itemId: [variants] }
 
             function toMoney(n) {
                 return `$${Number(n).toFixed(2)}`;
@@ -4236,7 +5278,17 @@
                 // Create stable-ish id from name + price + duration
                 const id = `${name.toLowerCase()}|${price.toFixed(2)}|${duration}`;
 
-                return { id, name, price, duration };
+                // Try to get bvId from card dataset, or fallback to mapping cache with fuzzy matching
+                let bvId = card.dataset.bvId || null;
+                if (!bvId && name) {
+                    bvId = boulevardItemsMap[normalizeName(name)] || findBestMatch(name);
+                    if (bvId) {
+                        // Also set it on the card for future use
+                        card.dataset.bvId = bvId;
+                    }
+                }
+                const bvVariantId = card.dataset.bvVariantId || null;
+                return { id, name, price, duration, bvId, bvVariantId };
             }
 
             function saveCart() {
@@ -4299,7 +5351,22 @@
             function addToCart(item) {
                 // Avoid duplicates by id (common for appointment flows)
                 const exists = cart.some(i => i.id === item.id);
-                if (!exists) cart.push(item);
+                if (!exists) {
+                    cart.push(item);
+                    console.log(`[Cart] Added "${item.name}" to cart`, item.bvId ? `with bvId: ${item.bvId}` : 'without bvId');
+                    if (!item.bvId && item.name) {
+                        // Try to get bvId immediately if missing
+                        const bvId = findBestMatch(item.name);
+                        if (bvId) {
+                            item.bvId = bvId;
+                            console.log(`[Cart] Found bvId for "${item.name}": ${bvId}`);
+                        }
+                    }
+                }
+                // Sync with Boulevard cart if mapping exists
+                if (item.bvId) {
+                    addToCartBoulevard(item.bvId, item.bvVariantId || null);
+                }
                 saveCart();
                 renderCart();
                 showToast(item.name);
@@ -4448,7 +5515,7 @@
             if (cartBackdrop) cartBackdrop.addEventListener('click', closeCart);
             if (cartCheckoutBtn) cartCheckoutBtn.addEventListener('click', function () {
                 closeCart();
-                openBookingModal();
+                openStaffModal();
             });
 
             function monthLabel(d) {
@@ -4511,13 +5578,17 @@
                 if (!container) return;
                 container.innerHTML = '';
                 times.forEach(t => {
+                    const isObj = typeof t === 'object' && t !== null;
+                    const label = isObj ? t.label : t;
+                    const timeId = isObj ? t.id : null;
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'slot-btn';
-                    btn.textContent = t;
-                    if (selectedTime === t) btn.classList.add('is-selected');
+                    btn.textContent = label;
+                    if (selectedTime === label) btn.classList.add('is-selected');
                     btn.addEventListener('click', () => {
-                        selectedTime = t;
+                        selectedTime = label;
+                        selectedBookableTimeId = timeId;
                         renderSchedule();
                     });
                     container.appendChild(btn);
@@ -4537,16 +5608,57 @@
                 });
                 scheduleTitleEl.textContent = `${prefix}${label}`;
 
-                // Static demo availability matching your screenshot layout
-                const afternoon = ['3:00 PM', '3:40 PM', '3:50 PM', '4:00 PM', '4:20 PM', '4:40 PM'];
-                const evening = ['5:10 PM', '5:20 PM', '5:40 PM', '5:50 PM', '6:00 PM', '6:10 PM', '6:30 PM', '6:40 PM'];
+                // Load real-time availability from Boulevard
+                const spinner = '<div class="loading">Loading availability from Boulevard…</div>';
+                if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = spinner;
+                if (slotsEveningEl) slotsEveningEl.innerHTML = spinner;
 
-                renderSlots(slotsAfternoonEl, afternoon);
-                renderSlots(slotsEveningEl, evening);
-                updateBookingNextState();
+                loadTimesForDate(selectedDate).then(times => {
+                    console.log(`[Boulevard] Loaded ${times.length} times for ${selectedDate.toISOString().split('T')[0]}`);
+                    
+                    // Split into afternoon (12–17) and evening (17–22)
+                    const afternoon = times.filter(t => t.hour >= 12 && t.hour < 17);
+                    const evening = times.filter(t => t.hour >= 17);
+                    
+                    if (times.length === 0) {
+                        const noAvailMsg = `
+                            <div class="no-availability" style="padding: 16px; text-align: center; color: rgba(42, 42, 42, 0.7);">
+                                <p style="margin: 0 0 8px 0; font-weight: 500;">No availability found</p>
+                                <p style="margin: 0; font-size: 12px;">
+                                    Check console for connection status. Ensure items are in Boulevard cart and staff have availability configured.
+                                </p>
+                            </div>
+                        `;
+                        if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = noAvailMsg;
+                        if (slotsEveningEl) slotsEveningEl.innerHTML = '';
+                    } else {
+                        renderSlots(slotsAfternoonEl, afternoon);
+                        renderSlots(slotsEveningEl, evening);
+                        
+                        // Show message if a section is empty
+                        if (afternoon.length === 0 && slotsAfternoonEl) {
+                            slotsAfternoonEl.innerHTML = '<div class="no-availability">No afternoon availability</div>';
+                        }
+                        if (evening.length === 0 && slotsEveningEl) {
+                            slotsEveningEl.innerHTML = '<div class="no-availability">No evening availability</div>';
+                        }
+                    }
+                    
+                    updateBookingNextState();
+                }).catch(e => {
+                    console.error('[Boulevard] Error loading times:', e);
+                    const errorMsg = `
+                        <div class="no-availability" style="padding: 16px; text-align: center; color: #d32f2f;">
+                            <p style="margin: 0 0 8px 0; font-weight: 500;">Error loading availability</p>
+                            <p style="margin: 0; font-size: 12px;">Check console for details. Boulevard connection may be down.</p>
+                        </div>
+                    `;
+                    if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = errorMsg;
+                    if (slotsEveningEl) slotsEveningEl.innerHTML = '';
+                });
             }
 
-            function openBookingModal() {
+            async function openBookingModal() {
                 if (!bookingModal) return;
 
                 // Close the cart drawer if open
@@ -4562,9 +5674,38 @@
                 if (!selectedDate) selectedDate = new Date();
 
                 renderCalendar();
-                renderSchedule();
                 renderBookingCart();
 
+                // Ensure cart is initialized first
+                const isInitialized = await ensureCartInitialized();
+                if (!isInitialized) {
+                    console.error('[Boulevard] Cannot proceed: cart initialization failed');
+                    alert('Unable to connect to booking system. Please refresh the page and try again.');
+                    return;
+                }
+
+                // Ensure all cart items are in Boulevard cart before loading availability
+                console.log('[Boulevard] Ensuring cart items are in Boulevard cart...');
+                const itemsWithBvId = cart.filter(item => item.bvId);
+                for (const item of itemsWithBvId) {
+                    if (item.bvId) {
+                        try {
+                            await addToCartBoulevard(item.bvId, item.bvVariantId || null);
+                            console.log(`[Boulevard] Verified "${item.name}" is in Boulevard cart`);
+                        } catch (e) {
+                            console.error(`[Boulevard] Failed to add "${item.name}" to Boulevard cart:`, e);
+                        }
+                    }
+                }
+
+                // Verify cart connection
+                const isConnected = await verifyCartConnection();
+                if (!isConnected) {
+                    console.error('[Boulevard] Cart verification failed - availability may not load');
+                }
+
+                renderSchedule();
+                
                 // Focus close button for accessibility
                 if (bookingCloseBtn) bookingCloseBtn.focus();
             }
@@ -4594,9 +5735,23 @@
                 document.body.classList.remove('modal-open');
             }
 
-            if (bookingNextBtn) bookingNextBtn.addEventListener('click', () => {
-                closeBookingModal();
-                openCompleteModal();
+            if (bookingNextBtn) bookingNextBtn.addEventListener('click', async () => {
+                if (!boulevardCartId || !selectedBookableTimeId) return;
+                bookingNextBtn.disabled = true;
+                try {
+                    await bvldGql(`
+                        mutation ($id:ID!, $time:ID!) {
+                            reserveCartBookableItems(input:{id:$id, bookableTimeId:$time}) { cart { id } }
+                        }
+                    `, { id: boulevardCartId, time: selectedBookableTimeId });
+                    closeBookingModal();
+                    openCompleteModal();
+                } catch (e) {
+                    alert('Sorry, that slot is no longer available. Please pick another.');
+                    renderSchedule();
+                } finally {
+                    bookingNextBtn.disabled = false;
+                }
             });
 
             if (completeCloseBtn) completeCloseBtn.addEventListener('click', closeCompleteModal);
@@ -4644,6 +5799,41 @@
                 document.addEventListener('keydown', (e) => {
                     if (!bookingModal.classList.contains('is-open')) return;
                     if (e.key === 'Escape') closeBookingModal();
+                });
+            }
+
+            // Staff modal handlers
+            if (staffCloseBtn) {
+                staffCloseBtn.addEventListener('click', closeStaffModal);
+            }
+
+            if (staffNextBtn) {
+                staffNextBtn.addEventListener('click', async () => {
+                    // Update cart items with selected staff variants and sync to Boulevard
+                    for (const item of cart) {
+                        if (item.bvId && selectedStaffVariants[item.bvId]) {
+                            item.bvVariantId = selectedStaffVariants[item.bvId];
+                            // Re-add to Boulevard with staff variant
+                            await addToCartBoulevard(item.bvId, item.bvVariantId);
+                        }
+                    }
+                    saveCart();
+                    closeStaffModal();
+                    openBookingModal();
+                });
+            }
+
+            if (staffModal) {
+                staffModal.addEventListener('click', (e) => {
+                    const target = e.target;
+                    if (target && target.getAttribute && target.getAttribute('data-staff-close') === 'true') {
+                        closeStaffModal();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (!staffModal.classList.contains('is-open')) return;
+                    if (e.key === 'Escape') closeStaffModal();
                 });
             }
 
@@ -4985,6 +6175,10 @@
             // Initialize cart from storage (cart remains hidden until user opens it)
             loadCart();
             renderCart();
+
+            // Apply manual service mappings (runs after DOM is ready)
+            // This ensures service cards without data-bv-id get mapped from manual mappings
+            applyManualMappings();
 
             // Back to Top Button
             const backToTopBtn = document.getElementById('backToTop');
