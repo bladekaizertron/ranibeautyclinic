@@ -1,0 +1,23 @@
+
+
+//API Information
+const BUSINESS_ID = 'BUSINESS ID';
+const API_SECRET = 'SECRET KEY';
+const API_KEY = 'API KEY';
+
+function generate_auth_header(business_id, api_secret, api_key) {
+  const prefix = 'blvd-admin-v1';
+  const timestamp = Math.floor(Date.now() / 1000);
+
+  const payload = `${prefix}${business_id}${timestamp}`;
+  const raw_key = CryptoJS.enc.Base64.parse(api_secret);
+  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);
+  const token = `${signature}${payload}`;
+  const http_basic_payload = `${api_key}:${token}`;
+  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);
+
+  return(http_basic_credentials)
+}
+const authToken= "Basic "+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);
+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);
+pm.request.headers.upsert({key: "Authorization", value: authToken});
