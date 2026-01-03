@@ -5054,12 +5054,27 @@
                         console.warn('  - The date is within booking window');
                     }
 
-                    const arr = times.map(t => ({
-                        id: t.id,
-                        label: new Date(t.startTime).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
-                        hour: new Date(t.startTime).getHours(),
-                        startTime: t.startTime
-                    }));
+                    const arr = times.map(t => {
+                        // Parse time in location timezone to avoid browser timezone conversion
+                        // startTime format: "2026-01-04T09:00:00-08:00" (ISO 8601 with timezone)
+                        const timeStr = t.startTime;
+                        const timePart = timeStr.split('T')[1]; // Get "09:00:00-08:00"
+                        const hourMin = timePart.split(':'); // ["09", "00", "00-08"]
+                        const hour = parseInt(hourMin[0], 10);
+                        const minute = hourMin[1];
+
+                        // Format display time (e.g., "9:00 AM")
+                        const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+                        const ampm = hour >= 12 ? 'PM' : 'AM';
+                        const label = `${displayHour}:${minute} ${ampm}`;
+
+                        return {
+                            id: t.id,
+                            label: label,
+                            hour: hour, // Use parsed hour from location timezone
+                            startTime: t.startTime
+                        };
+                    });
                     timesCache[ymd] = arr;
                     return arr;
                 } catch (e) {
@@ -5859,10 +5874,14 @@
 
                 // Display selected staff name
                 const staffDisplayEl = document.getElementById('selectedStaffDisplay');
+                const staffNameSpan = document.querySelector('#selectedStaffName span');
                 if (staffDisplayEl && selectedStaffName) {
-                    staffDisplayEl.textContent = `Staff: ${selectedStaffName}`;
+                    staffDisplayEl.style.display = 'block';
+                    if (staffNameSpan) {
+                        staffNameSpan.textContent = selectedStaffName;
+                    }
                 } else if (staffDisplayEl) {
-                    staffDisplayEl.textContent = '';
+                    staffDisplayEl.style.display = 'none';
                 }
 
                 // Ensure cart is initialized first
