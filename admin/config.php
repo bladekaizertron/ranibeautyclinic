@@ -2,9 +2,9 @@
 // Database configuration for Rani Beauty Clinic CMS
 // Adjust credentials to match your local XAMPP MySQL setup if needed.
 $host = "localhost";            // Typically `localhost` on XAMPP
-$user = "root";                 // Default XAMPP MySQL user
-$pass = "";                     // Default XAMPP MySQL has no password
-$dbname = "ranicms";            // Database that stores CMS data
+$user = "u993466733_ranicmsDB";                 // Default XAMPP MySQL user
+$pass = "ranicmsDB123";                     // Default XAMPP MySQL has no password
+$dbname = "u993466733_ranicmsDB";            // Database that stores CMS data
 
 // Create connection
 $conn = new mysqli($host, $user, $pass, $dbname);
