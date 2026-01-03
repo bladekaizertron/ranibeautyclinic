@@ -4334,7 +4334,7 @@
 
                     const json = await res.json();
                     if (json.errors) {
-                        console.error('[Boulevard] GraphQL Errors:', json.errors);
+                        console.error('[Boulevard] GraphQL Errors:', JSON.stringify(json.errors, null, 2));
                         throw json.errors;
                     }
                     return json.data;
@@ -4378,9 +4378,42 @@
 
                     console.log('[Boulevard] Initializing connection...');
                     console.log('[Boulevard] Business ID:', BUSINESS_ID);
-                    console.log('[Boulevard] Location ID:', LOCATION_ID);
 
-                    // Re-use cart from localStorage if it exists, but validate it first
+                    // 1. First, validate/fetch the correct Location ID
+                    console.log('[Boulevard] verifying location configuration...');
+                    let activeLocationId = LOCATION_ID;
+
+                    try {
+                        // Query root locations (scoped to the API key's business)
+                        console.log('[Boulevard] Querying root locations...');
+                        const locationData = await bvldGql(`
+                            query {
+                                locations(first: 5) {
+                                    edges {
+                                        node {
+                                            id
+                                            name
+                                        }
+                                    }
+                                }
+                            }
+                        `);
+
+                        // Look for a location, preferably matching "Rani" or just the first one
+                        const edges = locationData.locations?.edges || [];
+                        const fetchedLocation = edges[0]?.node;
+
+                        if (fetchedLocation && fetchedLocation.id) {
+                            console.log('[Boulevard] Resolved Location ID:', fetchedLocation.id, `(${fetchedLocation.name})`);
+                            activeLocationId = fetchedLocation.id;
+                        } else {
+                            console.warn('[Boulevard] Could not resolve location from API, using fallback:', activeLocationId);
+                        }
+                    } catch (locError) {
+                        console.warn('[Boulevard] Location lookup failed, using fallback:', locError);
+                    }
+
+                    // 2. Re-use cart from localStorage if it exists
                     const stored = localStorage.getItem('bvld_cart_id');
                     if (stored) {
                         console.log('[Boulevard] Found stored cart ID:', stored);
@@ -4401,12 +4434,12 @@
                     }
 
                     // 3. Otherwise create a new cart
-                    console.log('[Boulevard] Creating new cart...');
+                    console.log('[Boulevard] Creating new cart with Location ID:', activeLocationId);
                     const cartData = await bvldGql(`
                         mutation ($loc: ID!) {
                             createCart(input: { locationId: $loc }) { cart { id } }
                         }
-                    `, { loc: LOCATION_ID });
+                    `, { loc: activeLocationId });
 
                     boulevardCartId = cartData.createCart.cart.id;
                     if (!boulevardCartId) {
@@ -4415,21 +4448,16 @@
 
                     localStorage.setItem('bvld_cart_id', boulevardCartId);
                     console.log('[Boulevard] Cart created successfully:', boulevardCartId);
-                    console.log('[Boulevard] Cart ID is stored in localStorage. To view it:');
-                    console.log('[Boulevard]   1. Open browser DevTools (F12)');
-                    console.log('[Boulevard]   2. Go to Application/Storage tab');
-                    console.log('[Boulevard]   3. Check localStorage for key: bvld_cart_id');
-                    console.log('[Boulevard]   Or type in console: localStorage.getItem("bvld_cart_id")');
 
                     // After cart is ready, fetch menu and map service cards
                     await mapCardsWithBoulevardItems();
                     console.log('[Boulevard] Initialization complete');
                 } catch (e) {
+                    window.bvldLastError = e;
                     console.error('[Boulevard] Init failed:', e);
                     console.error('[Boulevard] Error details:', {
                         message: e.message || e,
                         businessId: BUSINESS_ID,
-                        locationId: LOCATION_ID,
                         endpoint: BVLD_URL
                     });
 
@@ -4489,7 +4517,6 @@
                     console.error('  - Endpoint:', BVLD_URL);
                     console.error('  - Business ID:', BUSINESS_ID);
                     console.error('  - Location ID:', LOCATION_ID);
-                    console.error('  - API Key:', BVLD_KEY ? 'Set (' + BVLD_KEY.substring(0, 10) + '...)' : 'Missing');
                     console.error('[Boulevard] Check the console above for specific error messages');
                 }
 
@@ -4622,206 +4649,223 @@
                 if (!staffSelectionContent) return;
                 staffSelectionContent.innerHTML = '<div class="loading">Loading staff members...</div>';
 
-                // Ensure cart is initialized first
-                const isInitialized = await ensureCartInitialized();
-                if (!isInitialized) {
-                    staffSelectionContent.innerHTML = `
-                        <div class="no-staff">
-                            <p><strong>⚠️ Connection Error</strong></p>
-                            <p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
-                                Unable to connect to Boulevard API.
-                            </p>
-                            <p style="margin-top: 12px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
-                                <strong>Endpoint:</strong> ${BVLD_URL}
-                            </p>
-                            <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
-                                <strong>Possible causes:</strong>
-                            </p>
-                            <ul style="margin-top: 4px; font-size: 12px; color: rgba(42, 42, 42, 0.6); padding-left: 20px;">
-                                <li>Incorrect API endpoint URL</li>
-                                <li>Network/DNS issue</li>
-                                <li>API endpoint may be blocked</li>
-                            </ul>
-                            <p style="margin-top: 12px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
-                                <strong>Check browser console (F12) for detailed error messages.</strong>
-                            </p>
-                            <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
-                                Please verify the correct endpoint URL with Boulevard support or documentation.
-                            </p>
-                        </div>
-                    `;
-                    return;
-                }
+                try {
+                    console.log('[Boulevard] Starting loadStaffForCart sequence...');
 
-                // First, immediately check manual mappings (synchronous, no API needed)
-                let immediateMapped = 0;
-                cart.forEach(item => {
-                    if (!item.bvId && item.name) {
-                        // Check manual mappings first
-                        const normalizedName = normalizeName(item.name);
-                        for (const [manualName, itemId] of Object.entries(manualServiceMappings)) {
-                            if (normalizeName(manualName) === normalizedName) {
-                                item.bvId = itemId;
-                                immediateMapped++;
-                                console.log(`[Boulevard] Applied manual mapping to cart item "${item.name}" → ${itemId}`);
-                                break;
+                    // Ensure cart is initialized first
+                    console.log('[Boulevard] Step 1: Initializing cart...');
+                    const isInitialized = await ensureCartInitialized();
+                    if (!isInitialized) {
+                        const lastError = window.bvldLastError || 'Unknown error';
+                        const errorJson = typeof lastError === 'object' ? JSON.stringify(lastError, null, 2) : lastError;
+
+                        staffSelectionContent.innerHTML = `
+                            <div class="no-staff">
+                                <p><strong>⚠️ Connection Error</strong></p>
+                                <p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                    Unable to initialize Boulevard cart.
+                                </p>
+                                <div style="margin-top: 12px; background: #f5f5f5; padding: 10px; border-radius: 4px;">
+                                    <code style="font-size: 11px; display: block; white-space: pre-wrap; word-break: break-all; color: #d32f2f;">${escapeHtml(errorJson)}</code>
+                                </div>
+                                <p style="margin-top: 12px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                    <strong>Endpoint:</strong> ${BVLD_URL}
+                                </p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    // First, immediately check manual mappings (synchronous, no API needed)
+                    console.log('[Boulevard] Step 2: Checking manual mappings...');
+
+                    // AGGRESSIVE ID SANITIZATION
+                    // Force re-mapping if any item has a legacy ID
+                    let sanitizationHappened = false;
+                    cart.forEach(item => {
+                        if (item.bvId && !item.bvId.startsWith('urn:blvd:')) {
+                            console.log(`[Boulevard] Aggressively clearing invalid/legacy ID: ${item.bvId}`);
+                            item.bvId = null;
+                            sanitizationHappened = true;
+                        }
+                    });
+
+                    let immediateMapped = 0;
+                    cart.forEach(item => {
+                        if (!item.bvId && item.name) {
+                            // Check manual mappings first
+                            const normalizedName = normalizeName(item.name);
+                            for (const [manualName, itemId] of Object.entries(manualServiceMappings)) {
+                                if (normalizeName(manualName) === normalizedName) {
+                                    item.bvId = itemId;
+                                    immediateMapped++;
+                                    console.log(`[Boulevard] Applied manual mapping to cart item "${item.name}" → ${itemId}`);
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                    if (immediateMapped > 0) {
+                        saveCart();
+                    }
+
+                    // Then, ensure cart items have bvId by re-mapping if needed (includes API fetch)
+                    console.log('[Boulevard] Step 3: Ensuring items have BV IDs...');
+                    await ensureCartItemsHaveBvId();
+
+                    const itemsWithBvId = cart.filter(item => item.bvId);
+                    if (itemsWithBvId.length === 0) {
+                        console.log('[Boulevard] No items with BV IDs found.');
+                        const cartItemNames = cart.map(item => item.name).join(', ');
+                        const availableItems = boulevardItemsList.map(it => it.name).slice(0, 20); // Show first 20
+                        const availableItemsText = availableItems.length > 0
+                            ? availableItems.join(', ') + (boulevardItemsList.length > 20 ? ` (and ${boulevardItemsList.length - 20} more...)` : '')
+                            : 'None loaded';
+                        const manualMappingsList = Object.keys(manualServiceMappings).join(', ');
+
+                        staffSelectionContent.innerHTML = `
+                            <div class="no-staff">
+                                <p><strong>No bookable items found in cart.</strong></p>
+                                <p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                    <strong>Items in cart:</strong> ${cart.length > 0 ? cartItemNames : 'Cart is empty'}
+                                </p>
+                                <p style="margin-top: 12px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                    <strong>Available Boulevard items:</strong> ${availableItemsText}
+                                </p>
+                                ${manualMappingsList ? `<p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
+                                    <strong>Manual mappings configured:</strong> ${manualMappingsList}
+                                </p>` : ''}
+                                <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                    Service names must match Boulevard menu items. Check the console for detailed matching attempts.
+                                </p>
+                            </div>
+                        `;
+                        console.warn('[Boulevard] Cart items without bvId:', cart.filter(item => !item.bvId).map(item => ({ name: item.name, id: item.id })));
+                        return;
+                    }
+
+                    // Pre-populate selectedStaffVariants from cart items that already have variants
+                    itemsWithBvId.forEach(item => {
+                        if (item.bvVariantId) {
+                            selectedStaffVariants[item.bvId] = item.bvVariantId;
+                        }
+                    });
+
+                    // Ensure all items are added to Boulevard cart before querying staff variants
+                    console.log('[Boulevard] Step 4: Adding items to Boulevard cart...');
+                    for (const item of itemsWithBvId) {
+                        if (item.bvId) {
+                            try {
+                                console.log(`[Boulevard] Adding ${item.name} (${item.bvId}) to cart...`);
+                                await addToCartBoulevard(item.bvId, item.bvVariantId || null);
+                                console.log(`[Boulevard] Added "${item.name}" to Boulevard cart`);
+                            } catch (e) {
+                                console.error(`[Boulevard] Failed to add "${item.name}" to Boulevard cart:`, e);
                             }
                         }
                     }
-                });
-                if (immediateMapped > 0) {
-                    saveCart();
-                }
 
-                // Then, ensure cart items have bvId by re-mapping if needed (includes API fetch)
-                await ensureCartItemsHaveBvId();
+                    let html = '';
+                    console.log('[Boulevard] Step 5: Fetching staff variants...');
+                    for (const item of itemsWithBvId) {
+                        console.log(`[Boulevard] Fetching staff variants for "${item.name}" (bvId: ${item.bvId})...`);
+                        let variants = await fetchStaffVariantsForItem(item.bvId);
+                        console.log(`[Boulevard] Found ${variants.length} staff variants for "${item.name}"`);
 
-                const itemsWithBvId = cart.filter(item => item.bvId);
-                if (itemsWithBvId.length === 0) {
-                    const cartItemNames = cart.map(item => item.name).join(', ');
-                    const availableItems = boulevardItemsList.map(it => it.name).slice(0, 20); // Show first 20
-                    const availableItemsText = availableItems.length > 0
-                        ? availableItems.join(', ') + (boulevardItemsList.length > 20 ? ` (and ${boulevardItemsList.length - 20} more...)` : '')
-                        : 'None loaded';
-                    const manualMappingsList = Object.keys(manualServiceMappings).join(', ');
+                        if (variants.length === 0) {
+                            // Ensure cache is set to empty array so updateStaffNextState knows this item is ready
+                            if (!staffVariantsCache[item.bvId]) {
+                                staffVariantsCache[item.bvId] = [];
+                            }
+                            html += `
+                                <div class="staff-item-group">
+                                    <h4>${item.name}</h4>
+                                    <div class="no-staff" style="background: rgba(243, 214, 190, 0.1); border: 1px solid rgba(243, 214, 190, 0.3); border-radius: var(--radius-sm); padding: 16px;">
+                                        <p style="margin: 0; font-weight: 500;">✓ This service doesn't require staff selection</p>
+                                        <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6); margin-bottom: 0;">
+                                            You can continue to the next step. The service will be assigned to the first available staff member.
+                                        </p>
+                                    </div>
+                                </div>
+                            `;
+                            continue;
+                        }
 
+                        // Filter to preferred staff if configured
+                        if (PREFERRED_STAFF_EMPLOYEE_ID) {
+                            const filtered = variants.filter(v => v.staff.id === PREFERRED_STAFF_EMPLOYEE_ID);
+                            if (filtered.length > 0) {
+                                variants = filtered;
+                                console.log(`[Boulevard] Filtered to preferred staff: ${PREFERRED_STAFF_NAME}`);
+                            }
+                        }
+
+                        // Pre-select preferred staff if not already selected
+                        if (PREFERRED_STAFF_EMPLOYEE_ID && !selectedStaffVariants[item.bvId]) {
+                            const preferredVariant = variants.find(v => v.staff.id === PREFERRED_STAFF_EMPLOYEE_ID);
+                            if (preferredVariant) {
+                                selectedStaffVariants[item.bvId] = preferredVariant.id;
+                                console.log(`[Boulevard] Pre-selected staff: ${PREFERRED_STAFF_NAME}`);
+                            }
+                        }
+
+                        html += `<div class="staff-item-group">`;
+                        html += `<h4>${escapeHtml(item.name)}</h4>`;
+                        html += `<div class="staff-options">`;
+                        variants.forEach(variant => {
+                            const staff = validateStaffData(variant.staff);
+                            if (!staff) return; // Skip invalid staff data
+
+                            const name = `${escapeHtml(staff.firstName)} ${escapeHtml(staff.lastName)}`;
+                            const isSelected = selectedStaffVariants[item.bvId] === variant.id;
+                            html += `
+                                <label class="staff-option ${isSelected ? 'is-selected' : ''}">
+                                    <input type="radio" name="staff-${escapeHtml(item.bvId)}" value="${escapeHtml(variant.id)}" 
+                                        data-item-id="${escapeHtml(item.bvId)}" ${isSelected ? 'checked' : ''}>
+                                    <div class="staff-option__content">
+                                        <div class="staff-option__name">${name}</div>
+                                        ${staff.bio ? `<div class="staff-option__bio">${escapeHtml(staff.bio)}</div>` : ''}
+                                    </div>
+                                </label>
+                            `;
+                        });
+                        html += `</div></div>`;
+                    }
+
+                    console.log('[Boulevard] Step 6: Rendering UI...');
+                    staffSelectionContent.innerHTML = html;
+
+                    // Attach change handlers
+                    staffSelectionContent.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.addEventListener('change', function () {
+                            const itemId = this.dataset.itemId;
+                            selectedStaffVariants[itemId] = this.value;
+                            updateStaffNextState();
+                            // Update visual selection
+                            staffSelectionContent.querySelectorAll('.staff-option').forEach(opt => {
+                                opt.classList.remove('is-selected');
+                            });
+                            this.closest('.staff-option').classList.add('is-selected');
+                        });
+                    });
+
+                    updateStaffNextState();
+                    console.log('[Boulevard] loadStaffForCart completed successfully.');
+
+                } catch (error) {
+                    console.error('[Boulevard] CRITICAL ERROR in loadStaffForCart:', error);
                     staffSelectionContent.innerHTML = `
                         <div class="no-staff">
-                            <p><strong>No bookable items found in cart.</strong></p>
+                            <p><strong>⚠️ Something went wrong</strong></p>
                             <p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
-                                <strong>Items in cart:</strong> ${cart.length > 0 ? cartItemNames : 'Cart is empty'}
+                                ${error.message}
                             </p>
-                            <p style="margin-top: 12px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
-                                <strong>Available Boulevard items:</strong> ${availableItemsText}
-                            </p>
-                            ${manualMappingsList ? `<p style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">
-                                <strong>Manual mappings configured:</strong> ${manualMappingsList}
-                            </p>` : ''}
-                            <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
-                                Service names must match Boulevard menu items. Check the console for detailed matching attempts.
+                            <p style="margin-top: 12px; font-size: 12px; color: rgba(42, 42, 42, 0.6);">
+                                Please check the console for more details.
                             </p>
                         </div>
                     `;
-                    console.warn('[Boulevard] Cart items without bvId:', cart.filter(item => !item.bvId).map(item => ({ name: item.name, id: item.id })));
-                    console.log('[Boulevard] Available Boulevard items:', boulevardItemsList.map(it => it.name));
-                    console.log('[Boulevard] Manual mappings:', manualServiceMappings);
-                    console.log('[Boulevard] Attempting to match:', cart.map(item => item.name));
-                    return;
                 }
-
-                // Pre-populate selectedStaffVariants from cart items that already have variants
-                itemsWithBvId.forEach(item => {
-                    if (item.bvVariantId) {
-                        selectedStaffVariants[item.bvId] = item.bvVariantId;
-                    }
-                });
-
-                // Ensure all items are added to Boulevard cart before querying staff variants
-                console.log('[Boulevard] Ensuring items are in Boulevard cart...');
-                for (const item of itemsWithBvId) {
-                    if (item.bvId) {
-                        try {
-                            await addToCartBoulevard(item.bvId, item.bvVariantId || null);
-                            console.log(`[Boulevard] Added "${item.name}" to Boulevard cart`);
-                        } catch (e) {
-                            console.error(`[Boulevard] Failed to add "${item.name}" to Boulevard cart:`, e);
-                        }
-                    }
-                }
-
-                let html = '';
-                for (const item of itemsWithBvId) {
-                    console.log(`[Boulevard] Fetching staff variants for "${item.name}" (bvId: ${item.bvId})...`);
-                    let variants = await fetchStaffVariantsForItem(item.bvId);
-                    console.log(`[Boulevard] Found ${variants.length} staff variants for "${item.name}"`);
-
-                    if (variants.length === 0) {
-                        // Ensure cache is set to empty array so updateStaffNextState knows this item is ready
-                        if (!staffVariantsCache[item.bvId]) {
-                            staffVariantsCache[item.bvId] = [];
-                        }
-                        html += `
-                            <div class="staff-item-group">
-                                <h4>${item.name}</h4>
-                                <div class="no-staff" style="background: rgba(243, 214, 190, 0.1); border: 1px solid rgba(243, 214, 190, 0.3); border-radius: var(--radius-sm); padding: 16px;">
-                                    <p style="margin: 0; font-weight: 500;">✓ This service doesn't require staff selection</p>
-                                    <p style="margin-top: 8px; font-size: 12px; color: rgba(42, 42, 42, 0.6); margin-bottom: 0;">
-                                        You can continue to the next step. The service will be assigned to the first available staff member.
-                                    </p>
-                                </div>
-                            </div>
-                        `;
-                        continue;
-                    }
-
-                    // Log staff information for debugging
-                    console.log(`[Boulevard] Staff variants for "${item.name}":`, variants.map(v => ({
-                        variantId: v.id,
-                        staff: `${v.staff.firstName} ${v.staff.lastName}`,
-                        staffId: v.staff.id,
-                        price: v.price,
-                        duration: v.duration
-                    })));
-
-                    // Filter to preferred staff if configured
-                    if (PREFERRED_STAFF_EMPLOYEE_ID) {
-                        const filtered = variants.filter(v => v.staff.id === PREFERRED_STAFF_EMPLOYEE_ID);
-                        if (filtered.length > 0) {
-                            variants = filtered;
-                            console.log(`[Boulevard] Filtered to preferred staff: ${PREFERRED_STAFF_NAME}`);
-                        }
-                    }
-
-                    // Pre-select preferred staff if not already selected
-                    if (PREFERRED_STAFF_EMPLOYEE_ID && !selectedStaffVariants[item.bvId]) {
-                        const preferredVariant = variants.find(v => v.staff.id === PREFERRED_STAFF_EMPLOYEE_ID);
-                        if (preferredVariant) {
-                            selectedStaffVariants[item.bvId] = preferredVariant.id;
-                            console.log(`[Boulevard] Pre-selected staff: ${PREFERRED_STAFF_NAME}`);
-                        }
-                    }
-
-                    html += `<div class="staff-item-group">`;
-                    html += `<h4>${escapeHtml(item.name)}</h4>`;
-                    html += `<div class="staff-options">`;
-                    variants.forEach(variant => {
-                        const staff = validateStaffData(variant.staff);
-                        if (!staff) return; // Skip invalid staff data
-
-                        const name = `${escapeHtml(staff.firstName)} ${escapeHtml(staff.lastName)}`;
-                        const isSelected = selectedStaffVariants[item.bvId] === variant.id;
-                        html += `
-                            <label class="staff-option ${isSelected ? 'is-selected' : ''}">
-                                <input type="radio" name="staff-${escapeHtml(item.bvId)}" value="${escapeHtml(variant.id)}" 
-                                    data-item-id="${escapeHtml(item.bvId)}" ${isSelected ? 'checked' : ''}>
-                                <div class="staff-option__content">
-                                    <div class="staff-option__name">${name}</div>
-                                    ${staff.bio ? `<div class="staff-option__bio">${escapeHtml(staff.bio)}</div>` : ''}
-                                    <div class="staff-option__meta">$${Number(variant.price).toFixed(2)} • ${Number(variant.duration)} min</div>
-                                </div>
-                            </label>
-                        `;
-                    });
-                    html += `</div></div>`;
-                }
-
-                staffSelectionContent.innerHTML = html;
-
-                // Attach change handlers
-                staffSelectionContent.querySelectorAll('input[type="radio"]').forEach(radio => {
-                    radio.addEventListener('change', function () {
-                        const itemId = this.dataset.itemId;
-                        selectedStaffVariants[itemId] = this.value;
-                        updateStaffNextState();
-                        // Update visual selection
-                        staffSelectionContent.querySelectorAll('.staff-option').forEach(opt => {
-                            opt.classList.remove('is-selected');
-                        });
-                        this.closest('.staff-option').classList.add('is-selected');
-                    });
-                });
-
-                updateStaffNextState();
             }
 
             function updateStaffNextState() {
@@ -5013,9 +5057,9 @@
             // Format: 'Service Name': 'Boulevard Item ID'
             // You can add more mappings here as needed
             const manualServiceMappings = {
-                'Ponytail Laser': '02c334c0-2737-450b-8f6d-22dc07fff07f',
-                'Pony Tail Laser': '02c334c0-2737-450b-8f6d-22dc07fff07f',
-                'Ponytail Laser Hair Removal': '02c334c0-2737-450b-8f6d-22dc07fff07f'
+                'Ponytail Laser': 'urn:blvd:Service:02c334c0-2737-450b-8f6d-22dc07fff07f',
+                'Pony Tail Laser': 'urn:blvd:Service:02c334c0-2737-450b-8f6d-22dc07fff07f',
+                'Ponytail Laser Hair Removal': 'urn:blvd:Service:02c334c0-2737-450b-8f6d-22dc07fff07f'
             };
 
             // Apply manual mappings to service cards immediately (runs on page load)
@@ -5385,7 +5429,16 @@
                     const raw = localStorage.getItem(CART_KEY);
                     if (!raw) return;
                     const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) cart = parsed;
+                    if (Array.isArray(parsed)) {
+                        cart = parsed.map(item => {
+                            // Fix for legacy/bad IDs stored in cache
+                            if (item.bvId && !item.bvId.startsWith('urn:blvd:')) {
+                                console.log('[Cart] Clearing legacy/invalid bvId:', item.bvId);
+                                item.bvId = null; // Force re-mapping
+                            }
+                            return item;
+                        });
+                    }
                 } catch (e) {
                     // ignore
                 }

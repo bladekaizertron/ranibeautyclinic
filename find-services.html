@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Find Services</title>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .error {
+            color: red;
+            background: #fee;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            color: green;
+            background: #efe;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .id {
+            font-family: monospace;
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+            user-select: all;
+            cursor: pointer;
+        }
+
+        h4 {
+            margin: 0 0 5px 0;
+        }
+
+        small {
+            color: #666;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Service Finder (via Cart)</h1>
+    <div id="status">initializing...</div>
+    <div id="output"></div>
+
+    <script>
+        const PROXY_URL = '/api/boulevard-proxy.php';
+
+        async function gql(query, variables = {}) {
+            const res = await fetch(PROXY_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query, variables })
+            });
+            const json = await res.json();
+            if (json.errors) throw new Error(JSON.stringify(json.errors, null, 2));
+            return json.data;
+        }
+
+        async function init() {
+            const status = document.getElementById('status');
+            const output = document.getElementById('output');
+
+            try {
+                // 1. Find Location
+                status.innerText = 'Step 1: Finding location...';
+                const locData = await gql(`
+                    query {
+                        locations(first: 1) {
+                            edges {
+                                node {
+                                    id
+                                    name
+                                }
+                            }
+                        }
+                    }
+                `);
+
+                const location = locData.locations?.edges?.[0]?.node;
+                if (!location) throw new Error('No locations found!');
+
+                status.innerHTML = `<div class="success">Connected to: <strong>${location.name}</strong></div>`;
+
+                // 2. Create Cart
+                status.innerHTML += 'Step 2: Creating temporary cart...';
+                const cartData = await gql(`
+                    mutation ($loc: ID!) {
+                        createCart(input: { locationId: $loc }) { cart { id } }
+                    }
+                `, { loc: location.id });
+
+                const cartId = cartData.createCart?.cart?.id;
+                if (!cartId) throw new Error('Failed to create cart');
+
+
+                // 3. Find Services via Cart
+                status.innerHTML += '<br>Step 3: Fetching available items...';
+                const menuData = await gql(`
+                    query($id: ID!) {
+                        cart(id: $id) {
+                            availableCategories {
+                                name
+                                availableItems {
+                                    id
+                                    name
+                                    description
+                                }
+                            }
+                        }
+                    }
+                `, { id: cartId });
+
+                let html = '';
+                const categories = menuData.cart?.availableCategories || [];
+
+                if (categories.length === 0) {
+                    html = '<p>No services found in this cart.</p>';
+                }
+
+                categories.forEach(cat => {
+                    html += `<h3>${cat.name}</h3>`;
+                    cat.availableItems.forEach(item => {
+                        html += `
+                            <div class="card">
+                                <h4>${item.name}</h4>
+                                <div>ID: <span class="id" title="Click to select">${item.id}</span></div>
+                            </div>
+                        `;
+                    });
+                });
+
+                output.innerHTML = html;
+                status.innerHTML += ' <strong style="color:green">Done!</strong>';
+
+            } catch (e) {
+                status.innerHTML += `<div class="error"><pre>${e.message}</pre></div>`;
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

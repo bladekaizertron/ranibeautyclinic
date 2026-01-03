@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Find Location ID</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+        }
+
+        pre {
+            background: #eee;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Find Location ID</h1>
+    <button onclick="findLocations()">Find Locations</button>
+    <div id="output"></div>
+    <script>
+        const BUSINESS_ID = '4f17202c-850e-4373-8101-ca77378b0f8c';
+
+        async function findLocations() {
+            const out = document.getElementById('output');
+            out.innerHTML = 'Querying...';
+
+            // Query for business locations
+            // Using root 'locations' query which is scoped to the API key
+            const query = `
+                query {
+                    locations(first: 10) {
+                        edges {
+                            node {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            `;
+
+            try {
+                const res = await fetch('/api/boulevard-proxy.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+
+                const json = await res.json();
+                if (json.errors) {
+                    out.innerHTML = '<pre style="color:red">' + JSON.stringify(json.errors, null, 2) + '</pre>';
+
+                    // Fallback: Try querying specific location by the slug we have? No, slug lookup usually strictly typed.
+                    // Fallback: Try root locations query if business query failed?
+                } else {
+                    out.innerHTML = '<pre>' + JSON.stringify(json.data, null, 2) + '</pre>';
+                }
+            } catch (e) {
+                out.innerHTML = '<pre style="color:red">' + e.toString() + '</pre>';
+            }
+        }
+    </script>
+</body>
+
+</html>
