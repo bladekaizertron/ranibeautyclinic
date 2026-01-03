@@ -8,6 +8,9 @@
     <meta name="description"
         content="Award Winning Medical Aesthetics. Elevate Radiance. Unlock Aura. Explore laser hair removal, Hydrafacial, microneedling and more at Rani Beauty Clinic.">
     <meta name="theme-color" content="#0F1D2C">
+    <!-- Content Security Policy for XSS protection -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' /api/; img-src 'self' data:;">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -4218,30 +4221,106 @@
             const yearEl = document.getElementById('year');
             if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-            /* === Boulevard API Integration === */
-            // UPDATED: Using local PHP proxy to bypass CORS issues
-            let BVLD_URL = 'proxy.php';
+            /* === SECURITY HELPERS === */
+            // HTML Sanitization - Prevents XSS attacks
+            function escapeHtml(unsafe) {
+                if (unsafe === null || unsafe === undefined) return '';
+                return String(unsafe)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
 
-            // API Key is now handled in proxy.php, but we keep it here if needed for reference or mixed usage
-            const BVLD_KEY = '90c28c66-092d-423e-bfaa-86e2a1d8ced2';
+            // Secure Storage Wrapper - Uses sessionStorage with integrity checks
+            const SecureStorage = {
+                set(key, value) {
+                    try {
+                        const data = {
+                            value,
+                            timestamp: Date.now(),
+                            checksum: btoa(JSON.stringify(value))
+                        };
+                        sessionStorage.setItem(key, JSON.stringify(data));
+                    } catch (e) {
+                        console.error('[Security] Failed to store data:', e);
+                    }
+                },
+
+                get(key) {
+                    try {
+                        const raw = sessionStorage.getItem(key);
+                        if (!raw) return null;
+
+                        const data = JSON.parse(raw);
+                        // Verify integrity
+                        if (btoa(JSON.stringify(data.value)) !== data.checksum) {
+                            console.warn('[Security] Data integrity check failed for:', key);
+                            sessionStorage.removeItem(key);
+                            return null;
+                        }
+                        return data.value;
+                    } catch (e) {
+                        console.error('[Security] Failed to retrieve data:', e);
+                        return null;
+                    }
+                },
+
+                remove(key) {
+                    sessionStorage.removeItem(key);
+                }
+            };
+
+            // Input Validation for API responses
+            function validateStaffData(staff) {
+                if (!staff || typeof staff !== 'object') return null;
+                if (!staff.id || typeof staff.id !== 'string') return null;
+
+                return {
+                    id: staff.id.substring(0, 100),
+                    firstName: (staff.firstName || '').substring(0, 100),
+                    lastName: (staff.lastName || '').substring(0, 100),
+                    bio: (staff.bio || '').substring(0, 500)
+                };
+            }
+
+            function validateServiceData(service) {
+                if (!service || typeof service !== 'object') return null;
+
+                return {
+                    id: (service.id || '').substring(0, 100),
+                    name: (service.name || '').substring(0, 200),
+                    price: typeof service.price === 'number' ? service.price : 0,
+                    duration: typeof service.duration === 'number' ? service.duration : 0
+                };
+            }
+
+            // Boulevard API Configuration
+            // Using PHP proxy for secure server-side authentication
+            let BVLD_URL = '/api/boulevard-proxy.php'; // Local PHP proxy endpoint
+
             const BUSINESS_ID = '4f17202c-850e-4373-8101-ca77378b0f8c';
-            const LOCATION_ID = 'ujr3d7cwxsk9cz';
+            const LOCATION_ID = 'ujr3d7cwxsk9cz'; // Single location - hardcoded
             let boulevardCartId = null;
 
             // Staff configuration (optional)
-            const PREFERRED_STAFF_EMPLOYEE_ID = 'TMSgfL8bo9Mb6cIW';
-            const PREFERRED_STAFF_NAME = 'Laser Room #1';
+            // Set PREFERRED_STAFF_EMPLOYEE_ID to filter/pre-select a specific staff member
+            // Leave null to show all available staff
+            // Example: 'TMSgfL8bo9Mb6cIW' for "Laser Room #1" (Laser / Room #1)
+            const PREFERRED_STAFF_EMPLOYEE_ID = 'TMSgfL8bo9Mb6cIW'; // Set to staff.id from Boulevard API
+            const PREFERRED_STAFF_NAME = 'Laser Room #1'; // For reference/debugging only
 
             async function bvldGql(query, variables = {}) {
                 try {
-                    console.log('[Boulevard] Making request to Proxy:', BVLD_URL);
+                    console.log('[Boulevard] Making request to PHP proxy:', BVLD_URL);
                     console.log('[Boulevard] Query:', query.substring(0, 100) + '...');
 
                     const res = await fetch(BVLD_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
-                            // Authorization header is added by proxy.php
+                            // No Authorization header - handled by PHP proxy
                         },
                         body: JSON.stringify({ query, variables })
                     });
@@ -4260,8 +4339,30 @@
                     }
                     return json.data;
                 } catch (e) {
+                    // Enhanced error diagnostics
+                    console.error('[Boulevard] ❌ Request failed');
+                    console.error('[Boulevard] Error type:', e.name);
+                    console.error('[Boulevard] Error message:', e.message);
+                    console.error('[Boulevard] Full error:', e);
+
                     if (e.message && e.message.includes('Failed to fetch')) {
-                        console.error('[Boulevard] Network Error', e);
+                        console.error('[Boulevard] Network Error - Cannot reach API endpoint');
+                        console.error('[Boulevard] This is likely a CORS or DNS issue');
+                        console.error('[Boulevard] Possible causes:');
+                        console.error('  1. CORS blocking - Boulevard API may not allow browser requests');
+                        console.error('  2. The endpoint URL is incorrect');
+                        console.error('  3. Network/DNS issue');
+                        console.error('  4. API requires server-side implementation (not client-side)');
+                        console.error('[Boulevard] Endpoint:', BVLD_URL);
+
+                        // Check if it's a CORS error specifically
+                        if (e instanceof TypeError) {
+                            console.error('[Boulevard] ⚠️ This appears to be a CORS error');
+                            console.error('[Boulevard] Boulevard API likely blocks direct browser requests');
+                            console.error('[Boulevard] SOLUTION: You may need to implement a backend proxy server');
+                        }
+
+                        throw new Error(`Cannot connect to Boulevard API at ${BVLD_URL}. Check network connection and endpoint URL.`);
                     }
                     throw e;
                 }
@@ -4683,20 +4784,22 @@
                     }
 
                     html += `<div class="staff-item-group">`;
-                    html += `<h4>${item.name}</h4>`;
+                    html += `<h4>${escapeHtml(item.name)}</h4>`;
                     html += `<div class="staff-options">`;
                     variants.forEach(variant => {
-                        const staff = variant.staff;
-                        const name = `${staff.firstName} ${staff.lastName}`;
+                        const staff = validateStaffData(variant.staff);
+                        if (!staff) return; // Skip invalid staff data
+
+                        const name = `${escapeHtml(staff.firstName)} ${escapeHtml(staff.lastName)}`;
                         const isSelected = selectedStaffVariants[item.bvId] === variant.id;
                         html += `
                             <label class="staff-option ${isSelected ? 'is-selected' : ''}">
-                                <input type="radio" name="staff-${item.bvId}" value="${variant.id}" 
-                                    data-item-id="${item.bvId}" ${isSelected ? 'checked' : ''}>
+                                <input type="radio" name="staff-${escapeHtml(item.bvId)}" value="${escapeHtml(variant.id)}" 
+                                    data-item-id="${escapeHtml(item.bvId)}" ${isSelected ? 'checked' : ''}>
                                 <div class="staff-option__content">
                                     <div class="staff-option__name">${name}</div>
-                                    ${staff.bio ? `<div class="staff-option__bio">${staff.bio}</div>` : ''}
-                                    <div class="staff-option__meta">$${Number(variant.price).toFixed(2)} • ${variant.duration} min</div>
+                                    ${staff.bio ? `<div class="staff-option__bio">${escapeHtml(staff.bio)}</div>` : ''}
+                                    <div class="staff-option__meta">$${Number(variant.price).toFixed(2)} • ${Number(variant.duration)} min</div>
                                 </div>
                             </label>
                         `;
@@ -5116,8 +5219,8 @@
                 // Match patterns like "$850 per session · 45 Minutes", "$950 · 45 Minutes", "$14.00 per unit · 30 Minutes"
                 const match = text.match(/^(\$[\d,.]+(?:\s+per\s+\w+)?)\s*[·•]\s*(.+)$/);
                 if (match) {
-                    const priceText = match[1].trim();
-                    const durationText = match[2].trim();
+                    const priceText = escapeHtml(match[1].trim());
+                    const durationText = escapeHtml(match[2].trim());
                     metaEl.innerHTML = '<span class="card-meta-price">' + priceText + '</span><span class="card-meta-separator">·</span><span class="card-meta-duration">' + durationText + '</span>';
                 }
             });
@@ -5473,8 +5576,8 @@
                     cart.forEach(item => {
                         html += `
                             <li class="booking-cart__item">
-                                <div class="booking-cart__item-name">${item.name}</div>
-                                <div class="booking-cart__item-meta">${toMoney(item.price)} • ${item.duration} min</div>
+                                <div class="booking-cart__item-name">${escapeHtml(item.name)}</div>
+                                <div class="booking-cart__item-meta">${toMoney(item.price)} • ${Number(item.duration)} min</div>
                             </li>
                         `;
                     });
