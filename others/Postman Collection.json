@@ -1,0 +1,2373 @@
+{
+	"info": {
+		"_postman_id": "e31a6a9d-46d4-47c7-ab10-569a96bcdf81",
+		"name": "Customer Facing Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23149504"
+	},
+	"item": [
+		{
+			"name": "Admin API",
+			"item": [
+				{
+					"name": "Pull Voucher Data",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OkRjVUJ6ZDR4dTdrNG0vdERuRURWUFh4NHM4YVM5dEFKOXFjdkFpYUZ5MWM9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjYxODg1NTQ=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n    appointment(id:\"8888ff57-0bb2-4cd6-b86d-b2736343cf73\")\n    {\n    manageUrl\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Report Export",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OkRjVUJ6ZDR4dTdrNG0vdERuRURWUFh4NHM4YVM5dEFKOXFjdkFpYUZ5MWM9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjYxODg1NTQ=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  createReportExport(input: {\n    reportId: \"urn:blvd:Report:9e1b1293-c2a7-4120-a038-df7551c8e1d3\",\n    fileContentType: CSV,\n    frequency: DAILY,\n    utcExecutionTime: \"05:00:00\"\n    reportFilters: [\n        {\n                attributeName: \"Sale Date\",\n                relativeDateQuery: {\n                    greaterEqual: \"P1D\"\n            }\n        }\n    ]\n\n  }) {\n    reportExport {\n      id\n      fileUrl\n      frequency\n      currentExportAt\n      }\n    }\n  }",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query Report Exports",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OkRjVUJ6ZDR4dTdrNG0vdERuRURWUFh4NHM4YVM5dEFKOXFjdkFpYUZ5MWM9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjYxODg1NTQ=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  reportExports(first: 50) {\n    edges {\n      node {\n        fileUrl\n        id\n        report {\n          id\n          name\n        }\n\n        reportFilters {\n          attributeName\n          relativeDateQuery {\n            greaterEqual\n          }\n        }\n      }\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Voucher Giftcard",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OjY2dkFyYXMvY0N0SDdLWklFcHRaTzJpODdUbU1CdnJRSnRoYjQ1QkU5cEU9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjU2Nzk1NzI=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    createVoucherGiftCard(input: {\n        clientId:\"urn:blvd:Client:6c264805-90e6-44ea-80bc-1b692af219d2\",\n        code:\"1239992212\",\n        locationId:\"urn:blvd:Location:2c91d997-4184-4e06-a534-ac96a27dceff\"\n        packageProductId:\"urn:blvd:Product:1ccf6936-da57-4907-97e8-dcd0d72ae982\",\n        services: [\n            {\n                id:\"urn:blvd:Service:af32d45f-1dfc-417c-a04f-318902decf9a\",\n                quantity:8\n            }\n        ]\n            note:\"Hey this is a test\"\n                })\n    \n       {\n           giftCard{\n               id\n           }\n       }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appointment Cancel",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Ok9FQXdnLzc1SEQwV21QSE5jR1N5dy9NblY5U1B6QTFVbVg1TStiK0NjWU09Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NzA4ODE0NDM=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  cancelAppointment(input: {\n      id:\"AppointmentID\",\n      notes:\"API test\",\n      reason:STAFF_CANCEL\n    })\n    {\n    appointment{\n        notifyClientCancel\n    }\n}\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						},
+						"description": "Applicable Reasons:\n\nCLIENT_CANCEL\n\nCLIENT_LATE_CANCEL\n\nMERGED\n\nMISTAKE\n\nNO_SHOW\n\nSTAFF_CANCEL\n\nVOIDED"
+					},
+					"response": []
+				},
+				{
+					"name": "Appointment Update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NGRlNDg2MjctZGY3ZS00MDhlLTgzYTAtYjY1OGRhNDA3NWJiOnBoNkpnVFIwcXYzYTY4MUZFcDYxME15blp2RTJPUTNYVTFpNkY2OFpSQ0U9Ymx2ZC1hZG1pbi12MTE5ZjU5ZWVmLWNhZjgtNDYxZi05ZjhhLWNkMDllZGY1ODllNTE2NzU3OTY0MjE=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n        updateAppointment(input:{\n             id:\"Appointment ID\",\n             notes:\"Notes\",\n             state:ACTIVE\n             }) \n         \n             { \n                appointment{\n                    id\n                    state \n                    } \n                \n            }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appointment Reschedule",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NGRlNDg2MjctZGY3ZS00MDhlLTgzYTAtYjY1OGRhNDA3NWJiOnBoNkpnVFIwcXYzYTY4MUZFcDYxME15blp2RTJPUTNYVTFpNkY2OFpSQ0U9Ymx2ZC1hZG1pbi12MTE5ZjU5ZWVmLWNhZjgtNDYxZi05ZjhhLWNkMDllZGY1ODllNTE2NzU3OTY0MjE=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n        appointmentReschedule(input:{\n           appointmentId: \"Appointment ID\",\n           bookableTimeId:\"Time ID\"\n           sendNotification:true\n             }) \n         \n             { \n                 appointment{\n                     id\n                 }\n            } \n                \n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appointment Reschedule Available Dates",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NGRlNDg2MjctZGY3ZS00MDhlLTgzYTAtYjY1OGRhNDA3NWJiOnBoNkpnVFIwcXYzYTY4MUZFcDYxME15blp2RTJPUTNYVTFpNkY2OFpSQ0U9Ymx2ZC1hZG1pbi12MTE5ZjU5ZWVmLWNhZjgtNDYxZi05ZjhhLWNkMDllZGY1ODllNTE2NzU3OTY0MjE=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n        appointmentRescheduleAvailableDates(input:{\n           appointmentId: \"Appointment ID\",\n           searchRangeLower: \"2023-09-01\",\n           searchRangeUpper: \"2023-09-10\",\n           tz: \"America/Los_Angeles\"\n             }) \n         \n             { \n                availableDates{\n                    date\n                }\n            } \n                \n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appointment Reschedule Available Times",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NGRlNDg2MjctZGY3ZS00MDhlLTgzYTAtYjY1OGRhNDA3NWJiOnBoNkpnVFIwcXYzYTY4MUZFcDYxME15blp2RTJPUTNYVTFpNkY2OFpSQ0U9Ymx2ZC1hZG1pbi12MTE5ZjU5ZWVmLWNhZjgtNDYxZi05ZjhhLWNkMDllZGY1ODllNTE2NzU3OTY0MjE=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n        appointmentRescheduleAvailableTimes(input:{\n           appointmentId: \"Appointment ID\",\n           date:\"2023-09-05\"\n           tz: \"America/Los_Angeles\"\n             }) \n         \n             { \n                availableTimes{\n                    bookableTimeId\n                    startTime\n                }\n            } \n                \n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Time Blocks Query",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OkJ2NWF4UHdwOUY2MWJSQ0trMXU1VUNlVStNRzJTR2xyTVVSTEpuK0dRQ1U9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2Njg2MTY2NTA=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n    timeblocks(first:25,locationId:\"locationId\"){\n        edges{\n            node{\n                duration\n                endAt\n                id\n                reason\n                staff{\n                    name\n                }\n                staffId\n                startAt\n                title\n            }\n        }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders Query",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OlJaWlUrRmh5K3ViUDB0eE9makZiR2x3cERDL3JFVy9kZVFzbmZEdXNoWjQ9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjY5MDEwMzI=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n    orders(first:100,locationId:\"locationId\")\n    {\n        edges\n        {\n            node{\n                id\n                clientId\n                locationId\n                lineGroups{\n                    lines{\n                        id ...on OrderProductLine{\n                            name\n                            productId\n                            id\n                        }\n                        id\n                        quantity\n                        currentPrice\n                    }\n                }\n            \n            }\n        }\n        pageInfo{\n            endCursor\n            hasNextPage\n        }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Query",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OjRwQUN6WnFRMDVVaDlXVThlVUpsbnpHTlBXZ2pRZ050eGRLZUlIQVp1NnM9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2Nzc1MzI1NTY=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n    order(id:\"orderID\")\n   {\n       client\n       {\n           name\n       }\n       refunds\n       {\n           id\n           refundReasonText\n           status\n       }\n   }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Report Export",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OkpXbGtHYjAzcm1ZWHl4WWNrWEhmUWE0VnQ1Rzc4UU45Yzl6cHdST3VLY0E9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjU2OTY4NzQ=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    deleteReportExport(input: {id:\"reportExportID\"})\n{\n    id\n}\n     }\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Giftcard Email Fulfillment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OjAraGVVTlJpVGZWNm90Wldkb2xUVU1BZnRXUHpjdjFNS2sweENieXBObVk9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjYyODIzMTQ=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    createGiftCardEmailFulfillment(input: {\n        deliveryDate: \"2022-10-21\",\n        giftCardId: \"giftCardId\",\n        messageFromSender:\"Test Message\"\n        recipientEmail:\"test@email.com\"\n        recipientName:\"Test\"\n        senderName:\"Test\"\n    \n       } )\n       {\n           giftCardEmailFulfillment{\n               deliveryDate,\n               messageFromSender,\n               recipientEmail,\n               deliveredOn\n           }\n       }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gift Card",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OjIxRkFDZXdMTlpNaFBJaW5KMzZtL2QyRVNFWUZrYUw1SHhZK2FOVm9SUFU9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjYyODMzODY=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    createGiftCard(input: {\n        amount:5000,\n        clientId:\"clientId\",\n        code:\"card number\",\n        locationId:\"locationId\"\n    \n       } )\n       {\n           giftCard{\n               id\n           }\n       }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Appointment Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OmpzQldwNDlrL0pQZ0pyb1g0QURhTUtHQnJnajlQdzF3QStBTlVkYUxPQkU9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2Nzc1MTk0MjQ=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query { \n    appointment(id: \"appointmentId\") \n{\n  appointmentServiceOptions{\n    serviceOptionId\n    id\n    appointmentServiceId\n  }\n  appointmentServices{\n      service{\n          name\n          serviceOptionGroups{\n              name\n              serviceOptions{\n                  name\n                  id\n              }\n  }\n  \n}\n}\n}\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Webhooks",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic MWYzY2RlMzgtYjI2YS00ODkxLWEzNjYtNTdmMzYzYzM2NjRkOlc3NEx2RE53aXRmOXhsOGZOMG5ZeG44K3RvS0pkRGdKb2ltUWRmY0FibDA9Ymx2ZC1hZG1pbi12MWU2ZTc1YmQ1LThlMWMtNGJlNy1hNDA4LTcwYmNhNjU3ZjczZTE2NzcxOTM2OTY=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query { \n    webhooks(first: 10) \n    { \n        edges \n        { \n             node {\n                  id \n                  url \n                  locationId \n                  subscriptions \n                  { \n                      id \n                      enabled\n                       eventType } \n                       }\n        }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Memberships",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Okl1UXlUbmlhVkFnT1loNUVRRzZOTGpnUlBQUmxMVjlSZS9uQk1zQlFINWM9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NzcxNjU4MTU=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query { \n    memberships(first: 1000) \n    { \nedges{\n    node{\n        client{\n            name\n        }\n        startOn\n        status\n    }\n\n}\n}\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Webhook Creation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OnhXRVZiSVBmM2RDVkVrNjRhTWxlSjVVb05rdmhRNll6bHgxcmVWYnVSL009Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NzcyNjg4MjU=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    createWebhook(input: {\n        locationId:\"locationId\",\n        name:\"Webhook Name\",\n        url:\"Webhook endpoint URL\",\n        subscriptions: [{ eventType: APPOINTMENT_CREATED }]\n    \n       } )\n{\n    webhook {\n      id\n      subscriptions {\n        id\n        enabled\n        eventType\n      }\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "WEBHOOK - Appointment Reschedule",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//API Credentials\r",
+									"const BUSINESS_ID = 'Business ID';\r",
+									"const API_SECRET = 'Secret Key';\r",
+									"const API_KEY = 'API Key';\r",
+									"\r",
+									"function generate_auth_header(business_id, api_secret, api_key) {\r",
+									"  const prefix = 'blvd-admin-v1';\r",
+									"  const timestamp = Math.floor(Date.now() / 1000);\r",
+									"\r",
+									"  const payload = `${prefix}${business_id}${timestamp}`;\r",
+									"  const raw_key = CryptoJS.enc.Base64.parse(api_secret);\r",
+									"  const signature = CryptoJS.HmacSHA256(payload, raw_key).toString(CryptoJS.enc.Base64);\r",
+									"  const token = `${signature}${payload}`;\r",
+									"  const http_basic_payload = `${api_key}:${token}`;\r",
+									"  const http_basic_credentials = CryptoJS.enc.Utf8.parse(http_basic_payload).toString(CryptoJS.enc.Base64);\r",
+									"\r",
+									"  return(http_basic_credentials)\r",
+									"}\r",
+									"const authToken= \"Basic \"+generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"generate_auth_header(BUSINESS_ID, API_SECRET, API_KEY);\r",
+									"pm.request.headers.upsert({key: \"Authorization\", value: authToken});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OlBhcWZCWEFjeGIwRkw0Skx4S2ZkNStwbGlXNW53aGR3aGc4WkJxVVVKUVU9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjgyMDQ3NjE=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  createWebhook(\n    input: {\n      locationId: \"LOCATIONID\"\n      url: \"WebhookURL\"\n      name: \"test webhook\"\n      subscriptions: [{ eventType: APPOINTMENT_RESCHEDULED }]\n    }\n  ) {\n    webhook {\n      id\n      subscriptions {\n        id\n        enabled\n        eventType\n      }\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/admin",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Client API",
+			"item": [
+				{
+					"name": "Cart Creation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    createCart(input: {locationId:\"locationId\",\n    clientInformation:{\n        email:\"test@example.com\",\n        firstName:\"first\",\n        lastName:\"lastname\",\n        phoneNumber:\"91111111111\"\n    }       \n        \n    }){\n    cart{\n        name\n        id\n        selectedItems{\n            addons{\n                name\n                id\n            }\n        }\n    }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart Creation (Detailed)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    createCart(input: {\n        locationId:\"urn:blvd:Location:2c91d997-4184-4e06-a534-ac96a27dceff\",     \n    }){\n    cart{\n        id\n        availableCategories{\n            name\n            availableItems{\n                id ... on CartAvailableBookableItem\n                {\n                    name\n                    listPriceRange{\n                        max\n                        min\n                    }\n                  staffVariants{\n                    id\n                    staff{\n                        id\n                        firstName\n                        lastName\n                    }\n                  }\n                }\n                \n            }\n        }\n    }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart Guest Creation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    createCartGuest(input: {\n        email:\"MTestingGuest5@blvd.co\",\n        firstName:\"Mike5\",\n        id:\"urn:blvd:Cart:d4d5abd3-2804-4e60-8be5-1f95079926b9\",\n        lastName:\"GuestGroupBooking5\",\n        phoneNumber:\"+17327327322\"\n       \n        \n    }){\n    cart{\n        id\n    }\n    guest{\n        id\n    }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendCartOwnershipCodeBySMS",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    sendCartOwnershipCodeBySms(input: {\n        mobilePhone:\"phoneNumber\"\n        \n    }){\n    cartOwnershipCodeId\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendCartOwnershipCodeByEmail",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    sendCartOwnershipCodeBySms(input: {\n        email:\"email\"\n        \n    }){\n    cartOwnershipCodeId\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "takeCartOwnershipCodeByCode",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    takeCartOwnershipByCode(input: {\n        cartId:\"cartId\",\n        cartOwnershipCodeId:\"ownershipCode\",\n        cartOwnershipCodeValue:#####\n    }){\n    cart{\n        id\n        clientInformation{\n            email\n            firstName\n            lastName\n            phoneNumber\n        }\n    }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pull Authenticated Client Appointment Info",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Ok1HMEhsTHI3aTV1MzZMeDZLdnhnYmY5Mi9lWUZPczFsU2hNSEdRTm1PQlk9Ymx2ZC1jbGllbnQtdjEwYjhiYzUxMi03MDVkLTRiZTktOTBlNC0yZmFkNjJhNGU0ZjQ0YTc5OTIwNi00ZjUzLTQ1NDEtOWQ2Mi00Zjk2ZjQyNDA2OTExNjc4MjkxNzg2",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n    client{\n        email\n        firstName\n        lastName\n        id\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service to Cart",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    addCartSelectedBookableItem(input: {\n        id:\"Cart ID\",\n        itemId:\"Service ID\"\n\n    })\n    {\n        cart{\n            id\n            availableItem(id:\"Service ID\"){\n                description\n                id\n                name\n            }\n            selectedItems{\n                id\n                item{\n                    name\n                }\n                addons{\n                    name\n                    id\n                }\n            }\n            }\n\n\n        }\n    }\n\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Offer to Cart",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n    addCartOffer(input: {\n        id:\"Cart ID\",\n        offerCode:\"offerCode\"\n\n    })\n    {\n        cart{\n            id\n            selectedItems{\n                id\n                item{\n                    name\n                }\n\n            }\n            }\n            offer{\n                applied\n                code\n                name\n            }\n\n\n        }\n    }\n\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pull Bookable Date List",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  cartBookableDates(\n    id: \"Cart id\",\n    searchRangeLower: \"2023-01-30\",\n    searchRangeUpper: \"2023-01-30\",\n    tz: \"America/Los_Angeles\"\n  ) {\n    date\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pull Bookable Times List",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  cartBookableTimes(\n    id: \"cart ID\",\n    searchDate: \"2023-02-26\",\n    tz: \"America/Los_Angeles\"\n  ) {\n    id\n    score\n    startTime\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reserve Cart Bookable Time",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  reserveCartBookableItems(input: {\n    id: \"Cart Id\",\n    bookableTimeId: \"t_2023-01-17T11:30:00\"\n  }) {\n    cart {\n      id\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Out Cart",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  checkoutCart(input: {\n    id: \"cart Id\"\n  }) {\n    cart {\n      id\n      completedAt\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pull Cart Data",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3Og==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n    cart(id:\"cartID\"){  \n selectedItems\n     { \n         id\n         item{\n             name\n             description\n             id\n             listPrice\n\n     }\n     addons{\n         name\n         id\n         \n     }\n}\n\n}\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart Staff Variants",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OmU1eUdNeFhJaDZBRUtsWnFZZHlCNFFxaGFkMDNOMmdSUEVpZGZBNVpmTnc9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjM5NDYyOTE=",
+								"description": "API Key needs to be manually generated. Once generated it is base 64 encoded and append with \"Basic\"\n",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\ncart(id:\"Cart ID\"){id,availableitem(id:\"Service ID\"){\n    id ...on CartAvailableBookableItem{\n        name,description,staffVariants {id,price,duration,staff{firstname, lastname, bio}}\n        optionGroups{\n            id,name,options{id,name,priceDelta,descrition,groupID\n        }\n    }\n}\n}\n}\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart Staff Variants Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic NzAzY2M2YmUtZjQ0MC00OWY3LTkxYzMtMGY0MTExOTM2NTM3OmU1eUdNeFhJaDZBRUtsWnFZZHlCNFFxaGFkMDNOMmdSUEVpZGZBNVpmTnc9Ymx2ZC1hZG1pbi12MTBiOGJjNTEyLTcwNWQtNGJlOS05MGU0LTJmYWQ2MmE0ZTRmNDE2NjM5NDYyOTE=",
+								"description": "API Key needs to be manually generated. Once generated it is base 64 encoded and append with \"Basic\"\n",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\ncart(id:\"Cart ID\"){id,availableitem(id:\"Service ID\"){\n    id ...on CartAvailableBookableItem{\n        name,description,staffVariants {id,price,duration,staff{firstname, lastname, bio}}\n        optionGroups{\n            id,name,options{id,name,priceDelta,descrition,groupID\n        }\n    }\n}\n}\n}\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.boulevard.io/api/2020-01/:business_id/client",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"boulevard",
+								"io"
+							],
+							"path": [
+								"api",
+								"2020-01",
+								":business_id",
+								"client"
+							],
+							"variable": [
+								{
+									"key": "business_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,28 @@
+const crypto = require('crypto')
+
+//API Info
+BUSINESS_ID = 'BUSINESS ID'
+API_SECRET ='API SECRET'
+API_KEY = 'API KEY'
+CLIENT_ID = 'CLIENT ID' 
+
+function generate_auth_header(business_id, api_secret, api_key, client_id) {
+  const prefix = 'blvd-client-v1'
+  var timestamp = Math.floor(Date.now() / 1000)
+  
+  const payload = `${prefix}${business_id}${client_id}${timestamp}`
+  const raw_key = Buffer.from(api_secret, 'base64')
+  const signature = crypto
+    .createHmac('sha256', raw_key)
+    .update(payload, 'utf8')
+    .digest('base64')
+
+  const token = `${signature}${payload}`
+  const http_basic_payload = `${api_key}:${token}`
+  const http_basic_credentials = Buffer.from(http_basic_payload, 'utf8').toString('base64')
+
+  //return http_basic_credentials
+  console.log(http_basic_credentials)
+}
+
+generate_auth_header(BUSINESS_ID,API_SECRET,API_KEY,CLIENT_ID)
