@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Find Service/Product IDs</title>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: #c0392b;
+            background: #fadbd8;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #c0392b;
+            margin: 10px 0;
+        }
+
+        .success {
+            color: #27ae60;
+            background: #d5f4e6;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+            margin-bottom: 20px;
+        }
+
+        .item-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .item-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+        }
+
+        .item-description {
+            color: #666;
+            font-size: 14px;
+            margin: 0 0 10px 0;
+            line-height: 1.5;
+        }
+
+        .item-id {
+            font-family: 'Monaco', 'Courier New', monospace;
+            background: #ecf0f1;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            user-select: all;
+            cursor: pointer;
+            word-break: break-all;
+            border: 1px solid #bdc3c7;
+        }
+
+        .item-id:hover {
+            background: #d5dbdb;
+        }
+
+        .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .count {
+            background: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Service/Product ID Finder</h1>
+    <div class="subtitle">Find Boulevard service and product IDs</div>
+    <div id="status">initializing...</div>
+    <div id="output"></div>
+
+    <script>
+        const PROXY_URL = '/api/boulevard-proxy.php';
+
+        async function gql(query, variables = {}) {
+            const res = await fetch(PROXY_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query, variables })
+            });
+            const json = await res.json();
+            if (json.errors) throw new Error(JSON.stringify(json.errors, null, 2));
+            return json.data;
+        }
+
+        async function init() {
+            const status = document.getElementById('status');
+            const output = document.getElementById('output');
+
+            try {
+                // 1. Find Location
+                status.innerHTML = '<div class="loading"></div> Finding location...';
+                const locData = await gql(`query { locations(first: 1) { edges { node { id name tz } } } }`);
+                const location = locData.locations?.edges?.[0]?.node;
+
+                if (!location) {
+                    throw new Error('No location found');
+                }
+
+                status.innerHTML = `<div class="success">Connected to: <strong>${location.name}</strong> (${location.tz})</div>`;
+
+                // 2. Create Cart
+                status.innerHTML += '<div class="loading"></div> Creating cart...';
+                const cartData = await gql(`
+                    mutation ($loc: ID!) {
+                        createCart(input: { locationId: $loc }) {
+                            cart { id }
+                        }
+                    }
+                `, { loc: location.id });
+
+                const cartId = cartData.createCart?.cart?.id;
+
+                if (!cartId) {
+                    throw new Error('Failed to create cart');
+                }
+
+                // 3. Query available items (services)
+                status.innerHTML += '<div class="loading"></div> Fetching available items...';
+
+                const itemsData = await gql(`
+                    query ($cartId: ID!) {
+                        cart(id: $cartId) {
+                            availableCategories {
+                                availableItems {
+                                    id
+                                    name
+                                    description
+                                }
+                            }
+                        }
+                    }
+                `, { cartId: cartId });
+
+                // Flatten all items from all categories
+                const categories = itemsData.cart?.availableCategories || [];
+                const allItems = [];
+                categories.forEach(category => {
+                    if (category.availableItems) {
+                        allItems.push(...category.availableItems);
+                    }
+                });
+
+                status.innerHTML = `<div class="success">Found <span class="count">${allItems.length}</span> items</div>`;
+
+                // 4. Display Items
+                if (allItems.length === 0) {
+                    output.innerHTML = '<div class="error">No items found in your Boulevard catalog.</div>';
+                } else {
+                    allItems.forEach(item => {
+                        const description = item.description || 'No description';
+
+                        output.innerHTML += `
+                            <div class="item-card">
+                                <h3 class="item-name">${escapeHtml(item.name)}</h3>
+                                <div class="item-description">${escapeHtml(description)}</div>
+                                <div class="label">Item ID (click to copy)</div>
+                                <div class="item-id" onclick="copyToClipboard(this)" title="Click to copy">${escapeHtml(item.id)}</div>
+                            </div>
+                        `;
+                    });
+                }
+
+            } catch (e) {
+                status.innerHTML = `<div class="error"><strong>Error:</strong> ${escapeHtml(e.message)}</div>`;
+                console.error('Full error:', e);
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return String(unsafe)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function copyToClipboard(element) {
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalBg = element.style.background;
+                element.style.background = '#d5f4e6';
+                element.style.borderColor = '#27ae60';
+                setTimeout(() => {
+                    element.style.background = originalBg;
+                    element.style.borderColor = '#bdc3c7';
+                }, 500);
+            });
+        }
+
+        // Auto-run on page load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
