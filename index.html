@@ -1062,7 +1062,18 @@
             }
         }
 
-        /* Booking Modal Cart Display */
+        /* Booking Modal Sidebar and Cart */
+        .booking-sidebar {
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding: 4px;
+        }
+
         #bookingCartSlot {
             background: rgba(255, 255, 255, 0.78);
             border: 1px solid rgba(15, 29, 44, 0.06);
@@ -1070,10 +1081,6 @@
             box-shadow: var(--shadow-lg);
             backdrop-filter: blur(10px);
             padding: 24px;
-            position: sticky;
-            top: 0;
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
         }
 
         .booking-cart__title {
@@ -1142,6 +1149,114 @@
             font-size: 20px;
             font-weight: 700;
             color: var(--primary-navy);
+        }
+
+        /* Staff Selection and Step 2 Styles */
+        .staff-selection-wrap {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(15, 29, 44, 0.08);
+        }
+
+        .staff-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        .staff-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(15, 29, 44, 0.03);
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .staff-item:hover {
+            background: rgba(243, 214, 190, 0.15);
+            border-color: rgba(243, 214, 190, 0.5);
+        }
+
+        .staff-item.is-selected {
+            background: rgba(243, 214, 190, 0.25);
+            border-color: var(--accent-gold);
+            box-shadow: 0 4px 12px rgba(243, 214, 190, 0.3);
+        }
+
+        .staff-item input {
+            display: none;
+        }
+
+        .staff-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .staff-name {
+            font-family: var(--font-primary);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-navy);
+        }
+
+        .booking-form {
+            display: grid;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--primary-navy);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(15, 29, 44, 0.12);
+            background: rgba(255, 255, 255, 0.9);
+            font-family: var(--font-primary);
+            font-size: 15px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 4px rgba(15, 29, 44, 0.05);
+        }
+
+        .btn--full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .booking-actions {
+            margin-top: 24px;
         }
 
         /* --- CART DRAWER (SLIDE FROM RIGHT) --- */
@@ -4049,65 +4164,98 @@
         <div class="booking-modal__dialog">
             <div class="booking-modal__head">
                 <div class="booking-modal__title-wrap">
-                    <div class="booking-modal__kicker">Step 1 of 2</div>
-                    <h3>Select your date &amp; time</h3>
+                    <div id="bookingKicker" class="booking-modal__kicker">Step 1 of 2</div>
+                    <h3 id="bookingMainTitle">Select your date &amp; time</h3>
                     <div class="booking-modal__subtitle">Choose an available slot to confirm your appointment.</div>
                 </div>
                 <button id="bookingClose" class="nav-btn" type="button" aria-label="Close booking">×</button>
             </div>
             <div class="booking-modal__body">
                 <div class="booking-modal__grid">
-                    <div class="booking-shell">
-                        <div class="booking-grid">
-                            <div>
-                                <div class="booking-top">
-                                    <div id="bookingMonth" class="booking-month">Dec 2025</div>
-                                    <div class="booking-nav" aria-label="Calendar navigation">
-                                        <button id="prevMonth" class="nav-btn" type="button"
-                                            aria-label="Previous month">←</button>
-                                        <button id="nextMonth" class="nav-btn" type="button"
-                                            aria-label="Next month">→</button>
+                    <div id="bookingStep1" class="booking-step">
+                        <div class="booking-shell">
+                            <div class="booking-grid">
+                                <div>
+                                    <div class="booking-top">
+                                        <div id="bookingMonth" class="booking-month">Dec 2025</div>
+                                        <div class="booking-nav" aria-label="Calendar navigation">
+                                            <button id="prevMonth" class="nav-btn" type="button"
+                                                aria-label="Previous month">←</button>
+                                            <button id="nextMonth" class="nav-btn" type="button"
+                                                aria-label="Next month">→</button>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="calendar" aria-label="Calendar">
-                                    <div class="weekdays" aria-hidden="true">
-                                        <div>Su</div>
-                                        <div>Mo</div>
-                                        <div>Tu</div>
-                                        <div>We</div>
-                                        <div>Th</div>
-                                        <div>Fr</div>
-                                        <div>Sa</div>
+                                    <div class="calendar" aria-label="Calendar">
+                                        <div class="weekdays" aria-hidden="true">
+                                            <div>Su</div>
+                                            <div>Mo</div>
+                                            <div>Tu</div>
+                                            <div>We</div>
+                                            <div>Th</div>
+                                            <div>Fr</div>
+                                            <div>Sa</div>
+                                        </div>
+                                        <div id="calendarDays" class="days"></div>
                                     </div>
-                                    <div id="calendarDays" class="days"></div>
+
+                                    <div class="tz-note">Times are shown in <strong>PST</strong>.</div>
                                 </div>
 
-                                <div class="tz-note">Times are shown in <strong>PST</strong>.</div>
-                            </div>
+                                <div>
+                                    <div id="scheduleTitle" class="schedule-title">Today, Thursday, Dec 25, 2025</div>
 
-                            <div>
-                                <div id="scheduleTitle" class="schedule-title">Today, Thursday, Dec 25, 2025</div>
+                                    <div class="schedule-group">
+                                        <h4>Morning</h4>
+                                        <div class="no-availability">No availability</div>
+                                    </div>
 
-                                <div class="schedule-group">
-                                    <h4>Morning</h4>
-                                    <div class="no-availability">No availability</div>
-                                </div>
+                                    <div class="schedule-group">
+                                        <h4>Afternoon</h4>
+                                        <div id="slotsAfternoon" class="slots" aria-label="Afternoon time slots"></div>
+                                    </div>
 
-                                <div class="schedule-group">
-                                    <h4>Afternoon</h4>
-                                    <div id="slotsAfternoon" class="slots" aria-label="Afternoon time slots"></div>
-                                </div>
-
-                                <div class="schedule-group">
-                                    <h4>Evening</h4>
-                                    <div id="slotsEvening" class="slots" aria-label="Evening time slots"></div>
+                                    <div class="schedule-group">
+                                        <h4>Evening</h4>
+                                        <div id="slotsEvening" class="slots" aria-label="Evening time slots"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="bookingCartSlot" aria-label="Appointment summary"></div>
+                    <div id="bookingStep2" class="booking-step" style="display: none;">
+                        <div class="booking-form">
+                            <div class="form-group">
+                                <label for="bookingName">Name</label>
+                                <input type="text" id="bookingName" class="form-control" placeholder="Your full name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookingPhone">Contact Number</label>
+                                <input type="tel" id="bookingPhone" class="form-control" placeholder="Your phone number"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookingEmail">Email</label>
+                                <input type="email" id="bookingEmail" class="form-control"
+                                    placeholder="Your email address" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking-sidebar">
+                        <div id="bookingCartSlot" aria-label="Appointment summary"></div>
+                        <div id="staffSelectionSlot" class="staff-selection-wrap"></div>
+                        <div class="booking-actions">
+                            <button id="btnProceedStep2" class="btn btn--primary btn--full"
+                                type="button">Proceed</button>
+                            <button id="btnSubmitBooking" class="btn btn--primary btn--full" type="button"
+                                style="display: none;">Submit Booking</button>
+                            <button id="btnBackToStep1" class="btn btn--secondary btn--full" type="button"
+                                style="display: none; margin-top: 10px;">Back</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4484,7 +4632,8 @@
 
             function renderBookingCart() {
                 const bookingCartSlot = document.getElementById('bookingCartSlot');
-                if (!bookingCartSlot) return;
+                const staffSelectionSlot = document.getElementById('staffSelectionSlot');
+                if (!bookingCartSlot || !staffSelectionSlot) return;
 
                 const count = cart.length;
                 const total = cart.reduce((sum, i) => sum + Number(i.price || 0), 0);
@@ -4493,6 +4642,7 @@
 
                 if (count === 0) {
                     html += '<div class="booking-cart__empty">Your cart is empty.<br>Add treatments to get started!</div>';
+                    staffSelectionSlot.innerHTML = '';
                 } else {
                     html += '<ul class="booking-cart__items">';
                     cart.forEach(item => {
@@ -4510,9 +4660,118 @@
                             <strong class="booking-cart__total-amount">${toMoney(total)}</strong>
                         </div>
                     `;
+
+                    // Render staff selection
+                    let staffHtml = `
+                        <div class="staff-selection">
+                            <h4 class="booking-cart__title" style="margin-top:20px; border-bottom: none; padding-bottom: 0;">Select Staff</h4>
+                            <div class="staff-list">
+                                <label class="staff-item ${selectedStaff === 'Staff 1' ? 'is-selected' : ''}">
+                                    <input type="radio" name="staff" value="Staff 1" ${selectedStaff === 'Staff 1' ? 'checked' : ''}>
+                                    <div class="staff-avatar">S1</div>
+                                    <span class="staff-name">Staff 1</span>
+                                </label>
+                                <label class="staff-item ${selectedStaff === 'Staff 2' ? 'is-selected' : ''}">
+                                    <input type="radio" name="staff" value="Staff 2" ${selectedStaff === 'Staff 2' ? 'checked' : ''}>
+                                    <div class="staff-avatar">S2</div>
+                                    <span class="staff-name">Staff 2</span>
+                                </label>
+                                <label class="staff-item ${selectedStaff === 'Staff 3' ? 'is-selected' : ''}">
+                                    <input type="radio" name="staff" value="Staff 3" ${selectedStaff === 'Staff 3' ? 'checked' : ''}>
+                                    <div class="staff-avatar">S3</div>
+                                    <span class="staff-name">Staff 3</span>
+                                </label>
+                            </div>
+                        </div>
+                    `;
+                    staffSelectionSlot.innerHTML = staffHtml;
+
+                    // Add event listeners for staff selection
+                    staffSelectionSlot.querySelectorAll('.staff-item').forEach(item => {
+                        item.addEventListener('click', function () {
+                            const val = this.querySelector('input').value;
+                            selectedStaff = val;
+                            renderBookingCart();
+                        });
+                    });
                 }
 
                 bookingCartSlot.innerHTML = html;
+            }
+
+            let currentStep = 1;
+            let selectedStaff = 'Staff 1';
+
+            function goToStep(step) {
+                const step1 = document.getElementById('bookingStep1');
+                const step2 = document.getElementById('bookingStep2');
+                const kicker = document.getElementById('bookingKicker');
+                const title = document.getElementById('bookingMainTitle');
+                const btnProceed = document.getElementById('btnProceedStep2');
+                const btnSubmit = document.getElementById('btnSubmitBooking');
+                const btnBack = document.getElementById('btnBackToStep1');
+                const staffSlot = document.getElementById('staffSelectionSlot');
+
+                currentStep = step;
+
+                if (step === 1) {
+                    step1.style.display = 'block';
+                    step2.style.display = 'none';
+                    kicker.textContent = 'Step 1 of 2';
+                    title.textContent = 'Select your date & time';
+                    btnProceed.style.display = 'flex';
+                    btnSubmit.style.display = 'none';
+                    btnBack.style.display = 'none';
+                    staffSlot.style.display = 'block';
+                } else {
+                    step1.style.display = 'none';
+                    step2.style.display = 'block';
+                    kicker.textContent = 'Step 2 of 2';
+                    title.textContent = 'Enter your details';
+                    btnProceed.style.display = 'none';
+                    btnSubmit.style.display = 'flex';
+                    btnBack.style.display = 'flex';
+                    staffSlot.style.display = 'none';
+                }
+            }
+
+            const btnProceed = document.getElementById('btnProceedStep2');
+            if (btnProceed) {
+                btnProceed.addEventListener('click', () => {
+                    if (!selectedDate || !selectedTime) {
+                        alert('Please select a date and time first.');
+                        return;
+                    }
+                    goToStep(2);
+                });
+            }
+
+            const btnBack = document.getElementById('btnBackToStep1');
+            if (btnBack) {
+                btnBack.addEventListener('click', () => {
+                    goToStep(1);
+                });
+            }
+
+            const btnSubmit = document.getElementById('btnSubmitBooking');
+            if (btnSubmit) {
+                btnSubmit.addEventListener('click', () => {
+                    const name = document.getElementById('bookingName').value;
+                    const phone = document.getElementById('bookingPhone').value;
+                    const email = document.getElementById('bookingEmail').value;
+
+                    if (!name || !phone || !email) {
+                        alert('Please fill in all contact details.');
+                        return;
+                    }
+
+                    alert(`Booking Submitted!\n\nName: ${name}\nStaff: ${selectedStaff}\nDate: ${selectedDate.toDateString()}\nTime: ${selectedTime}`);
+                    closeBookingModal();
+                    // Clear cart after booking
+                    cart = [];
+                    saveCart();
+                    renderCart();
+                });
             }
 
             if (cartBtn) cartBtn.addEventListener('click', toggleCart);
@@ -4632,6 +4891,7 @@
                 }
                 if (!selectedDate) selectedDate = new Date();
 
+                goToStep(1);
                 renderCalendar();
                 renderSchedule();
                 renderBookingCart();
@@ -4644,6 +4904,7 @@
                 if (!bookingModal) return;
                 bookingModal.classList.remove('is-open');
                 document.body.classList.remove('modal-open');
+                goToStep(1);
             }
 
             if (prevMonthBtn) {
