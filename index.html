@@ -2754,7 +2754,7 @@
         </div>
 
         <section class="services-section" aria-label="Services list">
-            <<<<<<< HEAD <div class="services-grid">
+            <div class="services-grid">
 
                 <!-- Skin Fixes -->
                 <div class="service-card" data-service-tab="skin-fixes" data-price="850" data-duration="45">
@@ -5580,9 +5580,17 @@
             }
 
             async function loadTimesForDate(date) {
-                return []; // Booking disabled or placeholder
+                // Static available times for demonstration
+                const slots = [];
+                for (let h = 9; h <= 17; h++) {
+                    const hour = h > 12 ? h - 12 : h;
+                    const ampm = h >= 12 ? 'PM' : 'AM';
+                    slots.push({ label: `${hour}:00 ${ampm}`, hour: h, id: `static-${h}` });
+                    if (h < 17) slots.push({ label: `${hour}:30 ${ampm}`, hour: h, id: `static-${h}-30` });
+                }
+                return slots;
             }
-            /* === End Boulevard Integration === */
+            /* === End Booking Logic === */
 
             // Enhance card-meta elements with better structure
             const cardMetas = document.querySelectorAll('.card-meta');
@@ -5686,10 +5694,7 @@
             let bookingMonth = null; // Date at first of month
             let selectedDate = null; // Date
             let selectedTime = null; // string
-            let selectedBookableTimeId = null; // Boulevard time id
-            let selectedStaffVariants = {}; // { itemId: variantId }
-            let selectedStaffName = null; // Selected staff member name
-            let staffVariantsCache = {}; // { itemId: [variants] }
+            let selectedStaffName = "Any Professional"; // Default staff selection
 
             function toMoney(n) {
                 return `$${Number(n).toFixed(2)}`;
@@ -5804,24 +5809,12 @@
                 const exists = cart.some(i => i.id === item.id);
                 if (!exists) {
                     cart.push(item);
-                    console.log(`[Cart] Added "${item.name}" to cart`, item.bvId ? `with bvId: ${item.bvId}` : 'without bvId');
-                    if (!item.bvId && item.name) {
-                        // Try to get bvId immediately if missing
-                        const bvId = findBestMatch(item.name);
-                        if (bvId) {
-                            item.bvId = bvId;
-                            console.log(`[Cart] Found bvId for "${item.name}": ${bvId}`);
-                        }
-                    }
+                    console.log(`[Cart] Added "${item.name}" to cart`);
+                    saveCart();
+                    renderCart();
+                    showToast(item.name);
+                    openCart();
                 }
-                // Sync with Boulevard cart if mapping exists
-                if (item.bvId) {
-                    addToCartBoulevard(item.bvId, item.bvVariantId || null);
-                }
-                saveCart();
-                renderCart();
-                showToast(item.name);
-                openCart();
             }
 
             function showToast(itemName) {
@@ -5943,19 +5936,19 @@
                     html += '<ul class="booking-cart__items">';
                     cart.forEach(item => {
                         html += `
-                            <li class="booking-cart__item">
-                                <div class="booking-cart__item-name">${escapeHtml(item.name)}</div>
-                                <div class="booking-cart__item-meta">${toMoney(item.price)} • ${Number(item.duration)} min</div>
-                            </li>
-                        `;
+                        <li class="booking-cart__item">
+                            <div class="booking-cart__item-name">${escapeHtml(item.name)}</div>
+                            <div class="booking-cart__item-meta">${toMoney(item.price)} • ${Number(item.duration)} min</div>
+                        </li>
+                    `;
                     });
                     html += '</ul>';
                     html += `
-                        <div class="booking-cart__total">
-                            <span class="booking-cart__total-label">Subtotal</span>
-                            <strong class="booking-cart__total-amount">${toMoney(total)}</strong>
-                        </div>
-                    `;
+                    <div class="booking-cart__total">
+                        <span class="booking-cart__total-label">Subtotal</span>
+                        <strong class="booking-cart__total-amount">${toMoney(total)}</strong>
+                    </div>
+                `;
                 }
 
                 bookingCartSlot.innerHTML = html;
@@ -6015,16 +6008,9 @@
                     if (isSameDay(date, today)) btn.classList.add('is-today');
                     if (selectedDate && isSameDay(date, selectedDate)) btn.classList.add('is-selected');
 
-                    // Highlight available dates
-                    const allAvailableDates = Object.values(datesCache).flat();
-                    // console.log('Checking availability for', ymd, 'against', allAvailableDates.length, 'dates'); // Too noisy
-                    if (allAvailableDates.includes(ymd)) {
-                        console.log('[Boulevard] Highlighting date:', ymd);
+                    // All future dates are potentially available in this static version
+                    if (date >= new Date().setHours(0, 0, 0, 0)) {
                         btn.classList.add('is-available');
-                        btn.style.setProperty('background-color', '#d4edda', 'important'); // distinct green
-                        btn.style.setProperty('color', '#155724', 'important');
-                        btn.style.setProperty('font-weight', 'bold', 'important');
-                        btn.textContent = String(day) + ' ●'; // Add visual dot
                     }
 
                     btn.addEventListener('click', () => {
@@ -6044,7 +6030,6 @@
                 times.forEach(t => {
                     const isObj = typeof t === 'object' && t !== null;
                     const label = isObj ? t.label : t;
-                    const timeId = isObj ? t.id : null;
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'slot-btn';
@@ -6052,7 +6037,6 @@
                     if (selectedTime === label) btn.classList.add('is-selected');
                     btn.addEventListener('click', () => {
                         selectedTime = label;
-                        selectedBookableTimeId = timeId;
                         renderSchedule();
                     });
                     container.appendChild(btn);
@@ -6072,60 +6056,24 @@
                 });
                 scheduleTitleEl.textContent = `${prefix}${label}`;
 
-                // Load real-time availability from Boulevard
-                const spinner = '<div class="loading">Loading availability from Boulevard…</div>';
-                if (slotsMorningEl) slotsMorningEl.innerHTML = spinner;
-                if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = spinner;
-                if (slotsEveningEl) slotsEveningEl.innerHTML = spinner;
+                // Display static availability
+                if (slotsMorningEl) slotsMorningEl.innerHTML = 'Loading...';
+                if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = 'Loading...';
+                if (slotsEveningEl) slotsEveningEl.innerHTML = 'Loading...';
 
                 loadTimesForDate(selectedDate).then(times => {
-                    console.log(`[Boulevard] Loaded ${times.length} times for ${selectedDate.toISOString().split('T')[0]}`);
-
                     // Split into morning (before 12), afternoon (12–17) and evening (17+)
                     const morning = times.filter(t => t.hour < 12);
                     const afternoon = times.filter(t => t.hour >= 12 && t.hour < 17);
                     const evening = times.filter(t => t.hour >= 17);
 
-                    if (times.length === 0) {
-                        const noAvailMsg = `
-                            <div class="no-availability" style="padding: 16px; text-align: center; color: rgba(42, 42, 42, 0.7);">
-                                <p style="margin: 0 0 8px 0; font-weight: 500;">No availability found</p>
-                                <p style="margin: 0; font-size: 12px;">
-                                    Check console for connection status. Ensure items are in Boulevard cart and staff have availability configured.
-                                </p>
-                            </div>
-                        `;
-                        if (slotsMorningEl) slotsMorningEl.innerHTML = '';
-                        if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = noAvailMsg;
-                        if (slotsEveningEl) slotsEveningEl.innerHTML = '';
-                    } else {
-                        renderSlots(slotsMorningEl, morning);
-                        renderSlots(slotsAfternoonEl, afternoon);
-                        renderSlots(slotsEveningEl, evening);
-
-                        // Show message if a section is empty
-                        if (morning.length === 0 && slotsMorningEl) {
-                            slotsMorningEl.innerHTML = '<div class="no-availability">No availability</div>';
-                        }
-                        if (afternoon.length === 0 && slotsAfternoonEl) {
-                            slotsAfternoonEl.innerHTML = '<div class="no-availability">No availability</div>';
-                        }
-                        if (evening.length === 0 && slotsEveningEl) {
-                            slotsEveningEl.innerHTML = '<div class="no-availability">No availability</div>';
-                        }
-                    }
+                    renderSlots(slotsMorningEl, morning);
+                    renderSlots(slotsAfternoonEl, afternoon);
+                    renderSlots(slotsEveningEl, evening);
 
                     updateBookingNextState();
                 }).catch(e => {
-                    console.error('[Boulevard] Error loading times:', e);
-                    const errorMsg = `
-                        <div class="no-availability" style="padding: 16px; text-align: center; color: #d32f2f;">
-                            <p style="margin: 0 0 8px 0; font-weight: 500;">Error loading availability</p>
-                            <p style="margin: 0; font-size: 12px;">Check console for details. Boulevard connection may be down.</p>
-                        </div>
-                    `;
-                    if (slotsAfternoonEl) slotsAfternoonEl.innerHTML = errorMsg;
-                    if (slotsEveningEl) slotsEveningEl.innerHTML = '';
+                    console.error('Error loading times:', e);
                 });
             }
 
@@ -6159,67 +6107,6 @@
                     staffDisplayEl.style.display = 'none';
                 }
 
-                // Ensure cart is initialized first
-                const isInitialized = await ensureCartInitialized();
-                if (!isInitialized) {
-                    console.error('[Boulevard] Cannot proceed: cart initialization failed');
-                    alert('Unable to connect to booking system. Please refresh the page and try again.');
-                    return;
-                }
-
-                // Ensure all cart items are in Boulevard cart before loading availability
-                console.log('[Boulevard] Ensuring cart items are in Boulevard cart...');
-                const itemsWithBvId = cart.filter(item => item.bvId);
-                for (const item of itemsWithBvId) {
-                    if (item.bvId) {
-                        try {
-                            await addToCartBoulevard(item.bvId, item.bvVariantId || null);
-                            console.log(`[Boulevard] Verified "${item.name}" is in Boulevard cart`);
-                        } catch (e) {
-                            console.error(`[Boulevard] Failed to add "${item.name}" to Boulevard cart:`, e);
-                        }
-                    }
-                }
-
-                // Verify cart connection
-                const isConnected = await verifyCartConnection();
-                if (!isConnected) {
-                    console.error('[Boulevard] Cart verification failed - availability may not load');
-                }
-
-                // Load available dates for the month to highlight in calendar
-                // We'll check actual time availability for each day to ensure accurate highlighting
-                const startOfMonth = new Date(bookingMonth.getFullYear(), bookingMonth.getMonth(), 1);
-                const endOfMonth = new Date(bookingMonth.getFullYear(), bookingMonth.getMonth() + 1, 0);
-                const daysInMonth = endOfMonth.getDate();
-
-                // Pre-load times for all days in the month to populate cache and highlight calendar
-                console.log('[Boulevard] Pre-loading availability for month to highlight calendar...');
-                const datePromises = [];
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const date = new Date(bookingMonth.getFullYear(), bookingMonth.getMonth(), day);
-                    // Only check future dates
-                    if (date >= new Date().setHours(0, 0, 0, 0)) {
-                        datePromises.push(
-                            loadTimesForDate(date).then(times => ({
-                                date: date.toISOString().split('T')[0],
-                                hasAvailability: times.length > 0
-                            }))
-                        );
-                    }
-                }
-
-                Promise.all(datePromises).then(results => {
-                    // Update datesCache with only dates that have actual availability
-                    const cacheKey = `${startOfMonth.toISOString().split('T')[0]}_${endOfMonth.toISOString().split('T')[0]}`;
-                    datesCache[cacheKey] = results
-                        .filter(r => r.hasAvailability)
-                        .map(r => r.date);
-
-                    console.log(`[Boulevard] Found ${datesCache[cacheKey].length} dates with actual availability in ${bookingMonth.toLocaleString('default', { month: 'long' })}`);
-                    renderCalendar(); // Re-render to show accurate dots
-                });
-
                 renderSchedule();
 
                 // Focus close button for accessibility
@@ -6252,22 +6139,10 @@
             }
 
             if (bookingNextBtn) bookingNextBtn.addEventListener('click', async () => {
-                if (!boulevardCartId || !selectedBookableTimeId) return;
                 bookingNextBtn.disabled = true;
-                try {
-                    await bvldGql(`
-                        mutation ($id:ID!, $time:ID!) {
-                            reserveCartBookableItems(input:{id:$id, bookableTimeId:$time}) { cart { id } }
-                        }
-                    `, { id: boulevardCartId, time: selectedBookableTimeId });
-                    closeBookingModal();
-                    openCompleteModal();
-                } catch (e) {
-                    alert('Sorry, that slot is no longer available. Please pick another.');
-                    renderSchedule();
-                } finally {
-                    bookingNextBtn.disabled = false;
-                }
+                closeBookingModal();
+                openCompleteModal();
+                bookingNextBtn.disabled = false;
             });
 
             // Back button handlers
@@ -6335,16 +6210,7 @@
             }
 
             if (staffNextBtn) {
-                staffNextBtn.addEventListener('click', async () => {
-                    // Update cart items with selected staff variants and sync to Boulevard
-                    for (const item of cart) {
-                        if (item.bvId && selectedStaffVariants[item.bvId]) {
-                            item.bvVariantId = selectedStaffVariants[item.bvId];
-                            // Re-add to Boulevard with staff variant
-                            await addToCartBoulevard(item.bvId, item.bvVariantId);
-                        }
-                    }
-                    saveCart();
+                staffNextBtn.addEventListener('click', () => {
                     closeStaffModal();
                     openBookingModal();
                 });
