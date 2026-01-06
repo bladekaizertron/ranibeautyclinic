@@ -1195,97 +1195,97 @@
                         </thead>
                         <tbody>
                             <tr><th colspan="2">Face Fixes</th></tr>
-                            <tr><td>Botox / Botox Facial</td><td>14</td></tr>
-                            <tr><td>Sculptra</td><td>950</td></tr>
-                            <tr><td>Lip Filler</td><td>650</td></tr>
-                            <tr><td>Eye Filler</td><td>750</td></tr>
-                            <tr><td>Cheek Filler</td><td>850</td></tr>
-                            <tr><td>Nose Filler</td><td>795</td></tr>
-                            <tr><td>Jawline Filler</td><td>795</td></tr>
-                            <tr><td>Neck Filler</td><td>795</td></tr>
+                            <tr data-service="Botox / Botox Facial" data-price="14" data-category="Face Fixes"><td>Botox / Botox Facial</td><td>14</td></tr>
+                            <tr data-service="Sculptra" data-price="950" data-category="Face Fixes"><td>Sculptra</td><td>950</td></tr>
+                            <tr data-service="Lip Filler" data-price="650" data-category="Face Fixes"><td>Lip Filler</td><td>650</td></tr>
+                            <tr data-service="Eye Filler" data-price="750" data-category="Face Fixes"><td>Eye Filler</td><td>750</td></tr>
+                            <tr data-service="Cheek Filler" data-price="850" data-category="Face Fixes"><td>Cheek Filler</td><td>850</td></tr>
+                            <tr data-service="Nose Filler" data-price="795" data-category="Face Fixes"><td>Nose Filler</td><td>795</td></tr>
+                            <tr data-service="Jawline Filler" data-price="795" data-category="Face Fixes"><td>Jawline Filler</td><td>795</td></tr>
+                            <tr data-service="Neck Filler" data-price="795" data-category="Face Fixes"><td>Neck Filler</td><td>795</td></tr>
 
                             <tr><th colspan="2">Body Fixes</th></tr>
-                            <tr><td>Radiesse</td><td>950</td></tr>
-                            <tr><td>Sculptra Skinny BBL</td><td>895</td></tr>
-                            <tr><td>Traptox</td><td>895</td></tr>
-                            <tr><td>Cutera Secret</td><td>895</td></tr>
-                            <tr><td>Sofwave</td><td>495</td></tr>
+                            <tr data-service="Radiesse" data-price="950" data-category="Body Fixes"><td>Radiesse</td><td>950</td></tr>
+                            <tr data-service="Sculptra Skinny BBL" data-price="895" data-category="Body Fixes"><td>Sculptra Skinny BBL</td><td>895</td></tr>
+                            <tr data-service="Traptox" data-price="895" data-category="Body Fixes"><td>Traptox</td><td>895</td></tr>
+                            <tr data-service="Cutera Secret" data-price="895" data-category="Body Fixes"><td>Cutera Secret</td><td>895</td></tr>
+                            <tr data-service="Sofwave (Body)" data-price="495" data-category="Body Fixes"><td>Sofwave</td><td>495</td></tr>
 
                             <tr><th colspan="2">Skin Fixes</th></tr>
-                            <tr><td>Laser Facials</td><td>495</td></tr>
-                            <tr><td>Hydrafacial</td><td>250</td></tr>
-                            <tr><td>VI Peel</td><td>399</td></tr>
-                            <tr><td>Cosmelan</td><td>995</td></tr>
-                            <tr><td>Sofwave</td><td>495</td></tr>
+                            <tr data-service="Laser Facials" data-price="495" data-category="Skin Fixes"><td>Laser Facials</td><td>495</td></tr>
+                            <tr data-service="Hydrafacial" data-price="250" data-category="Skin Fixes"><td>Hydrafacial</td><td>250</td></tr>
+                            <tr data-service="VI Peel" data-price="399" data-category="Skin Fixes"><td>VI Peel</td><td>399</td></tr>
+                            <tr data-service="Cosmelan" data-price="995" data-category="Skin Fixes"><td>Cosmelan</td><td>995</td></tr>
+                            <tr data-service="Sofwave (Skin)" data-price="495" data-category="Skin Fixes"><td>Sofwave</td><td>495</td></tr>
 
                             <tr><th colspan="2">Laser Hair Removal</th></tr>
-                            <tr><td>Laser Acne Facial</td><td>495</td></tr>
-                            <tr><td>Laser Roscea Facial</td><td>495</td></tr>
-                            <tr><td>Laser Resurfacing Facial</td><td>795</td></tr>
-                            <tr><td>Upper Lip Laser Hair Removal</td><td>29</td></tr>
-                            <tr><td>Eyebrows</td><td>99</td></tr>
-                            <tr><td>Sideburns</td><td>99</td></tr>
-                            <tr><td>Full Back</td><td>400</td></tr>
-                            <tr><td>Pantyline</td><td>150</td></tr>
-                            <tr><td>Neck</td><td>299</td></tr>
-                            <tr><td>Full Face Laser Hair Removal</td><td>299</td></tr>
-                            <tr><td>Hands and fingers</td><td>99</td></tr>
-                            <tr><td>Full Chest</td><td>250</td></tr>
-                            <tr><td>Happy Trail</td><td>99</td></tr>
-                            <tr><td>Areolas</td><td>99</td></tr>
-                            <tr><td>Forehead</td><td>99</td></tr>
-                            <tr><td>Jawline</td><td>99</td></tr>
-                            <tr><td>Underarms</td><td>175</td></tr>
-                            <tr><td>Limited Time $99 Upper Lip</td><td>99</td></tr>
-                            <tr><td>Feet &amp; Toes</td><td>99</td></tr>
-                            <tr><td>Full Brazilian</td><td>250</td></tr>
-                            <tr><td>Ears</td><td>99</td></tr>
-                            <tr><td>Full Body Laser Hair Removal</td><td>1299</td></tr>
-                            <tr><td>Pony Tail Laser</td><td>125</td></tr>
-                            <tr><td>Full Abs</td><td>300</td></tr>
-                            <tr><td>Full Legs</td><td>450</td></tr>
-                            <tr><td>Cheeks</td><td>99</td></tr>
-                            <tr><td>Chin</td><td>99</td></tr>
-                            <tr><td>Buttocks</td><td>299</td></tr>
+                            <tr data-service="Laser Acne Facial" data-price="495" data-category="Laser Hair Removal"><td>Laser Acne Facial</td><td>495</td></tr>
+                            <tr data-service="Laser Roscea Facial" data-price="495" data-category="Laser Hair Removal"><td>Laser Roscea Facial</td><td>495</td></tr>
+                            <tr data-service="Laser Resurfacing Facial" data-price="795" data-category="Laser Hair Removal"><td>Laser Resurfacing Facial</td><td>795</td></tr>
+                            <tr data-service="Upper Lip Laser Hair Removal" data-price="29" data-category="Laser Hair Removal"><td>Upper Lip Laser Hair Removal</td><td>29</td></tr>
+                            <tr data-service="Eyebrows" data-price="99" data-category="Laser Hair Removal"><td>Eyebrows</td><td>99</td></tr>
+                            <tr data-service="Sideburns" data-price="99" data-category="Laser Hair Removal"><td>Sideburns</td><td>99</td></tr>
+                            <tr data-service="Full Back" data-price="400" data-category="Laser Hair Removal"><td>Full Back</td><td>400</td></tr>
+                            <tr data-service="Pantyline" data-price="150" data-category="Laser Hair Removal"><td>Pantyline</td><td>150</td></tr>
+                            <tr data-service="Neck" data-price="299" data-category="Laser Hair Removal"><td>Neck</td><td>299</td></tr>
+                            <tr data-service="Full Face Laser Hair Removal" data-price="299" data-category="Laser Hair Removal"><td>Full Face Laser Hair Removal</td><td>299</td></tr>
+                            <tr data-service="Hands and fingers" data-price="99" data-category="Laser Hair Removal"><td>Hands and fingers</td><td>99</td></tr>
+                            <tr data-service="Full Chest" data-price="250" data-category="Laser Hair Removal"><td>Full Chest</td><td>250</td></tr>
+                            <tr data-service="Happy Trail" data-price="99" data-category="Laser Hair Removal"><td>Happy Trail</td><td>99</td></tr>
+                            <tr data-service="Areolas" data-price="99" data-category="Laser Hair Removal"><td>Areolas</td><td>99</td></tr>
+                            <tr data-service="Forehead" data-price="99" data-category="Laser Hair Removal"><td>Forehead</td><td>99</td></tr>
+                            <tr data-service="Jawline" data-price="99" data-category="Laser Hair Removal"><td>Jawline</td><td>99</td></tr>
+                            <tr data-service="Underarms" data-price="175" data-category="Laser Hair Removal"><td>Underarms</td><td>175</td></tr>
+                            <tr data-service="Limited Time $99 Upper Lip" data-price="99" data-category="Laser Hair Removal"><td>Limited Time $99 Upper Lip</td><td>99</td></tr>
+                            <tr data-service="Feet &amp; Toes" data-price="99" data-category="Laser Hair Removal"><td>Feet &amp; Toes</td><td>99</td></tr>
+                            <tr data-service="Full Brazilian" data-price="250" data-category="Laser Hair Removal"><td>Full Brazilian</td><td>250</td></tr>
+                            <tr data-service="Ears" data-price="99" data-category="Laser Hair Removal"><td>Ears</td><td>99</td></tr>
+                            <tr data-service="Full Body Laser Hair Removal" data-price="1299" data-category="Laser Hair Removal"><td>Full Body Laser Hair Removal</td><td>1299</td></tr>
+                            <tr data-service="Pony Tail Laser" data-price="125" data-category="Laser Hair Removal"><td>Pony Tail Laser</td><td>125</td></tr>
+                            <tr data-service="Full Abs" data-price="300" data-category="Laser Hair Removal"><td>Full Abs</td><td>300</td></tr>
+                            <tr data-service="Full Legs" data-price="450" data-category="Laser Hair Removal"><td>Full Legs</td><td>450</td></tr>
+                            <tr data-service="Cheeks" data-price="99" data-category="Laser Hair Removal"><td>Cheeks</td><td>99</td></tr>
+                            <tr data-service="Chin" data-price="99" data-category="Laser Hair Removal"><td>Chin</td><td>99</td></tr>
+                            <tr data-service="Buttocks" data-price="299" data-category="Laser Hair Removal"><td>Buttocks</td><td>299</td></tr>
 
                             <tr><th colspan="2">Radiofrequency Microneedling</th></tr>
-                            <tr><td>Full Face</td><td>495</td></tr>
-                            <tr><td>Neck</td><td>495</td></tr>
-                            <tr><td>Arms</td><td>595</td></tr>
-                            <tr><td>Abdomen</td><td>1100</td></tr>
-                            <tr><td>Bra Far Sculp</td><td>695</td></tr>
-                            <tr><td>Legs</td><td>1500</td></tr>
+                            <tr data-service="Full Face RF Microneedling" data-price="495" data-category="Radiofrequency Microneedling"><td>Full Face</td><td>495</td></tr>
+                            <tr data-service="Neck RF Microneedling" data-price="495" data-category="Radiofrequency Microneedling"><td>Neck</td><td>495</td></tr>
+                            <tr data-service="Arms RF Microneedling" data-price="595" data-category="Radiofrequency Microneedling"><td>Arms</td><td>595</td></tr>
+                            <tr data-service="Abdomen RF Microneedling" data-price="1100" data-category="Radiofrequency Microneedling"><td>Abdomen</td><td>1100</td></tr>
+                            <tr data-service="Bra Far Sculp" data-price="695" data-category="Radiofrequency Microneedling"><td>Bra Far Sculp</td><td>695</td></tr>
+                            <tr data-service="Legs RF Microneedling" data-price="1500" data-category="Radiofrequency Microneedling"><td>Legs</td><td>1500</td></tr>
 
                             <tr><th colspan="2">Hydrafacial</th></tr>
-                            <tr><td>Signature Hydrafacial</td><td>250</td></tr>
-                            <tr><td>Dior Hydrafacial</td><td>399</td></tr>
-                            <tr><td>Keravive Hydrafacial (Hair)</td><td>450</td></tr>
-                            <tr><td>Underarm Hydrafacial</td><td>199</td></tr>
-                            <tr><td>Back Hydrafacial</td><td>375</td></tr>
+                            <tr data-service="Signature Hydrafacial" data-price="250" data-category="Hydrafacial"><td>Signature Hydrafacial</td><td>250</td></tr>
+                            <tr data-service="Dior Hydrafacial" data-price="399" data-category="Hydrafacial"><td>Dior Hydrafacial</td><td>399</td></tr>
+                            <tr data-service="Keravive Hydrafacial (Hair)" data-price="450" data-category="Hydrafacial"><td>Keravive Hydrafacial (Hair)</td><td>450</td></tr>
+                            <tr data-service="Underarm Hydrafacial" data-price="199" data-category="Hydrafacial"><td>Underarm Hydrafacial</td><td>199</td></tr>
+                            <tr data-service="Back Hydrafacial" data-price="375" data-category="Hydrafacial"><td>Back Hydrafacial</td><td>375</td></tr>
 
                             <tr><th colspan="2">Chemical Peels</th></tr>
-                            <tr><td>BioRepeel</td><td>295</td></tr>
-                            <tr><td>Face &amp; Neck</td><td>225</td></tr>
-                            <tr><td>Back</td><td>275</td></tr>
-                            <tr><td>Underarms</td><td>175</td></tr>
-                            <tr><td>Intimate Area</td><td>195</td></tr>
+                            <tr data-service="BioRepeel" data-price="295" data-category="Chemical Peels"><td>BioRepeel</td><td>295</td></tr>
+                            <tr data-service="Face &amp; Neck Peel" data-price="225" data-category="Chemical Peels"><td>Face &amp; Neck</td><td>225</td></tr>
+                            <tr data-service="Back Peel" data-price="275" data-category="Chemical Peels"><td>Back</td><td>275</td></tr>
+                            <tr data-service="Underarms Peel" data-price="175" data-category="Chemical Peels"><td>Underarms</td><td>175</td></tr>
+                            <tr data-service="Intimate Area Peel" data-price="195" data-category="Chemical Peels"><td>Intimate Area</td><td>195</td></tr>
 
                             <tr><th colspan="2">VI Peels</th></tr>
-                            <tr><td>Acne VI Peel</td><td>350</td></tr>
-                            <tr><td>Acne Scarring VI Peel</td><td>350</td></tr>
-                            <tr><td>Rosacea Peel</td><td>350</td></tr>
-                            <tr><td>Sensitive Skin Peel</td><td>350</td></tr>
-                            <tr><td>VI Hyperpigmentation Peel</td><td>350</td></tr>
+                            <tr data-service="Acne VI Peel" data-price="350" data-category="VI Peels"><td>Acne VI Peel</td><td>350</td></tr>
+                            <tr data-service="Acne Scarring VI Peel" data-price="350" data-category="VI Peels"><td>Acne Scarring VI Peel</td><td>350</td></tr>
+                            <tr data-service="Rosacea Peel" data-price="350" data-category="VI Peels"><td>Rosacea Peel</td><td>350</td></tr>
+                            <tr data-service="Sensitive Skin Peel" data-price="350" data-category="VI Peels"><td>Sensitive Skin Peel</td><td>350</td></tr>
+                            <tr data-service="VI Hyperpigmentation Peel" data-price="350" data-category="VI Peels"><td>VI Hyperpigmentation Peel</td><td>350</td></tr>
 
                             <tr><th colspan="2">Skin Boosters &amp; Wellness</th></tr>
-                            <tr><td>Salmon DNA</td><td>450</td></tr>
-                            <tr><td>Exosomes</td><td>595</td></tr>
+                            <tr data-service="Salmon DNA" data-price="450" data-category="Skin Boosters &amp; Wellness"><td>Salmon DNA</td><td>450</td></tr>
+                            <tr data-service="Exosomes" data-price="595" data-category="Skin Boosters &amp; Wellness"><td>Exosomes</td><td>595</td></tr>
 
                             <tr><th colspan="2">Add Ons</th></tr>
-                            <tr><td>Hydrafacial Skin Booster</td><td>75</td></tr>
-                            <tr><td>Dermaplanning</td><td>70</td></tr>
-                            <tr><td>Red Light Therapy</td><td>50</td></tr>
-                            <tr><td>Blue Light Therapy</td><td>50</td></tr>
+                            <tr data-service="Hydrafacial Skin Booster" data-price="75" data-category="Add Ons"><td>Hydrafacial Skin Booster</td><td>75</td></tr>
+                            <tr data-service="Dermaplanning" data-price="70" data-category="Add Ons"><td>Dermaplanning</td><td>70</td></tr>
+                            <tr data-service="Red Light Therapy" data-price="50" data-category="Add Ons"><td>Red Light Therapy</td><td>50</td></tr>
+                            <tr data-service="Blue Light Therapy" data-price="50" data-category="Add Ons"><td>Blue Light Therapy</td><td>50</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1407,6 +1407,110 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+        <!-- Sliding Service Profile Panel -->
+        <div id="service-profile-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:996;"></div>
+        <div id="service-profile-panel" style="position:fixed; top:0; right:-700px; width:700px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:997; transition:right 0.3s ease; display:flex; flex-direction:column;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#222; color:#fff;">
+                <div style="font-weight:600;">Service</div>
+                <button id="service-profile-close" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
+            </div>
+            <div style="padding:20px; overflow-y:auto; flex:1;">
+                <h2 id="service-profile-name" style="margin:0 0 16px 0; font-size:22px;">Service Name</h2>
+
+                <!-- Sub-tabs: Overview / Staff -->
+                <div style="display:flex; gap:24px; border-bottom:1px solid var(--grey); margin-bottom:16px;">
+                    <button id="service-tab-overview" style="background:none; border:none; padding:8px 0; cursor:pointer; font-weight:600; border-bottom:2px solid #000;">
+                        Overview
+                    </button>
+                    <button id="service-tab-staff" style="background:none; border:none; padding:8px 0; cursor:pointer; color:var(--dark-grey); border-bottom:2px solid transparent;">
+                        Staff
+                    </button>
+                </div>
+
+                <div id="service-panel-overview">
+                    <!-- Commission and charges -->
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:24px;">
+                        <div>
+                            <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey); display:block; margin-bottom:8px;">
+                                Commission Override
+                            </label>
+                            <div style="display:flex; align-items:center; border-bottom:1px solid var(--grey); padding-bottom:8px;">
+                                <input type="number" min="0" max="100" step="0.1" placeholder=""
+                                       style="flex:1; border:none; outline:none; font-size:16px; background:transparent;">
+                                <span style="margin-left:4px;">%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey); display:block; margin-bottom:8px;">
+                                Business Service Charge *
+                            </label>
+                            <div style="display:flex; align-items:center; border-bottom:1px solid var(--grey); padding-bottom:8px;">
+                                <span style="margin-right:6px;">$</span>
+                                <input type="number" min="0" step="0.01" value="0.00"
+                                       style="flex:1; border:none; outline:none; font-size:16px; background:transparent; text-align:right;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Checkboxes -->
+                    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px; font-size:14px;">
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                            <input type="checkbox" style="width:16px; height:16px;">
+                            <span>This location has a custom tax rate</span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                            <input type="checkbox" checked style="width:16px; height:16px;">
+                            <span>Bookable online</span>
+                        </label>
+                    </div>
+
+                    <!-- Informational text -->
+                    <p style="font-size:14px; color:var(--dark-grey); line-height:1.5; margin-bottom:24px;">
+                        If this service has a custom commission rate, you may override it here.
+                        To use the default staff pay rate, leave this blank. Historical records will be preserved
+                        even if this value is changed.
+                    </p>
+                    <p style="font-size:14px; color:var(--dark-grey); line-height:1.5; margin-bottom:24px;">
+                        Business Service Charges may be used for material costs or other cost of goods recouped from
+                        this service. The total service charges may be seen in reports.
+                    </p>
+                    <p style="font-size:14px; color:var(--dark-grey); line-height:1.5; margin-bottom:24px;">
+                        A staff member must be assigned to this service for it to be accessible and appear in the
+                        self-booking overlay. Learn more about direct links <a href="#" style="color:var(--blue); text-decoration:underline;">here</a>.
+                    </p>
+
+                    <!-- Direct links section -->
+                    <div style="margin-top:24px;">
+                        <h4 style="margin:0 0 8px 0; font-size:14px;">Direct links for online booking</h4>
+                        <p style="margin:0 0 4px 0; font-size:12px; color:var(--dark-grey);">Sharing Options</p>
+
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <select style="flex:1; padding:8px 10px; border-radius:4px; border:1px solid var(--grey); font-size:14px;">
+                                <option>Link to this Service via your website</option>
+                                <option>Link to this Service only</option>
+                            </select>
+                        </div>
+
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <input type="text" readonly
+                                   value="blvd.openBookingWidget({ urlParams: { location: 'rani-beauty-clinic', service: 'service-id' } })"
+                                   style="flex:1; padding:8px 10px; border-radius:4px; border:1px solid var(--grey); font-size:12px; overflow:hidden; text-overflow:ellipsis;">
+                            <button style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer; font-size:14px;">
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="service-panel-staff" style="display:none;">
+                    <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">Staff members who can perform this service will be listed here.</p>
+                </div>
+            </div>
+            <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end; gap:8px;">
+                <button style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer;">Save changes</button>
             </div>
         </div>
 
@@ -1591,6 +1695,7 @@
         const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top > li > a');
         const manageSubmenu = document.getElementById('manage-submenu');
         const manageSubLinks = document.querySelectorAll('#manage-submenu a[data-subsection]');
+        const serviceRows = document.querySelectorAll('#manage-services table tbody tr[data-service]');
 
         allSideMenu.forEach(item => {
             const li = item.parentElement;
@@ -1605,9 +1710,12 @@
                 });
                 li.classList.add('active');
 
-                // Close staff profile panel if open when switching main sections
+                // Close sliding panels if open when switching main sections
                 if (typeof closeStaffProfile === 'function') {
                     closeStaffProfile();
+                }
+                if (typeof closeServiceProfile === 'function') {
+                    closeServiceProfile();
                 }
 
                 // Section switching for Front Desk and Manage
@@ -1700,6 +1808,52 @@
             staffProfilePanel.style.right = '-820px';
         }
 
+        // Service profile sliding panel logic
+        const serviceProfilePanel = document.getElementById('service-profile-panel');
+        const serviceProfileOverlay = document.getElementById('service-profile-overlay');
+        const serviceProfileClose = document.getElementById('service-profile-close');
+        const serviceProfileName = document.getElementById('service-profile-name');
+        const serviceProfileCategory = document.getElementById('service-profile-category');
+        const serviceProfilePrice = document.getElementById('service-profile-price');
+        const serviceTabOverview = document.getElementById('service-tab-overview');
+        const serviceTabStaff = document.getElementById('service-tab-staff');
+        const servicePanelOverview = document.getElementById('service-panel-overview');
+        const servicePanelStaff = document.getElementById('service-panel-staff');
+
+        function openServiceProfile(row) {
+            const name = row.getAttribute('data-service') || '';
+            const category = row.getAttribute('data-category') || '';
+            const price = row.getAttribute('data-price') || '';
+
+            serviceProfileName.textContent = name || 'Service';
+            if (serviceProfileCategory) {
+                serviceProfileCategory.textContent = category ? `Category: ${category}` : '';
+            }
+            if (serviceProfilePrice) {
+                serviceProfilePrice.textContent = price ? `Price: $${price}` : '';
+            }
+
+            // Default to Overview tab
+            if (serviceTabOverview && servicePanelOverview && servicePanelStaff && serviceTabStaff) {
+                serviceTabOverview.style.color = '#000';
+                serviceTabOverview.style.borderBottom = '2px solid #000';
+                serviceTabOverview.style.fontWeight = '600';
+                serviceTabStaff.style.color = 'var(--dark-grey)';
+                serviceTabStaff.style.borderBottom = '2px solid transparent';
+                serviceTabStaff.style.fontWeight = '400';
+                servicePanelOverview.style.display = 'block';
+                servicePanelStaff.style.display = 'none';
+            }
+
+            serviceProfileOverlay.style.display = 'block';
+            serviceProfilePanel.style.right = '0';
+        }
+
+        function closeServiceProfile() {
+            serviceProfileOverlay.style.display = 'none';
+            serviceProfilePanel.style.right = '-700px';
+        }
+
         staffRows.forEach(row => {
             row.style.cursor = 'pointer';
             row.addEventListener('click', function (e) {
@@ -1714,6 +1868,50 @@
         }
         if (staffProfileOverlay) {
             staffProfileOverlay.addEventListener('click', closeStaffProfile);
+        }
+
+        // Service rows click handlers
+        serviceRows.forEach(row => {
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', function () {
+                openServiceProfile(row);
+            });
+        });
+
+        if (serviceProfileClose) {
+            serviceProfileClose.addEventListener('click', closeServiceProfile);
+        }
+        if (serviceProfileOverlay) {
+            serviceProfileOverlay.addEventListener('click', closeServiceProfile);
+        }
+
+        // Service profile sub-tabs
+        if (serviceTabOverview && serviceTabStaff && servicePanelOverview && servicePanelStaff) {
+            serviceTabOverview.addEventListener('click', function () {
+                serviceTabOverview.style.color = '#000';
+                serviceTabOverview.style.borderBottom = '2px solid #000';
+                serviceTabOverview.style.fontWeight = '600';
+
+                serviceTabStaff.style.color = 'var(--dark-grey)';
+                serviceTabStaff.style.borderBottom = '2px solid transparent';
+                serviceTabStaff.style.fontWeight = '400';
+
+                servicePanelOverview.style.display = 'block';
+                servicePanelStaff.style.display = 'none';
+            });
+
+            serviceTabStaff.addEventListener('click', function () {
+                serviceTabStaff.style.color = '#000';
+                serviceTabStaff.style.borderBottom = '2px solid #000';
+                serviceTabStaff.style.fontWeight = '600';
+
+                serviceTabOverview.style.color = 'var(--dark-grey)';
+                serviceTabOverview.style.borderBottom = '2px solid transparent';
+                serviceTabOverview.style.fontWeight = '400';
+
+                servicePanelOverview.style.display = 'none';
+                servicePanelStaff.style.display = 'block';
+            });
         }
 
         // Staff profile sub-tabs (Personal / Services / Appointments)
