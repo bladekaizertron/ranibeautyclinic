@@ -1913,6 +1913,11 @@
 
             serviceProfileOverlay.style.display = 'block';
             serviceProfilePanel.style.right = '0';
+            
+            // Re-initialize the toggles when the panel is opened
+            setTimeout(() => {
+                initializeServiceToggles();
+            }, 100);
         }
 
         function closeServiceProfile() {
@@ -1952,35 +1957,49 @@
         }
 
         // Toggle switches inside Service Staff tab
-        const serviceToggles = document.querySelectorAll('#service-panel-staff .service-toggle');
-        serviceToggles.forEach(toggle => {
-            const input = toggle.querySelector('input[type="checkbox"]');
-            const track = toggle.querySelector('.toggle-track');
-            const thumb = toggle.querySelector('.toggle-thumb');
+        function initializeServiceToggles() {
+            const serviceToggles = document.querySelectorAll('#service-panel-staff .service-toggle');
+            serviceToggles.forEach(toggle => {
+                const input = toggle.querySelector('input[type="checkbox"]');
+                const track = toggle.querySelector('.toggle-track');
+                const thumb = toggle.querySelector('.toggle-thumb');
 
-            function applyToggleState() {
-                const isOn = input.checked;
-                if (isOn) {
-                    if (track) track.style.backgroundColor = '#9b5de5';
-                    if (thumb) thumb.style.transform = 'translateX(20px)';
-                } else {
-                    if (track) track.style.backgroundColor = '#ccc';
-                    if (thumb) thumb.style.transform = 'translateX(0)';
+                function applyToggleState() {
+                    const isOn = input.checked;
+                    if (isOn) {
+                        if (track) track.style.backgroundColor = '#9b5de5';
+                        if (thumb) thumb.style.transform = 'translateX(20px)';
+                    } else {
+                        if (track) track.style.backgroundColor = '#ccc';
+                        if (thumb) thumb.style.transform = 'translateX(0)';
+                    }
                 }
-            }
 
-            // Initialize state
-            applyToggleState();
-
-            // Toggle on click
-            toggle.addEventListener('click', function (e) {
-                // avoid double toggling when clicking the hidden input
-                if (e.target.tagName.toLowerCase() !== 'input') {
-                    input.checked = !input.checked;
-                }
+                // Initialize state
                 applyToggleState();
+
+                // Remove existing event listeners to avoid duplicates
+                toggle.removeEventListener('click', toggleClickHandler);
+
+                // Toggle on click
+                function toggleClickHandler(e) {
+                    // avoid double toggling when clicking the hidden input
+                    if (e.target.tagName.toLowerCase() !== 'input') {
+                        input.checked = !input.checked;
+                        applyToggleState();
+                        
+                        // Prevent any default behavior that might interfere
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                }
+                
+                toggle.addEventListener('click', toggleClickHandler);
             });
-        });
+        }
+        
+        // Initialize the toggles when the page loads
+        initializeServiceToggles();
 
         // Service profile sub-tabs
         if (serviceTabOverview && serviceTabStaff && servicePanelOverview && servicePanelStaff) {
@@ -2008,6 +2027,11 @@
 
                 servicePanelOverview.style.display = 'none';
                 servicePanelStaff.style.display = 'block';
+                
+                // Re-initialize the toggles when switching to the staff tab
+                setTimeout(() => {
+                    initializeServiceToggles();
+                }, 100);
             });
         }
 
