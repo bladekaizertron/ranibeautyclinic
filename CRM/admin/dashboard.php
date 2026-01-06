@@ -1479,30 +1479,8 @@
                     </p>
                     <p style="font-size:14px; color:var(--dark-grey); line-height:1.5; margin-bottom:24px;">
                         A staff member must be assigned to this service for it to be accessible and appear in the
-                        self-booking overlay. Learn more about direct links <a href="#" style="color:var(--blue); text-decoration:underline;">here</a>.
+                        self-booking overlay.
                     </p>
-
-                    <!-- Direct links section -->
-                    <div style="margin-top:24px;">
-                        <h4 style="margin:0 0 8px 0; font-size:14px;">Direct links for online booking</h4>
-                        <p style="margin:0 0 4px 0; font-size:12px; color:var(--dark-grey);">Sharing Options</p>
-
-                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                            <select style="flex:1; padding:8px 10px; border-radius:4px; border:1px solid var(--grey); font-size:14px;">
-                                <option>Link to this Service via your website</option>
-                                <option>Link to this Service only</option>
-                            </select>
-                        </div>
-
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <input type="text" readonly
-                                   value="blvd.openBookingWidget({ urlParams: { location: 'rani-beauty-clinic', service: 'service-id' } })"
-                                   style="flex:1; padding:8px 10px; border-radius:4px; border:1px solid var(--grey); font-size:12px; overflow:hidden; text-overflow:ellipsis;">
-                            <button style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer; font-size:14px;">
-                                Copy Link
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
                 <div id="service-panel-staff" style="display:none;">
