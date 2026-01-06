@@ -902,7 +902,7 @@
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
-				<a href="#">
+				<a href="#" data-section="frontdesk">
 					<i class='bx bxs-dashboard bx-sm' ></i>
 					<span class="text">Front Desk</span>
 				</a>
@@ -944,7 +944,7 @@
 				</a>
 			</li>
             <li>
-				<a href="#">
+				<a href="#" data-section="manage">
 					<i class='bx bxs-briefcase-alt-2 bx-sm' ></i>
 					<span class="text">Manage</span>
 				</a>
@@ -974,7 +974,6 @@
 		<!-- NAVBAR -->
 <nav>
     <i class='bx bx-menu bx-sm' ></i>
-    <a href="#" class="nav-link">Onboarding Checklist</a>
     <form action="#">
         <div class="form-input">
             <input type="search" placeholder="Search Clients...">
@@ -1005,7 +1004,7 @@
 
     <!-- Profile Menu -->
     <a href="#" class="profile" id="profileIcon">
-        <img src="https://placehold.co/600x400/png" alt="Profile">
+        <i class='bx bxs-user-circle' style="font-size: 40px;"></i>
     </a>
     <div class="profile-menu" id="profileMenu">
         <ul>
@@ -1020,6 +1019,7 @@
 
 		<!-- MAIN -->
 		<main>
+        <div id="frontdesk-section">
 			<div class="head-title">
 				<div class="left">
 					<h1>Dashboard</h1>
@@ -1148,6 +1148,34 @@
                     </div>
 				</div>
 			</div>
+        </div>
+
+        <!-- Manage Section (hidden by default) -->
+        <div id="manage-section" style="display: none;">
+            <div class="head-title">
+                <div class="left">
+                    <h1>Manage</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li>
+                            <a class="active" href="#">Manage</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="table-data">
+                <div class="order">
+                    <div class="head">
+                        <h3>Management Area</h3>
+                    </div>
+                    <p>Here you can add your management tools, such as staff management, services, inventory, and other admin settings.</p>
+                </div>
+            </div>
+        </div>
 		</main>
 		<!-- MAIN -->
 	</section>
@@ -1160,12 +1188,29 @@
         allSideMenu.forEach(item => {
             const li = item.parentElement;
 
-            item.addEventListener('click', function () {
+            item.addEventListener('click', function (e) {
+                // Prevent default jump for menu links
+                e.preventDefault();
+
+                // Active state handling
                 allSideMenu.forEach(i => {
                     i.parentElement.classList.remove('active');
-                })
+                });
                 li.classList.add('active');
-            })
+
+                // Section switching for Front Desk and Manage
+                const section = item.getAttribute('data-section');
+                const frontdeskSection = document.getElementById('frontdesk-section');
+                const manageSection = document.getElementById('manage-section');
+
+                if (section === 'frontdesk') {
+                    if (frontdeskSection) frontdeskSection.style.display = 'block';
+                    if (manageSection) manageSection.style.display = 'none';
+                } else if (section === 'manage') {
+                    if (frontdeskSection) frontdeskSection.style.display = 'none';
+                    if (manageSection) manageSection.style.display = 'block';
+                }
+            });
         });
 
         // Calendar Logic
