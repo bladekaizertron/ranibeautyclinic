@@ -1,8 +1,8 @@
 <?php
 $sname= "localhost";
-$unmae= "root";
-$password = "";
-$db_name = "coderebuilt_crm";
+$unmae= "u993466733_medspacrm";
+$password = "medspaCRM123";
+$db_name = "u993466733_medspacrm";
 
 $conn = mysqli_connect($sname, $unmae, $password, $db_name);
 
