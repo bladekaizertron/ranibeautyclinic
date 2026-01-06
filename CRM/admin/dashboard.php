@@ -1292,10 +1292,85 @@
 
                 <!-- Staff subsection -->
                 <div class="order manage-subsection" id="manage-staff" style="display: none;">
-                    <div class="head">
-                        <h3>Staff</h3>
+                    <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3>Staff</h3>
+                        </div>
+                        <button style="padding: 8px 16px; background: var(--dark); color: var(--light); border: none; border-radius: 4px; cursor: pointer;">
+                            New staff
+                        </button>
                     </div>
-                    <p>Manage your staff profiles, roles, and permissions here.</p>
+
+                    <!-- Search and status filter -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0;">
+                        <div style="flex: 1; margin-right: 16px;">
+                            <input type="text" placeholder="Search staff" style="width: 100%; padding: 10px 12px; border-radius: 4px; border: 1px solid var(--grey);">
+                        </div>
+                        <div>
+                            <span style="margin-right: 4px;">Status:</span>
+                            <select style="padding: 8px 12px; border-radius: 4px; border: 1px solid var(--grey);">
+                                <option>Active</option>
+                                <option>Invited</option>
+                                <option>Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Staff table -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Permission group</th>
+                                <th>Invite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ayla K</td>
+                                <td>(253) 408-9535</td>
+                                <td>info@aylamedia.co</td>
+                                <td>Team Permissions</td>
+                                <td>Service Provider</td>
+                                <td><a href="#">Send Invite</a></td>
+                            </tr>
+                            <tr>
+                                <td>Jodie X</td>
+                                <td>(206) 507-8902</td>
+                                <td>coderebuilt@gmail.com</td>
+                                <td>Team Permissions</td>
+                                <td>Admin</td>
+                                <td>Confirmed</td>
+                            </tr>
+                            <tr>
+                                <td>Laser Room #1</td>
+                                <td>(206) 554-9524</td>
+                                <td>ranibeautyclinic13@gmail.com</td>
+                                <td>Team Permissions</td>
+                                <td>Service Provider</td>
+                                <td><a href="#">Send Invite</a></td>
+                            </tr>
+                            <tr>
+                                <td>Raj Rai</td>
+                                <td>(206) 507-8902</td>
+                                <td>rajvinderkaurnijjar@gmail.com</td>
+                                <td>Team Permissions</td>
+                                <td>Service Provider</td>
+                                <td><a href="#">Send Invite</a></td>
+                            </tr>
+                            <tr>
+                                <td>Rina Rai</td>
+                                <td>(425) 539-4440</td>
+                                <td>info@ranibeautyclinic.com</td>
+                                <td>General Staff</td>
+                                <td>Admin</td>
+                                <td>Confirmed</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1335,13 +1410,23 @@
                 } else if (section === 'manage') {
                     if (frontdeskSection) frontdeskSection.style.display = 'none';
                     if (manageSection) manageSection.style.display = 'block';
-                    if (manageSubmenu) manageSubmenu.style.display = 'block';
 
-                    // Default to Schedule subsection when opening Manage
-                    const defaultSub = document.getElementById('manage-schedule');
-                    const allSubs = document.querySelectorAll('.manage-subsection');
-                    allSubs.forEach(s => s.style.display = 'none');
-                    if (defaultSub) defaultSub.style.display = 'block';
+                    if (manageSubmenu) {
+                        const isHidden = manageSubmenu.style.display === 'none' || manageSubmenu.style.display === '';
+
+                        // Toggle submenu visibility
+                        if (isHidden) {
+                            manageSubmenu.style.display = 'block';
+
+                            // Default to Schedule subsection when opening Manage
+                            const defaultSub = document.getElementById('manage-schedule');
+                            const allSubs = document.querySelectorAll('.manage-subsection');
+                            allSubs.forEach(s => s.style.display = 'none');
+                            if (defaultSub) defaultSub.style.display = 'block';
+                        } else {
+                            manageSubmenu.style.display = 'none';
+                        }
+                    }
                 }
             });
         });
