@@ -904,7 +904,7 @@
 			<li class="active">
 				<a href="#" data-section="frontdesk">
 					<i class='bx bxs-dashboard bx-sm' ></i>
-					<span class="text">Front Desk</span>
+					<span class="text">Dashboard</span>
 				</a>
 			</li>
 			<li>
@@ -1022,14 +1022,14 @@
         <div id="frontdesk-section">
 			<div class="head-title">
 				<div class="left">
-					<h1>Dashboard</h1>
+					<h1>Insights</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">Dashboard</a>
 						</li>
 						<li><i class='bx bx-chevron-right' ></i></li>
 						<li>
-							<a class="active" href="#">Home</a>
+							<a class="active" href="#">Stats</a>
 						</li>
 					</ul>
 				</div>
