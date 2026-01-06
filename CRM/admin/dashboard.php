@@ -1412,7 +1412,7 @@
 
         <!-- Sliding Staff Profile Panel -->
         <div id="staff-profile-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:998;"></div>
-        <div id="staff-profile-panel" style="position:fixed; top:0; right:-720px; width:720px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:999; transition:right 0.3s ease; display:flex; flex-direction:column;">
+        <div id="staff-profile-panel" style="position:fixed; top:0; right:-820px; width:820px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:999; transition:right 0.3s ease; display:flex; flex-direction:column;">
             <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#222; color:#fff;">
                 <div style="font-weight:600;">Staff Profile</div>
                 <button id="staff-profile-close" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
@@ -1465,11 +1465,111 @@
 
                 <!-- Services Content -->
                 <div id="staff-panel-services" class="staff-panel-section" style="display:none;">
-                    <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">Assign and manage services for this staff member.</p>
-                    <ul style="margin-top:12px; padding-left:18px; font-size:14px;">
-                        <li>Example service 1</li>
-                        <li>Example service 2</li>
-                    </ul>
+                    <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">Services offered by this location.</p>
+                    <div style="margin-top:12px; max-height:400px; overflow-y:auto; border:1px solid var(--grey); border-radius:4px; padding:8px;">
+                        <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left; padding:6px 8px;">Services</th>
+                                    <th style="text-align:left; padding:6px 8px;">$</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><th colspan="2" style="padding:6px 8px;">Face Fixes</th></tr>
+                                <tr><td style="padding:4px 8px;">Botox / Botox Facial</td><td style="padding:4px 8px;">14</td></tr>
+                                <tr><td style="padding:4px 8px;">Sculptra</td><td style="padding:4px 8px;">950</td></tr>
+                                <tr><td style="padding:4px 8px;">Lip Filler</td><td style="padding:4px 8px;">650</td></tr>
+                                <tr><td style="padding:4px 8px;">Eye Filler</td><td style="padding:4px 8px;">750</td></tr>
+                                <tr><td style="padding:4px 8px;">Cheek Filler</td><td style="padding:4px 8px;">850</td></tr>
+                                <tr><td style="padding:4px 8px;">Nose Filler</td><td style="padding:4px 8px;">795</td></tr>
+                                <tr><td style="padding:4px 8px;">Jawline Filler</td><td style="padding:4px 8px;">795</td></tr>
+                                <tr><td style="padding:4px 8px;">Neck Filler</td><td style="padding:4px 8px;">795</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Body Fixes</th></tr>
+                                <tr><td style="padding:4px 8px;">Radiesse</td><td style="padding:4px 8px;">950</td></tr>
+                                <tr><td style="padding:4px 8px;">Sculptra Skinny BBL</td><td style="padding:4px 8px;">895</td></tr>
+                                <tr><td style="padding:4px 8px;">Traptox</td><td style="padding:4px 8px;">895</td></tr>
+                                <tr><td style="padding:4px 8px;">Cutera Secret</td><td style="padding:4px 8px;">895</td></tr>
+                                <tr><td style="padding:4px 8px;">Sofwave</td><td style="padding:4px 8px;">495</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Skin Fixes</th></tr>
+                                <tr><td style="padding:4px 8px;">Laser Facials</td><td style="padding:4px 8px;">495</td></tr>
+                                <tr><td style="padding:4px 8px;">Hydrafacial</td><td style="padding:4px 8px;">250</td></tr>
+                                <tr><td style="padding:4px 8px;">VI Peel</td><td style="padding:4px 8px;">399</td></tr>
+                                <tr><td style="padding:4px 8px;">Cosmelan</td><td style="padding:4px 8px;">995</td></tr>
+                                <tr><td style="padding:4px 8px;">Sofwave</td><td style="padding:4px 8px;">495</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Laser Hair Removal</th></tr>
+                                <tr><td style="padding:4px 8px;">Laser Acne Facial</td><td style="padding:4px 8px;">495</td></tr>
+                                <tr><td style="padding:4px 8px;">Laser Roscea Facial</td><td style="padding:4px 8px;">495</td></tr>
+                                <tr><td style="padding:4px 8px;">Laser Resurfacing Facial</td><td style="padding:4px 8px;">795</td></tr>
+                                <tr><td style="padding:4px 8px;">Upper Lip Laser Hair Removal</td><td style="padding:4px 8px;">29</td></tr>
+                                <tr><td style="padding:4px 8px;">Eyebrows</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Sideburns</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Full Back</td><td style="padding:4px 8px;">400</td></tr>
+                                <tr><td style="padding:4px 8px;">Pantyline</td><td style="padding:4px 8px;">150</td></tr>
+                                <tr><td style="padding:4px 8px;">Neck</td><td style="padding:4px 8px;">299</td></tr>
+                                <tr><td style="padding:4px 8px;">Full Face Laser Hair Removal</td><td style="padding:4px 8px;">299</td></tr>
+                                <tr><td style="padding:4px 8px;">Hands and fingers</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Full Chest</td><td style="padding:4px 8px;">250</td></tr>
+                                <tr><td style="padding:4px 8px;">Happy Trail</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Areolas</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Forehead</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Jawline</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Underarms</td><td style="padding:4px 8px;">175</td></tr>
+                                <tr><td style="padding:4px 8px;">Limited Time $99 Upper Lip</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Feet &amp; Toes</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Full Brazilian</td><td style="padding:4px 8px;">250</td></tr>
+                                <tr><td style="padding:4px 8px;">Ears</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Full Body Laser Hair Removal</td><td style="padding:4px 8px;">1299</td></tr>
+                                <tr><td style="padding:4px 8px;">Pony Tail Laser</td><td style="padding:4px 8px;">125</td></tr>
+                                <tr><td style="padding:4px 8px;">Full Abs</td><td style="padding:4px 8px;">300</td></tr>
+                                <tr><td style="padding:4px 8px;">Full Legs</td><td style="padding:4px 8px;">450</td></tr>
+                                <tr><td style="padding:4px 8px;">Cheeks</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Chin</td><td style="padding:4px 8px;">99</td></tr>
+                                <tr><td style="padding:4px 8px;">Buttocks</td><td style="padding:4px 8px;">299</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Radiofrequency Microneedling</th></tr>
+                                <tr><td style="padding:4px 8px;">Full Face</td><td style="padding:4px 8px;">495</td></tr>
+                                <tr><td style="padding:4px 8px;">Neck</td><td style="padding:4px 8px;">495</td></tr>
+                                <tr><td style="padding:4px 8px;">Arms</td><td style="padding:4px 8px;">595</td></tr>
+                                <tr><td style="padding:4px 8px;">Abdomen</td><td style="padding:4px 8px;">1100</td></tr>
+                                <tr><td style="padding:4px 8px;">Bra Far Sculp</td><td style="padding:4px 8px;">695</td></tr>
+                                <tr><td style="padding:4px 8px;">Legs</td><td style="padding:4px 8px;">1500</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Hydrafacial</th></tr>
+                                <tr><td style="padding:4px 8px;">Signature Hydrafacial</td><td style="padding:4px 8px;">250</td></tr>
+                                <tr><td style="padding:4px 8px;">Dior Hydrafacial</td><td style="padding:4px 8px;">399</td></tr>
+                                <tr><td style="padding:4px 8px;">Keravive Hydrafacial (Hair)</td><td style="padding:4px 8px;">450</td></tr>
+                                <tr><td style="padding:4px 8px;">Underarm Hydrafacial</td><td style="padding:4px 8px;">199</td></tr>
+                                <tr><td style="padding:4px 8px;">Back Hydrafacial</td><td style="padding:4px 8px;">375</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Chemical Peels</th></tr>
+                                <tr><td style="padding:4px 8px;">BioRepeel</td><td style="padding:4px 8px;">295</td></tr>
+                                <tr><td style="padding:4px 8px;">Face &amp; Neck</td><td style="padding:4px 8px;">225</td></tr>
+                                <tr><td style="padding:4px 8px;">Back</td><td style="padding:4px 8px;">275</td></tr>
+                                <tr><td style="padding:4px 8px;">Underarms</td><td style="padding:4px 8px;">175</td></tr>
+                                <tr><td style="padding:4px 8px;">Intimate Area</td><td style="padding:4px 8px;">195</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">VI Peels</th></tr>
+                                <tr><td style="padding:4px 8px;">Acne VI Peel</td><td style="padding:4px 8px;">350</td></tr>
+                                <tr><td style="padding:4px 8px;">Acne Scarring VI Peel</td><td style="padding:4px 8px;">350</td></tr>
+                                <tr><td style="padding:4px 8px;">Rosacea Peel</td><td style="padding:4px 8px;">350</td></tr>
+                                <tr><td style="padding:4px 8px;">Sensitive Skin Peel</td><td style="padding:4px 8px;">350</td></tr>
+                                <tr><td style="padding:4px 8px;">VI Hyperpigmentation Peel</td><td style="padding:4px 8px;">350</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Skin Boosters &amp; Wellness</th></tr>
+                                <tr><td style="padding:4px 8px;">Salmon DNA</td><td style="padding:4px 8px;">450</td></tr>
+                                <tr><td style="padding:4px 8px;">Exosomes</td><td style="padding:4px 8px;">595</td></tr>
+
+                                <tr><th colspan="2" style="padding:6px 8px;">Add Ons</th></tr>
+                                <tr><td style="padding:4px 8px;">Hydrafacial Skin Booster</td><td style="padding:4px 8px;">75</td></tr>
+                                <tr><td style="padding:4px 8px;">Dermaplanning</td><td style="padding:4px 8px;">70</td></tr>
+                                <tr><td style="padding:4px 8px;">Red Light Therapy</td><td style="padding:4px 8px;">50</td></tr>
+                                <tr><td style="padding:4px 8px;">Blue Light Therapy</td><td style="padding:4px 8px;">50</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- Appointments Content -->
@@ -1478,7 +1578,6 @@
                 </div>
             </div>
             <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end; gap:8px;">
-                <button style="padding:8px 14px; border:1px solid #e63946; background:#fff; color:#e63946; border-radius:4px; cursor:pointer;">Deactivate</button>
                 <button style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer;">Save changes</button>
             </div>
         </div>
@@ -1505,6 +1604,11 @@
                     i.parentElement.classList.remove('active');
                 });
                 li.classList.add('active');
+
+                // Close staff profile panel if open when switching main sections
+                if (typeof closeStaffProfile === 'function') {
+                    closeStaffProfile();
+                }
 
                 // Section switching for Front Desk and Manage
                 const section = item.getAttribute('data-section');
@@ -1593,7 +1697,7 @@
 
         function closeStaffProfile() {
             staffProfileOverlay.style.display = 'none';
-            staffProfilePanel.style.right = '-720px';
+            staffProfilePanel.style.right = '-820px';
         }
 
         staffRows.forEach(row => {
