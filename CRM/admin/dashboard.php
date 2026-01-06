@@ -1412,7 +1412,7 @@
 
         <!-- Sliding Service Profile Panel -->
         <div id="service-profile-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:996;"></div>
-        <div id="service-profile-panel" style="position:fixed; top:0; right:-700px; width:700px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:997; transition:right 0.3s ease; display:flex; flex-direction:column;">
+        <div id="service-profile-panel" style="position:fixed; top:0; right:-900px; width:900px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:997; transition:right 0.3s ease; display:flex; flex-direction:column;">
             <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#222; color:#fff;">
                 <div style="font-weight:600;">Service</div>
                 <button id="service-profile-close" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
@@ -1484,7 +1484,95 @@
                 </div>
 
                 <div id="service-panel-staff" style="display:none;">
-                    <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">Staff members who can perform this service will be listed here.</p>
+                    <table style="width:100%; border-collapse:collapse; margin-top:16px;">
+                        <thead>
+                            <tr style="border-bottom:1px solid var(--grey);">
+                                <th style="text-align:left; padding:12px 8px; font-size:12px; font-weight:600; color:var(--dark-grey);"></th>
+                                <th style="text-align:left; padding:12px 8px; font-size:12px; font-weight:600; color:var(--dark-grey);">Price</th>
+                                <th style="text-align:left; padding:12px 8px; font-size:12px; font-weight:600; color:var(--dark-grey);">Duration</th>
+                                <th style="text-align:left; padding:12px 8px; font-size:12px; font-weight:600; color:var(--dark-grey);">Processing Time</th>
+                                <th style="text-align:left; padding:12px 8px; font-size:12px; font-weight:600; color:var(--dark-grey);">Finishing Time</th>
+                                <th style="text-align:left; padding:12px 8px; font-size:12px; font-weight:600; color:var(--dark-grey);">Transition Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid var(--grey);">
+                                <td style="padding:12px 8px; display:flex; align-items:center; gap:12px; padding-left:40px;">
+                                    <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                                        <input type="checkbox" checked style="opacity:0; width:0; height:0;">
+                                        <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#9b5de5; border-radius:24px; transition:0.3s;"></span>
+                                        <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s; transform:translateX(20px);"></span>
+                                    </label>
+                                    <span style="font-size:14px; color:var(--dark-grey); font-style:italic;">Ayla K</span>
+                                </td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark);">$99.00</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">10 mins</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">5 mins</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--grey);">
+                                <td style="padding:12px 8px; display:flex; align-items:center; gap:12px; padding-left:40px;">
+                                    <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                                        <input type="checkbox" checked style="opacity:0; width:0; height:0;">
+                                        <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#9b5de5; border-radius:24px; transition:0.3s;"></span>
+                                        <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s; transform:translateX(20px);"></span>
+                                    </label>
+                                    <span style="font-size:14px; color:var(--dark-grey); font-style:italic;">Jodie X</span>
+                                </td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark);">$99.00</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">10 mins</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">5 mins</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--grey);">
+                                <td style="padding:12px 8px; display:flex; align-items:center; gap:12px; padding-left:40px;">
+                                    <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                                        <input type="checkbox" checked style="opacity:0; width:0; height:0;">
+                                        <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#9b5de5; border-radius:24px; transition:0.3s;"></span>
+                                        <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s; transform:translateX(20px);"></span>
+                                    </label>
+                                    <span style="font-size:14px; color:var(--dark-grey); font-style:italic;">Laser Room #1</span>
+                                </td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark);">$99.00</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">10 mins</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">5 mins</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--grey);">
+                                <td style="padding:12px 8px; display:flex; align-items:center; gap:12px; padding-left:40px;">
+                                    <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                                        <input type="checkbox" style="opacity:0; width:0; height:0;">
+                                        <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span>
+                                        <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span>
+                                    </label>
+                                    <span style="font-size:14px; color:var(--dark-grey); font-style:italic;">Rina Rai</span>
+                                </td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark);">$99.00</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">10 mins</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">5 mins</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:12px 8px; display:flex; align-items:center; gap:12px; padding-left:40px;">
+                                    <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                                        <input type="checkbox" style="opacity:0; width:0; height:0;">
+                                        <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span>
+                                        <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span>
+                                    </label>
+                                    <span style="font-size:14px; color:var(--dark-grey); font-style:italic;">Raj Rai</span>
+                                </td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark);">$99.00</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">10 mins</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">5 mins</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end; gap:8px;">
@@ -1829,7 +1917,7 @@
 
         function closeServiceProfile() {
             serviceProfileOverlay.style.display = 'none';
-            serviceProfilePanel.style.right = '-700px';
+            serviceProfilePanel.style.right = '-900px';
         }
 
         staffRows.forEach(row => {
@@ -1862,6 +1950,37 @@
         if (serviceProfileOverlay) {
             serviceProfileOverlay.addEventListener('click', closeServiceProfile);
         }
+
+        // Toggle switches inside Service Staff tab
+        const serviceToggles = document.querySelectorAll('#service-panel-staff .service-toggle');
+        serviceToggles.forEach(toggle => {
+            const input = toggle.querySelector('input[type="checkbox"]');
+            const track = toggle.querySelector('.toggle-track');
+            const thumb = toggle.querySelector('.toggle-thumb');
+
+            function applyToggleState() {
+                const isOn = input.checked;
+                if (isOn) {
+                    if (track) track.style.backgroundColor = '#9b5de5';
+                    if (thumb) thumb.style.transform = 'translateX(20px)';
+                } else {
+                    if (track) track.style.backgroundColor = '#ccc';
+                    if (thumb) thumb.style.transform = 'translateX(0)';
+                }
+            }
+
+            // Initialize state
+            applyToggleState();
+
+            // Toggle on click
+            toggle.addEventListener('click', function (e) {
+                // avoid double toggling when clicking the hidden input
+                if (e.target.tagName.toLowerCase() !== 'input') {
+                    input.checked = !input.checked;
+                }
+                applyToggleState();
+            });
+        });
 
         // Service profile sub-tabs
         if (serviceTabOverview && serviceTabStaff && servicePanelOverview && servicePanelStaff) {
