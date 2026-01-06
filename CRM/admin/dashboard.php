@@ -1466,7 +1466,7 @@
                 <!-- Services Content -->
                 <div id="staff-panel-services" class="staff-panel-section" style="display:none;">
                     <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">Services offered by this location.</p>
-                    <div style="margin-top:12px; max-height:400px; overflow-y:auto; border:1px solid var(--grey); border-radius:4px; padding:8px;">
+                    <div style="margin-top:12px; max-height:490px; overflow-y:auto; border:1px solid var(--grey); border-radius:4px; padding:8px;">
                         <table style="width:100%; border-collapse:collapse; font-size:14px;">
                             <thead>
                                 <tr>
