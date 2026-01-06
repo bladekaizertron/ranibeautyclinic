@@ -1412,7 +1412,7 @@
 
         <!-- Sliding Staff Profile Panel -->
         <div id="staff-profile-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:998;"></div>
-        <div id="staff-profile-panel" style="position:fixed; top:0; right:-520px; width:520px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:999; transition:right 0.3s ease; display:flex; flex-direction:column;">
+        <div id="staff-profile-panel" style="position:fixed; top:0; right:-720px; width:720px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:999; transition:right 0.3s ease; display:flex; flex-direction:column;">
             <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#222; color:#fff;">
                 <div style="font-weight:600;">Staff Profile</div>
                 <button id="staff-profile-close" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
@@ -1420,9 +1420,22 @@
             <div style="padding:20px; overflow-y:auto; flex:1;">
                 <h2 id="staff-profile-name" style="margin:0 0 16px 0; font-size:22px;">Staff Name</h2>
 
-                <h3 style="margin:0 0 12px 0; font-size:16px;">Personal information</h3>
+                <!-- Sub-tabs under Personal information -->
+                <div style="display:flex; gap:24px; border-bottom:1px solid var(--grey); margin-bottom:16px;">
+                    <button id="staff-tab-personal" class="staff-profile-tab active" style="background:none; border:none; padding:8px 0; cursor:pointer; font-weight:600; border-bottom:2px solid #000;">
+                        Personal information
+                    </button>
+                    <button id="staff-tab-services" class="staff-profile-tab" style="background:none; border:none; padding:8px 0; cursor:pointer; color:var(--dark-grey);">
+                        Services
+                    </button>
+                    <button id="staff-tab-appointments" class="staff-profile-tab" style="background:none; border:none; padding:8px 0; cursor:pointer; color:var(--dark-grey);">
+                        Appointments
+                    </button>
+                </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
+                <!-- Personal Info Content -->
+                <div id="staff-panel-personal" class="staff-panel-section" style="display:block;">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:4px;">
                     <div>
                         <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">First name</label>
                         <input id="staff-profile-firstname" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
@@ -1447,6 +1460,21 @@
                         <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Phone</label>
                         <input id="staff-profile-phone" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
                     </div>
+                    </div>
+                </div>
+
+                <!-- Services Content -->
+                <div id="staff-panel-services" class="staff-panel-section" style="display:none;">
+                    <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">Assign and manage services for this staff member.</p>
+                    <ul style="margin-top:12px; padding-left:18px; font-size:14px;">
+                        <li>Example service 1</li>
+                        <li>Example service 2</li>
+                    </ul>
+                </div>
+
+                <!-- Appointments Content -->
+                <div id="staff-panel-appointments" class="staff-panel-section" style="display:none;">
+                    <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">View upcoming and past appointments for this staff member.</p>
                 </div>
             </div>
             <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end; gap:8px;">
@@ -1536,6 +1564,12 @@
         const staffProfileRole = document.getElementById('staff-profile-role');
         const staffProfileEmail = document.getElementById('staff-profile-email');
         const staffProfilePhone = document.getElementById('staff-profile-phone');
+        const staffTabPersonal = document.getElementById('staff-tab-personal');
+        const staffTabServices = document.getElementById('staff-tab-services');
+        const staffTabAppointments = document.getElementById('staff-tab-appointments');
+        const staffPanelPersonal = document.getElementById('staff-panel-personal');
+        const staffPanelServices = document.getElementById('staff-panel-services');
+        const staffPanelAppointments = document.getElementById('staff-panel-appointments');
 
         function openStaffProfile(row) {
             const name = row.getAttribute('data-name') || '';
@@ -1559,7 +1593,7 @@
 
         function closeStaffProfile() {
             staffProfileOverlay.style.display = 'none';
-            staffProfilePanel.style.right = '-520px';
+            staffProfilePanel.style.right = '-720px';
         }
 
         staffRows.forEach(row => {
@@ -1576,6 +1610,42 @@
         }
         if (staffProfileOverlay) {
             staffProfileOverlay.addEventListener('click', closeStaffProfile);
+        }
+
+        // Staff profile sub-tabs (Personal / Services / Appointments)
+        function setActiveStaffTab(activeTab, activePanel) {
+            const tabs = [staffTabPersonal, staffTabServices, staffTabAppointments];
+            const panels = [staffPanelPersonal, staffPanelServices, staffPanelAppointments];
+
+            tabs.forEach(tab => {
+                if (!tab) return;
+                if (tab === activeTab) {
+                    tab.style.color = '#000';
+                    tab.style.borderBottom = '2px solid #000';
+                    tab.style.fontWeight = '600';
+                } else {
+                    tab.style.color = 'var(--dark-grey)';
+                    tab.style.borderBottom = '2px solid transparent';
+                    tab.style.fontWeight = '400';
+                }
+            });
+
+            panels.forEach(panel => {
+                if (!panel) return;
+                panel.style.display = (panel === activePanel) ? 'block' : 'none';
+            });
+        }
+
+        if (staffTabPersonal && staffPanelPersonal) {
+            setActiveStaffTab(staffTabPersonal, staffPanelPersonal);
+
+            staffTabPersonal.addEventListener('click', () => setActiveStaffTab(staffTabPersonal, staffPanelPersonal));
+        }
+        if (staffTabServices && staffPanelServices) {
+            staffTabServices.addEventListener('click', () => setActiveStaffTab(staffTabServices, staffPanelServices));
+        }
+        if (staffTabAppointments && staffPanelAppointments) {
+            staffTabAppointments.addEventListener('click', () => setActiveStaffTab(staffTabAppointments, staffPanelAppointments));
         }
 
         // Calendar Logic
