@@ -150,7 +150,11 @@ input[type="password"] {
 }
 
 .dash-main {
-  padding: 2rem;
+  padding: 2rem 2rem 0 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Grid cards */
@@ -201,9 +205,17 @@ input[type="password"] {
 }
 
 /* Modern Dashboard Enhancements */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .dash-wrapper {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -259,6 +271,7 @@ input[type="password"] {
   display: flex;
   flex-direction: column;
   background-color: var(--light-bg);
+  overflow: hidden;
 }
 
 .dash-header {
@@ -329,9 +342,13 @@ input[type="password"] {
   background-color: var(--white);
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  padding: 1rem 1rem 1.5rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0; /* Allows the flex item to shrink below its minimum content size */
+  overflow: hidden;
+  margin: 0 2rem 2rem 0;
 }
 
 .preview-header {
@@ -339,13 +356,25 @@ input[type="password"] {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .site-preview {
   width: 100%;
-  height: 70vh;
+  height: 100%;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
+  border: none;
+  flex: 1;
+  min-height: 0; /* Allows the flex item to shrink below its minimum content size */
+  overflow: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.site-preview::-webkit-scrollbar {
+  display: none;
 }
 
 /* Widget grid */
