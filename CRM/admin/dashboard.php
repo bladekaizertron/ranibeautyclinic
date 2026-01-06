@@ -944,10 +944,15 @@
 				</a>
 			</li>
             <li>
-				<a href="#" data-section="manage">
+				<a href="#" data-section="manage" id="manageMenuToggle">
 					<i class='bx bxs-briefcase-alt-2 bx-sm' ></i>
 					<span class="text">Manage</span>
 				</a>
+                <ul id="manage-submenu" style="display: none; padding-left: 40px; list-style: none; margin-top: 5px;">
+                    <li><a href="#" data-subsection="schedule">Schedule</a></li>
+                    <li><a href="#" data-subsection="services">Services</a></li>
+                    <li><a href="#" data-subsection="staff">Staff</a></li>
+                </ul>
 			</li>
 		</ul>
 		<ul class="side-menu bottom">
@@ -1168,11 +1173,129 @@
             </div>
 
             <div class="table-data">
-                <div class="order">
+                <!-- Schedule subsection (default) -->
+                <div class="order manage-subsection" id="manage-schedule">
                     <div class="head">
-                        <h3>Management Area</h3>
+                        <h3>Schedule</h3>
                     </div>
-                    <p>Here you can add your management tools, such as staff management, services, inventory, and other admin settings.</p>
+                    <p>Configure and view your clinic schedule here.</p>
+                </div>
+
+                <!-- Services subsection -->
+                <div class="order manage-subsection" id="manage-services" style="display: none;">
+                    <div class="head">
+                        <h3>Services</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Services</th>
+                                <th>$</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><th colspan="2">Face Fixes</th></tr>
+                            <tr><td>Botox / Botox Facial</td><td>14</td></tr>
+                            <tr><td>Sculptra</td><td>950</td></tr>
+                            <tr><td>Lip Filler</td><td>650</td></tr>
+                            <tr><td>Eye Filler</td><td>750</td></tr>
+                            <tr><td>Cheek Filler</td><td>850</td></tr>
+                            <tr><td>Nose Filler</td><td>795</td></tr>
+                            <tr><td>Jawline Filler</td><td>795</td></tr>
+                            <tr><td>Neck Filler</td><td>795</td></tr>
+
+                            <tr><th colspan="2">Body Fixes</th></tr>
+                            <tr><td>Radiesse</td><td>950</td></tr>
+                            <tr><td>Sculptra Skinny BBL</td><td>895</td></tr>
+                            <tr><td>Traptox</td><td>895</td></tr>
+                            <tr><td>Cutera Secret</td><td>895</td></tr>
+                            <tr><td>Sofwave</td><td>495</td></tr>
+
+                            <tr><th colspan="2">Skin Fixes</th></tr>
+                            <tr><td>Laser Facials</td><td>495</td></tr>
+                            <tr><td>Hydrafacial</td><td>250</td></tr>
+                            <tr><td>VI Peel</td><td>399</td></tr>
+                            <tr><td>Cosmelan</td><td>995</td></tr>
+                            <tr><td>Sofwave</td><td>495</td></tr>
+
+                            <tr><th colspan="2">Laser Hair Removal</th></tr>
+                            <tr><td>Laser Acne Facial</td><td>495</td></tr>
+                            <tr><td>Laser Roscea Facial</td><td>495</td></tr>
+                            <tr><td>Laser Resurfacing Facial</td><td>795</td></tr>
+                            <tr><td>Upper Lip Laser Hair Removal</td><td>29</td></tr>
+                            <tr><td>Eyebrows</td><td>99</td></tr>
+                            <tr><td>Sideburns</td><td>99</td></tr>
+                            <tr><td>Full Back</td><td>400</td></tr>
+                            <tr><td>Pantyline</td><td>150</td></tr>
+                            <tr><td>Neck</td><td>299</td></tr>
+                            <tr><td>Full Face Laser Hair Removal</td><td>299</td></tr>
+                            <tr><td>Hands and fingers</td><td>99</td></tr>
+                            <tr><td>Full Chest</td><td>250</td></tr>
+                            <tr><td>Happy Trail</td><td>99</td></tr>
+                            <tr><td>Areolas</td><td>99</td></tr>
+                            <tr><td>Forehead</td><td>99</td></tr>
+                            <tr><td>Jawline</td><td>99</td></tr>
+                            <tr><td>Underarms</td><td>175</td></tr>
+                            <tr><td>Limited Time $99 Upper Lip</td><td>99</td></tr>
+                            <tr><td>Feet &amp; Toes</td><td>99</td></tr>
+                            <tr><td>Full Brazilian</td><td>250</td></tr>
+                            <tr><td>Ears</td><td>99</td></tr>
+                            <tr><td>Full Body Laser Hair Removal</td><td>1299</td></tr>
+                            <tr><td>Pony Tail Laser</td><td>125</td></tr>
+                            <tr><td>Full Abs</td><td>300</td></tr>
+                            <tr><td>Full Legs</td><td>450</td></tr>
+                            <tr><td>Cheeks</td><td>99</td></tr>
+                            <tr><td>Chin</td><td>99</td></tr>
+                            <tr><td>Buttocks</td><td>299</td></tr>
+
+                            <tr><th colspan="2">Radiofrequency Microneedling</th></tr>
+                            <tr><td>Full Face</td><td>495</td></tr>
+                            <tr><td>Neck</td><td>495</td></tr>
+                            <tr><td>Arms</td><td>595</td></tr>
+                            <tr><td>Abdomen</td><td>1100</td></tr>
+                            <tr><td>Bra Far Sculp</td><td>695</td></tr>
+                            <tr><td>Legs</td><td>1500</td></tr>
+
+                            <tr><th colspan="2">Hydrafacial</th></tr>
+                            <tr><td>Signature Hydrafacial</td><td>250</td></tr>
+                            <tr><td>Dior Hydrafacial</td><td>399</td></tr>
+                            <tr><td>Keravive Hydrafacial (Hair)</td><td>450</td></tr>
+                            <tr><td>Underarm Hydrafacial</td><td>199</td></tr>
+                            <tr><td>Back Hydrafacial</td><td>375</td></tr>
+
+                            <tr><th colspan="2">Chemical Peels</th></tr>
+                            <tr><td>BioRepeel</td><td>295</td></tr>
+                            <tr><td>Face &amp; Neck</td><td>225</td></tr>
+                            <tr><td>Back</td><td>275</td></tr>
+                            <tr><td>Underarms</td><td>175</td></tr>
+                            <tr><td>Intimate Area</td><td>195</td></tr>
+
+                            <tr><th colspan="2">VI Peels</th></tr>
+                            <tr><td>Acne VI Peel</td><td>350</td></tr>
+                            <tr><td>Acne Scarring VI Peel</td><td>350</td></tr>
+                            <tr><td>Rosacea Peel</td><td>350</td></tr>
+                            <tr><td>Sensitive Skin Peel</td><td>350</td></tr>
+                            <tr><td>VI Hyperpigmentation Peel</td><td>350</td></tr>
+
+                            <tr><th colspan="2">Skin Boosters &amp; Wellness</th></tr>
+                            <tr><td>Salmon DNA</td><td>450</td></tr>
+                            <tr><td>Exosomes</td><td>595</td></tr>
+
+                            <tr><th colspan="2">Add Ons</th></tr>
+                            <tr><td>Hydrafacial Skin Booster</td><td>75</td></tr>
+                            <tr><td>Dermaplanning</td><td>70</td></tr>
+                            <tr><td>Red Light Therapy</td><td>50</td></tr>
+                            <tr><td>Blue Light Therapy</td><td>50</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Staff subsection -->
+                <div class="order manage-subsection" id="manage-staff" style="display: none;">
+                    <div class="head">
+                        <h3>Staff</h3>
+                    </div>
+                    <p>Manage your staff profiles, roles, and permissions here.</p>
                 </div>
             </div>
         </div>
@@ -1183,7 +1306,9 @@
 	
 
 	<script>
-        const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
+        const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top > li > a');
+        const manageSubmenu = document.getElementById('manage-submenu');
+        const manageSubLinks = document.querySelectorAll('#manage-submenu a[data-subsection]');
 
         allSideMenu.forEach(item => {
             const li = item.parentElement;
@@ -1206,10 +1331,32 @@
                 if (section === 'frontdesk') {
                     if (frontdeskSection) frontdeskSection.style.display = 'block';
                     if (manageSection) manageSection.style.display = 'none';
+                    if (manageSubmenu) manageSubmenu.style.display = 'none';
                 } else if (section === 'manage') {
                     if (frontdeskSection) frontdeskSection.style.display = 'none';
                     if (manageSection) manageSection.style.display = 'block';
+                    if (manageSubmenu) manageSubmenu.style.display = 'block';
+
+                    // Default to Schedule subsection when opening Manage
+                    const defaultSub = document.getElementById('manage-schedule');
+                    const allSubs = document.querySelectorAll('.manage-subsection');
+                    allSubs.forEach(s => s.style.display = 'none');
+                    if (defaultSub) defaultSub.style.display = 'block';
                 }
+            });
+        });
+
+        // Handle clicks on Manage submenu items (Schedule, Services, Staff)
+        manageSubLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = this.getAttribute('data-subsection');
+                const allSubs = document.querySelectorAll('.manage-subsection');
+
+                allSubs.forEach(s => s.style.display = 'none');
+
+                const activeSub = document.getElementById(`manage-${target}`);
+                if (activeSub) activeSub.style.display = 'block';
             });
         });
 
