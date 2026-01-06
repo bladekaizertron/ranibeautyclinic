@@ -1329,7 +1329,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr data-name="Ayla K" data-phone="(253) 408-9535" data-email="info@aylamedia.co" data-role="Team Permissions">
                                 <td>
                                     <span style="display:inline-flex;align-items:center;gap:8px;">
                                         <span style="width:32px;height:32px;border-radius:50%;background:#9b5de5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
@@ -1344,7 +1344,7 @@
                                 <td>Service Provider</td>
                                 <td><a href="#">Send Invite</a></td>
                             </tr>
-                            <tr>
+                            <tr data-name="Jodie X" data-phone="(206) 507-8902" data-email="coderebuilt@gmail.com" data-role="Team Permissions">
                                 <td>
                                     <span style="display:inline-flex;align-items:center;gap:8px;">
                                         <span style="width:32px;height:32px;border-radius:50%;background:#ff6f91;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
@@ -1359,7 +1359,7 @@
                                 <td>Admin</td>
                                 <td>Confirmed</td>
                             </tr>
-                            <tr>
+                            <tr data-name="Laser Room #1" data-phone="(206) 554-9524" data-email="ranibeautyclinic13@gmail.com" data-role="Team Permissions">
                                 <td>
                                     <span style="display:inline-flex;align-items:center;gap:8px;">
                                         <span style="width:32px;height:32px;border-radius:50%;background:#495057;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
@@ -1374,7 +1374,7 @@
                                 <td>Service Provider</td>
                                 <td><a href="#">Send Invite</a></td>
                             </tr>
-                            <tr>
+                            <tr data-name="Raj Rai" data-phone="(206) 507-8902" data-email="rajvinderkaurnijjar@gmail.com" data-role="Team Permissions">
                                 <td>
                                     <span style="display:inline-flex;align-items:center;gap:8px;">
                                         <span style="width:32px;height:32px;border-radius:50%;background:#00b4d8;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
@@ -1389,7 +1389,7 @@
                                 <td>Service Provider</td>
                                 <td><a href="#">Send Invite</a></td>
                             </tr>
-                            <tr>
+                            <tr data-name="Rina Rai" data-phone="(425) 539-4440" data-email="info@ranibeautyclinic.com" data-role="General Staff">
                                 <td>
                                     <span style="display:inline-flex;align-items:center;gap:8px;">
                                         <span style="width:32px;height:32px;border-radius:50%;background:#f4a261;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
@@ -1407,6 +1407,51 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+        <!-- Sliding Staff Profile Panel -->
+        <div id="staff-profile-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:998;"></div>
+        <div id="staff-profile-panel" style="position:fixed; top:0; right:-520px; width:520px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:999; transition:right 0.3s ease; display:flex; flex-direction:column;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#222; color:#fff;">
+                <div style="font-weight:600;">Staff Profile</div>
+                <button id="staff-profile-close" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
+            </div>
+            <div style="padding:20px; overflow-y:auto; flex:1;">
+                <h2 id="staff-profile-name" style="margin:0 0 16px 0; font-size:22px;">Staff Name</h2>
+
+                <h3 style="margin:0 0 12px 0; font-size:16px;">Personal information</h3>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
+                    <div>
+                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">First name</label>
+                        <input id="staff-profile-firstname" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Last name</label>
+                        <input id="staff-profile-lastname" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Staff role</label>
+                        <input id="staff-profile-role" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Alias</label>
+                        <input id="staff-profile-alias" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Email</label>
+                        <input id="staff-profile-email" type="email" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Phone</label>
+                        <input id="staff-profile-phone" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+                    </div>
+                </div>
+            </div>
+            <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end; gap:8px;">
+                <button style="padding:8px 14px; border:1px solid #e63946; background:#fff; color:#e63946; border-radius:4px; cursor:pointer;">Deactivate</button>
+                <button style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer;">Save changes</button>
             </div>
         </div>
 		</main>
@@ -1479,6 +1524,59 @@
                 if (activeSub) activeSub.style.display = 'block';
             });
         });
+
+        // Sliding Staff Profile panel logic
+        const staffRows = document.querySelectorAll('#manage-staff table tbody tr');
+        const staffProfilePanel = document.getElementById('staff-profile-panel');
+        const staffProfileOverlay = document.getElementById('staff-profile-overlay');
+        const staffProfileClose = document.getElementById('staff-profile-close');
+        const staffProfileName = document.getElementById('staff-profile-name');
+        const staffProfileFirstname = document.getElementById('staff-profile-firstname');
+        const staffProfileLastname = document.getElementById('staff-profile-lastname');
+        const staffProfileRole = document.getElementById('staff-profile-role');
+        const staffProfileEmail = document.getElementById('staff-profile-email');
+        const staffProfilePhone = document.getElementById('staff-profile-phone');
+
+        function openStaffProfile(row) {
+            const name = row.getAttribute('data-name') || '';
+            const phone = row.getAttribute('data-phone') || '';
+            const email = row.getAttribute('data-email') || '';
+            const role = row.getAttribute('data-role') || '';
+
+            staffProfileName.textContent = name || 'Staff Profile';
+
+            const parts = name.split(' ');
+            staffProfileFirstname.value = parts[0] || '';
+            staffProfileLastname.value = parts.slice(1).join(' ') || '';
+
+            staffProfileRole.value = role;
+            staffProfileEmail.value = email;
+            staffProfilePhone.value = phone;
+
+            staffProfileOverlay.style.display = 'block';
+            staffProfilePanel.style.right = '0';
+        }
+
+        function closeStaffProfile() {
+            staffProfileOverlay.style.display = 'none';
+            staffProfilePanel.style.right = '-520px';
+        }
+
+        staffRows.forEach(row => {
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', function (e) {
+                // Avoid triggering when clicking on links inside the row
+                if (e.target.tagName.toLowerCase() === 'a') return;
+                openStaffProfile(row);
+            });
+        });
+
+        if (staffProfileClose) {
+            staffProfileClose.addEventListener('click', closeStaffProfile);
+        }
+        if (staffProfileOverlay) {
+            staffProfileOverlay.addEventListener('click', closeStaffProfile);
+        }
 
         // Calendar Logic
         const calendarDays = document.getElementById('calendar-days');
