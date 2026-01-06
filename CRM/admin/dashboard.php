@@ -1330,7 +1330,14 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Ayla K</td>
+                                <td>
+                                    <span style="display:inline-flex;align-items:center;gap:8px;">
+                                        <span style="width:32px;height:32px;border-radius:50%;background:#9b5de5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
+                                            <i class='bx bxs-user'></i>
+                                        </span>
+                                        <span>Ayla K</span>
+                                    </span>
+                                </td>
                                 <td>(253) 408-9535</td>
                                 <td>info@aylamedia.co</td>
                                 <td>Team Permissions</td>
@@ -1338,7 +1345,14 @@
                                 <td><a href="#">Send Invite</a></td>
                             </tr>
                             <tr>
-                                <td>Jodie X</td>
+                                <td>
+                                    <span style="display:inline-flex;align-items:center;gap:8px;">
+                                        <span style="width:32px;height:32px;border-radius:50%;background:#ff6f91;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
+                                            <i class='bx bxs-user'></i>
+                                        </span>
+                                        <span>Jodie X</span>
+                                    </span>
+                                </td>
                                 <td>(206) 507-8902</td>
                                 <td>coderebuilt@gmail.com</td>
                                 <td>Team Permissions</td>
@@ -1346,7 +1360,14 @@
                                 <td>Confirmed</td>
                             </tr>
                             <tr>
-                                <td>Laser Room #1</td>
+                                <td>
+                                    <span style="display:inline-flex;align-items:center;gap:8px;">
+                                        <span style="width:32px;height:32px;border-radius:50%;background:#495057;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
+                                            <i class='bx bxs-user'></i>
+                                        </span>
+                                        <span>Laser Room #1</span>
+                                    </span>
+                                </td>
                                 <td>(206) 554-9524</td>
                                 <td>ranibeautyclinic13@gmail.com</td>
                                 <td>Team Permissions</td>
@@ -1354,7 +1375,14 @@
                                 <td><a href="#">Send Invite</a></td>
                             </tr>
                             <tr>
-                                <td>Raj Rai</td>
+                                <td>
+                                    <span style="display:inline-flex;align-items:center;gap:8px;">
+                                        <span style="width:32px;height:32px;border-radius:50%;background:#00b4d8;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
+                                            <i class='bx bxs-user'></i>
+                                        </span>
+                                        <span>Raj Rai</span>
+                                    </span>
+                                </td>
                                 <td>(206) 507-8902</td>
                                 <td>rajvinderkaurnijjar@gmail.com</td>
                                 <td>Team Permissions</td>
@@ -1362,7 +1390,14 @@
                                 <td><a href="#">Send Invite</a></td>
                             </tr>
                             <tr>
-                                <td>Rina Rai</td>
+                                <td>
+                                    <span style="display:inline-flex;align-items:center;gap:8px;">
+                                        <span style="width:32px;height:32px;border-radius:50%;background:#f4a261;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
+                                            <i class='bx bxs-user'></i>
+                                        </span>
+                                        <span>Rina Rai</span>
+                                    </span>
+                                </td>
                                 <td>(425) 539-4440</td>
                                 <td>info@ranibeautyclinic.com</td>
                                 <td>General Staff</td>
