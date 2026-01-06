@@ -19,8 +19,11 @@ if (!isset($_SESSION['user'])) {
     <link rel="stylesheet" href="style.css" />
 </head>
     <body>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+            <i class="fa fa-bars"></i>
+        </button>
         <div class="dash-wrapper">
-            <aside class="sidebar">
+            <aside class="sidebar" id="sidebar">
                 <div class="sidebar-brand">
                     <img src="../assets/images/logo.png" alt="Rani Beauty Clinic Logo" class="sidebar-logo" />
                 </div>
@@ -54,5 +57,52 @@ if (!isset($_SESSION['user'])) {
 
         <!-- Font Awesome for icons -->
         <script src="https://kit.fontawesome.com/25e8e2a0e0.js" crossorigin="anonymous"></script>
+        <script>
+            // Mobile menu toggle
+            document.addEventListener('DOMContentLoaded', function() {
+                const menuToggle = document.getElementById('mobileMenuToggle');
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.createElement('div');
+                overlay.className = 'sidebar-overlay';
+                overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 998; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;';
+                document.body.appendChild(overlay);
+
+                function openMenu() {
+                    sidebar.classList.add('open');
+                    document.body.classList.add('sidebar-open');
+                    overlay.style.opacity = '1';
+                    overlay.style.visibility = 'visible';
+                }
+
+                function closeMenu() {
+                    sidebar.classList.remove('open');
+                    document.body.classList.remove('sidebar-open');
+                    overlay.style.opacity = '0';
+                    overlay.style.visibility = 'hidden';
+                }
+
+                if (menuToggle && sidebar) {
+                    menuToggle.addEventListener('click', function() {
+                        if (sidebar.classList.contains('open')) {
+                            closeMenu();
+                        } else {
+                            openMenu();
+                        }
+                    });
+
+                    overlay.addEventListener('click', closeMenu);
+
+                    // Close menu when clicking a sidebar link on mobile
+                    const sidebarLinks = sidebar.querySelectorAll('.sidebar-link');
+                    sidebarLinks.forEach(link => {
+                        link.addEventListener('click', function() {
+                            if (window.innerWidth <= 768) {
+                                closeMenu();
+                            }
+                        });
+                    });
+                }
+            });
+        </script>
     </body>
 </html>
