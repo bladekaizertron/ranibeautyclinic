@@ -39,6 +39,26 @@ if ($method === 'GET') {
 } elseif ($method === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
     
+    if (isset($data['shifts']) && is_array($data['shifts'])) {
+        $success_count = 0;
+        foreach ($data['shifts'] as $shift) {
+            if (isset($shift['staff_id'], $shift['work_date'], $shift['start_time'], $shift['end_time'])) {
+                $staff_id = mysqli_real_escape_string($conn, $shift['staff_id']);
+                $work_date = mysqli_real_escape_string($conn, $shift['work_date']);
+                $start_time = mysqli_real_escape_string($conn, $shift['start_time']);
+                $end_time = mysqli_real_escape_string($conn, $shift['end_time']);
+                
+                $sql = "INSERT INTO staff_schedules (staff_id, work_date, start_time, end_time) 
+                        VALUES ('$staff_id', '$work_date', '$start_time', '$end_time')";
+                if (mysqli_query($conn, $sql)) {
+                    $success_count++;
+                }
+            }
+        }
+        echo json_encode(["status" => "success", "inserted" => $success_count]);
+        exit;
+    }
+    
     if (!isset($data['staff_id'], $data['work_date'], $data['start_time'], $data['end_time'])) {
         echo json_encode(["status" => "error", "message" => "Missing required fields"]);
         exit;

@@ -1670,6 +1670,221 @@
             margin-top: 4px;
         }
 
+        /* Publish Availability Modal */
+        #publish-availability-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1999;
+            display: none;
+        }
+
+        #publish-availability-modal {
+            position: fixed;
+            top: 50%;
+            left: 51%; /* Slight offset to look centered against sidebar */
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 800px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .pa-modal-header {
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pa-modal-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111;
+            margin: 0 0 8px 0;
+        }
+
+        .pa-modal-header p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        .pa-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 28px;
+            color: #999;
+            background: none;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .pa-modal-body {
+            padding: 24px 32px;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 40px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .pa-field-group {
+            margin-bottom: 24px;
+        }
+
+        .pa-field-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .pa-staff-select-wrapper {
+            position: relative;
+        }
+
+        .pa-staff-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fff;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+        }
+
+        .pa-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .pa-radio-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .pa-radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #9b5de5;
+        }
+
+        .pa-date-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+        }
+
+        .pa-right-col-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .pa-days-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .pa-day-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pa-day-row input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #9b5de5;
+        }
+
+        .pa-day-name {
+            width: 90px;
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .pa-time-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .pa-time-input {
+            width: 90px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            text-align: center;
+        }
+
+        .pa-modal-footer {
+            padding: 20px 32px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+        }
+
+        .btn-pa-cancel {
+            padding: 12px 36px;
+            border: 1px solid #eee;
+            background: #f8f8f8;
+            color: #666;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-pa-submit {
+            padding: 12px 48px;
+            border: none;
+            background: #c5e0a1;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(197, 224, 161, 0.3);
+        }
+
+        .btn-pa-submit:hover {
+            background: #b8d692;
+        }
+
         .category-row {
             background: #f4f4f4;
         }
@@ -4387,7 +4602,7 @@
                                             <span class="staff-name-mini">${staff.name || 'Unknown'}</span>
                                             <span class="staff-hours-mini">${weeklyHours} hrs</span>
                                         </div>
-                                        <button class="btn-add-time" onclick="addShiftPrompt(${staff.id})">+</button>
+                                        <button class="btn-add-time" onclick="openPublishAvailabilityModal(${staff.id})">+</button>
                                     </div>
                                 </td>
                             `;
@@ -4432,18 +4647,111 @@
                 updateScheduleGrid();
             });
 
-            window.addShiftPrompt = function(staffId) {
-                const date = prompt("Enter Date (YYYY-MM-DD):", formatScheduleDate(new Date()));
-                if (!date) return;
-                const start = prompt("Enter Start Time (HH:MM):", "09:00");
-                if (!start) return;
-                const end = prompt("Enter End Time (HH:MM):", "17:00");
-                if (!end) return;
+            window.openPublishAvailabilityModal = function(staffId) {
+                const modal = document.getElementById('publish-availability-modal');
+                const overlay = document.getElementById('publish-availability-overlay');
+                const staffSelect = document.getElementById('pa-staff-select');
+                const dateInput = document.getElementById('pa-start-date');
+
+                if (!modal || !overlay || !staffSelect || !dateInput) return;
+
+                // Populate staff dropdown if not already populated
+                if (staffSelect.options.length === 0) {
+                    fetch('api/api_staff_availability.php?get_staff=1')
+                        .then(r => r.json())
+                        .then(data => {
+                            if (!Array.isArray(data)) return;
+                            data.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.id;
+                                opt.textContent = s.name;
+                                staffSelect.appendChild(opt);
+                            });
+                            if (staffId) staffSelect.value = staffId;
+                        });
+                } else {
+                    if (staffId) staffSelect.value = staffId;
+                }
+
+                // Set default start date to today
+                dateInput.value = formatScheduleDate(new Date());
+
+                overlay.style.display = 'block';
+                modal.style.display = 'flex';
+            };
+
+            window.closePublishAvailabilityModal = function() {
+                document.getElementById('publish-availability-modal').style.display = 'none';
+                document.getElementById('publish-availability-overlay').style.display = 'none';
+            };
+
+            window.submitPublishAvailability = function() {
+                const staffId = document.getElementById('pa-staff-select').value;
+                const startDateStr = document.getElementById('pa-start-date').value;
+                const status = document.querySelector('input[name="pa-status"]:checked').value;
+                const until = document.getElementById('pa-until-select').value;
+                
+                if (!staffId || !startDateStr) {
+                    alert("Please select staff and start date.");
+                    return;
+                }
+
+                const dayRows = document.querySelectorAll('.pa-day-row');
+                const shifts = [];
+
+                // Logic for "one-week", "two-weeks", "ongoing"
+                let weeksCount = 1;
+                if (until === 'two-weeks') weeksCount = 2;
+                if (until === 'ongoing') weeksCount = 4; // Default to 4 weeks for ongoing for now
+
+                const baseDate = new Date(startDateStr);
+
+                for (let w = 0; w < weeksCount; w++) {
+                    dayRows.forEach(row => {
+                        const checkbox = row.querySelector('input[type="checkbox"]');
+                        if (checkbox && checkbox.checked) {
+                            const targetDay = parseInt(checkbox.getAttribute('data-day'));
+                            const startTime = row.querySelector('.pa-time-input:first-of-type').value;
+                            const endTime = row.querySelector('.pa-time-input:last-of-type').value;
+
+                            // Calculate the date for this specific day in the repetition
+                            const shiftDate = new Date(baseDate);
+                            const currentDay = shiftDate.getDay();
+                            const diff = targetDay - currentDay;
+                            shiftDate.setDate(shiftDate.getDate() + diff + (w * 7));
+
+                            // Only add if the calculated date is >= baseDate
+                            if (shiftDate >= baseDate) {
+                                shifts.push({
+                                    staff_id: staffId,
+                                    work_date: formatScheduleDate(shiftDate),
+                                    start_time: startTime,
+                                    end_time: endTime
+                                });
+                            }
+                        }
+                    });
+                }
+
+                if (shifts.length === 0) {
+                    alert("Please select at least one day.");
+                    return;
+                }
 
                 fetch('api/api_schedules.php', {
                     method: 'POST',
-                    body: JSON.stringify({ staff_id: staffId, work_date: date, start_time: start, end_time: end })
-                }).then(() => updateScheduleGrid());
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ shifts: shifts })
+                })
+                .then(r => r.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        closePublishAvailabilityModal();
+                        updateScheduleGrid();
+                    } else {
+                        alert("Error: " + (result.message || "Unknown error"));
+                    }
+                });
             };
 
             window.deleteShift = function(id, e) {
@@ -4471,6 +4779,123 @@
             }
 
 	</script>
+    <!-- Publish Availability Modal -->
+    <div id="publish-availability-overlay"></div>
+    <div id="publish-availability-modal">
+        <button class="pa-modal-close" onclick="closePublishAvailabilityModal()">&times;</button>
+        <div class="pa-modal-header">
+            <h2>Publish Availability</h2>
+            <p>Publish your staff's availability so they can be booked for services.</p>
+        </div>
+        <div class="pa-modal-body">
+            <div class="pa-left-col">
+                <div class="pa-field-group">
+                    <label>Staff</label>
+                    <div class="pa-staff-select-wrapper">
+                        <select id="pa-staff-select" class="pa-staff-select">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                <div class="pa-field-group">
+                    <label>Publish as</label>
+                    <div class="pa-radio-group">
+                        <label class="pa-radio-item">
+                            <input type="radio" name="pa-status" value="available" checked>
+                            Available
+                        </label>
+                        <label class="pa-radio-item">
+                            <input type="radio" name="pa-status" value="unavailable">
+                            Unavailable
+                        </label>
+                    </div>
+                </div>
+                <div class="pa-field-group">
+                    <label>Starting</label>
+                    <input type="date" id="pa-start-date" class="pa-date-select">
+                </div>
+                <div class="pa-field-group">
+                    <label>Until</label>
+                    <select id="pa-until-select" class="pa-date-select">
+                        <option value="ongoing">Ongoing</option>
+                        <option value="one-week">For 1 week</option>
+                        <option value="two-weeks">For 2 weeks</option>
+                    </select>
+                </div>
+            </div>
+            <div class="pa-right-col">
+                <div class="pa-right-col-header">
+                    <div class="pa-right-col-title">Publish recurring shifts</div>
+                    <select class="pa-date-select" style="width: auto; min-width: 160px;">
+                        <option>Schedule weekly</option>
+                    </select>
+                </div>
+                <div class="pa-days-list">
+                    <!-- Days list -->
+                    <div class="pa-day-row">
+                        <input type="checkbox" id="pa-day-sun" data-day="0">
+                        <label for="pa-day-sun" class="pa-day-name">Sunday</label>
+                        <div class="pa-time-range">
+                            from <input type="time" class="pa-time-input" value="09:00">
+                            to <input type="time" class="pa-time-input" value="17:00">
+                        </div>
+                    </div>
+                    <div class="pa-day-row">
+                        <input type="checkbox" id="pa-day-mon" data-day="1" checked>
+                        <label for="pa-day-mon" class="pa-day-name">Monday</label>
+                        <div class="pa-time-range">
+                            from <input type="time" class="pa-time-input" value="09:00">
+                            to <input type="time" class="pa-time-input" value="17:00">
+                        </div>
+                    </div>
+                    <div class="pa-day-row">
+                        <input type="checkbox" id="pa-day-tue" data-day="2" checked>
+                        <label for="pa-day-tue" class="pa-day-name">Tuesday</label>
+                        <div class="pa-time-range">
+                            from <input type="time" class="pa-time-input" value="09:00">
+                            to <input type="time" class="pa-time-input" value="17:00">
+                        </div>
+                    </div>
+                    <div class="pa-day-row">
+                        <input type="checkbox" id="pa-day-wed" data-day="3" checked>
+                        <label for="pa-day-wed" class="pa-day-name">Wednesday</label>
+                        <div class="pa-time-range">
+                            from <input type="time" class="pa-time-input" value="09:00">
+                            to <input type="time" class="pa-time-input" value="17:00">
+                        </div>
+                    </div>
+                    <div class="pa-day-row">
+                        <input type="checkbox" id="pa-day-thu" data-day="4" checked>
+                        <label for="pa-day-thu" class="pa-day-name">Thursday</label>
+                        <div class="pa-time-range">
+                            from <input type="time" class="pa-time-input" value="09:00">
+                            to <input type="time" class="pa-time-input" value="17:00">
+                        </div>
+                    </div>
+                    <div class="pa-day-row">
+                        <input type="checkbox" id="pa-day-fri" data-day="5" checked>
+                        <label for="pa-day-fri" class="pa-day-name">Friday</label>
+                        <div class="pa-time-range">
+                            from <input type="time" class="pa-time-input" value="09:00">
+                            to <input type="time" class="pa-time-input" value="17:00">
+                        </div>
+                    </div>
+                    <div class="pa-day-row">
+                        <input type="checkbox" id="pa-day-sat" data-day="6">
+                        <label for="pa-day-sat" class="pa-day-name">Saturday</label>
+                        <div class="pa-time-range">
+                            from <input type="time" class="pa-time-input" value="09:00">
+                            to <input type="time" class="pa-time-input" value="17:00">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pa-modal-footer">
+            <button class="btn-pa-cancel" onclick="closePublishAvailabilityModal()">Cancel</button>
+            <button class="btn-pa-submit" onclick="submitPublishAvailability()">Publish availability</button>
+        </div>
+    </div>
 </body>
 </html>
 ```
