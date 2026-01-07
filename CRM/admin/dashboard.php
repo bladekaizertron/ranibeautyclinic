@@ -1328,6 +1328,126 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+        }
+
+        /* Customize Modal Styles */
+        .modal-overlay-custom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .customize-modal {
+            background: #fff;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 12px;
+            padding: 40px 30px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .customize-modal .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .customize-modal h2 {
+            text-align: center;
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .customize-modal .modal-subtitle {
+            text-align: center;
+            margin: 0 0 35px 0;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .customize-modal .option-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .custom-checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            font-size: 14.5px;
+            color: #333;
+        }
+
+        .custom-checkbox-container input {
+            display: none;
+        }
+
+        .custom-checkbox-container .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            display: inline-block;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .custom-checkbox-container input:checked + .checkmark {
+            background-color: #9b5de5;
+            border-color: #9b5de5;
+        }
+
+        .custom-checkbox-container input:checked + .checkmark::after {
+            content: "\2713";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 13px;
+        }
+
+        .option-value {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .btn-update-service {
+            width: 100%;
+            padding: 14px;
+            background-color: #7bb342;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-update-service:hover {
+            background-color: #6a9b35;
+        }
             color: #444;
         }
         .services-table th {
@@ -3038,6 +3158,96 @@
                 <button id="staff-profile-save-btn" style="padding:8px 24px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer; font-weight:500;">Save changes</button>
             </div>
         </div>
+
+        <!-- Customize Service Modal -->
+        <div id="customize-service-modal" class="modal-overlay-custom" style="display:none;">
+            <div class="customize-modal">
+                <button class="close-btn" onclick="closeCustomizeModal()">&times;</button>
+                <h2 id="cust-modal-service-name">Service Name</h2>
+                <p class="modal-subtitle">Overrides for <span id="cust-modal-staff-name">Staff Name</span></p>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        Assignable
+                    </label>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        Bookable Online
+                    </label>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Price
+                    </label>
+                    <span class="option-value">-</span>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Duration
+                    </label>
+                    <span class="option-value">-</span>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Processing Time
+                    </label>
+                    <span class="option-value">-</span>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Finishing Time
+                    </label>
+                    <span class="option-value">-</span>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Transition Time
+                    </label>
+                    <span class="option-value">-</span>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Commission Percentage
+                    </label>
+                    <span class="option-value">-</span>
+                </div>
+
+                <div class="option-row">
+                    <label class="custom-checkbox-container">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Deposit for Online Booking
+                    </label>
+                    <span class="option-value">-</span>
+                </div>
+
+                <button class="btn-update-service" onclick="closeCustomizeModal()">Update Service</button>
+            </div>
+        </div>
 		</main>
 		<!-- MAIN -->
 	</section>
@@ -3223,6 +3433,26 @@
             staffProfilePanel.style.right = '-100%';
             staffProfileOverlay.style.display = 'none';
         }
+
+        function openCustomizeModal(serviceName) {
+            const staffName = document.getElementById('staff-profile-name').innerText;
+            document.getElementById('cust-modal-service-name').innerText = serviceName;
+            document.getElementById('cust-modal-staff-name').innerText = staffName;
+            document.getElementById('customize-service-modal').style.display = 'flex';
+        }
+
+        function closeCustomizeModal() {
+            document.getElementById('customize-service-modal').style.display = 'none';
+        }
+
+        // Add event listeners for customize buttons
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('btn-customize')) {
+                const row = e.target.closest('tr');
+                const serviceName = row.querySelector('.service-name').innerText;
+                openCustomizeModal(serviceName);
+            }
+        });
 
         // Service profile sliding panel logic
         const serviceProfilePanel = document.getElementById('service-profile-panel');
