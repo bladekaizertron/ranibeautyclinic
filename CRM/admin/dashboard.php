@@ -1221,6 +1221,176 @@
             background: #e8f5e9;
             color: #2e7d32;
         }
+
+        /* Updated Staff Profile Layout */
+        #staff-profile-panel {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Hidden by default */
+            width: 100%;
+            max-width: 1300px;
+            height: 100%;
+            background: var(--light);
+            box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+            z-index: 999;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .staff-profile-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden; /* Main body should not scroll */
+        }
+
+        .staff-profile-info-header {
+            padding: 20px 20px 0 20px;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .staff-profile-scroll-area {
+            padding: 0 20px 20px 20px;
+            overflow-y: auto;
+            flex: 1;
+            background: #fdfdfd;
+        }
+
+        .staff-profile-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        /* Staff Profile Cards */
+        .info-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        .info-card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .info-card-grid {
+                grid-template-columns: 1fr;
+            }
+            #staff-profile-panel {
+                max-width: 100%;
+            }
+            .staff-profile-info-header h2 {
+                font-size: 20px !important;
+            }
+            .color-picker-container {
+                gap: 8px;
+            }
+            .color-circle {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        .info-field-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .info-input, .info-select, .info-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #f9f9f9;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .info-textarea:focus {
+            border-color: #9b5de5;
+        }
+
+        /* Services Table Styles */
+        .services-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            color: #444;
+        }
+        .services-table th {
+            font-weight: 500;
+            color: #666;
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            vertical-align: bottom;
+            white-space: nowrap;
+        }
+        .services-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #f9f9f9;
+            text-align: center;
+        }
+        .services-table .service-name {
+            text-align: left;
+            font-weight: 400;
+            color: #333;
+            min-width: 200px;
+        }
+        .status-assignable {
+            color: #4a90e2;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-customize {
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #555;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-customize:hover {
+            background: #e8e8e8;
+        }
+        .color-picker-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .color-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .color-circle:hover {
+            transform: scale(1.1);
+        }
+        .color-circle.selected {
+            border-color: #000;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 2px #fff inset;
+        }
     </style>
 </head>
 <body>
@@ -2629,168 +2799,233 @@
 
         <!-- Sliding Staff Profile Panel -->
         <div id="staff-profile-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:998;"></div>
-        <div id="staff-profile-panel" style="position:fixed; top:0; right:-820px; width:820px; height:100%; background:var(--light); box-shadow:-2px 0 8px rgba(0,0,0,0.15); z-index:999; transition:right 0.3s ease; display:flex; flex-direction:column;">
-            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#222; color:#fff;">
+        <div id="staff-profile-panel">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#222; color:#fff; flex-shrink:0;">
                 <div style="font-weight:600;">Staff Profile</div>
                 <button id="staff-profile-close" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
             </div>
-            <div style="padding:20px; overflow-y:auto; flex:1;">
-                <h2 id="staff-profile-name" style="margin:0 0 16px 0; font-size:22px;">Staff Name</h2>
+            <div class="staff-profile-body">
+                <div class="staff-profile-info-header">
+                    <h2 id="staff-profile-name" style="margin:0 0 16px 0; font-size:22px;">Staff Name</h2>
 
-                <!-- Sub-tabs under Personal information -->
-                <div style="display:flex; gap:24px; border-bottom:1px solid var(--grey); margin-bottom:16px;">
-                    <button id="staff-tab-personal" class="staff-profile-tab active" style="background:none; border:none; padding:8px 0; cursor:pointer; font-weight:600; border-bottom:2px solid #000;">
-                        Personal information
-                    </button>
-                    <button id="staff-tab-services" class="staff-profile-tab" style="background:none; border:none; padding:8px 0; cursor:pointer; color:var(--dark-grey);">
-                        Services
-                    </button>
-                    <button id="staff-tab-appointments" class="staff-profile-tab" style="background:none; border:none; padding:8px 0; cursor:pointer; color:var(--dark-grey);">
-                        Appointments
-                    </button>
+                    <!-- Sub-tabs under Personal information -->
+                    <div style="display:flex; gap:24px; border-bottom:1px solid var(--grey); margin-bottom:0;">
+                        <button id="staff-tab-personal" class="staff-profile-tab active" style="background:none; border:none; padding:8px 0; cursor:pointer; font-weight:600; border-bottom:2px solid #000;">
+                            Personal information
+                        </button>
+                        <button id="staff-tab-services" class="staff-profile-tab" style="background:none; border:none; padding:8px 0; cursor:pointer; color:var(--dark-grey);">
+                            Services
+                        </button>
+                        <button id="staff-tab-appointments" class="staff-profile-tab" style="background:none; border:none; padding:8px 0; cursor:pointer; color:var(--dark-grey);">
+                            Appointments
+                        </button>
+                    </div>
                 </div>
+
+                <div class="staff-profile-scroll-area">
 
                 <!-- Personal Info Content -->
                 <div id="staff-panel-personal" class="staff-panel-section" style="display:block;">
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:4px;">
-                    <div>
-                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">First name</label>
-                        <input id="staff-profile-firstname" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+                    <div class="info-card">
+                        <div class="info-card-grid">
+                            <div>
+                                <label class="info-field-label">First name</label>
+                                <input id="staff-profile-firstname" type="text" class="info-input">
+                            </div>
+                            <div>
+                                <label class="info-field-label">Last name</label>
+                                <input id="staff-profile-lastname" type="text" class="info-input">
+                            </div>
+                            <div>
+                                <label class="info-field-label">Staff role</label>
+                                <input id="staff-profile-role" type="text" class="info-input">
+                            </div>
+                            <div>
+                                <label class="info-field-label">Alias</label>
+                                <input id="staff-profile-alias" type="text" class="info-input">
+                            </div>
+                            <div>
+                                <label class="info-field-label">Email</label>
+                                <input id="staff-profile-email" type="email" class="info-input">
+                            </div>
+                            <div>
+                                <label class="info-field-label">Phone</label>
+                                <input id="staff-profile-phone" type="text" class="info-input">
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Last name</label>
-                        <input id="staff-profile-lastname" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+
+                    <!-- Permissions Section -->
+                    <div class="info-card">
+                        <div class="info-card-title">Permissions</div>
+                        <div class="info-card-grid">
+                            <div>
+                                <label class="info-field-label">Permission group *</label>
+                                <select id="staff-profile-permission-group" class="info-select">
+                                    <option value="admin">Admin</option>
+                                    <option value="provider">Service Provider</option>
+                                    <option value="frontdesk">Front Desk</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="info-field-label">Assigned locations</label>
+                                <select id="staff-profile-location" class="info-select">
+                                    <option value="renton">Renton</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Staff role</label>
-                        <input id="staff-profile-role" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
+
+                    <!-- Calendar Display Section -->
+                    <div class="info-card">
+                        <div class="info-card-title">Calendar display</div>
+                        <div style="margin-bottom: 20px;">
+                            <label class="info-field-label">Internal display name *</label>
+                            <input id="staff-profile-display-name" type="text" class="info-input" style="max-width: 350px;">
+                        </div>
+                        <div>
+                            <label class="info-field-label">Color on calendar</label>
+                            <div class="color-picker-container" id="staff-calendar-colors">
+                                <div class="color-circle selected" style="background: #00bcd4;" data-color="#00bcd4"></div>
+                                <div class="color-circle" style="background: #9b5de5;" data-color="#9b5de5"></div>
+                                <div class="color-circle" style="background: #2ecc71;" data-color="#2ecc71"></div>
+                                <div class="color-circle" style="background: #f39c12;" data-color="#f39c12"></div>
+                                <div class="color-circle" style="background: #e91e63;" data-color="#e91e63"></div>
+                                <div class="color-circle" style="background: #8bc34a;" data-color="#8bc34a"></div>
+                                <div class="color-circle" style="background: #2196f3;" data-color="#2196f3"></div>
+                                <div class="color-circle" style="background: #009688;" data-color="#009688"></div>
+                                <div class="color-circle" style="background: #ef5350;" data-color="#ef5350"></div>
+                                <div class="color-circle" style="background: #ce93d8;" data-color="#ce93d8"></div>
+                                <div class="color-circle" style="background: #ffd54f;" data-color="#ffd54f"></div>
+                                <div class="color-circle" style="background: #a1887f;" data-color="#a1887f"></div>
+                                <div class="color-circle" style="background: #607d8b;" data-color="#607d8b"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Alias</label>
-                        <input id="staff-profile-alias" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
-                    </div>
-                    <div>
-                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Email</label>
-                        <input id="staff-profile-email" type="email" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
-                    </div>
-                    <div>
-                        <label style="font-size:12px; text-transform:uppercase; color:var(--dark-grey);">Phone</label>
-                        <input id="staff-profile-phone" type="text" style="width:100%; padding:8px 10px; border:1px solid var(--grey); border-radius:4px; margin-top:4px;">
-                    </div>
+
+                    <!-- Biography Section -->
+                    <div class="info-card">
+                        <div class="info-card-title">Biography</div>
+                        <div>
+                            <label class="info-field-label">Bio</label>
+                            <textarea id="staff-profile-bio" class="info-textarea" rows="4" placeholder="Brief biography of the staff member..."></textarea>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Services Content -->
                 <div id="staff-panel-services" class="staff-panel-section" style="display:none;">
-                    <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">Services offered by this location.</p>
-                    <div style="margin-top:12px; max-height:490px; overflow-y:auto; border:1px solid var(--grey); border-radius:4px; padding:8px;">
-                        <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                    <div style="margin-top:20px; overflow-x:auto;">
+                        <table class="services-table">
                             <thead>
                                 <tr>
-                                    <th style="padding:6px 8px;"></th>
-                                    <th style="text-align:left; padding:6px 8px;">Services</th>
-                                    <th style="text-align:left; padding:6px 8px;">$</th>
+                                    <th class="service-name"></th>
+                                    <th></th>
+                                    <th>Price</th>
+                                    <th>Duration</th>
+                                    <th>Processing Time</th>
+                                    <th>Finishing Time</th>
+                                    <th>Transition Time</th>
+                                    <th>Business charge</th>
+                                    <th>Commission percentage</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><th colspan="3" style="padding:6px 8px;">Face Fixes</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Botox / Botox Facial</td><td style="padding:4px 8px;">14</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Sculptra</td><td style="padding:4px 8px;">950</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Lip Filler</td><td style="padding:4px 8px;">650</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Eye Filler</td><td style="padding:4px 8px;">750</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Cheek Filler</td><td style="padding:4px 8px;">850</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Nose Filler</td><td style="padding:4px 8px;">795</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Jawline Filler</td><td style="padding:4px 8px;">795</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Neck Filler</td><td style="padding:4px 8px;">795</td></tr>
+                                <tr><th colspan="10" style="padding:12px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Face Fixes</th></tr>
+                                <tr><td class="service-name">Botox / Botox Facial</td><td><a class="status-assignable">Assignable</a></td><td>$14.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Sculptra</td><td><a class="status-assignable">Assignable</a></td><td>$950.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Lip Filler</td><td><a class="status-assignable">Assignable</a></td><td>$650.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Eye Filler</td><td><a class="status-assignable">Assignable</a></td><td>$750.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Cheek Filler</td><td><a class="status-assignable">Assignable</a></td><td>$850.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Nose Filler</td><td><a class="status-assignable">Assignable</a></td><td>$795.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Jawline Filler</td><td><a class="status-assignable">Assignable</a></td><td>$795.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Neck Filler</td><td><a class="status-assignable">Assignable</a></td><td>$795.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">Body Fixes</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Radiesse</td><td style="padding:4px 8px;">950</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Sculptra Skinny BBL</td><td style="padding:4px 8px;">895</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Traptox</td><td style="padding:4px 8px;">895</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Cutera Secret</td><td style="padding:4px 8px;">895</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Sofwave</td><td style="padding:4px 8px;">495</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Body Fixes</th></tr>
+                                <tr><td class="service-name">Radiesse</td><td><a class="status-assignable">Assignable</a></td><td>$950.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Sculptra Skinny BBL</td><td><a class="status-assignable">Assignable</a></td><td>$895.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Traptox</td><td><a class="status-assignable">Assignable</a></td><td>$895.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Cutera Secret</td><td><a class="status-assignable">Assignable</a></td><td>$895.00</td><td>1 hr</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Sofwave</td><td><a class="status-assignable">Assignable</a></td><td>$495.00</td><td>1 hr</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">Skin Fixes</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Laser Facials</td><td style="padding:4px 8px;">495</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Hydrafacial</td><td style="padding:4px 8px;">250</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">VI Peel</td><td style="padding:4px 8px;">399</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Cosmelan</td><td style="padding:4px 8px;">995</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Sofwave</td><td style="padding:4px 8px;">495</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Skin Fixes</th></tr>
+                                <tr><td class="service-name">Laser Facials</td><td><a class="status-assignable">Assignable</a></td><td>$495.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Hydrafacial</td><td><a class="status-assignable">Assignable</a></td><td>$250.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">VI Peel</td><td><a class="status-assignable">Assignable</a></td><td>$399.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Cosmelan</td><td><a class="status-assignable">Assignable</a></td><td>$995.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Sofwave</td><td><a class="status-assignable">Assignable</a></td><td>$495.00</td><td>1 hr</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">Laser Hair Removal</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Laser Acne Facial</td><td style="padding:4px 8px;">495</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Laser Roscea Facial</td><td style="padding:4px 8px;">495</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Laser Resurfacing Facial</td><td style="padding:4px 8px;">795</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Upper Lip Laser Hair Removal</td><td style="padding:4px 8px;">29</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Eyebrows</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Sideburns</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Back</td><td style="padding:4px 8px;">400</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Pantyline</td><td style="padding:4px 8px;">150</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Neck</td><td style="padding:4px 8px;">299</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Face Laser Hair Removal</td><td style="padding:4px 8px;">299</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Hands and fingers</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Chest</td><td style="padding:4px 8px;">250</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Happy Trail</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Areolas</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Forehead</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Jawline</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Underarms</td><td style="padding:4px 8px;">175</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Limited Time $99 Upper Lip</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Feet &amp; Toes</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Brazilian</td><td style="padding:4px 8px;">250</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Ears</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Body Laser Hair Removal</td><td style="padding:4px 8px;">1299</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Pony Tail Laser</td><td style="padding:4px 8px;">125</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Abs</td><td style="padding:4px 8px;">300</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Legs</td><td style="padding:4px 8px;">450</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Cheeks</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Chin</td><td style="padding:4px 8px;">99</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Buttocks</td><td style="padding:4px 8px;">299</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Laser Hair Removal</th></tr>
+                                <tr><td class="service-name">Laser Acne Facial</td><td><a class="status-assignable">Assignable</a></td><td>$495.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Laser Roscea Facial</td><td><a class="status-assignable">Assignable</a></td><td>$495.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Laser Resurfacing Facial</td><td><a class="status-assignable">Assignable</a></td><td>$795.00</td><td>1 hr</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Upper Lip Laser Hair Removal</td><td><a class="status-assignable">Assignable</a></td><td>$29.00</td><td>10 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Eyebrows</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Sideburns</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Back</td><td><a class="status-assignable">Assignable</a></td><td>$400.00</td><td>45 mins</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Pantyline</td><td><a class="status-assignable">Assignable</a></td><td>$150.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Neck</td><td><a class="status-assignable">Assignable</a></td><td>$299.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Half Leg</td><td><a class="status-assignable">Assignable</a></td><td>$250.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Leg</td><td><a class="status-assignable">Assignable</a></td><td>$450.00</td><td>1 hr</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Half Arm</td><td><a class="status-assignable">Assignable</a></td><td>$150.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Arm</td><td><a class="status-assignable">Assignable</a></td><td>$300.00</td><td>45 mins</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Underarms</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Chin</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Buttocks</td><td><a class="status-assignable">Assignable</a></td><td>$299.00</td><td>45 mins</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Face Laser Hair Removal</td><td><a class="status-assignable">Assignable</a></td><td>$299.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Hands and fingers</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Chest</td><td><a class="status-assignable">Assignable</a></td><td>$250.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Happy Trail</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Areolas</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Forehead</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Jawline</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Limited Time $99 Upper Lip</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>10 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Feet &amp; Toes</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Brazilian</td><td><a class="status-assignable">Assignable</a></td><td>$250.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Ears</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Body Laser Hair Removal</td><td><a class="status-assignable">Assignable</a></td><td>$1299.00</td><td>2 hr</td><td>-</td><td>-</td><td>15 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Pony Tail Laser</td><td><a class="status-assignable">Assignable</a></td><td>$125.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Full Abs</td><td><a class="status-assignable">Assignable</a></td><td>$300.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Cheeks</td><td><a class="status-assignable">Assignable</a></td><td>$99.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">Radiofrequency Microneedling</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Full Face</td><td style="padding:4px 8px;">495</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Neck</td><td style="padding:4px 8px;">495</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Arms</td><td style="padding:4px 8px;">595</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Abdomen</td><td style="padding:4px 8px;">1100</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Bra Far Sculp</td><td style="padding:4px 8px;">695</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Legs</td><td style="padding:4px 8px;">1500</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Radiofrequency Microneedling</th></tr>
+                                <tr><td class="service-name">Full Face</td><td><a class="status-assignable">Assignable</a></td><td>$495.00</td><td>1 hr</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Neck</td><td><a class="status-assignable">Assignable</a></td><td>$495.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Arms</td><td><a class="status-assignable">Assignable</a></td><td>$595.00</td><td>1 hr</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Bra Far Sculp</td><td><a class="status-assignable">Assignable</a></td><td>$695.00</td><td>1 hr</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Legs</td><td><a class="status-assignable">Assignable</a></td><td>$1500.00</td><td>2 hr</td><td>-</td><td>-</td><td>15 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">Hydrafacial</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Signature Hydrafacial</td><td style="padding:4px 8px;">250</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Dior Hydrafacial</td><td style="padding:4px 8px;">399</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Keravive Hydrafacial (Hair)</td><td style="padding:4px 8px;">450</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Underarm Hydrafacial</td><td style="padding:4px 8px;">199</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Back Hydrafacial</td><td style="padding:4px 8px;">375</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Hydrafacial</th></tr>
+                                <tr><td class="service-name">Signature Hydrafacial</td><td><a class="status-assignable">Assignable</a></td><td>$250.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Dior Hydrafacial</td><td><a class="status-assignable">Assignable</a></td><td>$399.00</td><td>1 hr</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Keravive Hydrafacial (Hair)</td><td><a class="status-assignable">Assignable</a></td><td>$450.00</td><td>1 hr</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Neck Hydrafacial</td><td><a class="status-assignable">Assignable</a></td><td>$150.00</td><td>20 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Hands Hydrafacial</td><td><a class="status-assignable">Assignable</a></td><td>$75.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Back Hydrafacial</td><td><a class="status-assignable">Assignable</a></td><td>$375.00</td><td>45 mins</td><td>-</td><td>-</td><td>10 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">Chemical Peels</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">BioRepeel</td><td style="padding:4px 8px;">295</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Face &amp; Neck</td><td style="padding:4px 8px;">225</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Back</td><td style="padding:4px 8px;">275</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Underarms</td><td style="padding:4px 8px;">175</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Intimate Area</td><td style="padding:4px 8px;">195</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Chemical Peels</th></tr>
+                                <tr><td class="service-name">BioRepeel</td><td><a class="status-assignable">Assignable</a></td><td>$295.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Face &amp; Neck</td><td><a class="status-assignable">Assignable</a></td><td>$225.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Back</td><td><a class="status-assignable">Assignable</a></td><td>$275.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Intimate Area</td><td><a class="status-assignable">Assignable</a></td><td>$195.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">VI Peels</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Acne VI Peel</td><td style="padding:4px 8px;">350</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Acne Scarring VI Peel</td><td style="padding:4px 8px;">350</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Rosacea Peel</td><td style="padding:4px 8px;">350</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Sensitive Skin Peel</td><td style="padding:4px 8px;">350</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">VI Hyperpigmentation Peel</td><td style="padding:4px 8px;">350</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">VI Peels</th></tr>
+                                <tr><td class="service-name">Acne VI Peel</td><td><a class="status-assignable">Assignable</a></td><td>$350.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Acne Scarring VI Peel</td><td><a class="status-assignable">Assignable</a></td><td>$350.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Rosacea Peel</td><td><a class="status-assignable">Assignable</a></td><td>$350.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">VI Hyperpigmentation Peel</td><td><a class="status-assignable">Assignable</a></td><td>$350.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
 
-                                <tr><th colspan="3" style="padding:6px 8px;">Skin Boosters &amp; Wellness</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Salmon DNA</td><td style="padding:4px 8px;">450</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Exosomes</td><td style="padding:4px 8px;">595</td></tr>
- 
-                                <tr><th colspan="3" style="padding:6px 8px;">Add Ons</th></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Hydrafacial Skin Booster</td><td style="padding:4px 8px;">75</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Dermaplanning</td><td style="padding:4px 8px;">70</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Red Light Therapy</td><td style="padding:4px 8px;">50</td></tr>
-                                <tr><td style="padding:4px 8px; width:60px;"><label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;"><input type="checkbox" style="opacity:0; width:0; height:0;"><span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:24px; transition:0.3s;"></span><span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s;"></span></label></td><td style="padding:4px 8px;">Blue Light Therapy</td><td style="padding:4px 8px;">50</td></tr>
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Skin Boosters &amp; Wellness</th></tr>
+                                <tr><td class="service-name">Salmon DNA</td><td><a class="status-assignable">Assignable</a></td><td>$450.00</td><td>30 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Exosomes</td><td><a class="status-assignable">Assignable</a></td><td>$595.00</td><td>45 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+
+                                <tr><th colspan="10" style="padding:18px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Add Ons</th></tr>
+                                <tr><td class="service-name">Hydrafacial Skin Booster</td><td><a class="status-assignable">Assignable</a></td><td>$75.00</td><td>10 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Dermaplanning</td><td><a class="status-assignable">Assignable</a></td><td>$70.00</td><td>20 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Red Light Therapy</td><td><a class="status-assignable">Assignable</a></td><td>$50.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                                <tr><td class="service-name">Blue Light Therapy</td><td><a class="status-assignable">Assignable</a></td><td>$50.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end;">
-                    <button id="staff-services-save" style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer;">Save changes</button>
                 </div>
 
                 <!-- Appointments Content -->
@@ -2798,8 +3033,9 @@
                     <p style="margin-top:8px; color:var(--dark-grey); font-size:14px;">View upcoming and past appointments for this staff member.</p>
                 </div>
             </div>
-            <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end; gap:8px;">
-                <button style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer;">Save changes</button>
+            <div class="staff-profile-footer">
+                <button id="staff-deactivate-btn" style="padding:8px 14px; border:1px solid #d00; background:transparent; color:#d00; border-radius:4px; cursor:pointer; font-weight:500;">Deactivate</button>
+                <button id="staff-profile-save-btn" style="padding:8px 24px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer; font-weight:500;">Save changes</button>
             </div>
         </div>
 		</main>
@@ -2913,6 +3149,19 @@
         const staffPanelPersonal = document.getElementById('staff-panel-personal');
         const staffPanelServices = document.getElementById('staff-panel-services');
         const staffPanelAppointments = document.getElementById('staff-panel-appointments');
+        const staffProfileDisplayName = document.getElementById('staff-profile-display-name');
+        const staffProfileBio = document.getElementById('staff-profile-bio');
+        const staffProfilePermissionGroup = document.getElementById('staff-profile-permission-group');
+        const staffProfileLocation = document.getElementById('staff-profile-location');
+        const colorCircles = document.querySelectorAll('.color-circle');
+
+        // Color picker logic for calendar display
+        colorCircles.forEach(circle => {
+            circle.addEventListener('click', function() {
+                colorCircles.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
 
         function openStaffProfile(row) {
             const name = row.getAttribute('data-name') || '';
@@ -2929,6 +3178,20 @@
             staffProfileRole.value = role;
             staffProfileEmail.value = email;
             staffProfilePhone.value = phone;
+
+            // Reset new fields (or populate if data exists)
+            if (staffProfileDisplayName) staffProfileDisplayName.value = name;
+            if (staffProfileBio) staffProfileBio.value = ""; 
+            if (staffProfilePermissionGroup) staffProfilePermissionGroup.value = "provider"; // Default
+            if (staffProfileLocation) staffProfileLocation.value = "renton";
+
+            // Default color selection
+            colorCircles.forEach(c => {
+                c.classList.remove('selected');
+                if (c.getAttribute('data-color') === '#00bcd4') {
+                    c.classList.add('selected');
+                }
+            });
 
             // Fetch current availability from DB for THIS staff member
             fetch(`api/api_staff_availability.php?staff=${encodeURIComponent(name)}`)
@@ -2957,8 +3220,8 @@
         }
 
         function closeStaffProfile() {
+            staffProfilePanel.style.right = '-100%';
             staffProfileOverlay.style.display = 'none';
-            staffProfilePanel.style.right = '-820px';
         }
 
         // Service profile sliding panel logic
@@ -3235,7 +3498,7 @@
             });
         }
 
-        const staffSaveBtn = document.getElementById('staff-services-save');
+        const staffSaveBtn = document.getElementById('staff-profile-save-btn');
         if (staffSaveBtn) {
             staffSaveBtn.addEventListener('click', function() {
                 const staffName = staffProfileName.textContent.trim();
