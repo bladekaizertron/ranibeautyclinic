@@ -4730,6 +4730,7 @@
             let currentStep = 1;
             let selectedStaff = '';
             let staffAvailabilityData = [];
+            let staffData = []; // Store staff IDs
 
             function goToStep(step) {
                 const step1 = document.getElementById('bookingStep1');
@@ -4904,7 +4905,7 @@
             }
 
             function renderSchedule() {
-                if (!scheduleTitleEl || !selectedDate) return;
+                if (!scheduleTitleEl || !selectedDate || !selectedStaff) return;
 
                 const isToday = isSameDay(selectedDate, new Date());
                 const prefix = isToday ? 'Today, ' : '';
@@ -4916,12 +4917,33 @@
                 });
                 scheduleTitleEl.textContent = `${prefix}${label}`;
 
-                // Static demo availability matching your screenshot layout
-                const afternoon = ['3:00 PM', '3:40 PM', '3:50 PM', '4:00 PM', '4:20 PM', '4:40 PM'];
-                const evening = ['5:10 PM', '5:20 PM', '5:40 PM', '5:50 PM', '6:00 PM', '6:10 PM', '6:30 PM', '6:40 PM'];
+                const staff = staffData.find(s => s.name === selectedStaff);
+                if (!staff) return;
 
-                renderSlots(slotsAfternoonEl, afternoon);
-                renderSlots(slotsEveningEl, evening);
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                fetch(`CRM/admin/api/api_availability.php?staff_id=${staff.id}&work_date=${dateStr}`)
+                    .then(r => r.json())
+                    .then(slots => {
+                        if (!Array.isArray(slots)) {
+                            renderSlots(slotsAfternoonEl, []);
+                            renderSlots(slotsEveningEl, []);
+                            return;
+                        }
+                        // Split into afternoon/evening for UI
+                        const afternoon = slots.filter(s => {
+                            const [time, ampm] = s.split(' ');
+                            const h = parseInt(time.split(':')[0]);
+                            return (ampm === 'PM' && h < 5) || (ampm === 'AM' && h >= 12);
+                        });
+                        const evening = slots.filter(s => {
+                            const [time, ampm] = s.split(' ');
+                            const h = parseInt(time.split(':')[0]);
+                            return ampm === 'PM' && h >= 5;
+                        });
+
+                        renderSlots(slotsAfternoonEl, afternoon);
+                        renderSlots(slotsEveningEl, evening);
+                    });
             }
 
             function openBookingModal() {
@@ -4944,16 +4966,18 @@
                 renderSchedule();
 
                 // Fetch staff availability before rendering the booking cart
-                fetch('CRM/admin/api/api_staff_availability.php')
-                    .then(r => r.json())
-                    .then(data => {
-                        staffAvailabilityData = data;
-                        renderBookingCart();
-                    })
-                    .catch(err => {
-                        console.error('Error fetching staff availability:', err);
-                        renderBookingCart();
-                    });
+                Promise.all([
+                    fetch('CRM/admin/api/api_staff_availability.php').then(r => r.json()),
+                    fetch('CRM/admin/api/api_staff_availability.php?get_staff=1').then(r => r.json())
+                ]).then(([availData, sData]) => {
+                    staffAvailabilityData = availData;
+                    staffData = sData;
+                    renderBookingCart();
+                    renderSchedule();
+                }).catch(err => {
+                    console.error('Error fetching staff data:', err);
+                    renderBookingCart();
+                });
 
                 // Focus close button for accessibility
                 if (bookingCloseBtn) bookingCloseBtn.focus();

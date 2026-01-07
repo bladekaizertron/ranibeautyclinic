@@ -310,6 +310,8 @@
             justify-content: center;
             align-items: center;
         }
+
+
         /* Notification Dropdown */
         #content nav .notification-menu {
             display: none;
@@ -1511,6 +1513,254 @@
             transform: scale(1.1);
             box-shadow: 0 0 0 2px #fff inset;
         }
+        /* Schedule Calendar Styles */
+        .schedule-calendar-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 0;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .schedule-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 2px solid #f4f4f4;
+        }
+
+        .schedule-tabs {
+            display: flex;
+            gap: 25px;
+        }
+
+        .schedule-tabs {
+            display: flex;
+            gap: 25px;
+            border-bottom: 2px solid #f4f4f4;
+        }
+
+        .schedule-tab {
+            font-size: 14px;
+            font-weight: 500;
+            color: #999;
+            cursor: pointer;
+            padding: 10px 0;
+            position: relative;
+            margin-bottom: -2px;
+        }
+
+        .schedule-tab.active {
+            color: #4a90e2;
+            border-bottom: 2px solid #4a90e2;
+        }
+
+        .schedule-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-staff-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-staff-wrapper i {
+            position: absolute;
+            left: 10px;
+            color: #999;
+        }
+
+        .search-staff-wrapper input {
+            padding: 8px 10px 8px 32px;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            width: 200px;
+            color: #333;
+            outline: none;
+        }
+
+        .date-navigator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+        }
+
+        .date-range-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .nav-arrows {
+            display: flex;
+            gap: 2px;
+            margin-left: 8px;
+        }
+
+        .nav-arrow {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4f4f4;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #333;
+            border: none;
+        }
+
+        .nav-arrow:hover {
+            background: #f0f0f0;
+        }
+
+        .schedule-grid-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-grid-table th {
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #f0f0f0;
+            font-weight: 400;
+            text-align: center;
+            width: 11%;
+        }
+
+        .day-header .day-name {
+            display: block;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .day-header .day-num {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 2px 0;
+        }
+
+        .day-header .day-hours {
+            display: inline-block;
+            font-size: 11px;
+            color: #666;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 2px 10px;
+            margin-top: 4px;
+        }
+
+        .category-row {
+            background: #f4f4f4;
+        }
+
+        .category-row td {
+            padding: 10px 15px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .staff-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            width: 100%;
+            min-width: 180px;
+        }
+
+        .staff-avatar-mini {
+            font-size: 24px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-details-mini .staff-name-mini {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .staff-details-mini .staff-hours-mini {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .btn-add-time {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: #f4f4f4;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-left: auto;
+        }
+
+        .btn-add-time:hover {
+            background: #eee;
+            color: #666;
+        }
+
+        .grid-cell {
+            border: 1px solid #f0f0f0;
+            height: 60px;
+            vertical-align: middle;
+            padding: 5px;
+        }
+
+        .shift-block {
+            background: #80c6f2;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .shift-block.highlight {
+            background: #0095ff; /* Darker blue */
+        }
+
+        .shift-block i {
+            font-size: 14px;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -1699,47 +1949,8 @@
 								<th>Status</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<i class='bx bxs-user-circle' style='font-size: 36px; color: var(--dark-grey);'></i>
-									<p>Micheal John</p>
-								</td>
-								<td>Esthetician</td>
-								<td><span class="status completed">Available</span></td>
-							</tr>
-							<tr>
-								<td>
-									<i class='bx bxs-user-circle' style='font-size: 36px; color: var(--dark-grey);'></i>
-									<p>Ryan Doe</p>
-								</td>
-								<td>Receptionist</td>
-								<td><span class="status pending">On Leave</span></td>
-							</tr>
-							<tr>
-								<td>
-									<i class='bx bxs-user-circle' style='font-size: 36px; color: var(--dark-grey);'></i>
-									<p>Tarry White</p>
-								</td>
-								<td>Therapist</td>
-								<td><span class="status process">Busy</span></td>
-							</tr>
-							<tr>
-								<td>
-									<i class='bx bxs-user-circle' style='font-size: 36px; color: var(--dark-grey);'></i>
-									<p>Selma</p>
-								</td>
-								<td>Manager</td>
-								<td><span class="status completed">Available</span></td>
-							</tr>
-							<tr>
-								<td>
-									<i class='bx bxs-user-circle' style='font-size: 36px; color: var(--dark-grey);'></i>
-									<p>Andreas Doe</p>
-								</td>
-								<td>Dermatologist</td>
-								<td><span class="status process">Busy</span></td>
-							</tr>
+						<tbody id="dashboard-staff-table-body">
+							<!-- Populated by fetchStaffs() -->
 						</tbody>
 					</table>
 				</div>
@@ -1842,11 +2053,45 @@
 
             <div class="table-data">
                 <!-- Schedule subsection (default) -->
-                <div class="order manage-subsection" id="manage-schedule">
-                    <div class="head">
-                        <h3>Schedule</h3>
+                <div class="manage-subsection" id="manage-schedule" style="width: 100%;">
+                    <div class="schedule-calendar-container">
+                        <div class="schedule-toolbar">
+                            <div class="schedule-tabs">
+                                <div class="schedule-tab active">Staff</div>
+                                <div class="schedule-tab">Resources</div>
+                            </div>
+
+                            <div class="schedule-controls">
+                                <div class="search-staff-wrapper">
+                                    <i class='bx bx-search'></i>
+                                    <input type="text" placeholder="Search by staff">
+                                </div>
+
+                                <div class="date-navigator">
+                                    <span class="date-range-text" id="sched-date-range">Jan 4 - Jan 10, 2026</span>
+                                    <i class='bx bx-chevron-down' style="color: #666;"></i>
+                                    <div class="nav-arrows">
+                                        <button class="nav-arrow" id="sched-prev-week"><i class='bx bx-chevron-left'></i></button>
+                                        <button class="nav-arrow" id="sched-next-week"><i class='bx bx-chevron-right'></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="schedule-grid-wrapper" style="overflow-x: auto;">
+                            <table class="schedule-grid-table">
+                                <thead>
+                                    <tr id="sched-table-days">
+                                        <th style="width: 200px; background: #fff; border: none;"></th>
+                                        <!-- Will be populated by JS -->
+                                    </tr>
+                                </thead>
+                                <tbody id="sched-table-body">
+                                    <!-- Will be populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <p>Configure and view your clinic schedule here.</p>
                 </div>
 
                 <!-- Services subsection -->
@@ -2664,84 +2909,9 @@
                                 <th>Permission group</th>
                                 <th>Invite</th>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-name="Ayla K" data-phone="(253) 408-9535" data-email="info@aylamedia.co" data-role="Team Permissions">
-                                <td>
-                                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                                        <span style="width:32px;height:32px;border-radius:50%;background:#9b5de5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
-                                            <i class='bx bxs-user'></i>
-                                        </span>
-                                        <span>Ayla K</span>
-                                    </span>
-                                </td>
-                                <td>(253) 408-9535</td>
-                                <td>info@aylamedia.co</td>
-                                <td>Team Permissions</td>
-                                <td>Service Provider</td>
-                                <td><a href="#">Send Invite</a></td>
-                            </tr>
-                            <tr data-name="Jodie X" data-phone="(206) 507-8902" data-email="coderebuilt@gmail.com" data-role="Team Permissions">
-                                <td>
-                                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                                        <span style="width:32px;height:32px;border-radius:50%;background:#ff6f91;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
-                                            <i class='bx bxs-user'></i>
-                                        </span>
-                                        <span>Jodie X</span>
-                                    </span>
-                                </td>
-                                <td>(206) 507-8902</td>
-                                <td>coderebuilt@gmail.com</td>
-                                <td>Team Permissions</td>
-                                <td>Admin</td>
-                                <td>Confirmed</td>
-                            </tr>
-                            <tr data-name="Laser Room #1" data-phone="(206) 554-9524" data-email="ranibeautyclinic13@gmail.com" data-role="Team Permissions">
-                                <td>
-                                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                                        <span style="width:32px;height:32px;border-radius:50%;background:#495057;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
-                                            <i class='bx bxs-user'></i>
-                                        </span>
-                                        <span>Laser Room #1</span>
-                                    </span>
-                                </td>
-                                <td>(206) 554-9524</td>
-                                <td>ranibeautyclinic13@gmail.com</td>
-                                <td>Team Permissions</td>
-                                <td>Service Provider</td>
-                                <td><a href="#">Send Invite</a></td>
-                            </tr>
-                            <tr data-name="Raj Rai" data-phone="(206) 507-8902" data-email="rajvinderkaurnijjar@gmail.com" data-role="Team Permissions">
-                                <td>
-                                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                                        <span style="width:32px;height:32px;border-radius:50%;background:#00b4d8;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
-                                            <i class='bx bxs-user'></i>
-                                        </span>
-                                        <span>Raj Rai</span>
-                                    </span>
-                                </td>
-                                <td>(206) 507-8902</td>
-                                <td>rajvinderkaurnijjar@gmail.com</td>
-                                <td>Team Permissions</td>
-                                <td>Service Provider</td>
-                                <td><a href="#">Send Invite</a></td>
-                            </tr>
-                            <tr data-name="Rina Rai" data-phone="(425) 539-4440" data-email="info@ranibeautyclinic.com" data-role="General Staff">
-                                <td>
-                                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                                        <span style="width:32px;height:32px;border-radius:50%;background:#f4a261;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">
-                                            <i class='bx bxs-user'></i>
-                                        </span>
-                                        <span>Rina Rai</span>
-                                    </span>
-                                </td>
-                                <td>(425) 539-4440</td>
-                                <td>info@ranibeautyclinic.com</td>
-                                <td>General Staff</td>
-                                <td>Admin</td>
-                                <td>Confirmed</td>
-                            </tr>
-                        </tbody>
+                    <tbody id="manage-staff-table-body">
+                        <!-- Populated by fetchStaffs() -->
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -3392,7 +3562,12 @@
             // Reset new fields (or populate if data exists)
             if (staffProfileDisplayName) staffProfileDisplayName.value = name;
             if (staffProfileBio) staffProfileBio.value = ""; 
-            if (staffProfilePermissionGroup) staffProfilePermissionGroup.value = "provider"; // Default
+            if (staffProfilePermissionGroup) {
+                const roleLower = role.toLowerCase();
+                if (roleLower.includes('admin')) staffProfilePermissionGroup.value = 'admin';
+                else if (roleLower.includes('desk')) staffProfilePermissionGroup.value = 'frontdesk';
+                else staffProfilePermissionGroup.value = 'provider';
+            }
             if (staffProfileLocation) staffProfileLocation.value = "renton";
 
             // Default color selection
@@ -3981,9 +4156,10 @@
                 menu.style.display = 'none';
             });
 
-            // Fetch clients on initial load if needed
+            // Fetch initial data
             fetchClients();
-            });
+            fetchStaffs();
+        });
 
             function fetchClients() {
                 const tableBody = document.getElementById('clients-table-body');
@@ -4021,9 +4197,7 @@
                                             <span>${client.name}</span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <span class="marketing-pill active">Subscribed</span>
-                                    </td>
+                                    <td><span class="status-pill status-marketing">Marketable</span></td>
                                     <td>${client.phone || '-'}</td>
                                     <td>${client.email || '-'}</td>
                                 `;
@@ -4035,6 +4209,268 @@
                         console.error('Error fetching clients:', error);
                     });
             }
-    </script>
+
+            function fetchStaffs() {
+                const dashboardTable = document.getElementById('dashboard-staff-table-body');
+                const manageTable = document.getElementById('manage-staff-table-body');
+                
+                fetch('api/api_staff_availability.php?get_staff=1')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!Array.isArray(data)) return;
+                        
+                        // Populate Dashboard Staff List
+                        if (dashboardTable) {
+                            dashboardTable.innerHTML = '';
+                            data.forEach(staff => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>
+                                        <i class='bx bxs-user-circle' style='font-size: 36px; color: ${staff.avatar_color || 'var(--dark-grey)'};'></i>
+                                        <p>${staff.name || 'Unknown'}</p>
+                                    </td>
+                                    <td>${staff.role || 'Staff'}</td>
+                                    <td><span class="status completed">Available</span></td>
+                                `;
+                                dashboardTable.appendChild(row);
+                            });
+                        }
+
+                        // Populate Manage > Staff List
+                        if (manageTable) {
+                            manageTable.innerHTML = '';
+                            data.forEach(staff => {
+                                const row = document.createElement('tr');
+                                row.setAttribute('data-name', staff.name || '');
+                                row.setAttribute('data-role', staff.role || '');
+                                row.setAttribute('data-phone', staff.phone || '');
+                                row.setAttribute('data-email', staff.email || '');
+                                row.style.cursor = 'pointer';
+                                
+                                row.innerHTML = `
+                                    <td>
+                                        <span style="display:inline-flex;align-items:center;gap:12px;">
+                                            <span style="font-size:24px;color:#333;display:flex;align-items:center;justify-content:center;">
+                                                <i class='bx bxs-user'></i>
+                                            </span>
+                                            <span style="font-size:14px;font-weight:500;">${staff.name || 'Unknown'}</span>
+                                        </span>
+                                    </td>
+                                    <td>${staff.phone || '-'}</td>
+                                    <td>${staff.email || '-'}</td>
+                                    <td>${staff.role || 'Staff'}</td>
+                                    <td>${staff.role || '-'}</td>
+                                    <td>Confirmed</td>
+                                `;
+                                
+                                row.addEventListener('click', function(e) {
+                                    if (e.target.tagName.toLowerCase() === 'a') return;
+                                    if (typeof openStaffProfile === 'function') {
+                                        openStaffProfile(row);
+                                    }
+                                });
+                                
+                                manageTable.appendChild(row);
+                            });
+                        }
+                    });
+            }
+
+            /* --- SCHEDULE CALENDAR LOGIC --- */
+            let scheduleStartDate = new Date();
+            // Start of current week (Sunday)
+            scheduleStartDate.setDate(scheduleStartDate.getDate() - scheduleStartDate.getDay());
+
+            function formatScheduleDate(date) {
+                return date.toISOString().split('T')[0];
+            }
+
+            function updateScheduleGrid() {
+                const dayHeadersRow = document.getElementById('sched-table-days');
+                const tableBody = document.getElementById('sched-table-body');
+                const dateRangeText = document.getElementById('sched-date-range');
+
+                if (!dayHeadersRow || !tableBody || !dateRangeText) return;
+
+                // 1. Update Date Range Text
+                const endDate = new Date(scheduleStartDate);
+                endDate.setDate(endDate.getDate() + 6);
+                const options = { month: 'short', day: 'numeric' };
+                dateRangeText.innerText = `${scheduleStartDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', { ...options, year: 'numeric' })}`;
+
+                // 2. Clear and Render Headers
+                dayHeadersRow.innerHTML = '<th style="width: 200px; background: #fff; border: none;"></th>';
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const currentWeekDays = [];
+
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(scheduleStartDate);
+                    d.setDate(d.getDate() + i);
+                    currentWeekDays.push(new Date(d));
+
+                    const th = document.createElement('th');
+                    th.innerHTML = `
+                        <div class="day-header">
+                            <span class="day-name">${days[d.getDay()]}</span>
+                            <span class="day-num">${d.getDate()}</span>
+                            <span class="day-hours">0 hrs</span>
+                        </div>
+                    `;
+                    dayHeadersRow.appendChild(th);
+                }
+
+                // 3. Fetch Staff and Schedules
+                Promise.all([
+                    fetch('api/api_staff_availability.php?get_staff=1').then(r => r.json()),
+                    fetch(`api/api_schedules.php?start_date=${formatScheduleDate(scheduleStartDate)}&end_date=${formatScheduleDate(endDate)}`).then(r => r.json())
+                ]).then(([staffList, schedules]) => {
+                    tableBody.innerHTML = '';
+                    
+                    if (!Array.isArray(staffList)) return;
+
+                    // Handle Search
+                    const searchTerm = document.querySelector('.search-staff-wrapper input')?.value.toLowerCase() || '';
+                    const filteredStaff = staffList.filter(s => (s.name || '').toLowerCase().includes(searchTerm));
+
+                    // Group staff by category more flexibly
+                    const categories = {
+                        "General Staff": filteredStaff.filter(s => (s.role || '').toLowerCase().includes('admin') || (s.role || '').toLowerCase().includes('general')),
+                        "Team Permissions": filteredStaff.filter(s => !(s.role || '').toLowerCase().includes('admin') && !(s.role || '').toLowerCase().includes('general'))
+                    };
+
+                    // Calculate totals
+                    const dayTotals = new Array(7).fill(0);
+                    if (Array.isArray(schedules)) {
+                        schedules.forEach(s => {
+                            const schedDate = s.work_date;
+                            for (let i = 0; i < 7; i++) {
+                                if (formatScheduleDate(currentWeekDays[i]) === schedDate) {
+                                    const diff = (new Date(`1970-01-01T${s.end_time}`) - new Date(`1970-01-01T${s.start_time}`)) / 3600000;
+                                    dayTotals[i] += isNaN(diff) ? 0 : diff;
+                                    break;
+                                }
+                            }
+                        });
+                    }
+
+                    // Update Headers
+                    const dayHSpans = document.querySelectorAll('.day-header .day-hours');
+                    dayHSpans.forEach((span, i) => {
+                        span.innerText = `${Math.round(dayTotals[i])} hrs`;
+                    });
+
+                    for (const [catName, members] of Object.entries(categories)) {
+                        if (members.length === 0) continue;
+
+                        const catRow = document.createElement('tr');
+                        catRow.className = 'category-row';
+                        catRow.innerHTML = `<td colspan="8">${catName.toUpperCase()}</td>`;
+                        tableBody.appendChild(catRow);
+
+                        members.forEach(staff => {
+                            const row = document.createElement('tr');
+                            
+                            let weeklyHours = 0;
+                            const staffSchedules = Array.isArray(schedules) ? schedules.filter(s => s.staff_id == staff.id) : [];
+                            staffSchedules.forEach(s => {
+                                const diff = (new Date(`1970-01-01T${s.end_time}`) - new Date(`1970-01-01T${s.start_time}`)) / 3600000;
+                                weeklyHours += isNaN(diff) ? 0 : diff;
+                            });
+
+                            const staffHtml = `
+                                <td>
+                                    <div class="staff-info-cell">
+                                        <div class="staff-avatar-mini">
+                                            <i class='bx bxs-user'></i>
+                                        </div>
+                                        <div class="staff-details-mini">
+                                            <span class="staff-name-mini">${staff.name || 'Unknown'}</span>
+                                            <span class="staff-hours-mini">${weeklyHours} hrs</span>
+                                        </div>
+                                        <button class="btn-add-time" onclick="addShiftPrompt(${staff.id})">+</button>
+                                    </div>
+                                </td>
+                            `;
+                            row.innerHTML = staffHtml;
+
+                            for (let i = 0; i < 7; i++) {
+                                const currentDay = formatScheduleDate(currentWeekDays[i]);
+                                const daySchedules = staffSchedules.filter(s => s.work_date === currentDay);
+                                
+                                const cell = document.createElement('td');
+                                cell.className = 'grid-cell';
+                                
+                                daySchedules.forEach(sched => {
+                                    const block = document.createElement('div');
+                                    block.className = 'shift-block';
+                                    
+                                    const formatTimeShort = (t) => {
+                                        let [h, m] = t.split(':');
+                                        h = parseInt(h);
+                                        const amp = h >= 12 ? 'pm' : 'am';
+                                        h = h % 12 || 12;
+                                        return `${h}${amp}`;
+                                    };
+
+                                    block.innerHTML = `
+                                        <span>${formatTimeShort(sched.start_time).replace('am','am').replace('pm','pm')} - ${formatTimeShort(sched.end_time).replace('am','am').replace('pm','pm')}</span>
+                                        <i class='bx bx-sync'></i>
+                                    `;
+                                    block.onclick = () => editShiftPrompt(sched);
+                                    cell.appendChild(block);
+                                });
+                                row.appendChild(cell);
+                            }
+                            tableBody.appendChild(row);
+                        });
+                    }
+                });
+            }
+
+            // Search listener
+            document.querySelector('.search-staff-wrapper input')?.addEventListener('input', () => {
+                updateScheduleGrid();
+            });
+
+            window.addShiftPrompt = function(staffId) {
+                const date = prompt("Enter Date (YYYY-MM-DD):", formatScheduleDate(new Date()));
+                if (!date) return;
+                const start = prompt("Enter Start Time (HH:MM):", "09:00");
+                if (!start) return;
+                const end = prompt("Enter End Time (HH:MM):", "17:00");
+                if (!end) return;
+
+                fetch('api/api_schedules.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ staff_id: staffId, work_date: date, start_time: start, end_time: end })
+                }).then(() => updateScheduleGrid());
+            };
+
+            window.deleteShift = function(id, e) {
+                e.stopPropagation();
+                if (confirm('Delete this shift?')) {
+                    fetch(`api/api_schedules.php?id=${id}`, { method: 'DELETE' })
+                        .then(() => updateScheduleGrid());
+                }
+            };
+
+            // Event Listeners for Navigation
+            document.getElementById('sched-prev-week')?.addEventListener('click', () => {
+                scheduleStartDate.setDate(scheduleStartDate.getDate() - 7);
+                updateScheduleGrid();
+            });
+
+            document.getElementById('sched-next-week')?.addEventListener('click', () => {
+                scheduleStartDate.setDate(scheduleStartDate.getDate() + 7);
+                updateScheduleGrid();
+            });
+
+            // Initial Load
+            if (document.getElementById('manage-schedule')) {
+                updateScheduleGrid();
+            }
+
+	</script>
 </body>
 </html>
+```

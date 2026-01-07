@@ -55,3 +55,12 @@ CREATE TABLE IF NOT EXISTS clients (
     email VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS staff_schedules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    staff_id INT,
+    work_date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    FOREIGN KEY (staff_id) REFERENCES staff(id) ON DELETE CASCADE
+);
