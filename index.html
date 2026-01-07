@@ -867,6 +867,23 @@
             background: var(--primary-navy);
             color: var(--pure-white);
             border-color: var(--primary-navy);
+            position: relative;
+        }
+
+        .day-btn.has-availability::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+        }
+
+        .day-btn.is-selected.has-availability::after {
+            background: var(--pure-white);
         }
 
         .tz-note {
@@ -4214,7 +4231,7 @@
 
                                     <div class="schedule-group">
                                         <h4>Morning</h4>
-                                        <div class="no-availability">No availability</div>
+                                        <div id="slotsMorning" class="slots" aria-label="Morning time slots"></div>
                                     </div>
 
                                     <div class="schedule-group">
@@ -4408,6 +4425,7 @@
             const prevMonthBtn = document.getElementById('prevMonth');
             const nextMonthBtn = document.getElementById('nextMonth');
             const scheduleTitleEl = document.getElementById('scheduleTitle');
+            const slotsMorningEl = document.getElementById('slotsMorning');
             const slotsAfternoonEl = document.getElementById('slotsAfternoon');
             const slotsEveningEl = document.getElementById('slotsEvening');
 
@@ -4720,6 +4738,8 @@
                             const val = this.querySelector('input').value;
                             selectedStaff = val;
                             renderBookingCart();
+                            renderCalendar(); // Refresh calendar highlights for the new staff
+                            renderSchedule(); // Refresh slots for the currently selected date
                         });
                     });
                 }
@@ -4854,37 +4874,64 @@
                 const startDay = first.getDay(); // 0=Sun
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                // leading blanks
-                for (let i = 0; i < startDay; i++) {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'day-btn is-muted';
-                    btn.textContent = '';
-                    btn.setAttribute('aria-hidden', 'true');
-                    calendarDaysEl.appendChild(btn);
+                // Get availability highlights if a staff is selected
+                const staff = staffData.find(s => s.name === selectedStaff);
+                const startStr = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+                const endStr = `${year}-${String(month + 1).padStart(2, '0')}-${daysInMonth}`;
+
+                let highlightPromise = Promise.resolve([]);
+                if (staff) {
+                    highlightPromise = fetch(`CRM/admin/api/api_schedules.php?staff_id=${staff.id}&start_date=${startStr}&end_date=${endStr}`)
+                        .then(r => r.json())
+                        .then(data => {
+                            if (!Array.isArray(data)) return [];
+                            return [...new Set(data.map(s => s.work_date))];
+                        });
                 }
 
-                const today = new Date();
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const date = new Date(year, month, day);
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'day-btn';
-                    btn.textContent = String(day);
-                    btn.setAttribute('aria-label', date.toDateString());
+                highlightPromise.then(availableDates => {
+                    // Clear ONLY once we are ready to render the new dates
+                    calendarDaysEl.innerHTML = '';
 
-                    if (isSameDay(date, today)) btn.classList.add('is-today');
-                    if (selectedDate && isSameDay(date, selectedDate)) btn.classList.add('is-selected');
+                    // leading blanks
+                    for (let i = 0; i < startDay; i++) {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'day-btn is-muted';
+                        btn.textContent = '';
+                        btn.setAttribute('aria-hidden', 'true');
+                        calendarDaysEl.appendChild(btn);
+                    }
 
-                    btn.addEventListener('click', () => {
-                        selectedDate = date;
-                        selectedTime = null;
-                        renderCalendar();
-                        renderSchedule();
-                    });
+                    const today = new Date();
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const date = new Date(year, month, day);
+                        const dateStr = date.toISOString().split('T')[0];
 
-                    calendarDaysEl.appendChild(btn);
-                }
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'day-btn';
+                        btn.textContent = String(day);
+                        btn.setAttribute('aria-label', date.toDateString());
+
+                        if (isSameDay(date, today)) btn.classList.add('is-today');
+                        if (selectedDate && isSameDay(date, selectedDate)) btn.classList.add('is-selected');
+
+                        // Apply availability highlight
+                        if (availableDates.includes(dateStr)) {
+                            btn.classList.add('has-availability');
+                        }
+
+                        btn.addEventListener('click', () => {
+                            selectedDate = date;
+                            selectedTime = null;
+                            renderCalendar();
+                            renderSchedule();
+                        });
+
+                        calendarDaysEl.appendChild(btn);
+                    }
+                });
             }
 
             function renderSlots(container, times) {
@@ -4925,22 +4972,30 @@
                     .then(r => r.json())
                     .then(slots => {
                         if (!Array.isArray(slots)) {
+                            renderSlots(slotsMorningEl, []);
                             renderSlots(slotsAfternoonEl, []);
                             renderSlots(slotsEveningEl, []);
                             return;
                         }
-                        // Split into afternoon/evening for UI
+                        // Split into morning/afternoon/evening for UI
+                        const morning = slots.filter(s => {
+                            const [time, ampm] = s.split(' ');
+                            return ampm === 'AM';
+                        });
                         const afternoon = slots.filter(s => {
                             const [time, ampm] = s.split(' ');
                             const h = parseInt(time.split(':')[0]);
-                            return (ampm === 'PM' && h < 5) || (ampm === 'AM' && h >= 12);
+                            // Afternoon: 12 PM up to < 5 PM
+                            return ampm === 'PM' && (h === 12 || h < 5);
                         });
                         const evening = slots.filter(s => {
                             const [time, ampm] = s.split(' ');
                             const h = parseInt(time.split(':')[0]);
-                            return ampm === 'PM' && h >= 5;
+                            // Evening: 5 PM onwards
+                            return ampm === 'PM' && h >= 5 && h !== 12;
                         });
 
+                        renderSlots(slotsMorningEl, morning);
                         renderSlots(slotsAfternoonEl, afternoon);
                         renderSlots(slotsEveningEl, evening);
                     });

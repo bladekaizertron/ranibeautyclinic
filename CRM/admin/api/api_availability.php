@@ -21,12 +21,11 @@ while ($row = mysqli_fetch_assoc($result)) {
     $start = strtotime($row['start_time']);
     $end = strtotime($row['end_time']);
     
-    // Generate 20-minute slots (placeholder interval, usually depends on service duration)
-    // For now, we'll return 15-minute intervals if within work hours.
+    // Generate 1-hour slots
     $current = $start;
-    while ($current + (15 * 60) <= $end) {
+    while ($current + (60 * 60) <= $end) {
         $slots[] = date("g:i A", $current);
-        $current += (15 * 60); // 15 minutes increments
+        $current += (60 * 60); // 1 hour increments
     }
 }
 
