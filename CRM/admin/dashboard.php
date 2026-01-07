@@ -1080,6 +1080,147 @@
         .service-item.hidden {
             display: none;
         }
+
+        /* Clients Section Styles */
+        .clients-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .clients-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .clients-actions a {
+            color: #000;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .clients-actions button {
+            padding: 8px 16px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .clients-stats-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid var(--grey);
+            border-bottom: 1px solid var(--grey);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .clients-stats-line span b {
+            font-weight: 700;
+        }
+
+        .add-filter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: underline;
+            color: #000;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .clients-search-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .clients-search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-grey);
+            font-size: 18px;
+        }
+
+        .clients-search-container input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            background: #f1f1f1;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .clients-table-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .clients-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .clients-table th {
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 12px 0;
+            color: var(--dark);
+        }
+
+        .clients-table td {
+            padding: 15px 0;
+            border-top: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .client-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .client-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--dark-grey);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .marketing-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 5px;
+            background: #f0f0f0;
+            color: #888;
+        }
+
+        .marketing-pill.active {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
     </style>
 </head>
 <body>
@@ -1117,7 +1258,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="#">
+				<a href="#" data-section="clients">
 					<i class='bx bxs-user-detail bx-sm' ></i>
 					<span class="text">Clients</span>
 				</a>
@@ -1344,6 +1485,52 @@
                     </div>
 				</div>
 			</div>
+        </div>
+
+        <!-- Clients Section (blank list) -->
+        <div id="clients-section" style="display: none;">
+            <div class="clients-header">
+                <h1>Clients</h1>
+                <div class="clients-actions">
+                    <a href="#">Export</a>
+                    <a href="#">Merge clients</a>
+                    <button>Add client</button>
+                </div>
+            </div>
+
+            <div class="clients-stats-line">
+                <span><b>0 clients</b> in your directory</span>
+                <div class="add-filter">
+                    <i class='bx bx-filter'></i>
+                    <span>Add filter</span>
+                </div>
+            </div>
+
+            <div class="clients-search-container">
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="Search for a name, phone number or email">
+            </div>
+
+            <div class="clients-table-container">
+                <table class="clients-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Client name</th>
+                            <th style="width: 20%;">Marketing Status</th>
+                            <th style="width: 20%;">Phone number</th>
+                            <th style="width: 25%;">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clients-table-body">
+                        <!-- Blank for now as requested -->
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--dark-grey); padding: 40px 0;">
+                                No clients found in your directory.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Manage Section (hidden by default) -->
@@ -2655,12 +2842,24 @@
                 const frontdeskSection = document.getElementById('frontdesk-section');
                 const manageSection = document.getElementById('manage-section');
 
+                const clientsSection = document.getElementById('clients-section');
+
                 if (section === 'frontdesk') {
                     if (frontdeskSection) frontdeskSection.style.display = 'block';
                     if (manageSection) manageSection.style.display = 'none';
+                    if (clientsSection) clientsSection.style.display = 'none';
+                    if (manageSubmenu) manageSubmenu.style.display = 'none';
+                } else if (section === 'clients') {
+                    if (frontdeskSection) frontdeskSection.style.display = 'none';
+                    if (manageSection) manageSection.style.display = 'none';
+                    if (clientsSection) {
+                        clientsSection.style.display = 'block';
+                        fetchClients(); // Load clients when section is shown
+                    }
                     if (manageSubmenu) manageSubmenu.style.display = 'none';
                 } else if (section === 'manage') {
                     if (frontdeskSection) frontdeskSection.style.display = 'none';
+                    if (clientsSection) clientsSection.style.display = 'none';
                     if (manageSection) manageSection.style.display = 'block';
 
                     if (manageSubmenu) {
@@ -3288,7 +3487,61 @@
             allMenus.forEach(function(menu) {
                 menu.style.display = 'none';
             });
+
+            // Fetch clients on initial load if needed
+            fetchClients();
             });
+
+            function fetchClients() {
+                const tableBody = document.getElementById('clients-table-body');
+                const statsSpan = document.querySelector('.clients-stats-line span');
+                
+                if (!tableBody) return;
+
+                fetch('api/api_get_clients.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (Array.isArray(data)) {
+                            // Update count
+                            if (statsSpan) {
+                                statsSpan.innerHTML = `<b>${data.length} clients</b> in your directory`;
+                            }
+
+                            if (data.length === 0) {
+                                tableBody.innerHTML = `
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: var(--dark-grey); padding: 40px 0;">
+                                            No clients found in your directory.
+                                        </td>
+                                    </tr>`;
+                                return;
+                            }
+
+                            tableBody.innerHTML = '';
+                            data.forEach(client => {
+                                const initials = client.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>
+                                        <div class="client-name-cell">
+                                            <div class="client-avatar">${initials}</div>
+                                            <span>${client.name}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="marketing-pill active">Subscribed</span>
+                                    </td>
+                                    <td>${client.phone || '-'}</td>
+                                    <td>${client.email || '-'}</td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching clients:', error);
+                    });
+            }
     </script>
 </body>
 </html>

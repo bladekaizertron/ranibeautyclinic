@@ -4794,12 +4794,31 @@
                         return;
                     }
 
-                    alert(`Booking Submitted!\n\nName: ${name}\nStaff: ${selectedStaff}\nDate: ${selectedDate.toDateString()}\nTime: ${selectedTime}`);
-                    closeBookingModal();
-                    // Clear cart after booking
-                    cart = [];
-                    saveCart();
-                    renderCart();
+                    // Save client to database
+                    fetch('CRM/admin/api/api_save_client.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name, phone, email })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert(`Booking Submitted!\n\nName: ${name}\nStaff: ${selectedStaff}\nDate: ${selectedDate.toDateString()}\nTime: ${selectedTime}`);
+                                closeBookingModal();
+                                // Clear cart after booking
+                                cart = [];
+                                saveCart();
+                                renderCart();
+                            } else {
+                                alert('Failed to save booking details: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error saving client:', error);
+                            alert('An error occurred while saving your booking. Please try again.');
+                        });
                 });
             }
 

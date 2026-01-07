@@ -47,3 +47,11 @@ INSERT IGNORE INTO services (name, category, price, duration) VALUES
 ('Botox / Botox Facial', 'Face Fixes', 14.00, 30),
 ('Sculptra', 'Face Fixes', 950.00, 45),
 ('Lip Filler', 'Face Fixes', 650.00, 60);
+
+CREATE TABLE IF NOT EXISTS clients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    phone VARCHAR(50),
+    email VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
