@@ -1576,7 +1576,7 @@
                 </div>
             </div>
             <div style="padding:12px 20px; border-top:1px solid var(--grey); display:flex; justify-content:flex-end; gap:8px;">
-                <button style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer;">Save changes</button>
+                <button id="service-staff-save" style="padding:8px 14px; border:none; background:#000; color:#fff; border-radius:4px; cursor:pointer;">Save changes</button>
             </div>
         </div>
 
@@ -1914,10 +1914,24 @@
             serviceProfileOverlay.style.display = 'block';
             serviceProfilePanel.style.right = '0';
             
-            // Re-initialize the toggles when the panel is opened
-            setTimeout(() => {
-                initializeServiceToggles();
-            }, 100);
+            // Fetch current availability from DB
+            fetch(`api/api_staff_availability.php?service=${encodeURIComponent(name)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const staffRows = document.querySelectorAll('#service-panel-staff tbody tr');
+                    staffRows.forEach(row => {
+                        const staffName = row.querySelector('span:not(.toggle-track):not(.toggle-thumb)').textContent.trim();
+                        const checkbox = row.querySelector('input[type="checkbox"]');
+                        const availability = data.find(item => item.staff_name === staffName);
+                        
+                        if (availability) {
+                            checkbox.checked = availability.is_available == 1;
+                        } else {
+                            // Default to unchecked or maintain current state if not in DB
+                        }
+                    });
+                    initializeServiceToggles();
+                });
         }
 
         function closeServiceProfile() {
@@ -2032,6 +2046,36 @@
                 setTimeout(() => {
                     initializeServiceToggles();
                 }, 100);
+            });
+        }
+
+        // Save staff availability changes
+        const saveBtn = document.getElementById('service-staff-save');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                const serviceName = serviceProfileName.textContent.trim();
+                const staffData = [];
+                const staffRows = document.querySelectorAll('#service-panel-staff tbody tr');
+                
+                staffRows.forEach(row => {
+                    const staffName = row.querySelector('span:not(.toggle-track):not(.toggle-thumb)').textContent.trim();
+                    const isAvailable = row.querySelector('input[type="checkbox"]').checked;
+                    staffData.push({ name: staffName, available: isAvailable });
+                });
+
+                fetch('api/api_staff_availability.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ service: serviceName, staff: staffData })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        alert('Changes saved successfully!');
+                    } else {
+                        alert('Error saving changes.');
+                    }
+                });
             });
         }
 

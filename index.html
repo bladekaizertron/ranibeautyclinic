@@ -4673,21 +4673,42 @@
                         <div class="staff-selection">
                             <h4 class="booking-cart__title" style="margin-top:20px; border-bottom: none; padding-bottom: 0;">Select Staff</h4>
                             <div class="staff-list">
-                                <label class="staff-item ${selectedStaff === 'Staff 1' ? 'is-selected' : ''}">
-                                    <input type="radio" name="staff" value="Staff 1" ${selectedStaff === 'Staff 1' ? 'checked' : ''}>
-                                    <div class="staff-avatar">S1</div>
-                                    <span class="staff-name">Staff 1</span>
+                    `;
+
+                    // Filter staff who are available for ALL services in the cart
+                    const availableStaff = [];
+                    const allStaffNames = [...new Set(staffAvailabilityData.map(a => a.staff_name))];
+
+                    allStaffNames.forEach(name => {
+                        const isAvailableForAll = cart.every(service => {
+                            return staffAvailabilityData.some(a => a.staff_name === name && a.service_name === service.name && a.is_available == 1);
+                        });
+                        if (isAvailableForAll) {
+                            availableStaff.push(name);
+                        }
+                    });
+
+                    if (availableStaff.length === 0) {
+                        staffHtml += '<div class="booking-cart__empty">No staff available for the selected combination of services.</div>';
+                    } else {
+                        // Ensure selectedStaff is still valid
+                        if (!availableStaff.includes(selectedStaff)) {
+                            selectedStaff = availableStaff[0];
+                        }
+
+                        availableStaff.forEach(name => {
+                            const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                            staffHtml += `
+                                <label class="staff-item ${selectedStaff === name ? 'is-selected' : ''}">
+                                    <input type="radio" name="staff" value="${name}" ${selectedStaff === name ? 'checked' : ''}>
+                                    <div class="staff-avatar">${initials}</div>
+                                    <span class="staff-name">${name}</span>
                                 </label>
-                                <label class="staff-item ${selectedStaff === 'Staff 2' ? 'is-selected' : ''}">
-                                    <input type="radio" name="staff" value="Staff 2" ${selectedStaff === 'Staff 2' ? 'checked' : ''}>
-                                    <div class="staff-avatar">S2</div>
-                                    <span class="staff-name">Staff 2</span>
-                                </label>
-                                <label class="staff-item ${selectedStaff === 'Staff 3' ? 'is-selected' : ''}">
-                                    <input type="radio" name="staff" value="Staff 3" ${selectedStaff === 'Staff 3' ? 'checked' : ''}>
-                                    <div class="staff-avatar">S3</div>
-                                    <span class="staff-name">Staff 3</span>
-                                </label>
+                            `;
+                        });
+                    }
+
+                    staffHtml += `
                             </div>
                         </div>
                     `;
@@ -4707,7 +4728,8 @@
             }
 
             let currentStep = 1;
-            let selectedStaff = 'Staff 1';
+            let selectedStaff = '';
+            let staffAvailabilityData = [];
 
             function goToStep(step) {
                 const step1 = document.getElementById('bookingStep1');
@@ -4901,7 +4923,18 @@
                 goToStep(1);
                 renderCalendar();
                 renderSchedule();
-                renderBookingCart();
+
+                // Fetch staff availability before rendering the booking cart
+                fetch('CRM/admin/api/api_staff_availability.php')
+                    .then(r => r.json())
+                    .then(data => {
+                        staffAvailabilityData = data;
+                        renderBookingCart();
+                    })
+                    .catch(err => {
+                        console.error('Error fetching staff availability:', err);
+                        renderBookingCart();
+                    });
 
                 // Focus close button for accessibility
                 if (bookingCloseBtn) bookingCloseBtn.focus();
