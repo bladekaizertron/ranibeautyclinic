@@ -13,7 +13,7 @@
 	<title>MedSpa CRM</title>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
         * {
             margin: 0;
@@ -44,6 +44,17 @@
             --light-yellow: #FFF2C6;
             --orange: #FD7238;
             --light-orange: #FFE0D3;
+
+            /* Rani Beauty Clinic Brand Colors */
+            --brand-navy: #0F1D2C;
+            --brand-gold: #F3D6BE;
+            --brand-bg: #FAF8F5;
+            --brand-white: #FFFFFF;
+            --brand-text: #2A2A2A;
+            --brand-soft-shadow: 0 10px 30px rgba(0,0,0,0.06);
+
+            --montserrat: 'Montserrat', sans-serif;
+            --playfair: 'Playfair Display', serif;
         }
 
         html {
@@ -889,6 +900,186 @@
             color: var(--light);
             border-radius: 50%;
         }
+
+        /* PREMIUM SERVICES LIST STYLES */
+        #manage-services {
+            background: var(--brand-bg) !important;
+            padding: 30px !important;
+        }
+
+        .services-header {
+            margin-bottom: 30px;
+        }
+
+        .services-header h3 {
+            font-family: var(--playfair);
+            font-size: 2.2rem;
+            color: var(--brand-navy);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Search Bar */
+        .services-search {
+            position: relative;
+            max-width: 500px;
+            margin-bottom: 25px;
+        }
+
+        .services-search input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 1px solid rgba(15, 29, 44, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            font-family: var(--montserrat);
+            font-size: 1rem;
+            color: var(--brand-navy);
+            transition: all 0.3s ease;
+        }
+
+        .services-search i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brand-navy);
+            opacity: 0.5;
+            font-size: 1.2rem;
+        }
+
+        .services-search input:focus {
+            outline: none;
+            border-color: var(--brand-navy);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Filter Tabs */
+        .services-filters {
+            display: flex;
+            gap: 25px;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.1);
+            margin-bottom: 30px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 10px;
+        }
+
+        .services-filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-pill {
+            font-family: var(--montserrat);
+            font-weight: 500;
+            color: var(--brand-navy);
+            opacity: 0.6;
+            cursor: pointer;
+            padding: 5px 0 15px 0;
+            position: relative;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .filter-pill.active {
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        .filter-pill.active::after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--brand-navy);
+            border-radius: 3px;
+        }
+
+        /* Services List */
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .service-item {
+            background: var(--brand-white);
+            border-radius: 15px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--brand-soft-shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .service-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--brand-gold);
+            background: #fff;
+        }
+
+        .service-main-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .service-title {
+            font-family: var(--montserrat);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--brand-navy);
+            line-height: 1.4;
+        }
+
+        .service-category {
+            font-family: var(--montserrat);
+            font-size: 0.85rem;
+            color: var(--brand-navy);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .service-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .service-price {
+            font-family: var(--montserrat);
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--brand-navy);
+            background: var(--brand-gold);
+            padding: 8px 15px;
+            border-radius: 10px;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .service-actions {
+            color: var(--brand-navy);
+            opacity: 0.3;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover .service-actions {
+            opacity: 0.8;
+            color: var(--brand-navy);
+        }
+
+        .service-item.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1183,111 +1374,780 @@
 
                 <!-- Services subsection -->
                 <div class="order manage-subsection" id="manage-services" style="display: none;">
-                    <div class="head">
+                    <div class="services-header">
                         <h3>Services</h3>
+                        
+                        <div class="services-search">
+                            <i class='bx bx-search'></i>
+                            <input type="text" id="service-search-input" placeholder="Search for a service...">
+                        </div>
+
+                        <div class="services-filters">
+                            <div class="filter-pill active" data-category="all">All</div>
+                            <div class="filter-pill" data-category="Face Fixes">Face Fixes</div>
+                            <div class="filter-pill" data-category="Body Fixes">Body Fixes</div>
+                            <div class="filter-pill" data-category="Skin Fixes">Skin Fixes</div>
+                            <div class="filter-pill" data-category="Laser Hair Removal">Laser Hair</div>
+                            <div class="filter-pill" data-category="Radiofrequency Microneedling">RF Microneedling</div>
+                            <div class="filter-pill" data-category="Hydrafacial">Hydrafacial</div>
+                            <div class="filter-pill" data-category="Chemical Peels">Peels</div>
+                            <div class="filter-pill" data-category="VI Peels">VI Peels</div>
+                            <div class="filter-pill" data-category="Skin Boosters & Wellness">Wellness</div>
+                            <div class="filter-pill" data-category="Add Ons">Add Ons</div>
+                        </div>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Services</th>
-                                <th>$</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><th colspan="2">Face Fixes</th></tr>
-                            <tr data-service="Botox / Botox Facial" data-price="14" data-category="Face Fixes"><td>Botox / Botox Facial</td><td>14</td></tr>
-                            <tr data-service="Sculptra" data-price="950" data-category="Face Fixes"><td>Sculptra</td><td>950</td></tr>
-                            <tr data-service="Lip Filler" data-price="650" data-category="Face Fixes"><td>Lip Filler</td><td>650</td></tr>
-                            <tr data-service="Eye Filler" data-price="750" data-category="Face Fixes"><td>Eye Filler</td><td>750</td></tr>
-                            <tr data-service="Cheek Filler" data-price="850" data-category="Face Fixes"><td>Cheek Filler</td><td>850</td></tr>
-                            <tr data-service="Nose Filler" data-price="795" data-category="Face Fixes"><td>Nose Filler</td><td>795</td></tr>
-                            <tr data-service="Jawline Filler" data-price="795" data-category="Face Fixes"><td>Jawline Filler</td><td>795</td></tr>
-                            <tr data-service="Neck Filler" data-price="795" data-category="Face Fixes"><td>Neck Filler</td><td>795</td></tr>
 
-                            <tr><th colspan="2">Body Fixes</th></tr>
-                            <tr data-service="Radiesse" data-price="950" data-category="Body Fixes"><td>Radiesse</td><td>950</td></tr>
-                            <tr data-service="Sculptra Skinny BBL" data-price="895" data-category="Body Fixes"><td>Sculptra Skinny BBL</td><td>895</td></tr>
-                            <tr data-service="Traptox" data-price="895" data-category="Body Fixes"><td>Traptox</td><td>895</td></tr>
-                            <tr data-service="Cutera Secret" data-price="895" data-category="Body Fixes"><td>Cutera Secret</td><td>895</td></tr>
-                            <tr data-service="Sofwave (Body)" data-price="495" data-category="Body Fixes"><td>Sofwave</td><td>495</td></tr>
+                    <div class="services-list">
+                        <!-- Face Fixes -->
+                        <div class="service-item" data-service="Botox / Botox Facial" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Botox / Botox Facial</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$14</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Sculptra" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Sculptra</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$950</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Lip Filler" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Lip Filler</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$650</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Eye Filler" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Eye Filler</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$750</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Cheek Filler" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Cheek Filler</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$850</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Nose Filler" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Nose Filler</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$795</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Jawline Filler" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Jawline Filler</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$795</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Neck Filler" data-category="Face Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Neck Filler</span>
+                                <span class="service-category">Face Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$795</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">Skin Fixes</th></tr>
-                            <tr data-service="Laser Facials" data-price="495" data-category="Skin Fixes"><td>Laser Facials</td><td>495</td></tr>
-                            <tr data-service="Hydrafacial" data-price="250" data-category="Skin Fixes"><td>Hydrafacial</td><td>250</td></tr>
-                            <tr data-service="VI Peel" data-price="399" data-category="Skin Fixes"><td>VI Peel</td><td>399</td></tr>
-                            <tr data-service="Cosmelan" data-price="995" data-category="Skin Fixes"><td>Cosmelan</td><td>995</td></tr>
-                            <tr data-service="Sofwave (Skin)" data-price="495" data-category="Skin Fixes"><td>Sofwave</td><td>495</td></tr>
+                        <!-- Body Fixes -->
+                        <div class="service-item" data-service="Radiesse" data-category="Body Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Radiesse</span>
+                                <span class="service-category">Body Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$950</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Sculptra Skinny BBL" data-category="Body Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Sculptra Skinny BBL</span>
+                                <span class="service-category">Body Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$895</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Traptox" data-category="Body Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Traptox</span>
+                                <span class="service-category">Body Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$895</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Cutera Secret" data-category="Body Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Cutera Secret</span>
+                                <span class="service-category">Body Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$895</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Sofwave (Body)" data-category="Body Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Sofwave</span>
+                                <span class="service-category">Body Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$495</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">Laser Hair Removal</th></tr>
-                            <tr data-service="Laser Acne Facial" data-price="495" data-category="Laser Hair Removal"><td>Laser Acne Facial</td><td>495</td></tr>
-                            <tr data-service="Laser Roscea Facial" data-price="495" data-category="Laser Hair Removal"><td>Laser Roscea Facial</td><td>495</td></tr>
-                            <tr data-service="Laser Resurfacing Facial" data-price="795" data-category="Laser Hair Removal"><td>Laser Resurfacing Facial</td><td>795</td></tr>
-                            <tr data-service="Upper Lip Laser Hair Removal" data-price="29" data-category="Laser Hair Removal"><td>Upper Lip Laser Hair Removal</td><td>29</td></tr>
-                            <tr data-service="Eyebrows" data-price="99" data-category="Laser Hair Removal"><td>Eyebrows</td><td>99</td></tr>
-                            <tr data-service="Sideburns" data-price="99" data-category="Laser Hair Removal"><td>Sideburns</td><td>99</td></tr>
-                            <tr data-service="Full Back" data-price="400" data-category="Laser Hair Removal"><td>Full Back</td><td>400</td></tr>
-                            <tr data-service="Pantyline" data-price="150" data-category="Laser Hair Removal"><td>Pantyline</td><td>150</td></tr>
-                            <tr data-service="Neck" data-price="299" data-category="Laser Hair Removal"><td>Neck</td><td>299</td></tr>
-                            <tr data-service="Full Face Laser Hair Removal" data-price="299" data-category="Laser Hair Removal"><td>Full Face Laser Hair Removal</td><td>299</td></tr>
-                            <tr data-service="Hands and fingers" data-price="99" data-category="Laser Hair Removal"><td>Hands and fingers</td><td>99</td></tr>
-                            <tr data-service="Full Chest" data-price="250" data-category="Laser Hair Removal"><td>Full Chest</td><td>250</td></tr>
-                            <tr data-service="Happy Trail" data-price="99" data-category="Laser Hair Removal"><td>Happy Trail</td><td>99</td></tr>
-                            <tr data-service="Areolas" data-price="99" data-category="Laser Hair Removal"><td>Areolas</td><td>99</td></tr>
-                            <tr data-service="Forehead" data-price="99" data-category="Laser Hair Removal"><td>Forehead</td><td>99</td></tr>
-                            <tr data-service="Jawline" data-price="99" data-category="Laser Hair Removal"><td>Jawline</td><td>99</td></tr>
-                            <tr data-service="Underarms" data-price="175" data-category="Laser Hair Removal"><td>Underarms</td><td>175</td></tr>
-                            <tr data-service="Limited Time $99 Upper Lip" data-price="99" data-category="Laser Hair Removal"><td>Limited Time $99 Upper Lip</td><td>99</td></tr>
-                            <tr data-service="Feet &amp; Toes" data-price="99" data-category="Laser Hair Removal"><td>Feet &amp; Toes</td><td>99</td></tr>
-                            <tr data-service="Full Brazilian" data-price="250" data-category="Laser Hair Removal"><td>Full Brazilian</td><td>250</td></tr>
-                            <tr data-service="Ears" data-price="99" data-category="Laser Hair Removal"><td>Ears</td><td>99</td></tr>
-                            <tr data-service="Full Body Laser Hair Removal" data-price="1299" data-category="Laser Hair Removal"><td>Full Body Laser Hair Removal</td><td>1299</td></tr>
-                            <tr data-service="Pony Tail Laser" data-price="125" data-category="Laser Hair Removal"><td>Pony Tail Laser</td><td>125</td></tr>
-                            <tr data-service="Full Abs" data-price="300" data-category="Laser Hair Removal"><td>Full Abs</td><td>300</td></tr>
-                            <tr data-service="Full Legs" data-price="450" data-category="Laser Hair Removal"><td>Full Legs</td><td>450</td></tr>
-                            <tr data-service="Cheeks" data-price="99" data-category="Laser Hair Removal"><td>Cheeks</td><td>99</td></tr>
-                            <tr data-service="Chin" data-price="99" data-category="Laser Hair Removal"><td>Chin</td><td>99</td></tr>
-                            <tr data-service="Buttocks" data-price="299" data-category="Laser Hair Removal"><td>Buttocks</td><td>299</td></tr>
+                        <!-- Skin Fixes -->
+                        <div class="service-item" data-service="Laser Facials" data-category="Skin Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Laser Facials</span>
+                                <span class="service-category">Skin Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$495</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Hydrafacial" data-category="Skin Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Hydrafacial</span>
+                                <span class="service-category">Skin Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$250</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="VI Peel" data-category="Skin Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">VI Peel</span>
+                                <span class="service-category">Skin Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$399</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Cosmelan" data-category="Skin Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Cosmelan</span>
+                                <span class="service-category">Skin Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$995</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Sofwave (Skin)" data-category="Skin Fixes">
+                            <div class="service-main-info">
+                                <span class="service-title">Sofwave</span>
+                                <span class="service-category">Skin Fixes</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$495</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">Radiofrequency Microneedling</th></tr>
-                            <tr data-service="Full Face RF Microneedling" data-price="495" data-category="Radiofrequency Microneedling"><td>Full Face</td><td>495</td></tr>
-                            <tr data-service="Neck RF Microneedling" data-price="495" data-category="Radiofrequency Microneedling"><td>Neck</td><td>495</td></tr>
-                            <tr data-service="Arms RF Microneedling" data-price="595" data-category="Radiofrequency Microneedling"><td>Arms</td><td>595</td></tr>
-                            <tr data-service="Abdomen RF Microneedling" data-price="1100" data-category="Radiofrequency Microneedling"><td>Abdomen</td><td>1100</td></tr>
-                            <tr data-service="Bra Far Sculp" data-price="695" data-category="Radiofrequency Microneedling"><td>Bra Far Sculp</td><td>695</td></tr>
-                            <tr data-service="Legs RF Microneedling" data-price="1500" data-category="Radiofrequency Microneedling"><td>Legs</td><td>1500</td></tr>
+                        <!-- Laser Hair Removal -->
+                        <div class="service-item" data-service="Laser Acne Facial" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Laser Acne Facial</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$495</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Laser Roscea Facial" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Laser Roscea Facial</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$495</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Laser Resurfacing Facial" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Laser Resurfacing Facial</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$795</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Upper Lip Laser Hair Removal" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Upper Lip Laser Hair Removal</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$29</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Eyebrows" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Eyebrows</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Sideburns" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Sideburns</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Full Back" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Back</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$400</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Pantyline" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Pantyline</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$150</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Neck" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Neck</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$299</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Full Face Laser Hair Removal" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Face Laser Hair Removal</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$299</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Hands and fingers" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Hands and fingers</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Full Chest" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Chest</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$250</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Happy Trail" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Happy Trail</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Areolas" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Areolas</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Forehead" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Forehead</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Jawline" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Jawline</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Underarms" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Underarms</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$175</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Limited Time $99 Upper Lip" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Limited Time $99 Upper Lip</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Feet & Toes" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Feet & Toes</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Full Brazilian" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Brazilian</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$250</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Ears" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Ears</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Full Body Laser Hair Removal" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Body Laser Hair Removal</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$1299</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Pony Tail Laser" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Pony Tail Laser</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$125</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Full Abs" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Abs</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$300</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Full Legs" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Legs</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$450</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Cheeks" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Cheeks</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Chin" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Chin</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$99</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Buttocks" data-category="Laser Hair Removal">
+                            <div class="service-main-info">
+                                <span class="service-title">Buttocks</span>
+                                <span class="service-category">Laser Hair Removal</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$299</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">Hydrafacial</th></tr>
-                            <tr data-service="Signature Hydrafacial" data-price="250" data-category="Hydrafacial"><td>Signature Hydrafacial</td><td>250</td></tr>
-                            <tr data-service="Dior Hydrafacial" data-price="399" data-category="Hydrafacial"><td>Dior Hydrafacial</td><td>399</td></tr>
-                            <tr data-service="Keravive Hydrafacial (Hair)" data-price="450" data-category="Hydrafacial"><td>Keravive Hydrafacial (Hair)</td><td>450</td></tr>
-                            <tr data-service="Underarm Hydrafacial" data-price="199" data-category="Hydrafacial"><td>Underarm Hydrafacial</td><td>199</td></tr>
-                            <tr data-service="Back Hydrafacial" data-price="375" data-category="Hydrafacial"><td>Back Hydrafacial</td><td>375</td></tr>
+                        <!-- Radiofrequency Microneedling -->
+                        <div class="service-item" data-service="Full Face" data-category="Radiofrequency Microneedling">
+                            <div class="service-main-info">
+                                <span class="service-title">Full Face</span>
+                                <span class="service-category">Radiofrequency Microneedling</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$495</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Neck" data-category="Radiofrequency Microneedling">
+                            <div class="service-main-info">
+                                <span class="service-title">Neck</span>
+                                <span class="service-category">Radiofrequency Microneedling</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$495</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Arms" data-category="Radiofrequency Microneedling">
+                            <div class="service-main-info">
+                                <span class="service-title">Arms</span>
+                                <span class="service-category">Radiofrequency Microneedling</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$595</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Abdomen" data-category="Radiofrequency Microneedling">
+                            <div class="service-main-info">
+                                <span class="service-title">Abdomen</span>
+                                <span class="service-category">Radiofrequency Microneedling</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$1100</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Bra Far Sculp" data-category="Radiofrequency Microneedling">
+                            <div class="service-main-info">
+                                <span class="service-title">Bra Far Sculp</span>
+                                <span class="service-category">Radiofrequency Microneedling</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$695</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Legs" data-category="Radiofrequency Microneedling">
+                            <div class="service-main-info">
+                                <span class="service-title">Legs</span>
+                                <span class="service-category">Radiofrequency Microneedling</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$1500</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">Chemical Peels</th></tr>
-                            <tr data-service="BioRepeel" data-price="295" data-category="Chemical Peels"><td>BioRepeel</td><td>295</td></tr>
-                            <tr data-service="Face &amp; Neck Peel" data-price="225" data-category="Chemical Peels"><td>Face &amp; Neck</td><td>225</td></tr>
-                            <tr data-service="Back Peel" data-price="275" data-category="Chemical Peels"><td>Back</td><td>275</td></tr>
-                            <tr data-service="Underarms Peel" data-price="175" data-category="Chemical Peels"><td>Underarms</td><td>175</td></tr>
-                            <tr data-service="Intimate Area Peel" data-price="195" data-category="Chemical Peels"><td>Intimate Area</td><td>195</td></tr>
+                        <!-- Hydrafacial -->
+                        <div class="service-item" data-service="Signature Hydrafacial" data-category="Hydrafacial">
+                            <div class="service-main-info">
+                                <span class="service-title">Signature Hydrafacial</span>
+                                <span class="service-category">Hydrafacial</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$250</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Dior Hydrafacial" data-category="Hydrafacial">
+                            <div class="service-main-info">
+                                <span class="service-title">Dior Hydrafacial</span>
+                                <span class="service-category">Hydrafacial</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$399</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Keravive Hydrafacial (Hair)" data-category="Hydrafacial">
+                            <div class="service-main-info">
+                                <span class="service-title">Keravive Hydrafacial (Hair)</span>
+                                <span class="service-category">Hydrafacial</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$450</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Underarm Hydrafacial" data-category="Hydrafacial">
+                            <div class="service-main-info">
+                                <span class="service-title">Underarm Hydrafacial</span>
+                                <span class="service-category">Hydrafacial</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$199</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Back Hydrafacial" data-category="Hydrafacial">
+                            <div class="service-main-info">
+                                <span class="service-title">Back Hydrafacial</span>
+                                <span class="service-category">Hydrafacial</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$375</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">VI Peels</th></tr>
-                            <tr data-service="Acne VI Peel" data-price="350" data-category="VI Peels"><td>Acne VI Peel</td><td>350</td></tr>
-                            <tr data-service="Acne Scarring VI Peel" data-price="350" data-category="VI Peels"><td>Acne Scarring VI Peel</td><td>350</td></tr>
-                            <tr data-service="Rosacea Peel" data-price="350" data-category="VI Peels"><td>Rosacea Peel</td><td>350</td></tr>
-                            <tr data-service="Sensitive Skin Peel" data-price="350" data-category="VI Peels"><td>Sensitive Skin Peel</td><td>350</td></tr>
-                            <tr data-service="VI Hyperpigmentation Peel" data-price="350" data-category="VI Peels"><td>VI Hyperpigmentation Peel</td><td>350</td></tr>
+                        <!-- Chemical Peels -->
+                        <div class="service-item" data-service="BioRepeel" data-category="Chemical Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">BioRepeel</span>
+                                <span class="service-category">Chemical Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$295</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Face & Neck" data-category="Chemical Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Face & Neck</span>
+                                <span class="service-category">Chemical Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$225</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Back" data-category="Chemical Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Back</span>
+                                <span class="service-category">Chemical Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$275</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Underarms" data-category="Chemical Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Underarms</span>
+                                <span class="service-category">Chemical Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$175</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Intimate Area" data-category="Chemical Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Intimate Area</span>
+                                <span class="service-category">Chemical Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$195</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">Skin Boosters &amp; Wellness</th></tr>
-                            <tr data-service="Salmon DNA" data-price="450" data-category="Skin Boosters &amp; Wellness"><td>Salmon DNA</td><td>450</td></tr>
-                            <tr data-service="Exosomes" data-price="595" data-category="Skin Boosters &amp; Wellness"><td>Exosomes</td><td>595</td></tr>
+                        <!-- VI Peels -->
+                        <div class="service-item" data-service="Acne VI Peel" data-category="VI Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Acne VI Peel</span>
+                                <span class="service-category">VI Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$350</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Acne Scarring VI Peel" data-category="VI Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Acne Scarring VI Peel</span>
+                                <span class="service-category">VI Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$350</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Rosacea Peel" data-category="VI Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Rosacea Peel</span>
+                                <span class="service-category">VI Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$350</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Sensitive Skin Peel" data-category="VI Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">Sensitive Skin Peel</span>
+                                <span class="service-category">VI Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$350</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="VI Hyperpigmentation Peel" data-category="VI Peels">
+                            <div class="service-main-info">
+                                <span class="service-title">VI Hyperpigmentation Peel</span>
+                                <span class="service-category">VI Peels</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$350</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
 
-                            <tr><th colspan="2">Add Ons</th></tr>
-                            <tr data-service="Hydrafacial Skin Booster" data-price="75" data-category="Add Ons"><td>Hydrafacial Skin Booster</td><td>75</td></tr>
-                            <tr data-service="Dermaplanning" data-price="70" data-category="Add Ons"><td>Dermaplanning</td><td>70</td></tr>
-                            <tr data-service="Red Light Therapy" data-price="50" data-category="Add Ons"><td>Red Light Therapy</td><td>50</td></tr>
-                            <tr data-service="Blue Light Therapy" data-price="50" data-category="Add Ons"><td>Blue Light Therapy</td><td>50</td></tr>
-                        </tbody>
-                    </table>
+                        <!-- Skin Boosters and Wellness -->
+                        <div class="service-item" data-service="Salmon DNA" data-category="Skin Boosters & Wellness">
+                            <div class="service-main-info">
+                                <span class="service-title">Salmon DNA</span>
+                                <span class="service-category">Skin Boosters & Wellness</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$450</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Exosomes" data-category="Skin Boosters & Wellness">
+                            <div class="service-main-info">
+                                <span class="service-title">Exosomes</span>
+                                <span class="service-category">Skin Boosters & Wellness</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$595</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+
+                        <!-- Add Ons -->
+                        <div class="service-item" data-service="Hydrafacial Skin Booster" data-category="Add Ons">
+                            <div class="service-main-info">
+                                <span class="service-title">Hydrafacial Skin Booster</span>
+                                <span class="service-category">Add Ons</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$75</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Dermaplanning" data-category="Add Ons">
+                            <div class="service-main-info">
+                                <span class="service-title">Dermaplanning</span>
+                                <span class="service-category">Add Ons</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$70</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Red Light Therapy" data-category="Add Ons">
+                            <div class="service-main-info">
+                                <span class="service-title">Red Light Therapy</span>
+                                <span class="service-category">Add Ons</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$50</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                        <div class="service-item" data-service="Blue Light Therapy" data-category="Add Ons">
+                            <div class="service-main-info">
+                                <span class="service-title">Blue Light Therapy</span>
+                                <span class="service-category">Add Ons</span>
+                            </div>
+                            <div class="service-right">
+                                <span class="service-price">$50</span>
+                                <i class='bx bx-edit-alt service-actions'></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Staff subsection -->
@@ -1765,7 +2625,9 @@
         const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top > li > a');
         const manageSubmenu = document.getElementById('manage-submenu');
         const manageSubLinks = document.querySelectorAll('#manage-submenu a[data-subsection]');
-        const serviceRows = document.querySelectorAll('#manage-services table tbody tr[data-service]');
+        let serviceRows = document.querySelectorAll('.service-item');
+        const serviceSearchInput = document.getElementById('service-search-input');
+        const filterPills = document.querySelectorAll('.filter-pill');
 
         allSideMenu.forEach(item => {
             const li = item.parentElement;
@@ -1981,13 +2843,51 @@
             staffProfileOverlay.addEventListener('click', closeStaffProfile);
         }
 
-        // Service rows click handlers
-        serviceRows.forEach(row => {
-            row.style.cursor = 'pointer';
-            row.addEventListener('click', function () {
-                openServiceProfile(row);
+        // Service items click handlers
+        function initializeServiceItemHandlers() {
+            serviceRows = document.querySelectorAll('.service-item');
+            serviceRows.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    // Avoid triggering when clicking on the edit icon specifically if we want separate logic, 
+                    // but for now both can open the profile.
+                    openServiceProfile(item);
+                });
+            });
+        }
+
+        initializeServiceItemHandlers();
+
+        // Search and Filter Logic
+        if (serviceSearchInput) {
+            serviceSearchInput.addEventListener('input', filterServices);
+        }
+
+        filterPills.forEach(pill => {
+            pill.addEventListener('click', function() {
+                filterPills.forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                filterServices();
             });
         });
+
+        function filterServices() {
+            const searchTerm = serviceSearchInput ? serviceSearchInput.value.toLowerCase() : '';
+            const activeCategory = document.querySelector('.filter-pill.active').getAttribute('data-category');
+
+            serviceRows.forEach(item => {
+                const serviceName = item.getAttribute('data-service').toLowerCase();
+                const serviceCategory = item.getAttribute('data-category');
+                
+                const matchesSearch = serviceName.includes(searchTerm);
+                const matchesCategory = activeCategory === 'all' || serviceCategory === activeCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
 
         if (serviceProfileClose) {
             serviceProfileClose.addEventListener('click', closeServiceProfile);
