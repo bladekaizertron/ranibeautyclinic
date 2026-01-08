@@ -1976,6 +1976,65 @@
             font-size: 14px;
             opacity: 0.8;
         }
+        /* Edit Shift Modal Styles */
+        #edit-shift-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2100;
+        }
+        #edit-shift-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            width: 500px;
+            max-width: 90%;
+            border-radius: 12px;
+            z-index: 2200;
+            padding: 30px;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .es-header { text-align: center; margin-bottom: 25px; position: relative; }
+        .es-staff-name { font-size: 16px; font-weight: 600; color: #666; margin-bottom: 8px; }
+        .es-title { font-size: 22px; font-weight: 700; color: #333; margin-bottom: 10px; }
+        .es-subtitle { font-size: 13px; color: #999; }
+        .es-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #ccc; }
+        .es-close:hover { color: #333; }
+        
+        .es-body { margin-bottom: 30px; }
+        .es-time-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; font-size: 16px; color: #333; }
+        .es-time-input { 
+            border: none; 
+            border-bottom: 1px solid #ddd; 
+            padding: 5px; 
+            font-size: 16px; 
+            width: 100px; 
+            text-align: center;
+            outline: none;
+        }
+        .es-time-input:focus { border-bottom-color: #2D6FAA; }
+        
+        .es-unavailable-row { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; color: #444; margin-bottom: 30px; }
+        .es-checkbox { width: 18px; height: 18px; cursor: pointer; }
+        
+        .es-advanced-info { text-align: center; color: #666; font-size: 13px; line-height: 1.5; margin-bottom: 25px; border-top: 1px solid #eee; padding-top: 20px; }
+        
+        .es-footer { display: flex; justify-content: space-between; gap: 10px; }
+        .btn-es { padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; flex: 1; text-align: center; border: none; }
+        .btn-es-cancel { background: #f4f4f4; color: #666; }
+        .btn-es-remove { background: #ff5e5e; color: #fff; }
+        .btn-es-save { background: #7ab53e; color: #fff; }
+        .btn-es:hover { opacity: 0.9; }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -4639,6 +4698,9 @@
                             tableBody.appendChild(row);
                         });
                     }
+                }).catch(err => {
+                    console.error("Schedule Error:", err);
+                    // alert("Error loading calendar: " + err.message);
                 });
             }
 
@@ -4738,6 +4800,12 @@
                     return;
                 }
 
+                const submitBtn = document.querySelector('.btn-pa-submit');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerText = "Publishing...";
+                }
+
                 fetch('api/api_schedules.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -4750,6 +4818,12 @@
                         updateScheduleGrid();
                     } else {
                         alert("Error: " + (result.message || "Unknown error"));
+                    }
+                })
+                .finally(() => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = "Publish availability";
                     }
                 });
             };
@@ -4772,6 +4846,102 @@
                 scheduleStartDate.setDate(scheduleStartDate.getDate() + 7);
                 updateScheduleGrid();
             });
+
+            window.editShiftPrompt = function(sched) {
+                const overlay = document.getElementById('edit-shift-overlay');
+                const modal = document.getElementById('edit-shift-modal');
+                const staffName = document.getElementById('es-staff-name');
+                const title = document.getElementById('es-title');
+                const startTimeInput = document.getElementById('es-start-time');
+                const endTimeInput = document.getElementById('es-end-time');
+                const shiftIdInput = document.getElementById('es-shift-id');
+
+                if (!overlay || !modal) return;
+
+                staffName.innerText = sched.staff_name || 'Staff Member';
+                const d = new Date(sched.work_date + 'T00:00:00');
+                const dateStr = d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+                title.innerText = `Edit Shift on ${dateStr}`;
+                
+                startTimeInput.value = sched.start_time.substring(0, 5);
+                endTimeInput.value = sched.end_time.substring(0, 5);
+                shiftIdInput.value = sched.id;
+
+                overlay.style.display = 'block';
+                modal.style.display = 'flex';
+            };
+
+            window.closeEditShiftModal = function() {
+                document.getElementById('edit-shift-overlay').style.display = 'none';
+                document.getElementById('edit-shift-modal').style.display = 'none';
+            };
+
+            window.saveEditedShift = function() {
+                const id = document.getElementById('es-shift-id').value;
+                const startTime = document.getElementById('es-start-time').value;
+                const endTime = document.getElementById('es-end-time').value;
+                const saveBtn = document.querySelector('.btn-es-save');
+
+                if (saveBtn) {
+                   saveBtn.disabled = true;
+                   saveBtn.innerText = "Saving...";
+                }
+
+                fetch('api/api_schedules.php', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: id,
+                        start_time: startTime,
+                        end_time: endTime
+                    })
+                })
+                .then(r => r.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        closeEditShiftModal();
+                        updateScheduleGrid();
+                    } else {
+                        alert("Error: " + (result.message || "Unknown error"));
+                    }
+                })
+                .finally(() => {
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.innerText = "Save";
+                    }
+                });
+            };
+
+            window.removeShift = function() {
+                const id = document.getElementById('es-shift-id').value;
+                if (!confirm('Are you sure you want to remove this shift?')) return;
+
+                const removeBtn = document.querySelector('.btn-es-remove');
+                if (removeBtn) {
+                    removeBtn.disabled = true;
+                    removeBtn.innerText = "Removing...";
+                }
+
+                fetch(`api/api_schedules.php?id=${id}`, {
+                    method: 'DELETE'
+                })
+                .then(r => r.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        closeEditShiftModal();
+                        updateScheduleGrid();
+                    } else {
+                        alert("Error: " + (result.message || "Unknown error"));
+                    }
+                })
+                .finally(() => {
+                    if (removeBtn) {
+                        removeBtn.disabled = false;
+                        removeBtn.innerText = "Remove";
+                    }
+                });
+            };
 
             // Initial Load
             if (document.getElementById('manage-schedule')) {
@@ -4896,6 +5066,35 @@
             <button class="btn-pa-submit" onclick="submitPublishAvailability()">Publish availability</button>
         </div>
     </div>
+    <!-- Edit Shift Modal -->
+    <div id="edit-shift-overlay"></div>
+    <div id="edit-shift-modal">
+        <span class="es-close" onclick="closeEditShiftModal()">&times;</span>
+        <div class="es-header">
+            <div id="es-staff-name" class="es-staff-name">Staff Name</div>
+            <h2 id="es-title" class="es-title">Edit Shift on Sunday Jan 4, 2026</h2>
+            <div class="es-subtitle">Recurring weekly...</div>
+        </div>
+        <div class="es-body">
+            <div class="es-time-row">
+                From <input type="time" id="es-start-time" class="es-time-input">
+                to <input type="time" id="es-end-time" class="es-time-input">
+            </div>
+            <div class="es-unavailable-row">
+                <input type="checkbox" id="es-unavailable" class="es-checkbox">
+                <label for="es-unavailable">Set as unavailable</label>
+            </div>
+            <div class="es-advanced-info">
+                For more advanced shift options,<br>
+                click the + icon next to their name to Publish Availability.
+            </div>
+        </div>
+        <input type="hidden" id="es-shift-id">
+        <div class="es-footer">
+            <button class="btn-es btn-es-cancel" onclick="closeEditShiftModal()">Cancel</button>
+            <button class="btn-es btn-es-remove" onclick="removeShift()">Remove</button>
+            <button class="btn-es btn-es-save" onclick="saveEditedShift()">Save</button>
+        </div>
+    </div>
 </body>
 </html>
-```
