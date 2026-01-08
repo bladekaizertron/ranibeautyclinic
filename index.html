@@ -4792,8 +4792,20 @@
                         alert('Please select a date and time first.');
                         return;
                     }
+                    if (!selectedStaff) {
+                        alert('Please select a staff member.');
+                        return;
+                    }
                     goToStep(2);
                 });
+            }
+
+            function toYMD(date) {
+                if (!date) return '';
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
             }
 
             const btnBack = document.getElementById('btnBackToStep1');
@@ -4815,30 +4827,92 @@
                         return;
                     }
 
-                    // Save client to database
-                    fetch('CRM/admin/api/api_save_client.php', {
+                    const staff = staffData.find(s => s.name === selectedStaff);
+                    const staffId = staff ? staff.id : 0;
+                    const dateStr = toYMD(selectedDate);
+                    const serviceNames = cart.map(i => i.name).join(', ');
+                    const totalPrice = cart.reduce((sum, i) => sum + Number(i.price || 0), 0);
+
+                    // Prevent double submission
+                    btnSubmit.disabled = true;
+                    btnSubmit.textContent = 'Booking...';
+
+                    // Save appointment to database
+                    fetch('CRM/admin/api/api_book_appointment.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ name, phone, email })
+                        body: JSON.stringify({
+                            name,
+                            phone,
+                            email,
+                            staff_id: staffId,
+                            date: dateStr,
+                            time: selectedTime,
+                            services: serviceNames,
+                            total_price: totalPrice
+                        })
                     })
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {
-                                alert(`Booking Submitted!\n\nName: ${name}\nStaff: ${selectedStaff}\nDate: ${selectedDate.toDateString()}\nTime: ${selectedTime}`);
-                                closeBookingModal();
+                                // Show success state in modal
+                                const step2 = document.getElementById('bookingStep2');
+                                const kicker = document.getElementById('bookingKicker');
+                                const title = document.getElementById('bookingMainTitle');
+                                const sidebar = document.querySelector('.booking-sidebar');
+
+                                if (step2 && kicker && title && sidebar) {
+                                    kicker.textContent = 'Success!';
+                                    title.textContent = 'Booking Submitted Successfully';
+                                    step2.innerHTML = `
+                                        <div style="text-align: center; padding: 30px 20px;">
+                                            <div style="font-size: 56px; margin-bottom: 20px;">✅</div>
+                                            <h3 style="font-size: 20px; color: var(--text-dark); margin-bottom: 16px;">See you soon, ${name}!</h3>
+                                            
+                                            <div style="background: #f8f9fa; border-radius: 12px; padding: 20px; text-align: left; margin-bottom: 24px; border: 1px solid #eee;">
+                                                <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                                                    <span style="color: #666;">Services:</span>
+                                                    <span style="font-weight: 600;">${serviceNames}</span>
+                                                </div>
+                                                <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                                                    <span style="color: #666;">Staff:</span>
+                                                    <span style="font-weight: 600;">${selectedStaff}</span>
+                                                </div>
+                                                <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                                                    <span style="color: #666;">Date:</span>
+                                                    <span style="font-weight: 600;">${selectedDate.toDateString()}</span>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between;">
+                                                    <span style="color: #666;">Time:</span>
+                                                    <span style="font-weight: 600;">${selectedTime}</span>
+                                                </div>
+                                            </div>
+
+                                            <p style="font-size: 14px; color: var(--text-gray); margin-bottom: 32px;">
+                                                Your appointment is currently <strong>Unconfirmed</strong>. We will review your request and send a confirmation shortly.
+                                            </p>
+                                        </div>
+                                    `;
+                                    sidebar.style.display = 'none';
+                                }
+
                                 // Clear cart after booking
                                 cart = [];
                                 saveCart();
                                 renderCart();
                             } else {
                                 alert('Failed to save booking details: ' + data.message);
+                                btnSubmit.disabled = false;
+                                btnSubmit.textContent = 'Submit Booking';
                             }
                         })
                         .catch(error => {
-                            console.error('Error saving client:', error);
+                            console.error('Error saving appointment:', error);
                             alert('An error occurred while saving your booking. Please try again.');
+                            btnSubmit.disabled = false;
+                            btnSubmit.textContent = 'Submit Booking';
                         });
                 });
             }

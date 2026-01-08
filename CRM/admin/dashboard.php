@@ -2572,19 +2572,22 @@
 				<li>
 					<i class='bx bxs-calendar' ></i>
 					<span class="text">
-						<h3>Unconfirmed</h3>
+						<h3 id="stat-unconfirmed">0</h3>
+						<p>Unconfirmed</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-calendar-check' ></i>
 					<span class="text">
-						<h3>Confirmed</h3>
+						<h3 id="stat-confirmed">0</h3>
+						<p>Confirmed</p>
 					</span>
 				</li>
 				<li>
 					<i class='bx bxs-user-check' ></i>
 					<span class="text">
-						<h3>Arrived</h3>
+						<h3 id="stat-arrived">0</h3>
+						<p>Arrived</p>
 					</span>
 				</li>
 			</ul>
@@ -4963,7 +4966,25 @@
             // Fetch initial data
             fetchClients();
             fetchStaffs();
+            fetchDashboardStats();
         });
+
+        function fetchDashboardStats() {
+            const unconfirmedElem = document.getElementById('stat-unconfirmed');
+            const confirmedElem = document.getElementById('stat-confirmed');
+            const arrivedElem = document.getElementById('stat-arrived');
+
+            if (!unconfirmedElem || !confirmedElem || !arrivedElem) return;
+
+            fetch('api/api_get_stats.php')
+                .then(response => response.json())
+                .then(data => {
+                    unconfirmedElem.textContent = data.unconfirmed || 0;
+                    confirmedElem.textContent = data.confirmed || 0;
+                    arrivedElem.textContent = data.arrived || 0;
+                })
+                .catch(err => console.error('Error fetching stats:', err));
+        }
 
             function fetchClients() {
                 const tableBody = document.getElementById('clients-table-body');
