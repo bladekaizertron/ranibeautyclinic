@@ -659,10 +659,40 @@
             background: var(--orange);
         }
         #content main .table-data .order table tr td .status.available {
-            background: #4CAF50;
+            background: rgba(155, 93, 229, 0.1);
+            color: #9b5de5;
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            width: fit-content;
+        }
+        #content main .table-data .order table tr td .status.available::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #9b5de5;
+            border-radius: 50%;
+            margin-right: 8px;
         }
         #content main .table-data .order table tr td .status.unavailable {
-            background: #F44336;
+            background: #f5f5f5;
+            color: #888;
+            border: 1px solid #e5e5e5;
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            width: fit-content;
+        }
+        #content main .table-data .order table tr td .status.unavailable::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #aaa;
+            border-radius: 50%;
+            margin-right: 8px;
         }
         .calendar-widget {
             cursor: pointer;
