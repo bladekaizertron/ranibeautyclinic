@@ -5663,13 +5663,7 @@
         </div>
         <div class="cp-tabs">
             <div class="cp-tab active" data-tab="overview">Overview</div>
-            <div class="cp-tab" data-tab="accommodations">Accommodations</div>
-            <div class="cp-tab" data-tab="messages">Messages</div>
             <div class="cp-tab" data-tab="history">History</div>
-            <div class="cp-tab" data-tab="wallet">Wallet</div>
-            <div class="cp-tab" data-tab="memberships">Memberships</div>
-            <div class="cp-tab" data-tab="packages">Packages</div>
-            <div class="cp-tab" data-tab="products">Products</div>
             <div class="cp-tab" data-tab="forms">Forms and Charts</div>
             <div class="cp-tab" data-tab="gallery">Gallery</div>
             <div class="cp-tab" data-tab="files">Files</div>
