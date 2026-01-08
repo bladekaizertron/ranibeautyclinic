@@ -2073,7 +2073,350 @@
         .btn-es-save { background: #7ab53e; color: #fff; }
         .btn-es:hover { opacity: 0.9; }
 
-        .hidden { display: none !important; }
+        /* Client Profile Modal Styles */
+        #client-profile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2500;
+            display: none;
+        }
+
+        #client-profile-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 2600;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cp-header {
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cp-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cp-client-name {
+            font-size: 24px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .cp-location {
+            font-size: 14px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cp-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cp-action-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background: #fff;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .cp-action-btn:hover {
+            background: #f9f9f9;
+        }
+
+        .cp-tabs {
+            display: flex;
+            padding: 0 30px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fff;
+            overflow-x: auto;
+        }
+
+        .cp-tab {
+            padding: 15px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            margin-right: 20px;
+        }
+
+        .cp-tab.active {
+            color: #9b5de5;
+            border-bottom-color: #9b5de5;
+        }
+
+        .cp-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background: #fcfcfc;
+        }
+
+        .cp-left-col {
+            flex: 1;
+            padding: 25px 30px;
+            overflow-y: auto;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .cp-right-col {
+            width: 320px;
+            padding: 25px;
+            background: #fff;
+            overflow-y: auto;
+        }
+
+        .cp-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cp-stat-box {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .cp-stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .cp-stat-value {
+            font-size: 22px;
+            font-weight: 400;
+            color: #333;
+        }
+
+        .cp-section {
+            margin-bottom: 30px;
+        }
+
+        .cp-section-title {
+            font-size: 18px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cp-empty-state {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .cp-link {
+            color: #4a90e2;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .cp-alert-box {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+        }
+
+        .cp-alert-input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            outline: none;
+            color: #666;
+        }
+
+        .cp-save-btn {
+            background: #e0ceff;
+            color: #aa86ff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .cp-notes-container {
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .cp-notes-tabs {
+            display: flex;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 0 10px;
+        }
+
+        .cp-notes-tab {
+            padding: 10px 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #aaa;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .cp-notes-tab.active {
+            color: #9b5de5;
+            border-bottom-color: #9b5de5;
+        }
+
+        .cp-notes-textarea {
+            width: 100%;
+            min-height: 120px;
+            border: none;
+            padding: 15px;
+            font-size: 14px;
+            outline: none;
+            resize: vertical;
+            color: #333;
+        }
+
+        .cp-notes-footer {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #f9f9f9;
+        }
+
+        .cp-contact-title {
+            font-size: 18px;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+
+        .cp-field {
+            margin-bottom: 20px;
+        }
+
+        .cp-field-label {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .cp-field-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 8px 0;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+        }
+
+        .cp-field-input:focus {
+            border-bottom-color: #9b5de5;
+        }
+
+        .cp-checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .cp-checkbox-group input {
+            accent-color: #9b5de5;
+        }
+
+        .cp-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .cp-close-btn:hover {
+            color: #666;
+        }
+
+        .cp-icon-field {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cp-icon-field i {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .cp-view-btn {
+            padding: 6px 14px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            color: #4a90e2;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cp-view-btn:hover {
+            background: #4a90e2;
+            color: #fff;
+            border-color: #4a90e2;
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -2329,19 +2672,20 @@
                 <table class="clients-table">
                     <thead>
                         <tr>
-                            <th style="width: 35%;">Client name</th>
-                            <th style="width: 20%;">Marketing Status</th>
-                            <th style="width: 20%;">Phone number</th>
+                            <th style="width: 25%;">Client name</th>
+                            <th style="width: 15%;">Marketing Status</th>
+                            <th style="width: 15%;">Phone number</th>
                             <th style="width: 25%;">Email</th>
+                            <th style="width: 20%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="clients-table-body">
                         <!-- Blank for now as requested -->
-                        <tr>
-                            <td colspan="4" style="text-align: center; color: var(--dark-grey); padding: 40px 0;">
-                                No clients found in your directory.
-                            </td>
-                        </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: var(--dark-grey); padding: 40px 0;">
+                                            No clients found in your directory.
+                                        </td>
+                                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -4353,6 +4697,81 @@
             staffTabAppointments.addEventListener('click', () => setActiveStaffTab(staffTabAppointments, staffPanelAppointments));
         }
 
+        // Client Profile Modal Logic
+        function getClientProfileElements() {
+            return {
+                overlay: document.getElementById('client-profile-overlay'),
+                modal: document.getElementById('client-profile-modal')
+            };
+        }
+
+        window.openClientProfile = function(client) {
+            const { overlay, modal } = getClientProfileElements();
+            if (!overlay || !modal) {
+                console.error('Client profile modal elements not found');
+                return;
+            }
+            
+            // Populate fields
+            const displayNameElem = document.getElementById('cp-display-name');
+            const firstNameElem = document.getElementById('cp-firstname');
+            const lastNameElem = document.getElementById('cp-lastname');
+            const emailElem = document.getElementById('cp-email');
+            const phoneElem = document.getElementById('cp-phone');
+
+            if (displayNameElem) displayNameElem.textContent = client.name || 'Client';
+            
+            const firstName = client.name ? client.name.split(' ')[0] : '';
+            const lastName = client.name ? client.name.split(' ').slice(1).join(' ') : '';
+            
+            if (firstNameElem) firstNameElem.value = firstName;
+            if (lastNameElem) lastNameElem.value = lastName;
+            if (emailElem) emailElem.value = client.email || '';
+            if (phoneElem) phoneElem.value = client.phone || '';
+            
+            // Reset tabs
+            const tabs = document.querySelectorAll('.cp-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            const overviewTab = document.querySelector('.cp-tab[data-tab="overview"]');
+            if (overviewTab) overviewTab.classList.add('active');
+
+            overlay.style.display = 'block';
+            modal.style.display = 'flex';
+        };
+
+        window.closeClientProfile = function() {
+            const { overlay, modal } = getClientProfileElements();
+            if (overlay) overlay.style.display = 'none';
+            if (modal) modal.style.display = 'none';
+        };
+
+        // Close on overlay click - using event delegation or finding it
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'client-profile-overlay') {
+                closeClientProfile();
+            }
+        });
+
+        // Tab switching logic for client profile
+        document.querySelectorAll('.cp-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.cp-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // For now, just switching the active class. 
+                // In a full implementation, this would switch the content area.
+            });
+        });
+
+        // Notes tab switching
+        document.querySelectorAll('.cp-notes-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.cp-notes-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const area = document.getElementById('cp-notes-area');
+                if (area) area.placeholder = `Type a new ${this.textContent.toLowerCase()}...`;
+            });
+        });
+
         // Calendar Logic
         const calendarDays = document.getElementById('calendar-days');
         const monthPicker = document.getElementById('month-picker');
@@ -4564,7 +4983,7 @@
                             if (data.length === 0) {
                                 tableBody.innerHTML = `
                                     <tr>
-                                        <td colspan="4" style="text-align: center; color: var(--dark-grey); padding: 40px 0;">
+                                        <td colspan="5" style="text-align: center; color: var(--dark-grey); padding: 40px 0;">
                                             No clients found in your directory.
                                         </td>
                                     </tr>`;
@@ -4585,8 +5004,15 @@
                                     <td><span class="status-pill status-marketing">Marketable</span></td>
                                     <td>${client.phone || '-'}</td>
                                     <td>${client.email || '-'}</td>
+                                    <td><button class="cp-view-btn" onclick="openClientProfile(${JSON.stringify(client).replace(/"/g, '&quot;')})">View Profile</button></td>
                                 `;
                                 tableBody.appendChild(row);
+                                
+                                // Add click listener to the row
+                                row.style.cursor = 'pointer';
+                                row.addEventListener('click', () => {
+                                    openClientProfile(client);
+                                });
                             });
                         }
                     })
@@ -5212,6 +5638,143 @@
             <button class="btn-es btn-es-cancel" onclick="closeEditShiftModal()">Cancel</button>
             <button class="btn-es btn-es-remove" onclick="removeShift()">Remove</button>
             <button class="btn-es btn-es-save" onclick="saveEditedShift()">Save</button>
+        </div>
+    </div>
+    <!-- Client Profile Modal -->
+    <div id="client-profile-overlay"></div>
+    <div id="client-profile-modal">
+        <span class="cp-close-btn" onclick="closeClientProfile()">&times;</span>
+        <div class="cp-header">
+            <div class="cp-header-left">
+                <h2 id="cp-display-name" class="cp-client-name">Loading...</h2>
+                <div class="cp-location">
+                    <i class='bx bxs-map'></i>
+                    <span>Renton</span>
+                </div>
+            </div>
+            <div class="cp-header-actions">
+                <button class="cp-action-btn"><i class='bx bx-cart'></i></button>
+                <button class="cp-action-btn"><i class='bx bx-note'></i></button>
+                <button class="cp-action-btn"><i class='bx bx-message-detail'></i></button>
+                <button class="cp-action-btn"><i class='bx bx-envelope'></i></button>
+                <button class="cp-action-btn"><i class='bx bx-calendar'></i></button>
+                <button class="cp-action-btn"><i class='bx bx-dots-vertical-rounded'></i></button>
+            </div>
+        </div>
+        <div class="cp-tabs">
+            <div class="cp-tab active" data-tab="overview">Overview</div>
+            <div class="cp-tab" data-tab="accommodations">Accommodations</div>
+            <div class="cp-tab" data-tab="messages">Messages</div>
+            <div class="cp-tab" data-tab="history">History</div>
+            <div class="cp-tab" data-tab="wallet">Wallet</div>
+            <div class="cp-tab" data-tab="memberships">Memberships</div>
+            <div class="cp-tab" data-tab="packages">Packages</div>
+            <div class="cp-tab" data-tab="products">Products</div>
+            <div class="cp-tab" data-tab="forms">Forms and Charts</div>
+            <div class="cp-tab" data-tab="gallery">Gallery</div>
+            <div class="cp-tab" data-tab="files">Files</div>
+        </div>
+        <div class="cp-body">
+            <div class="cp-left-col">
+                <div class="cp-stats-grid">
+                    <div class="cp-stat-box">
+                        <div class="cp-stat-label">Appointments</div>
+                        <div class="cp-stat-value">2</div>
+                    </div>
+                    <div class="cp-stat-box">
+                        <div class="cp-stat-label">Show Rate</div>
+                        <div class="cp-stat-value">100%</div>
+                    </div>
+                    <div class="cp-stat-box">
+                        <div class="cp-stat-label">Avg. Revisit</div>
+                        <div class="cp-stat-value">0.4 <small style="font-size: 10px; color: #aaa;">Weeks</small></div>
+                    </div>
+                    <div class="cp-stat-box">
+                        <div class="cp-stat-label">Avg. Visit Value</div>
+                        <div class="cp-stat-value">$0.00</div>
+                    </div>
+                </div>
+
+                <div class="cp-section">
+                    <h3 class="cp-section-title">Scheduled Appointments</h3>
+                    <div class="cp-empty-state" id="cp-appointments-list">
+                        Client doesn't have any upcoming appointments. <span class="cp-link">Schedule one now!</span>
+                    </div>
+                </div>
+
+                <div class="cp-section">
+                    <h3 class="cp-section-title">
+                        <span>Scheduling Alert <i class='bx bxs-lock-alt' style="font-size: 14px; color: #ccc;"></i></span>
+                    </h3>
+                    <div class="cp-alert-box">
+                        <input type="text" class="cp-alert-input" placeholder="Set an alert to appear when booking a new appointment for this client...">
+                        <button class="cp-save-btn">Save</button>
+                    </div>
+                </div>
+
+                <div class="cp-section">
+                    <h3 class="cp-section-title">
+                        <span>Client Notes <i class='bx bxs-lock-alt' style="font-size: 14px; color: #ccc;"></i></span>
+                    </h3>
+                    <div class="cp-notes-container">
+                        <div class="cp-notes-tabs">
+                            <div class="cp-notes-tab active">Note</div>
+                            <div class="cp-notes-tab">Medication</div>
+                            <div class="cp-notes-tab">Allergies</div>
+                        </div>
+                        <textarea class="cp-notes-textarea" id="cp-notes-area" placeholder="Type a new note..."></textarea>
+                        <div class="cp-notes-footer">
+                            <i class='bx bx-paperclip' style="color: #888; cursor: pointer;"></i>
+                            <button class="cp-save-btn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cp-right-col">
+                <h3 class="cp-contact-title">Contact Info</h3>
+                <div class="cp-field">
+                    <div class="cp-field-label">First Name *</div>
+                    <div class="cp-icon-field">
+                        <i class='bx bxs-user'></i>
+                        <input type="text" id="cp-firstname" class="cp-field-input" value="">
+                    </div>
+                </div>
+                <div class="cp-field" style="padding-left: 35px;">
+                    <div class="cp-field-label">Last Name *</div>
+                    <input type="text" id="cp-lastname" class="cp-field-input" value="">
+                </div>
+                <div class="cp-field" style="padding-left: 35px;">
+                    <div class="cp-field-label">Pronouns</div>
+                    <select class="cp-field-input" style="background: transparent;">
+                        <option>Not Specified</option>
+                        <option>He/Him</option>
+                        <option>She/Her</option>
+                        <option>They/Them</option>
+                    </select>
+                </div>
+                <div class="cp-field">
+                    <div class="cp-field-label">Email</div>
+                    <div class="cp-icon-field">
+                        <i class='bx bxs-envelope'></i>
+                        <input type="email" id="cp-email" class="cp-field-input" value="">
+                    </div>
+                    <div class="cp-checkbox-group" style="padding-left: 35px;">
+                        <input type="checkbox" id="cp-email-notif" checked>
+                        <label for="cp-email-notif">Email notifications</label>
+                    </div>
+                </div>
+                <div class="cp-field">
+                    <div class="cp-field-label">Mobile</div>
+                    <div class="cp-icon-field">
+                        <i class='bx bxs-phone-rounded'></i>
+                        <input type="text" id="cp-phone" class="cp-field-input" value="">
+                    </div>
+                    <div class="cp-checkbox-group" style="padding-left: 35px;">
+                        <input type="checkbox" id="cp-text-notif" checked>
+                        <label for="cp-text-notif">Text notifications</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
