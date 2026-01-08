@@ -942,6 +942,287 @@
             border-radius: 50%;
         }
 
+        /* Unconfirmed Modal Styles */
+        #unconfirmed-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2800;
+            display: none;
+        }
+
+        #unconfirmed-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 2900;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .um-header {
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .um-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .um-close-btn {
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .um-body {
+            padding: 10px 0;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .um-item {
+            padding: 15px 30px;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .um-item:hover {
+            background: #fcfcfc;
+        }
+
+        .um-item:last-child {
+            border-bottom: none;
+        }
+
+        .um-client-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .um-client-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 15px;
+        }
+
+        .um-details {
+            color: var(--dark-grey);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+        
+        #unconfirmed-card {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        #unconfirmed-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Appointment Info Modal Styles */
+        #appointment-info-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 3000;
+            display: none;
+        }
+
+        #appointment-info-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            z-index: 3100;
+            display: none;
+            flex-direction: column;
+            padding: 24px;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .ai-client-name {
+            font-size: 24px;
+            font-weight: 500;
+            color: #0088cc;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .ai-phone {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .ai-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .ai-stat b {
+            color: #999;
+            font-weight: 500;
+        }
+
+        .ai-divider {
+            height: 1px;
+            background: #eee;
+            margin: 15px -24px;
+        }
+
+        .ai-datetime-header {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .ai-service-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .ai-service-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .ai-service-time { width: 70px; }
+        .ai-service-name { font-weight: 400; }
+
+        .ai-staff-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+        }
+
+        .ai-staff-icon {
+            color: #ff5e5e;
+            font-size: 18px;
+        }
+
+        .ai-price-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .ai-booking-log {
+            font-size: 12px;
+            color: #999;
+            margin-top: -20px;
+            text-align: right;
+        }
+
+        .ai-tags-section {
+            margin-top: 30px;
+        }
+
+        .ai-tags-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .btn-add-tags {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: #fdfdfd;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #333;
+            text-transform: uppercase;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ai-footer {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .ai-footer-icons {
+            margin-right: auto;
+            display: flex;
+            gap: 20px;
+            font-size: 24px;
+            color: #666;
+        }
+
+        .ai-footer-icons i { cursor: pointer; }
+
+        .btn-ai-edit {
+            padding: 10px 20px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-ai-confirm {
+            padding: 10px 20px;
+            background: #0099ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
         /* PREMIUM SERVICES LIST STYLES */
         #manage-services {
             background: var(--brand-bg) !important;
@@ -2569,7 +2850,7 @@
 			</div>
 
 			<ul class="box-info">
-				<li>
+				<li id="unconfirmed-card" onclick="openUnconfirmedModal()" style="cursor: pointer;">
 					<i class='bx bxs-calendar' ></i>
 					<span class="text">
 						<h3 id="stat-unconfirmed">0</h3>
@@ -4969,22 +5250,150 @@
             fetchDashboardStats();
         });
 
+        let currentUnconfirmedList = []; // Store unconfirmed bookings data
+
         function fetchDashboardStats() {
             const unconfirmedElem = document.getElementById('stat-unconfirmed');
             const confirmedElem = document.getElementById('stat-confirmed');
             const arrivedElem = document.getElementById('stat-arrived');
 
-            if (!unconfirmedElem || !confirmedElem || !arrivedElem) return;
+            if (!confirmedElem || !arrivedElem) return;
 
             fetch('api/api_get_stats.php')
                 .then(response => response.json())
                 .then(data => {
-                    unconfirmedElem.textContent = data.unconfirmed || 0;
                     confirmedElem.textContent = data.confirmed || 0;
                     arrivedElem.textContent = data.arrived || 0;
+                    
+                    currentUnconfirmedList = data.unconfirmed_list || [];
+                    
+                    if (unconfirmedElem) {
+                        unconfirmedElem.textContent = data.unconfirmed || 0;
+                    }
                 })
                 .catch(err => console.error('Error fetching stats:', err));
         }
+
+        window.openUnconfirmedModal = function() {
+            const overlay = document.getElementById('unconfirmed-modal-overlay');
+            const modal = document.getElementById('unconfirmed-modal');
+            const modalBody = document.getElementById('unconfirmed-modal-body');
+
+            if (!overlay || !modal || !modalBody) return;
+
+            if (currentUnconfirmedList.length === 0) {
+                modalBody.innerHTML = '<div style="padding: 40px; text-align: center; color: #888;">No unconfirmed appointments at this time.</div>';
+            } else {
+                let html = '';
+                currentUnconfirmedList.forEach((item, index) => {
+                    let timeFormatted = '';
+                    if (item.appointment_time) {
+                        const [h, m] = item.appointment_time.split(':');
+                        const hour = parseInt(h);
+                        const ampm = hour >= 12 ? 'PM' : 'AM';
+                        const hour12 = hour % 12 || 12;
+                        timeFormatted = `${hour12}:${m} ${ampm}`;
+                    }
+
+                    html += `
+                        <div class="um-item" onclick="openAppointmentInfoModal(${index})" style="cursor: pointer;">
+                            <div class="um-client-info">
+                                <span class="um-client-name">${item.client_name}</span>
+                                <span class="um-details">${item.appointment_date} at ${timeFormatted}</span>
+                            </div>
+                            <i class='bx bx-chevron-right' style="color: #ccc; font-size: 20px;"></i>
+                        </div>
+                    `;
+                });
+                modalBody.innerHTML = html;
+            }
+
+            overlay.style.display = 'block';
+            modal.style.display = 'flex';
+        };
+
+        window.openAppointmentInfoModal = function(index) {
+            const item = currentUnconfirmedList[index];
+            if (!item) return;
+
+            // Fill Info Modal
+            document.getElementById('ai-client-name').textContent = item.client_name;
+            document.getElementById('ai-phone').textContent = item.client_phone || 'No phone provided';
+            
+            // Format Date for Header (Sun, Jan 11th)
+            const dateObj = new Date(item.appointment_date);
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dayName = days[dateObj.getDay()];
+            const monthName = months[dateObj.getMonth()];
+            const dayDate = dateObj.getDate();
+            
+            // Ordinal suffix (1st, 2nd, 3rd, 4th)
+            const suffix = (dayDate % 10 === 1 && dayDate !== 11) ? 'st' :
+                           (dayDate % 10 === 2 && dayDate !== 12) ? 'nd' :
+                           (dayDate % 10 === 3 && dayDate !== 13) ? 'rd' : 'th';
+            
+            // Time Formatting
+            let timeFormatted = '';
+            if (item.appointment_time) {
+                const [h, m] = item.appointment_time.split(':');
+                const hour = parseInt(h);
+                const ampm = hour >= 12 ? 'pm' : 'am';
+                const hour12 = hour % 12 || 12;
+                timeFormatted = `${hour12}:${m}${ampm}`;
+            }
+
+            document.getElementById('ai-datetime').textContent = `${dayName}, ${monthName} ${dayDate}${suffix}, ${timeFormatted}`;
+            document.getElementById('ai-row-time').textContent = timeFormatted;
+            document.getElementById('ai-row-service').textContent = item.services;
+            document.getElementById('ai-row-staff').textContent = item.staff_name;
+            document.getElementById('ai-row-price').textContent = `$${parseFloat(item.total_price).toFixed(2)}`;
+            
+            // Booking Log
+            const created = new Date(item.created_at);
+            const createdDate = created.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const createdTime = created.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
+            const clientInitial = item.client_name.split(' ')[0] + ' ' + (item.client_name.split(' ')[1] ? item.client_name.split(' ')[1][0] + '.' : '');
+            
+            document.getElementById('ai-booking-log').textContent = `Booked by ${clientInitial} on ${createdDate} @ ${createdTime}`;
+
+            const overlay = document.getElementById('appointment-info-overlay');
+            const modal = document.getElementById('appointment-info-modal');
+            overlay.style.display = 'block';
+            modal.style.display = 'flex';
+            
+            // Add click event for confirmation
+            const confirmBtn = document.getElementById('btn-ai-confirm');
+            confirmBtn.onclick = function() {
+                if (confirm(`Confirm appointment for ${item.client_name}?`)) {
+                    fetch('api/api_confirm_appointment.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: item.id })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('Appointment confirmed!');
+                            closeAppointmentInfoModal();
+                            fetchDashboardStats(); // Refresh everything
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    });
+                }
+            };
+        };
+
+        window.closeAppointmentInfoModal = function() {
+            document.getElementById('appointment-info-overlay').style.display = 'none';
+            document.getElementById('appointment-info-modal').style.display = 'none';
+        };
+
+        window.closeUnconfirmedModal = function() {
+            document.getElementById('unconfirmed-modal-overlay').style.display = 'none';
+            document.getElementById('unconfirmed-modal').style.display = 'none';
+        };
 
             function fetchClients() {
                 const tableBody = document.getElementById('clients-table-body');
@@ -5790,6 +6199,74 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- Unconfirmed Appointments Modal -->
+    <div id="unconfirmed-modal-overlay" onclick="closeUnconfirmedModal()"></div>
+    <div id="unconfirmed-modal">
+        <div class="um-header">
+            <h2>Unconfirmed Requests</h2>
+            <span class="um-close-btn" onclick="closeUnconfirmedModal()">&times;</span>
+        </div>
+        <div class="um-body" id="unconfirmed-modal-body">
+            <!-- Populated dynamically -->
+        </div>
+    </div>
+    <!-- Appointment Info Modal -->
+    <div id="appointment-info-overlay" onclick="closeAppointmentInfoModal()"></div>
+    <div id="appointment-info-modal">
+        <div class="ai-header">
+            <span class="ai-client-name" id="ai-client-name"></span>
+            <i class='bx bx-chevron-down' style="color: #999; font-size: 24px;"></i>
+        </div>
+        <div class="ai-phone" id="ai-phone"></div>
+        
+        <div class="ai-stats">
+            <span class="ai-stat"><b>Show Rate:</b> 0%</span>
+            <span class="ai-stat"><b>Avg. Visit:</b> $0</span>
+        </div>
+        <div class="ai-stats" style="margin-top: -15px;">
+            <span class="ai-stat"><b>Num Visits:</b> 0</span>
+        </div>
+
+        <div class="ai-divider"></div>
+
+        <div class="ai-datetime-header" id="ai-datetime"></div>
+
+        <div class="ai-divider"></div>
+
+        <div class="ai-service-row">
+            <div class="ai-service-info">
+                <span class="ai-service-time" id="ai-row-time"></span>
+                <span class="ai-service-name" id="ai-row-service"></span>
+            </div>
+            <div class="ai-staff-info">
+                <i class='bx bxs-heart ai-staff-icon'></i>
+                <span id="ai-row-staff"></span>
+            </div>
+        </div>
+
+        <div class="ai-divider"></div>
+
+        <div class="ai-price-row">
+            <span id="ai-row-price"></span>
+            <i class='bx bx-credit-card' style="color: #ccc;"></i>
+        </div>
+
+        <div class="ai-booking-log" id="ai-booking-log"></div>
+
+        <div class="ai-tags-section">
+            <div class="ai-tags-label">Appointment Tags</div>
+            <button class="btn-add-tags">ADD TAGS <i class='bx bx-plus'></i></button>
+        </div>
+
+        <div class="ai-footer">
+            <div class="ai-footer-icons">
+                <i class='bx bx-undo'></i>
+                <i class='bx bx-x-circle' style="color: #ff5e5e;"></i>
+            </div>
+            <button class="btn-ai-edit">Edit</button>
+            <button class="btn-ai-confirm" id="btn-ai-confirm">Mark as Confirmed</button>
         </div>
     </div>
 </body>

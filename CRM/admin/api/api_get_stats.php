@@ -27,12 +27,30 @@ $stats = [
     'unconfirmed' => 0,
     'confirmed' => 0,
     'arrived' => 0,
-    'cancelled' => 0
+    'cancelled' => 0,
+    'unconfirmed_list' => []
 ];
 
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         $stats[$row['status']] = (int)$row['count'];
+    }
+}
+
+// Fetch details for unconfirmed appointments
+$sql_list = "SELECT a.id, a.appointment_date, a.appointment_time, a.services, a.total_price, a.created_at, 
+                    c.name as client_name, c.phone as client_phone,
+                    s.name as staff_name
+             FROM appointments a 
+             JOIN clients c ON a.client_id = c.id 
+             JOIN staff s ON a.staff_id = s.id
+             WHERE a.status = 'unconfirmed' 
+             ORDER BY a.appointment_date ASC, a.appointment_time ASC";
+$res_list = mysqli_query($conn, $sql_list);
+
+if ($res_list) {
+    while ($row = mysqli_fetch_assoc($res_list)) {
+        $stats['unconfirmed_list'][] = $row;
     }
 }
 
