@@ -658,6 +658,15 @@
         #content main .table-data .order table tr td .status.pending {
             background: var(--orange);
         }
+        #content main .table-data .order table tr td .status.available {
+            background: #4CAF50;
+        }
+        #content main .table-data .order table tr td .status.unavailable {
+            background: #F44336;
+        }
+        .calendar-widget {
+            cursor: pointer;
+        }
 
 
         #content main .table-data .todo {
@@ -3706,6 +3715,54 @@
         const serviceSearchInput = document.getElementById('service-search-input');
         const filterPills = document.querySelectorAll('.filter-pill');
 
+        function switchSection(section, subsection) {
+            const link = document.querySelector(`#sidebar .side-menu.top li a[data-section="${section}"]`);
+            if (link) {
+                const li = link.parentElement;
+                
+                // Active state handling
+                allSideMenu.forEach(i => {
+                    i.parentElement.classList.remove('active');
+                });
+                li.classList.add('active');
+
+                // Close sliding panels
+                if (typeof closeStaffProfile === 'function') closeStaffProfile();
+                if (typeof closeServiceProfile === 'function') closeServiceProfile();
+
+                const frontdeskSection = document.getElementById('frontdesk-section');
+                const manageSection = document.getElementById('manage-section');
+                const clientsSection = document.getElementById('clients-section');
+
+                if (section === 'frontdesk') {
+                    if (frontdeskSection) frontdeskSection.style.display = 'block';
+                    if (manageSection) manageSection.style.display = 'none';
+                    if (clientsSection) clientsSection.style.display = 'none';
+                    if (manageSubmenu) manageSubmenu.style.display = 'none';
+                } else if (section === 'manage') {
+                    if (frontdeskSection) frontdeskSection.style.display = 'none';
+                    if (clientsSection) clientsSection.style.display = 'none';
+                    if (manageSection) manageSection.style.display = 'block';
+                    if (manageSubmenu) manageSubmenu.style.display = 'block';
+
+                    if (subsection) {
+                        const allSubs = document.querySelectorAll('.manage-subsection');
+                        allSubs.forEach(s => s.style.display = 'none');
+                        const activeSub = document.getElementById(`manage-${subsection}`);
+                        if (activeSub) activeSub.style.display = 'block';
+                    }
+                } else if (section === 'clients') {
+                    if (frontdeskSection) frontdeskSection.style.display = 'none';
+                    if (manageSection) manageSection.style.display = 'none';
+                    if (clientsSection) {
+                        clientsSection.style.display = 'block';
+                        fetchClients();
+                    }
+                    if (manageSubmenu) manageSubmenu.style.display = 'none';
+                }
+            }
+        }
+
         allSideMenu.forEach(item => {
             const li = item.parentElement;
 
@@ -4331,6 +4388,16 @@
         // Initialize Calendar
         generateCalendar(currMonth, currYear);
 
+        // Calendar Widget Linking
+        const calendarWidget = document.querySelector('.calendar-widget');
+        if (calendarWidget) {
+            calendarWidget.onclick = (e) => {
+                // Don't switch if clicking on controls
+                if (e.target.closest('.month-picker') || e.target.closest('.year-picker')) return;
+                switchSection('manage', 'schedule');
+            };
+        }
+
         // TOGGLE SIDEBAR
         const menuBar = document.querySelector('#content nav .bx.bx-menu');
         const sidebar = document.getElementById('sidebar');
@@ -4488,32 +4555,42 @@
                 const dashboardTable = document.getElementById('dashboard-staff-table-body');
                 const manageTable = document.getElementById('manage-staff-table-body');
                 
-                fetch('api/api_staff_availability.php?get_staff=1')
-                    .then(r => r.json())
-                    .then(data => {
-                        if (!Array.isArray(data)) return;
-                        
-                        // Populate Dashboard Staff List
-                        if (dashboardTable) {
-                            dashboardTable.innerHTML = '';
-                            data.forEach(staff => {
-                                const row = document.createElement('tr');
-                                row.innerHTML = `
-                                    <td>
-                                        <i class='bx bxs-user-circle' style='font-size: 36px; color: ${staff.avatar_color || 'var(--dark-grey)'};'></i>
-                                        <p>${staff.name || 'Unknown'}</p>
-                                    </td>
-                                    <td>${staff.role || 'Staff'}</td>
-                                    <td><span class="status completed">Available</span></td>
-                                `;
-                                dashboardTable.appendChild(row);
-                            });
-                        }
+                const today = new Date().toISOString().split('T')[0];
 
-                        // Populate Manage > Staff List
-                        if (manageTable) {
+                Promise.all([
+                    fetch('api/api_staff_availability.php?get_staff=1').then(r => r.json()),
+                    fetch(`api/api_schedules.php?start_date=${today}&end_date=${today}`).then(r => r.json())
+                ])
+                .then(([staffList, schedules]) => {
+                    if (!Array.isArray(staffList)) return;
+                    
+                    // Populate Dashboard Staff List
+                    if (dashboardTable) {
+                        dashboardTable.innerHTML = '';
+                        staffList.forEach(staff => {
+                            const isAvailable = Array.isArray(schedules) && schedules.some(s => s.staff_id == staff.id);
+                            const statusText = isAvailable ? 'Available' : 'Not Available';
+                            const statusClass = isAvailable ? 'available' : 'unavailable';
+
+                            const row = document.createElement('tr');
+                            row.style.cursor = 'pointer';
+                            row.innerHTML = `
+                                <td>
+                                    <i class='bx bxs-user-circle' style='font-size: 36px; color: ${staff.avatar_color || 'var(--dark-grey)'};'></i>
+                                    <p>${staff.name || 'Unknown'}</p>
+                                </td>
+                                <td>${staff.role || 'Staff'}</td>
+                                <td><span class="status ${statusClass}">${statusText}</span></td>
+                            `;
+                            row.onclick = () => switchSection('manage', 'schedule');
+                            dashboardTable.appendChild(row);
+                        });
+                    }
+
+                    // Populate Manage > Staff List
+                    if (manageTable) {
                             manageTable.innerHTML = '';
-                            data.forEach(staff => {
+                            staffList.forEach(staff => {
                                 const row = document.createElement('tr');
                                 row.setAttribute('data-name', staff.name || '');
                                 row.setAttribute('data-role', staff.role || '');
