@@ -3738,6 +3738,20 @@
 	
 
 	<script>
+        function getTodayDate() {
+            return new Date(new Date().toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+        }
+        function formatScheduleDate(date) {
+            if (!date) return '';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        function getTodayISO() {
+            return formatScheduleDate(getTodayDate());
+        }
+
         const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top > li > a');
         const manageSubmenu = document.getElementById('manage-submenu');
         const manageSubLinks = document.querySelectorAll('#manage-submenu a[data-subsection]');
@@ -4345,7 +4359,7 @@
         const prevMonthBtn = document.getElementById('prev-month');
         const nextMonthBtn = document.getElementById('next-month');
 
-        let currentDate = new Date();
+        let currentDate = getTodayDate();
         let currMonth = currentDate.getMonth();
         let currYear = currentDate.getFullYear();
 
@@ -4585,7 +4599,7 @@
                 const dashboardTable = document.getElementById('dashboard-staff-table-body');
                 const manageTable = document.getElementById('manage-staff-table-body');
                 
-                const today = new Date().toISOString().split('T')[0];
+                const today = getTodayISO();
 
                 Promise.all([
                     fetch('api/api_staff_availability.php?get_staff=1').then(r => r.json()),
@@ -4658,13 +4672,10 @@
             }
 
             /* --- SCHEDULE CALENDAR LOGIC --- */
-            let scheduleStartDate = new Date();
+            let scheduleStartDate = getTodayDate();
             // Start of current week (Sunday)
             scheduleStartDate.setDate(scheduleStartDate.getDate() - scheduleStartDate.getDay());
 
-            function formatScheduleDate(date) {
-                return date.toISOString().split('T')[0];
-            }
 
             function updateScheduleGrid() {
                 const dayHeadersRow = document.getElementById('sched-table-days');
@@ -4843,7 +4854,7 @@
                 }
 
                 // Set default start date to today
-                dateInput.value = formatScheduleDate(new Date());
+                dateInput.value = getTodayISO();
 
                 overlay.style.display = 'block';
                 modal.style.display = 'flex';

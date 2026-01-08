@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Los_Angeles');
 $sname= "localhost";
 $unmae= "u993466733_medspacrm";
 $password = "medspaCRM123";
