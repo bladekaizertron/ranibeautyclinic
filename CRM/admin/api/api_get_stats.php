@@ -11,7 +11,7 @@ $check_table = "CREATE TABLE IF NOT EXISTS appointments (
     staff_id INT NOT NULL,
     appointment_date DATE NOT NULL,
     appointment_time TIME NOT NULL,
-    status ENUM('unconfirmed', 'confirmed', 'arrived', 'cancelled') DEFAULT 'unconfirmed',
+    status ENUM('unconfirmed', 'confirmed', 'completed', 'cancelled') DEFAULT 'unconfirmed',
     services TEXT,
     total_price DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -20,17 +20,21 @@ $check_table = "CREATE TABLE IF NOT EXISTS appointments (
 )";
 mysqli_query($conn, $check_table);
 
+// Migration: Rename 'arrived' to 'completed'
+mysqli_query($conn, "ALTER TABLE appointments MODIFY COLUMN status ENUM('unconfirmed', 'confirmed', 'completed', 'cancelled') DEFAULT 'unconfirmed'");
+mysqli_query($conn, "UPDATE appointments SET status = 'completed' WHERE status = 'arrived'");
+
 $sql = "SELECT status, COUNT(*) as count FROM appointments GROUP BY status";
 $result = mysqli_query($conn, $sql);
 
 $stats = [
     'unconfirmed' => 0,
     'confirmed' => 0,
-    'arrived' => 0,
+    'completed' => 0,
     'cancelled' => 0,
     'unconfirmed_list' => [],
     'confirmed_list' => [],
-    'arrived_list' => []
+    'completed_list' => []
 ];
 
 if ($result) {
@@ -61,7 +65,7 @@ function fetchList($conn, $status) {
 
 $stats['unconfirmed_list'] = fetchList($conn, 'unconfirmed');
 $stats['confirmed_list'] = fetchList($conn, 'confirmed');
-$stats['arrived_list'] = fetchList($conn, 'arrived');
+$stats['completed_list'] = fetchList($conn, 'completed');
 
 echo json_encode($stats);
 ?>

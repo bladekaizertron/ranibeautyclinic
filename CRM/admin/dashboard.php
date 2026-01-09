@@ -944,7 +944,8 @@
 
         /* Unconfirmed Modal Styles */
         #unconfirmed-modal-overlay,
-        #confirmed-modal-overlay {
+        #confirmed-modal-overlay,
+        #completed-modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -956,7 +957,8 @@
         }
 
         #unconfirmed-modal,
-        #confirmed-modal {
+        #confirmed-modal,
+        #completed-modal {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -3527,11 +3529,11 @@
 						<p>Confirmed</p>
 					</span>
 				</li>
-				<li>
+				<li id="completed-card" onclick="openCompletedModal()" style="cursor: pointer;">
 					<i class='bx bxs-user-check' ></i>
 					<span class="text">
-						<h3 id="stat-arrived">0</h3>
-						<p>Arrived</p>
+						<h3 id="stat-completed">0</h3>
+						<p>Completed</p>
 					</span>
 				</li>
 			</ul>
@@ -4567,19 +4569,20 @@
         function fetchDashboardStats() {
             const unconfirmedElem = document.getElementById('stat-unconfirmed');
             const confirmedElem = document.getElementById('stat-confirmed');
-            const arrivedElem = document.getElementById('stat-arrived');
+            const completedElem = document.getElementById('stat-completed');
 
-            if (!confirmedElem || !arrivedElem) return;
+            if (!confirmedElem || !completedElem) return;
 
             // Cache busting with timestamp
             fetch(`api/api_get_stats.php?t=${new Date().getTime()}`)
                 .then(response => response.json())
                 .then(data => {
                     confirmedElem.textContent = data.confirmed || 0;
-                    arrivedElem.textContent = data.arrived || 0;
+                    completedElem.textContent = data.completed || 0;
                     
                     currentUnconfirmedList = data.unconfirmed_list || [];
                     currentConfirmedList = data.confirmed_list || [];
+                    currentCompletedList = data.completed_list || [];
                     
                     if (unconfirmedElem) {
                         unconfirmedElem.textContent = data.unconfirmed || 0;
@@ -4596,6 +4599,16 @@
         window.openConfirmedModal = function() {
             currentAppointmentsList = currentConfirmedList;
             renderAppointmentsModal('confirmed', currentConfirmedList);
+        };
+
+        window.openCompletedModal = function() {
+            currentAppointmentsList = currentCompletedList;
+            renderAppointmentsModal('completed', currentCompletedList);
+        };
+
+        window.closeCompletedModal = function() {
+            document.getElementById('completed-modal-overlay').style.display = 'none';
+            document.getElementById('completed-modal').style.display = 'none';
         };
 
         function renderAppointmentsModal(type, list) {
@@ -4689,8 +4702,8 @@
             // Add click event for confirmation
             const confirmBtn = document.getElementById('btn-ai-confirm');
             
-            // Hide confirmation button if already confirmed
-            if (currentAppointmentsList === currentConfirmedList) {
+            // Hide confirmation button if already confirmed or completed
+            if (currentAppointmentsList === currentConfirmedList || currentAppointmentsList === currentCompletedList) {
                 confirmBtn.style.display = 'none';
             } else {
                 confirmBtn.style.display = 'block';
@@ -5699,6 +5712,17 @@
             <span class="um-close-btn" onclick="closeConfirmedModal()">&times;</span>
         </div>
         <div class="um-body" id="confirmed-modal-body">
+            <!-- Populated dynamically -->
+        </div>
+    </div>
+    <!-- Completed Appointments Modal -->
+    <div id="completed-modal-overlay" onclick="closeCompletedModal()"></div>
+    <div id="completed-modal">
+        <div class="um-header">
+            <h2>Completed Sessions</h2>
+            <span class="um-close-btn" onclick="closeCompletedModal()">&times;</span>
+        </div>
+        <div class="um-body" id="completed-modal-body">
             <!-- Populated dynamically -->
         </div>
     </div>

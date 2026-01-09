@@ -10,14 +10,14 @@ if ($id <= 0) {
     exit();
 }
 
-// Update status to 'arrived' upon payment completion
-$sql = "UPDATE appointments SET status = 'arrived' WHERE id = ?";
+// Update status to 'completed' upon payment completion
+$sql = "UPDATE appointments SET status = 'completed' WHERE id = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $id);
 
 if (mysqli_stmt_execute($stmt)) {
     if (mysqli_stmt_affected_rows($stmt) >= 0) {
-        // We use >= 0 because if it was already 'arrived', success is still okay
+        // We use >= 0 because if it was already 'completed', success is still okay
         echo json_encode(['status' => 'success']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Appointment ID not found.']);

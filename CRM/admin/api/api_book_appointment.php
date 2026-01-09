@@ -13,7 +13,7 @@ $check_table = "CREATE TABLE IF NOT EXISTS appointments (
     staff_id INT NOT NULL,
     appointment_date DATE NOT NULL,
     appointment_time TIME NOT NULL,
-    status ENUM('unconfirmed', 'confirmed', 'arrived', 'cancelled') DEFAULT 'unconfirmed',
+    status ENUM('unconfirmed', 'confirmed', 'completed', 'cancelled') DEFAULT 'unconfirmed',
     services TEXT,
     total_price DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
