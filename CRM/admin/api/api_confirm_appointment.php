@@ -15,7 +15,11 @@ $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $id);
 
 if (mysqli_stmt_execute($stmt)) {
-    echo json_encode(['status' => 'success']);
+    if (mysqli_stmt_affected_rows($stmt) > 0) {
+        echo json_encode(['status' => 'success']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Appointment already confirmed or ID not found.']);
+    }
 } else {
     echo json_encode(['status' => 'error', 'message' => mysqli_error($conn)]);
 }

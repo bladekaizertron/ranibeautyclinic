@@ -943,7 +943,8 @@
         }
 
         /* Unconfirmed Modal Styles */
-        #unconfirmed-modal-overlay {
+        #unconfirmed-modal-overlay,
+        #confirmed-modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -954,7 +955,8 @@
             display: none;
         }
 
-        #unconfirmed-modal {
+        #unconfirmed-modal,
+        #confirmed-modal {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -1031,12 +1033,14 @@
             margin-top: 2px;
         }
         
-        #unconfirmed-card {
+        #unconfirmed-card,
+        #confirmed-card {
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         
-        #unconfirmed-card:hover {
+        #unconfirmed-card:hover,
+        #confirmed-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
@@ -2857,7 +2861,7 @@
 						<p>Unconfirmed</p>
 					</span>
 				</li>
-				<li>
+				<li id="confirmed-card" onclick="openConfirmedModal()" style="cursor: pointer;">
 					<i class='bx bxs-calendar-check' ></i>
 					<span class="text">
 						<h3 id="stat-confirmed">0</h3>
@@ -3787,6 +3791,8 @@
         });
 
         let currentUnconfirmedList = []; // Store unconfirmed bookings data
+        let currentConfirmedList = []; // Store confirmed bookings data
+        let currentAppointmentsList = []; // Helper to reference active list for detail modal
 
         function fetchDashboardStats() {
             const unconfirmedElem = document.getElementById('stat-unconfirmed');
@@ -3795,13 +3801,15 @@
 
             if (!confirmedElem || !arrivedElem) return;
 
-            fetch('api/api_get_stats.php')
+            // Cache busting with timestamp
+            fetch(`api/api_get_stats.php?t=${new Date().getTime()}`)
                 .then(response => response.json())
                 .then(data => {
                     confirmedElem.textContent = data.confirmed || 0;
                     arrivedElem.textContent = data.arrived || 0;
                     
                     currentUnconfirmedList = data.unconfirmed_list || [];
+                    currentConfirmedList = data.confirmed_list || [];
                     
                     if (unconfirmedElem) {
                         unconfirmedElem.textContent = data.unconfirmed || 0;
@@ -3811,17 +3819,27 @@
         }
 
         window.openUnconfirmedModal = function() {
-            const overlay = document.getElementById('unconfirmed-modal-overlay');
-            const modal = document.getElementById('unconfirmed-modal');
-            const modalBody = document.getElementById('unconfirmed-modal-body');
+            currentAppointmentsList = currentUnconfirmedList;
+            renderAppointmentsModal('unconfirmed', currentUnconfirmedList);
+        };
+
+        window.openConfirmedModal = function() {
+            currentAppointmentsList = currentConfirmedList;
+            renderAppointmentsModal('confirmed', currentConfirmedList);
+        };
+
+        function renderAppointmentsModal(type, list) {
+            const overlay = document.getElementById(`${type}-modal-overlay`);
+            const modal = document.getElementById(`${type}-modal`);
+            const modalBody = document.getElementById(`${type}-modal-body`);
 
             if (!overlay || !modal || !modalBody) return;
 
-            if (currentUnconfirmedList.length === 0) {
-                modalBody.innerHTML = '<div style="padding: 40px; text-align: center; color: #888;">No unconfirmed appointments at this time.</div>';
+            if (list.length === 0) {
+                modalBody.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">No ${type} appointments at this time.</div>`;
             } else {
                 let html = '';
-                currentUnconfirmedList.forEach((item, index) => {
+                list.forEach((item, index) => {
                     let timeFormatted = '';
                     if (item.appointment_time) {
                         const [h, m] = item.appointment_time.split(':');
@@ -3846,10 +3864,10 @@
 
             overlay.style.display = 'block';
             modal.style.display = 'flex';
-        };
+        }
 
         window.openAppointmentInfoModal = function(index) {
-            const item = currentUnconfirmedList[index];
+            const item = currentAppointmentsList[index];
             if (!item) return;
 
             // Fill Info Modal
@@ -3858,10 +3876,10 @@
             
             // Format Date for Header (Sun, Jan 11th)
             const dateObj = new Date(item.appointment_date);
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const dayName = days[dateObj.getDay()];
-            const monthName = months[dateObj.getMonth()];
+            const daysArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dayName = daysArr[dateObj.getDay()];
+            const monthName = monthsArr[dateObj.getMonth()];
             const dayDate = dateObj.getDate();
             
             // Ordinal suffix (1st, 2nd, 3rd, 4th)
@@ -3900,25 +3918,50 @@
             
             // Add click event for confirmation
             const confirmBtn = document.getElementById('btn-ai-confirm');
-            confirmBtn.onclick = function() {
-                if (confirm(`Confirm appointment for ${item.client_name}?`)) {
-                    fetch('api/api_confirm_appointment.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: item.id })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert('Appointment confirmed!');
-                            closeAppointmentInfoModal();
-                            fetchDashboardStats(); // Refresh everything
-                        } else {
-                            alert('Error: ' + data.message);
-                        }
-                    });
-                }
-            };
+            
+            // Hide confirmation button if already confirmed
+            if (currentAppointmentsList === currentConfirmedList) {
+                confirmBtn.style.display = 'none';
+            } else {
+                confirmBtn.style.display = 'block';
+                confirmBtn.onclick = function() {
+                    const btn = this;
+                    if (confirm(`Confirm appointment for ${item.client_name}?`)) {
+                        btn.disabled = true;
+                        btn.textContent = 'Confirming...';
+
+                        fetch('api/api_confirm_appointment.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: item.id })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Close modals
+                                closeAppointmentInfoModal();
+                                closeUnconfirmedModal();
+                                
+                                // Refresh dashboard stats/lists
+                                fetchDashboardStats();
+                                
+                                // Optional: Small feedback toast could go here
+                                console.log('Appointment confirmed successfully');
+                            } else {
+                                alert('Error confirming appointment: ' + (data.message || 'Unknown error'));
+                                btn.disabled = false;
+                                btn.textContent = 'Mark as Confirmed';
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Fetch error:', err);
+                            alert('Network error. Please try again.');
+                            btn.disabled = false;
+                            btn.textContent = 'Mark as Confirmed';
+                        });
+                    }
+                };
+            }
         };
 
         window.closeAppointmentInfoModal = function() {
@@ -3929,6 +3972,11 @@
         window.closeUnconfirmedModal = function() {
             document.getElementById('unconfirmed-modal-overlay').style.display = 'none';
             document.getElementById('unconfirmed-modal').style.display = 'none';
+        };
+
+        window.closeConfirmedModal = function() {
+            document.getElementById('confirmed-modal-overlay').style.display = 'none';
+            document.getElementById('confirmed-modal').style.display = 'none';
         };
 
             function fetchClients() {
@@ -4745,6 +4793,17 @@
             <span class="um-close-btn" onclick="closeUnconfirmedModal()">&times;</span>
         </div>
         <div class="um-body" id="unconfirmed-modal-body">
+            <!-- Populated dynamically -->
+        </div>
+    </div>
+    <!-- Confirmed Appointments Modal -->
+    <div id="confirmed-modal-overlay" onclick="closeConfirmedModal()"></div>
+    <div id="confirmed-modal">
+        <div class="um-header">
+            <h2>Confirmed Appointments</h2>
+            <span class="um-close-btn" onclick="closeConfirmedModal()">&times;</span>
+        </div>
+        <div class="um-body" id="confirmed-modal-body">
             <!-- Populated dynamically -->
         </div>
     </div>
