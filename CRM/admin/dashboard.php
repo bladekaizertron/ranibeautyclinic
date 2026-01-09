@@ -3561,6 +3561,62 @@
 
             overlay.style.display = 'block';
             modal.style.display = 'flex';
+
+            // Fetch and display appointments
+            const appointmentsList = document.getElementById('cp-appointments-list');
+            if (appointmentsList) {
+                appointmentsList.innerHTML = '<div class="cp-loading" style="color: var(--dark-grey); font-size: 14px; padding: 10px;">Loading appointments...</div>';
+                
+                fetch(`api/api_get_client_appointments.php?client_id=${client.id}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (Array.isArray(data) && data.length > 0) {
+                            appointmentsList.innerHTML = '';
+                            data.forEach(appt => {
+                                // Date formatting
+                                const dateObj = new Date(appt.appointment_date);
+                                const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                                const dateFormatted = dateObj.toLocaleDateString('en-US', options);
+                                
+                                // Time formatting
+                                let timeFormatted = appt.appointment_time;
+                                if (appt.appointment_time) {
+                                    const [h, m] = appt.appointment_time.split(':');
+                                    const hour = parseInt(h);
+                                    const ampm = hour >= 12 ? 'pm' : 'am';
+                                    const hour12 = hour % 12 || 12;
+                                    timeFormatted = `${hour12}:${m}${ampm}`;
+                                }
+                                
+                                const apptDiv = document.createElement('div');
+                                apptDiv.className = 'cp-appointment-item';
+                                apptDiv.style.marginBottom = '15px';
+                                apptDiv.style.padding = '12px';
+                                apptDiv.style.background = 'rgba(0,0,0,0.03)';
+                                apptDiv.style.borderRadius = '10px';
+                                apptDiv.style.borderLeft = '4px solid var(--blue)';
+                                
+                                apptDiv.innerHTML = `
+                                    <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--dark);">
+                                        (${appt.services}) with ${appt.staff_name}
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--dark-grey);">
+                                        ${dateFormatted} @ ${timeFormatted}.
+                                    </div>
+                                `;
+                                appointmentsList.appendChild(apptDiv);
+                            });
+                        } else {
+                            appointmentsList.innerHTML = `
+                                Client doesn't have any upcoming appointments. <span class="cp-link" style="color: var(--blue); cursor: pointer; text-decoration: underline;">Schedule one now!</span>
+                            `;
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error fetching client appointments:', err);
+                        appointmentsList.innerHTML = '<div class="cp-error" style="color: var(--red); font-size: 14px; padding: 10px;">Error loading appointments.</div>';
+                    });
+            }
         };
 
         window.closeClientProfile = function() {
