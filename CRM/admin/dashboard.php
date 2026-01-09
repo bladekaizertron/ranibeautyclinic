@@ -3595,15 +3595,35 @@
                                 apptDiv.style.background = 'rgba(0,0,0,0.03)';
                                 apptDiv.style.borderRadius = '10px';
                                 apptDiv.style.borderLeft = '4px solid var(--blue)';
+                                apptDiv.style.display = 'flex';
+                                apptDiv.style.justifyContent = 'space-between';
+                                apptDiv.style.alignItems = 'center';
                                 
                                 apptDiv.innerHTML = `
-                                    <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--dark);">
-                                        (${appt.services}) with ${appt.staff_name}
+                                    <div class="appt-details">
+                                        <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--dark);">
+                                            (${appt.services}) with ${appt.staff_name}
+                                        </div>
+                                        <div style="font-size: 13px; color: var(--dark-grey);">
+                                            ${dateFormatted} @ ${timeFormatted}.
+                                        </div>
                                     </div>
-                                    <div style="font-size: 13px; color: var(--dark-grey);">
-                                        ${dateFormatted} @ ${timeFormatted}.
-                                    </div>
+                                    <button class="cp-edit-appt-btn" style="background: var(--blue); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: opacity 0.2s;">
+                                        Edit
+                                    </button>
                                 `;
+
+                                // Add click event to the edit button
+                                const editBtn = apptDiv.querySelector('.cp-edit-appt-btn');
+                                editBtn.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    window.location.href = `edit_sched_appointments.php?id=${appt.id}`;
+                                });
+
+                                // Hover effect
+                                editBtn.addEventListener('mouseenter', () => editBtn.style.opacity = '0.8');
+                                editBtn.addEventListener('mouseleave', () => editBtn.style.opacity = '1');
+
                                 appointmentsList.appendChild(apptDiv);
                             });
                         } else {
