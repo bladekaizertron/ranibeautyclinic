@@ -2598,6 +2598,104 @@
             gap: 30px;
         }
 
+        /* History Tab Styles */
+        .cp-history-container {
+            display: none;
+            padding: 0 50px 50px;
+        }
+
+        .cp-history-section {
+            margin-bottom: 50px;
+        }
+
+        .cp-history-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--brand-navy);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cp-history-section h3 i {
+            color: var(--brand-gold);
+            font-size: 28px;
+        }
+
+        .cp-history-table-wrapper {
+            background: #fff;
+            border-radius: 25px;
+            padding: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            border: 1px solid rgba(15, 29, 44, 0.05);
+            overflow: hidden;
+        }
+
+        .cp-history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cp-history-table th {
+            text-align: left;
+            padding: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--brand-navy);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.05);
+            opacity: 0.6;
+        }
+
+        .cp-history-table td {
+            padding: 20px;
+            font-size: 14px;
+            color: var(--brand-navy);
+            font-weight: 500;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.03);
+        }
+
+        .cp-history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cp-history-table tr:hover td {
+            background: rgba(15, 29, 44, 0.01);
+        }
+
+        .cp-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cp-badge-complete {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .cp-badge-closed {
+            background: #F5F5F5;
+            color: #757575;
+        }
+
+        .cp-badge-unconfirmed {
+            background: #FFF3E0;
+            color: #EF6C00;
+        }
+
+        .cp-badge-cancelled {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
         .cp-action-btn {
             width: 48px;
             height: 48px;
@@ -4191,6 +4289,7 @@
         }
 
         window.openClientProfile = function(client) {
+            window.currentActiveClient = client; // Store for tab switching
             const { overlay, modal } = getClientProfileElements();
             if (!overlay || !modal) {
                 console.error('Client profile modal elements not found');
@@ -4221,6 +4320,12 @@
             if (emailElem) emailElem.value = client.email || '';
             if (phoneElem) phoneElem.value = client.phone || '';
             
+            // Reset content visibility
+            document.getElementById('cp-overview-content').style.display = 'block';
+            document.getElementById('cp-history-content').style.display = 'none';
+            document.querySelector('.cp-scroll-area').style.opacity = '1';
+            document.querySelector('.cp-scroll-area').style.pointerEvents = 'all';
+
             // Reset vertical tabs
             const tabs = modal.querySelectorAll('.cp-tab');
             tabs.forEach(t => t.classList.remove('active'));
@@ -4339,34 +4444,118 @@
             }
         });
 
-        // Tab switching logic for client profile
-        document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                
-                const tabName = this.getAttribute('data-tab');
-                const scrollArea = document.querySelector('.cp-scroll-area');
-                
-                if (tabName !== 'overview') {
-                    scrollArea.style.opacity = '0.3';
-                    scrollArea.style.pointerEvents = 'none';
-                } else {
-                    scrollArea.style.opacity = '1';
-                    scrollArea.style.pointerEvents = 'all';
-                }
+        // Initialize Client Profile Tabs after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching logic for client profile
+            document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    const overviewContent = document.getElementById('cp-overview-content');
+                    const historyContent = document.getElementById('cp-history-content');
+                    
+                    if (!overviewContent || !historyContent) return;
+
+                    // Update active tab UI
+                    document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Toggle content visibility
+                    if (tabName === 'overview') {
+                        overviewContent.style.display = 'block';
+                        historyContent.style.display = 'none';
+                    } else if (tabName === 'history') {
+                        overviewContent.style.display = 'none';
+                        historyContent.style.display = 'block';
+                        
+                        // Load history if needed (could be optimized with a 'loaded' flag)
+                        if (window.currentActiveClient) {
+                            loadClientHistory(window.currentActiveClient.id);
+                        }
+                    } else {
+                        // For other tabs (Forms, Gallery, Files etc.), dim the overview for now as before
+                        // or we could show a "Coming Soon" or empty state
+                        overviewContent.style.display = 'block';
+                        historyContent.style.display = 'none';
+                        const scrollArea = document.querySelector('.cp-scroll-area');
+                        if (scrollArea) {
+                            scrollArea.style.opacity = '0.3';
+                            scrollArea.style.pointerEvents = 'none';
+                        }
+                    }
+
+                    if (tabName === 'overview' || tabName === 'history') {
+                        const scrollArea = document.querySelector('.cp-scroll-area');
+                        if (scrollArea) {
+                            scrollArea.style.opacity = '1';
+                            scrollArea.style.pointerEvents = 'all';
+                        }
+                    }
+                });
+            });
+
+            // Notes tab switching
+            document.querySelectorAll('.cp-notes-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.cp-notes-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const area = document.getElementById('cp-notes-area');
+                    if (area) area.placeholder = `Type a new ${this.textContent.toLowerCase()}...`;
+                });
             });
         });
 
-        // Notes tab switching
-        document.querySelectorAll('.cp-notes-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.cp-notes-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                const area = document.getElementById('cp-notes-area');
-                if (area) area.placeholder = `Type a new ${this.textContent.toLowerCase()}...`;
-            });
-        });
+        function loadClientHistory(clientId) {
+            const historyBody = document.getElementById('cp-appointment-history-body');
+            if (!historyBody) return;
+
+            historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #999;">Loading history...</td></tr>';
+
+            fetch(`api/api_get_client_history.php?client_id=${clientId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data) && data.length > 0) {
+                        let html = '';
+                        data.forEach(item => {
+                            // Date formatting
+                            const dateObj = new Date(item.appointment_date);
+                            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                            const dateFormatted = dateObj.toLocaleDateString('en-US', options);
+                            
+                            // Status Badge
+                            let badgeClass = 'cp-badge-unconfirmed';
+                            let statusText = item.status.toUpperCase();
+                            
+                            if (item.status === 'completed') {
+                                badgeClass = 'cp-badge-complete';
+                                statusText = 'COMPLETE';
+                            } else if (item.status === 'cancelled') {
+                                badgeClass = 'cp-badge-cancelled';
+                            } else if (item.status === 'confirmed') {
+                                badgeClass = 'cp-badge-complete'; // Confirmed is also green-ish or blue?
+                                statusText = 'CONFIRMED';
+                            }
+
+                            html += `
+                                <tr>
+                                    <td>${dateFormatted}</td>
+                                    <td>Clinic</td>
+                                    <td>${item.services}</td>
+                                    <td>${item.staff_name}</td>
+                                    <td><span class="cp-badge ${badgeClass}">${statusText}</span></td>
+                                </tr>
+                            `;
+                        });
+                        historyBody.innerHTML = html;
+                    } else {
+                        historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #999;">No appointment history found.</td></tr>';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading history:', err);
+                    historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #C62828;">Error loading history data.</td></tr>';
+                });
+        }
+
 
         // Calendar Logic
         const calendarDays = document.getElementById('calendar-days');
@@ -5580,7 +5769,7 @@
                 </header>
 
                 <div class="cp-scroll-area">
-                    <div class="cp-dashboard-grid">
+                    <div class="cp-dashboard-grid" id="cp-overview-content">
                         <!-- Stats Row -->
                         <div class="cp-stats-grid">
                             <div class="cp-stat-card">
@@ -5686,6 +5875,56 @@
                                         <button class="cp-save-btn">Save Note</button>
                                     </div>
                                 </section>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Tab Content (Initially Hidden) -->
+                    <div class="cp-history-container" id="cp-history-content">
+                        <!-- Appointment History Section -->
+                        <div class="cp-history-section">
+                            <h3><i class='bx bx-calendar-check'></i> Appointment History</h3>
+                            <div class="cp-history-table-wrapper">
+                                <table class="cp-history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Location</th>
+                                            <th>Services</th>
+                                            <th>Staff</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cp-appointment-history-body">
+                                        <!-- Dynamic content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Order History Section -->
+                        <div class="cp-history-section">
+                            <h3><i class='bx bx-receipt'></i> Order History</h3>
+                            <div class="cp-history-table-wrapper">
+                                <table class="cp-history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Location</th>
+                                            <th>Order #</th>
+                                            <th>Total Sale</th>
+                                            <th>Total Paid</th>
+                                            <th>Balance</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cp-order-history-body">
+                                        <!-- Placeholder content -->
+                                        <tr>
+                                            <td colspan="7" style="text-align: center; padding: 40px; color: #999;">No recorded order history yet.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
