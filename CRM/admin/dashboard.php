@@ -2498,26 +2498,64 @@
         }
 
         .cp-logout-btn {
-            width: 100%;
+            width: calc(100% - 40px);
+            margin: 0 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
-            padding: 16px;
-            border-radius: 18px;
-            background: transparent;
-            border: 1px solid rgba(15, 29, 44, 0.1);
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(15, 29, 44, 0.04);
+            border: 1px solid rgba(15, 29, 44, 0.08);
             color: var(--brand-navy);
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cp-logout-btn i {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .cp-logout-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
         }
 
         .cp-logout-btn:hover {
             background: var(--brand-navy);
-            color: var(--white);
+            color: var(--brand-white);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(15, 29, 44, 0.15);
+            border-color: transparent;
         }
 
-        /* Main Content */
+        .cp-logout-btn:hover i {
+            transform: translateX(-5px);
+        }
+
+        .cp-logout-btn:hover::after {
+            left: 100%;
+        }
+
+        .cp-logout-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Main Content Architecture */
         .cp-main-content {
             flex: 1;
             display: flex;
@@ -2536,6 +2574,26 @@
             display: flex;
             align-items: center;
             gap: 15px;
+        }
+
+        .cp-profile-info {
+            text-align: center;
+        }
+
+        .cp-stat-data {
+            flex: 1;
+        }
+
+        .cp-col-main {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .cp-col-side {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .cp-action-btn {
@@ -2781,6 +2839,466 @@
             resize: none;
             margin-bottom: 20px;
         }
+
+        .cp-save-btn {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(15, 29, 44, 0.15);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .cp-save-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .cp-save-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(15, 29, 44, 0.25);
+            background: #1a2f45;
+        }
+
+        .cp-save-btn:hover::after {
+            left: 100%;
+        }
+
+        .cp-save-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .cp-mini-btn {
+            background: transparent;
+            border: none;
+            color: var(--brand-navy);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* CLIENTS DIRECTORY REDESIGN (Ultra-Premium Gallery) */
+        .clients-glass-header {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 35px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.04);
+        }
+
+        .cg-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .cg-subtitle {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--brand-gold);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .cg-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--brand-navy);
+            margin-bottom: 5px;
+        }
+
+        .cg-count {
+            font-size: 15px;
+            color: var(--dark-grey);
+            font-weight: 500;
+        }
+
+        .cg-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .cg-action-btn {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            background: #fff;
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-navy);
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .cg-action-btn:hover {
+            transform: translateY(-5px);
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            box-shadow: 0 15px 30px rgba(15, 29, 44, 0.15);
+        }
+
+        .cg-primary-btn {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            border: none;
+            padding: 16px 32px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(15, 29, 44, 0.2);
+        }
+
+        .cg-primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(15, 29, 44, 0.3);
+            background: #1a2f45;
+        }
+
+        .cg-header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .cg-search-bar {
+            flex: 1;
+            position: relative;
+            background: #fff;
+            border-radius: 20px;
+            padding: 0 25px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+            border: 1px solid rgba(15, 29, 44, 0.05);
+        }
+
+        .cg-search-bar i {
+            font-size: 24px;
+            color: var(--brand-gold);
+        }
+
+        .cg-search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-family: inherit;
+            outline: none;
+            color: var(--brand-navy);
+        }
+
+        .cg-filter-tabs {
+            display: flex;
+            background: rgba(15, 29, 44, 0.04);
+            padding: 8px;
+            border-radius: 20px;
+            gap: 5px;
+        }
+
+        .cg-filter-tab {
+            padding: 12px 24px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--brand-navy);
+            opacity: 0.6;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cg-filter-tab.active {
+            background: #fff;
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .cg-view-toggles {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: transparent;
+            border: 1px solid rgba(15, 29, 44, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-navy);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-toggle.active {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            border-color: var(--brand-navy);
+        }
+
+        /* Portfolio Grid System */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+            padding-bottom: 50px;
+        }
+
+        .client-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 35px;
+            padding: 30px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .client-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 0;
+            background: var(--brand-gold);
+            transition: height 0.4s ease;
+            border-radius: 10px;
+        }
+
+        .client-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: #fff;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+            border-color: transparent;
+        }
+
+        .client-card:hover::before {
+            height: 60px;
+            top: 30px;
+        }
+
+        .cc-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .cc-avatar {
+            width: 64px;
+            height: 64px;
+            background: var(--brand-bg);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--brand-navy);
+            font-family: 'Playfair Display', serif;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        }
+
+        .cc-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--brand-navy);
+            margin-bottom: 4px;
+        }
+
+        .cc-status {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #27ae60;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cc-dot { width: 6px; height: 6px; background: currentColor; border-radius: 50%; animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        .cc-details {
+            border-top: 1px solid rgba(15, 29, 44, 0.04);
+            padding-top: 20px;
+            margin-bottom: 25px;
+        }
+
+        .cc-detail-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-soft);
+        }
+
+        .cc-detail-row i { color: var(--brand-gold); font-size: 18px; }
+
+        .cc-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cc-tag {
+            background: var(--brand-bg);
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--brand-navy);
+            text-transform: uppercase;
+        }
+
+        .cc-view-btn {
+            background: transparent;
+            border: none;
+            color: var(--brand-navy);
+            font-weight: 700;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cc-view-btn i { font-size: 18px; transition: transform 0.3s; }
+        .cc-view-btn:hover i { transform: translateX(5px); }
+
+        /* Focus List System */
+        .clients-list {
+            background: #fff;
+            border-radius: 35px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.03);
+            border: 1px solid rgba(15, 29, 44, 0.05);
+        }
+
+        .cg-list-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr;
+            padding: 25px 40px;
+            background: var(--brand-bg);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--dark-grey);
+            border-bottom: 1px solid rgba(15, 29, 44, 0.05);
+        }
+
+        .cg-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr;
+            padding: 25px 40px;
+            align-items: center;
+            transition: all 0.3s;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.04);
+            cursor: pointer;
+        }
+
+        .cg-row:hover {
+            background: rgba(15, 29, 44, 0.02);
+            transform: translateX(10px);
+        }
+
+        .cg-client-cell {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cg-avatar-mini {
+            width: 44px;
+            height: 44px;
+            background: var(--brand-bg);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--brand-navy);
+        }
+
+        .cg-name-wrap h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            color: var(--brand-navy);
+        }
+
+        .cg-name-wrap span { font-size: 12px; color: var(--dark-grey); }
+
+        /* Loading States */
+        .cg-loading-state {
+            grid-column: 1 / -1;
+            padding: 100px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            color: var(--text-soft);
+        }
+
+        .cg-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(15, 29, 44, 0.1);
+            border-top-color: var(--brand-gold);
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .cp-card-footer {
             display: flex;
@@ -4231,61 +4749,140 @@
             document.getElementById('confirmed-modal').style.display = 'none';
         };
 
-            function fetchClients() {
-                const tableBody = document.getElementById('clients-table-body');
-                const statsSpan = document.querySelector('.clients-stats-line span');
-                
-                if (!tableBody) return;
+        // Initialize Clients Directory Logic
+        let allClientsData = [];
+        let currentView = 'grid';
 
-                fetch('api/api_get_clients.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (Array.isArray(data)) {
-                            // Update count
-                            if (statsSpan) {
-                                statsSpan.innerHTML = `<b>${data.length} clients</b> in your directory`;
-                            }
+        function fetchClients() {
+            const gridContainer = document.getElementById('clients-portfolio-grid');
+            const listContainer = document.getElementById('clients-list-body');
+            const totalCountElem = document.getElementById('client-total-count');
 
-                            if (data.length === 0) {
-                                tableBody.innerHTML = `
-                                    <tr>
-                                        <td colspan="5" style="text-align: center; color: var(--dark-grey); padding: 40px 0;">
-                                            No clients found in your directory.
-                                        </td>
-                                    </tr>`;
-                                return;
-                            }
+            if (!gridContainer) return;
 
-                            tableBody.innerHTML = '';
-                            data.forEach(client => {
-                                const initials = client.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                                const row = document.createElement('tr');
-                                row.innerHTML = `
-                                    <td>
-                                        <div class="client-name-cell">
-                                            <div class="client-avatar">${initials}</div>
-                                            <span>${client.name}</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="status-pill status-marketing">Marketable</span></td>
-                                    <td>${client.phone || '-'}</td>
-                                    <td>${client.email || '-'}</td>
-                                    <td><button class="cp-view-btn" onclick="openClientProfile(${JSON.stringify(client).replace(/"/g, '&quot;')})">View Profile</button></td>
-                                `;
-                                tableBody.appendChild(row);
-                                
-                                // Add click listener to the row
-                                row.style.cursor = 'pointer';
-                                row.addEventListener('click', () => {
-                                    openClientProfile(client);
-                                });
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching clients:', error);
-                    });
+            fetch('api/api_get_clients.php')
+                .then(res => res.json())
+                .then(data => {
+                    allClientsData = Array.isArray(data) ? data : [];
+                    if (totalCountElem) totalCountElem.textContent = allClientsData.length;
+                    renderClients();
+                    setupClientsSearch();
+                })
+                .catch(err => {
+                    console.error('Error fetching clients:', err);
+                    gridContainer.innerHTML = '<div class="cg-error">The directory could not be reached.</div>';
+                });
+        }
+
+        function renderClients(filterData = allClientsData) {
+            const gridContainer = document.getElementById('clients-portfolio-grid');
+            const listContainer = document.getElementById('clients-list-body');
+            
+            if (!gridContainer || !listContainer) return;
+
+            gridContainer.innerHTML = '';
+            listContainer.innerHTML = '';
+
+            if (filterData.length === 0) {
+                const empty = `<div class="cg-loading-state" style="grid-column: 1/-1;"><p>No signatures found matching your criteria.</p></div>`;
+                gridContainer.innerHTML = empty;
+                listContainer.innerHTML = empty;
+                return;
             }
+
+            filterData.forEach(client => {
+                const names = client.name.split(' ');
+                const initials = names.length > 1 ? (names[0][0] + names[1][0]).toUpperCase() : names[0][0].toUpperCase();
+
+                // Grid Card
+                const card = document.createElement('div');
+                card.className = 'client-card';
+                card.onclick = () => openClientProfile(client);
+                card.innerHTML = `
+                    <div class="cc-header">
+                        <div class="cc-avatar">${initials}</div>
+                        <div class="cc-info">
+                            <h3>${client.name}</h3>
+                            <div class="cc-status"><div class="cc-dot"></div> Active Client</div>
+                        </div>
+                    </div>
+                    <div class="cc-details">
+                        <div class="cc-detail-row"><i class='bx bx-envelope'></i> <span>${client.email || 'No email signature'}</span></div>
+                        <div class="cc-detail-row"><i class='bx bx-phone'></i> <span>${client.phone || 'No contact number'}</span></div>
+                    </div>
+                    <div class="cc-footer">
+                        <span class="cc-tag">Classic Tier</span>
+                        <button class="cc-view-btn">View Profile <i class='bx bx-right-arrow-alt'></i></button>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+
+                // List Row
+                const row = document.createElement('div');
+                row.className = 'cg-row';
+                row.onclick = () => openClientProfile(client);
+                row.innerHTML = `
+                    <div class="cg-client-cell">
+                        <div class="cg-avatar-mini">${initials}</div>
+                        <div class="cg-name-wrap">
+                            <h4>${client.name}</h4>
+                            <span>ID: #${client.id.toString().padStart(4, '0')}</span>
+                        </div>
+                    </div>
+                    <div class="cg-status-cell"><span class="cc-status" style="font-size: 10px;"><div class="cc-dot"></div> Active</span></div>
+                    <div class="cg-phone-cell" style="font-size: 14px; color: var(--brand-navy); font-weight: 500;">${client.phone || '-'}</div>
+                    <div class="cg-email-cell" style="font-size: 14px; color: var(--text-soft);">${client.email || '-'}</div>
+                    <div class="cg-action-cell">
+                        <button class="cc-view-btn" style="padding: 8px 15px; background: rgba(15, 29, 44, 0.05); border: none; border-radius: 12px; font-weight: 700; font-size: 11px; text-transform: uppercase;">View</button>
+                    </div>
+                `;
+                listContainer.appendChild(row);
+            });
+        }
+
+        function setupClientsSearch() {
+            const searchInput = document.getElementById('clients-search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const term = e.target.value.toLowerCase();
+                    const filtered = allClientsData.filter(c => 
+                        c.name.toLowerCase().includes(term) || 
+                        (c.email && c.email.toLowerCase().includes(term)) || 
+                        (c.phone && c.phone.includes(term))
+                    );
+                    renderClients(filtered);
+                });
+            }
+
+            // View Toggles
+            const btnGrid = document.getElementById('view-grid');
+            const btnList = document.getElementById('view-list');
+            const portfolioGrid = document.getElementById('clients-portfolio-grid');
+            const focusList = document.getElementById('clients-focus-list');
+
+            btnGrid?.addEventListener('click', () => {
+                btnGrid.classList.add('active');
+                btnList?.classList.remove('active');
+                portfolioGrid.style.display = 'grid';
+                focusList.style.display = 'none';
+            });
+
+            btnList?.addEventListener('click', () => {
+                btnList.classList.add('active');
+                btnGrid?.classList.remove('active');
+                portfolioGrid.style.display = 'none';
+                focusList.style.display = 'block';
+            });
+
+            // Filter Tabs
+            document.querySelectorAll('.cg-filter-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.cg-filter-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // Sorting/Filtering logic can be expanded here
+                });
+            });
+        }
 
             function fetchStaffs() {
                 const dashboardTable = document.getElementById('dashboard-staff-table-body');
