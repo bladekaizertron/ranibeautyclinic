@@ -2358,349 +2358,490 @@
         .btn-es-save { background: #7ab53e; color: #fff; }
         .btn-es:hover { opacity: 0.9; }
 
-        /* Client Profile Modal Styles */
+        /* CLIENT PROFILE MODAL RECONSTRUCTION (Ultra-Premium) */
         #client-profile-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(15, 29, 44, 0.2);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
             z-index: 2500;
             display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         #client-profile-modal {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 95%;
-            max-width: 1200px;
+            transform: translate(-50%, -46%) scale(0.98);
+            width: 96%;
+            max-width: 1400px;
             height: 90vh;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 40px;
+            box-shadow: 0 50px 120px rgba(0,0,0,0.15);
             z-index: 2600;
             display: none;
-            flex-direction: column;
             overflow: hidden;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', 'Inter', sans-serif;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .cp-header {
-            padding: 20px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #f0f0f0;
+        #client-profile-modal.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
         }
 
-        .cp-header-left {
+        .cp-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Sidebar Architecture */
+        .cp-sidebar {
+            width: 320px;
+            background: rgba(15, 29, 44, 0.03);
+            border-right: 1px solid rgba(15, 29, 44, 0.05);
+            display: flex;
+            flex-direction: column;
+            padding: 40px 0;
+        }
+
+        .cp-profile-signature {
+            padding: 0 40px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .cp-avatar-large {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--brand-navy), #2d4a6a);
+            color: var(--brand-gold);
+            border-radius: 35px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            box-shadow: 0 15px 35px rgba(15, 29, 44, 0.2);
+            font-family: 'Playfair Display', serif;
         }
 
         .cp-client-name {
-            font-size: 24px;
-            font-weight: 500;
-            color: #333;
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--brand-navy);
+            margin-bottom: 8px;
+            line-height: 1.2;
         }
 
         .cp-location {
             font-size: 14px;
-            color: #888;
+            color: var(--dark-grey);
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .cp-nav-vertical {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .cp-tab {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 25px;
+            border-radius: 20px;
+            color: var(--brand-navy);
+            opacity: 0.5;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .cp-tab i {
+            font-size: 20px;
+        }
+
+        .cp-tab:hover {
+            opacity: 0.8;
+            background: rgba(15, 29, 44, 0.04);
+        }
+
+        .cp-tab.active {
+            opacity: 1;
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            box-shadow: 0 10px 20px rgba(15, 29, 44, 0.1);
+        }
+
+        .cp-sidebar-footer {
+            padding: 0 25px;
+        }
+
+        .cp-logout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 18px;
+            background: transparent;
+            border: 1px solid rgba(15, 29, 44, 0.1);
+            color: var(--brand-navy);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cp-logout-btn:hover {
+            background: var(--brand-navy);
+            color: var(--white);
+        }
+
+        /* Main Content */
+        .cp-main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+        }
+
+        .cp-main-header {
+            padding: 30px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .cp-header-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .cp-action-btn {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            background: #fff;
-            color: #666;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .cp-action-btn:hover {
-            background: #f9f9f9;
-        }
-
-        .cp-tabs {
-            display: flex;
-            padding: 0 30px;
-            border-bottom: 1px solid #f0f0f0;
-            background: #fff;
-            overflow-x: auto;
-        }
-
-        .cp-tab {
-            padding: 15px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #888;
-            text-transform: uppercase;
-            cursor: pointer;
-            white-space: nowrap;
-            border-bottom: 2px solid transparent;
-            margin-right: 20px;
-        }
-
-        .cp-tab.active {
-            color: #9b5de5;
-            border-bottom-color: #9b5de5;
-        }
-
-        .cp-body {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-            background: #fcfcfc;
-        }
-
-        .cp-left-col {
-            flex: 1;
-            padding: 25px 30px;
-            overflow-y: auto;
-            border-right: 1px solid #f0f0f0;
-        }
-
-        .cp-right-col {
-            width: 320px;
-            padding: 25px;
-            background: #fff;
-            overflow-y: auto;
-        }
-
-        .cp-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .cp-stat-box {
-            background: #fff;
-            border: 1px solid #f0f0f0;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .cp-stat-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: #aaa;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .cp-stat-value {
-            font-size: 22px;
-            font-weight: 400;
-            color: #333;
-        }
-
-        .cp-section {
-            margin-bottom: 30px;
-        }
-
-        .cp-section-title {
-            font-size: 18px;
-            color: #4a90e2;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .cp-empty-state {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 10px;
-        }
-
-        .cp-link {
-            color: #4a90e2;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .cp-alert-box {
-            background: #fff;
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            padding: 5px;
-        }
-
-        .cp-alert-input {
-            flex: 1;
-            border: none;
-            padding: 10px;
-            font-size: 14px;
-            outline: none;
-            color: #666;
-        }
-
-        .cp-save-btn {
-            background: #e0ceff;
-            color: #aa86ff;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .cp-notes-container {
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
-            background: #fff;
-            overflow: hidden;
-        }
-
-        .cp-notes-tabs {
-            display: flex;
-            border-bottom: 1px solid #f0f0f0;
-            padding: 0 10px;
-        }
-
-        .cp-notes-tab {
-            padding: 10px 15px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #aaa;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-        }
-
-        .cp-notes-tab.active {
-            color: #9b5de5;
-            border-bottom-color: #9b5de5;
-        }
-
-        .cp-notes-textarea {
-            width: 100%;
-            min-height: 120px;
-            border: none;
-            padding: 15px;
-            font-size: 14px;
-            outline: none;
-            resize: vertical;
-            color: #333;
-        }
-
-        .cp-notes-footer {
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid #f9f9f9;
-        }
-
-        .cp-contact-title {
-            font-size: 18px;
-            color: #4a90e2;
-            margin-bottom: 20px;
-        }
-
-        .cp-field {
-            margin-bottom: 20px;
-        }
-
-        .cp-field-label {
-            font-size: 12px;
-            color: #aaa;
-            margin-bottom: 5px;
-        }
-
-        .cp-field-input {
-            width: 100%;
-            border: none;
-            border-bottom: 1px solid #f0f0f0;
-            padding: 8px 0;
-            font-size: 16px;
-            color: #333;
-            outline: none;
-        }
-
-        .cp-field-input:focus {
-            border-bottom-color: #9b5de5;
-        }
-
-        .cp-checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 5px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .cp-checkbox-group input {
-            accent-color: #9b5de5;
-        }
-
-        .cp-close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            color: #ccc;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .cp-close-btn:hover {
-            color: #666;
-        }
-
-        .cp-icon-field {
-            display: flex;
-            align-items: center;
             gap: 15px;
         }
 
-        .cp-icon-field i {
+        .cp-action-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: #fff;
+            border: 1px solid rgba(15, 29, 44, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-navy);
             font-size: 20px;
-            color: #666;
-        }
-
-        .cp-view-btn {
-            padding: 6px 14px;
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            color: #4a90e2;
-            font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
-        .cp-view-btn:hover {
-            background: #4a90e2;
-            color: #fff;
-            border-color: #4a90e2;
-            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+        .cp-action-btn:hover {
+            transform: translateY(-3px);
+            background: var(--brand-navy);
+            color: var(--brand-white);
+        }
+
+        .cp-divider-v {
+            width: 1px;
+            height: 25px;
+            background: rgba(15, 29, 44, 0.1);
+            margin: 0 10px;
+        }
+
+        .cp-close-x {
+            font-size: 32px;
+            color: var(--dark-grey);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .cp-close-x:hover { color: var(--brand-navy); }
+
+        .cp-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 50px 50px;
+        }
+
+        /* Stats Layer */
+        .cp-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .cp-stat-card {
+            background: #fff;
+            border-radius: 28px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid rgba(15, 29, 44, 0.03);
+            transition: all 0.3s;
+        }
+
+        .cp-stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .cp-stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: var(--brand-bg);
+            color: var(--brand-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .cp-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--brand-navy);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .cp-stat-label {
+            font-size: 12px;
+            color: var(--dark-grey);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Layout Grid */
+        .cp-content-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+        }
+
+        .cp-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 32px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
+        }
+
+        .cp-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .cp-card-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--brand-navy);
+        }
+
+        /* Appointments Custom List */
+        .cp-appointments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cp-appointment-item {
+            background: #fff !important;
+            border-radius: 24px !important;
+            padding: 22px !important;
+            border: 1px solid rgba(15, 29, 44, 0.04) !important;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02) !important;
+        }
+
+        /* Alert Section */
+        .cp-alert-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cp-alert-input {
+            width: 100%;
+            background: #fff;
+            border: 1px solid rgba(15, 29, 44, 0.08);
+            border-radius: 18px;
+            padding: 16px 20px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .cp-alert-input:focus {
+            border-color: var(--brand-navy);
+            box-shadow: 0 0 0 4px rgba(15, 29, 44, 0.04);
+        }
+
+        /* Contact Details */
+        .cp-contact-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .cp-input-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--dark-grey);
+            margin-bottom: 8px;
+            margin-left: 5px;
+        }
+
+        .cp-minimal-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(15, 29, 44, 0.06);
+            padding: 10px 5px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--brand-navy);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .cp-minimal-input:focus { border-bottom-color: var(--brand-gold); }
+
+        .cp-toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--dark-grey);
+            font-weight: 500;
+        }
+
+        .cp-toggle-row input { accent-color: var(--brand-navy); transform: scale(1.1); }
+
+        /* Notes Specialized card */
+        .cp-notes-tabs {
+            display: flex;
+            gap: 20px;
+        }
+
+        .cp-notes-tabs span {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--dark-grey);
+            cursor: pointer;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .cp-notes-tabs span.active {
+            color: var(--brand-navy);
+            border-bottom-color: var(--brand-gold);
+        }
+
+        .cp-notes-area {
+            width: 100%;
+            min-height: 180px;
+            background: rgba(15, 29, 44, 0.02);
+            border: none;
+            border-radius: 20px;
+            padding: 20px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--brand-navy);
+            outline: none;
+            resize: none;
+            margin-bottom: 20px;
+        }
+
+        .cp-card-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .cp-mini-btn {
+            background: transparent;
+            border: none;
+            color: var(--brand-navy);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .cp-save-btn {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(15, 29, 44, 0.15);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .cp-save-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .cp-save-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(15, 29, 44, 0.25);
+            background: #1a2f45;
+        }
+
+        .cp-save-btn:hover::after {
+            left: 100%;
+        }
+
+        .cp-save-btn:active {
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -3545,6 +3686,13 @@
 
             if (displayNameElem) displayNameElem.textContent = client.name || 'Client';
             
+            // Set Avatar Initials
+            const initialsElem = document.getElementById('cp-avatar-initials');
+            if (initialsElem && client.name) {
+                const parts = client.name.split(' ');
+                initialsElem.textContent = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0][0].toUpperCase();
+            }
+
             const firstName = client.name ? client.name.split(' ')[0] : '';
             const lastName = client.name ? client.name.split(' ').slice(1).join(' ') : '';
             
@@ -3553,19 +3701,23 @@
             if (emailElem) emailElem.value = client.email || '';
             if (phoneElem) phoneElem.value = client.phone || '';
             
-            // Reset tabs
-            const tabs = document.querySelectorAll('.cp-tab');
+            // Reset vertical tabs
+            const tabs = modal.querySelectorAll('.cp-tab');
             tabs.forEach(t => t.classList.remove('active'));
-            const overviewTab = document.querySelector('.cp-tab[data-tab="overview"]');
+            const overviewTab = modal.querySelector('.cp-tab[data-tab="overview"]');
             if (overviewTab) overviewTab.classList.add('active');
 
             overlay.style.display = 'block';
             modal.style.display = 'flex';
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+                modal.classList.add('show');
+            }, 10);
 
             // Fetch and display appointments
             const appointmentsList = document.getElementById('cp-appointments-list');
             if (appointmentsList) {
-                appointmentsList.innerHTML = '<div class="cp-loading" style="color: var(--dark-grey); font-size: 14px; padding: 10px;">Loading appointments...</div>';
+                appointmentsList.innerHTML = '<div class="cp-loading" style="color: var(--dark-grey); font-size: 14px; padding: 40px; text-align: center; font-weight: 500;">Refreshing clinic schedule...</div>';
                 
                 fetch(`api/api_get_client_appointments.php?client_id=${client.id}`)
                     .then(res => res.json())
@@ -3590,28 +3742,42 @@
                                 
                                 const apptDiv = document.createElement('div');
                                 apptDiv.className = 'cp-appointment-item';
-                                apptDiv.style.marginBottom = '15px';
-                                apptDiv.style.padding = '12px';
-                                apptDiv.style.background = 'rgba(0,0,0,0.03)';
-                                apptDiv.style.borderRadius = '10px';
-                                apptDiv.style.borderLeft = '4px solid var(--blue)';
+                                apptDiv.style.marginBottom = '20px';
+                                apptDiv.style.padding = '20px';
+                                apptDiv.style.background = 'rgba(255,255,255,0.6)';
+                                apptDiv.style.borderRadius = '20px';
+                                apptDiv.style.border = '1px solid rgba(15, 29, 44, 0.05)';
                                 apptDiv.style.display = 'flex';
                                 apptDiv.style.justifyContent = 'space-between';
                                 apptDiv.style.alignItems = 'center';
+                                apptDiv.style.boxShadow = '0 10px 25px rgba(0,0,0,0.03)';
+                                apptDiv.style.transition = 'all 0.3s ease';
                                 
                                 apptDiv.innerHTML = `
                                     <div class="appt-details">
-                                        <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--dark);">
+                                        <div style="font-weight: 600; font-size: 16px; margin-bottom: 6px; color: var(--brand-navy);">
                                             (${appt.services}) with ${appt.staff_name}
                                         </div>
-                                        <div style="font-size: 13px; color: var(--dark-grey);">
+                                        <div style="font-size: 14px; color: var(--text-soft); font-weight: 500;">
                                             ${dateFormatted} @ ${timeFormatted}.
                                         </div>
                                     </div>
-                                    <button class="cp-edit-appt-btn" style="background: var(--blue); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: opacity 0.2s;">
-                                        Edit
+                                    <button class="cp-edit-appt-btn" style="background: var(--brand-navy); color: var(--brand-white); border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                                        Edit Details
                                     </button>
                                 `;
+
+                                // Hover effects
+                                apptDiv.onmouseenter = () => {
+                                    apptDiv.style.transform = 'translateY(-3px)';
+                                    apptDiv.style.background = '#fff';
+                                    apptDiv.style.boxShadow = '0 15px 35px rgba(0,0,0,0.06)';
+                                };
+                                apptDiv.onmouseleave = () => {
+                                    apptDiv.style.transform = 'translateY(0)';
+                                    apptDiv.style.background = 'rgba(255,255,255,0.6)';
+                                    apptDiv.style.boxShadow = '0 10px 25px rgba(0,0,0,0.03)';
+                                };
 
                                 // Add click event to the edit button
                                 const editBtn = apptDiv.querySelector('.cp-edit-appt-btn');
@@ -3619,10 +3785,6 @@
                                     e.stopPropagation();
                                     window.location.href = `edit_sched_appointments.php?id=${appt.id}`;
                                 });
-
-                                // Hover effect
-                                editBtn.addEventListener('mouseenter', () => editBtn.style.opacity = '0.8');
-                                editBtn.addEventListener('mouseleave', () => editBtn.style.opacity = '1');
 
                                 appointmentsList.appendChild(apptDiv);
                             });
@@ -3641,8 +3803,13 @@
 
         window.closeClientProfile = function() {
             const { overlay, modal } = getClientProfileElements();
-            if (overlay) overlay.style.display = 'none';
-            if (modal) modal.style.display = 'none';
+            if (modal) modal.classList.remove('show');
+            if (overlay) overlay.style.opacity = '0';
+            
+            setTimeout(() => {
+                if (overlay) overlay.style.display = 'none';
+                if (modal) modal.style.display = 'none';
+            }, 400);
         };
 
         // Close on overlay click - using event delegation or finding it
@@ -3653,12 +3820,21 @@
         });
 
         // Tab switching logic for client profile
-        document.querySelectorAll('.cp-tab').forEach(tab => {
+        document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(tab => {
             tab.addEventListener('click', function() {
-                document.querySelectorAll('.cp-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
-                // For now, just switching the active class. 
-                // In a full implementation, this would switch the content area.
+                
+                const tabName = this.getAttribute('data-tab');
+                const scrollArea = document.querySelector('.cp-scroll-area');
+                
+                if (tabName !== 'overview') {
+                    scrollArea.style.opacity = '0.3';
+                    scrollArea.style.pointerEvents = 'none';
+                } else {
+                    scrollArea.style.opacity = '1';
+                    scrollArea.style.pointerEvents = 'all';
+                }
             });
         });
 
@@ -4733,132 +4909,178 @@
     <!-- Client Profile Modal -->
     <div id="client-profile-overlay"></div>
     <div id="client-profile-modal">
-        <span class="cp-close-btn" onclick="closeClientProfile()">&times;</span>
-        <div class="cp-header">
-            <div class="cp-header-left">
-                <h2 id="cp-display-name" class="cp-client-name">Loading...</h2>
-                <div class="cp-location">
-                    <i class='bx bxs-map'></i>
-                    <span>Renton</span>
-                </div>
-            </div>
-            <div class="cp-header-actions">
-                <button class="cp-action-btn"><i class='bx bx-cart'></i></button>
-                <button class="cp-action-btn"><i class='bx bx-note'></i></button>
-                <button class="cp-action-btn"><i class='bx bx-message-detail'></i></button>
-                <button class="cp-action-btn"><i class='bx bx-envelope'></i></button>
-                <button class="cp-action-btn"><i class='bx bx-calendar'></i></button>
-                <button class="cp-action-btn"><i class='bx bx-dots-vertical-rounded'></i></button>
-            </div>
-        </div>
-        <div class="cp-tabs">
-            <div class="cp-tab active" data-tab="overview">Overview</div>
-            <div class="cp-tab" data-tab="history">History</div>
-            <div class="cp-tab" data-tab="forms">Forms and Charts</div>
-            <div class="cp-tab" data-tab="gallery">Gallery</div>
-            <div class="cp-tab" data-tab="files">Files</div>
-        </div>
-        <div class="cp-body">
-            <div class="cp-left-col">
-                <div class="cp-stats-grid">
-                    <div class="cp-stat-box">
-                        <div class="cp-stat-label">Appointments</div>
-                        <div class="cp-stat-value">2</div>
-                    </div>
-                    <div class="cp-stat-box">
-                        <div class="cp-stat-label">Show Rate</div>
-                        <div class="cp-stat-value">100%</div>
-                    </div>
-                    <div class="cp-stat-box">
-                        <div class="cp-stat-label">Avg. Revisit</div>
-                        <div class="cp-stat-value">0.4 <small style="font-size: 10px; color: #aaa;">Weeks</small></div>
-                    </div>
-                    <div class="cp-stat-box">
-                        <div class="cp-stat-label">Avg. Visit Value</div>
-                        <div class="cp-stat-value">$0.00</div>
-                    </div>
-                </div>
-
-                <div class="cp-section">
-                    <h3 class="cp-section-title">Scheduled Appointments</h3>
-                    <div class="cp-empty-state" id="cp-appointments-list">
-                        Client doesn't have any upcoming appointments. <span class="cp-link">Schedule one now!</span>
-                    </div>
-                </div>
-
-                <div class="cp-section">
-                    <h3 class="cp-section-title">
-                        <span>Scheduling Alert <i class='bx bxs-lock-alt' style="font-size: 14px; color: #ccc;"></i></span>
-                    </h3>
-                    <div class="cp-alert-box">
-                        <input type="text" class="cp-alert-input" placeholder="Set an alert to appear when booking a new appointment for this client...">
-                        <button class="cp-save-btn">Save</button>
-                    </div>
-                </div>
-
-                <div class="cp-section">
-                    <h3 class="cp-section-title">
-                        <span>Client Notes <i class='bx bxs-lock-alt' style="font-size: 14px; color: #ccc;"></i></span>
-                    </h3>
-                    <div class="cp-notes-container">
-                        <div class="cp-notes-tabs">
-                            <div class="cp-notes-tab active">Note</div>
-                            <div class="cp-notes-tab">Medication</div>
-                            <div class="cp-notes-tab">Allergies</div>
-                        </div>
-                        <textarea class="cp-notes-textarea" id="cp-notes-area" placeholder="Type a new note..."></textarea>
-                        <div class="cp-notes-footer">
-                            <i class='bx bx-paperclip' style="color: #888; cursor: pointer;"></i>
-                            <button class="cp-save-btn">Save</button>
+        <div class="cp-container">
+            <!-- New Sidebar Architecture -->
+            <aside class="cp-sidebar">
+                <div class="cp-profile-signature">
+                    <div class="cp-avatar-large" id="cp-avatar-initials">JS</div>
+                    <div class="cp-profile-info">
+                        <h2 id="cp-display-name" class="cp-client-name">Loading...</h2>
+                        <div class="cp-location">
+                            <i class='bx bxs-map'></i>
+                            <span>Renton Clinic</span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="cp-right-col">
-                <h3 class="cp-contact-title">Contact Info</h3>
-                <div class="cp-field">
-                    <div class="cp-field-label">First Name *</div>
-                    <div class="cp-icon-field">
-                        <i class='bx bxs-user'></i>
-                        <input type="text" id="cp-firstname" class="cp-field-input" value="">
+
+                <nav class="cp-nav-vertical">
+                    <div class="cp-tab active" data-tab="overview">
+                        <i class='bx bx-grid-alt'></i>
+                        <span>Overview</span>
+                    </div>
+                    <div class="cp-tab" data-tab="history">
+                        <i class='bx bx-history'></i>
+                        <span>History</span>
+                    </div>
+                    <div class="cp-tab" data-tab="forms">
+                        <i class='bx bx-file'></i>
+                        <span>Forms & Charts</span>
+                    </div>
+                    <div class="cp-tab" data-tab="gallery">
+                        <i class='bx bx-images'></i>
+                        <span>Gallery</span>
+                    </div>
+                    <div class="cp-tab" data-tab="files">
+                        <i class='bx bx-folder'></i>
+                        <span>Files</span>
+                    </div>
+                </nav>
+
+                <div class="cp-sidebar-footer">
+                    <button class="cp-logout-btn" onclick="closeClientProfile()">
+                        <i class='bx bx-left-arrow-alt'></i>
+                        <span>Back to Dashboard</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="cp-main-content">
+                <header class="cp-main-header">
+                    <div class="cp-header-actions">
+                        <button class="cp-action-btn" title="Cart"><i class='bx bx-cart'></i></button>
+                        <button class="cp-action-btn" title="Quick Note"><i class='bx bx-note'></i></button>
+                        <button class="cp-action-btn" title="Messages"><i class='bx bx-message-detail'></i></button>
+                        <button class="cp-action-btn" title="Email"><i class='bx bx-envelope'></i></button>
+                        <button class="cp-action-btn" title="Calendar"><i class='bx bx-calendar'></i></button>
+                        <div class="cp-divider-v"></div>
+                        <button class="cp-action-btn cp-more" title="More Options"><i class='bx bx-dots-horizontal-rounded'></i></button>
+                    </div>
+                    <span class="cp-close-x" onclick="closeClientProfile()">&times;</span>
+                </header>
+
+                <div class="cp-scroll-area">
+                    <div class="cp-dashboard-grid">
+                        <!-- Stats Row -->
+                        <div class="cp-stats-grid">
+                            <div class="cp-stat-card">
+                                <div class="cp-stat-icon"><i class='bx bx-calendar-star'></i></div>
+                                <div class="cp-stat-data">
+                                    <div class="cp-stat-value">2</div>
+                                    <div class="cp-stat-label">Total Visits</div>
+                                </div>
+                            </div>
+                            <div class="cp-stat-card">
+                                <div class="cp-stat-icon"><i class='bx bx-check-double'></i></div>
+                                <div class="cp-stat-data">
+                                    <div class="cp-stat-value">100%</div>
+                                    <div class="cp-stat-label">Show Rate</div>
+                                </div>
+                            </div>
+                            <div class="cp-stat-card">
+                                <div class="cp-stat-icon"><i class='bx bx-repost'></i></div>
+                                <div class="cp-stat-data">
+                                    <div class="cp-stat-value">0.4 <small>Wks</small></div>
+                                    <div class="cp-stat-label">Avg Revisit</div>
+                                </div>
+                            </div>
+                            <div class="cp-stat-card">
+                                <div class="cp-stat-icon"><i class='bx bx-dollar-circle'></i></div>
+                                <div class="cp-stat-data">
+                                    <div class="cp-stat-value">$0.00</div>
+                                    <div class="cp-stat-label">Visit Value</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Grid Configuration -->
+                        <div class="cp-content-layout">
+                            <!-- Left Column: Appointments & Alerts -->
+                            <div class="cp-col-main">
+                                <section class="cp-card cp-appointments-card">
+                                    <div class="cp-card-header">
+                                        <h3>Upcoming Appointments</h3>
+                                        <button class="cp-mini-btn">View All</button>
+                                    </div>
+                                    <div class="cp-appointments-list" id="cp-appointments-list">
+                                        <!-- Dynamic content -->
+                                    </div>
+                                </section>
+
+                                <section class="cp-card cp-alert-card">
+                                    <div class="cp-card-header">
+                                        <h3>Scheduling Alert</h3>
+                                        <i class='bx bxs-lock-alt' style="color: var(--brand-gold);"></i>
+                                    </div>
+                                    <div class="cp-alert-content">
+                                        <input type="text" class="cp-alert-input" placeholder="Set a booking alert for this client...">
+                                        <button class="cp-save-btn">Save Alert</button>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <!-- Right Column: Contact & Notes -->
+                            <div class="cp-col-side">
+                                <section class="cp-card cp-contact-card">
+                                    <div class="cp-card-header">
+                                        <h3>Personal Details</h3>
+                                    </div>
+                                    <div class="cp-contact-form">
+                                        <div class="cp-input-group">
+                                            <label>First Name</label>
+                                            <input type="text" id="cp-firstname" class="cp-minimal-input">
+                                        </div>
+                                        <div class="cp-input-group">
+                                            <label>Last Name</label>
+                                            <input type="text" id="cp-lastname" class="cp-minimal-input">
+                                        </div>
+                                        <div class="cp-input-group">
+                                            <label>Email Address</label>
+                                            <input type="email" id="cp-email" class="cp-minimal-input">
+                                            <div class="cp-toggle-row">
+                                                <input type="checkbox" id="cp-email-notif" checked>
+                                                <label for="cp-email-notif">Email Notifications</label>
+                                            </div>
+                                        </div>
+                                        <div class="cp-input-group">
+                                            <label>Mobile Number</label>
+                                            <input type="text" id="cp-phone" class="cp-minimal-input">
+                                            <div class="cp-toggle-row">
+                                                <input type="checkbox" id="cp-text-notif" checked>
+                                                <label for="cp-text-notif">SMS Notifications</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section class="cp-card cp-notes-card">
+                                    <div class="cp-card-header">
+                                        <div class="cp-notes-tabs">
+                                            <span class="active">Notes</span>
+                                            <span>Medication</span>
+                                            <span>Allergies</span>
+                                        </div>
+                                    </div>
+                                    <textarea class="cp-notes-area" id="cp-notes-area" placeholder="Write a new clinical note..."></textarea>
+                                    <div class="cp-card-footer">
+                                        <button class="cp-save-btn">Save Note</button>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="cp-field" style="padding-left: 35px;">
-                    <div class="cp-field-label">Last Name *</div>
-                    <input type="text" id="cp-lastname" class="cp-field-input" value="">
-                </div>
-                <div class="cp-field" style="padding-left: 35px;">
-                    <div class="cp-field-label">Pronouns</div>
-                    <select class="cp-field-input" style="background: transparent;">
-                        <option>Not Specified</option>
-                        <option>He/Him</option>
-                        <option>She/Her</option>
-                        <option>They/Them</option>
-                    </select>
-                </div>
-                <div class="cp-field">
-                    <div class="cp-field-label">Email</div>
-                    <div class="cp-icon-field">
-                        <i class='bx bxs-envelope'></i>
-                        <input type="email" id="cp-email" class="cp-field-input" value="">
-                    </div>
-                    <div class="cp-checkbox-group" style="padding-left: 35px;">
-                        <input type="checkbox" id="cp-email-notif" checked>
-                        <label for="cp-email-notif">Email notifications</label>
-                    </div>
-                </div>
-                <div class="cp-field">
-                    <div class="cp-field-label">Mobile</div>
-                    <div class="cp-icon-field">
-                        <i class='bx bxs-phone-rounded'></i>
-                        <input type="text" id="cp-phone" class="cp-field-input" value="">
-                    </div>
-                    <div class="cp-checkbox-group" style="padding-left: 35px;">
-                        <input type="checkbox" id="cp-text-notif" checked>
-                        <label for="cp-text-notif">Text notifications</label>
-                    </div>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
     <!-- Unconfirmed Appointments Modal -->
