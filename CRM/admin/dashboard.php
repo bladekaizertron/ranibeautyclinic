@@ -644,6 +644,143 @@
             pointer-events: none;
         }
 
+        /* Pivot View Container & Transitions */
+        .insights-pivot-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 500px;
+            overflow: hidden;
+        }
+
+        .insights-grid-view, .insights-pivot-view {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
+
+        .insights-grid-view.hidden {
+            opacity: 0;
+            transform: translateX(-30px);
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+        }
+
+        .insights-pivot-view {
+            opacity: 0;
+            transform: translateX(30px);
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            display: none;
+        }
+
+        .insights-pivot-view.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+            position: relative;
+            display: block;
+        }
+
+        /* Pivot Header */
+        .pivot-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn-pivot-back {
+            background: rgba(15, 29, 44, 0.05);
+            border: 1px solid rgba(15, 29, 44, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--brand-navy);
+        }
+
+        .btn-pivot-back:hover {
+            background: var(--brand-navy);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        .pivot-title h2 {
+            font-family: var(--playfair);
+            font-size: 28px;
+            color: var(--brand-navy);
+            margin: 0;
+        }
+
+        /* Pivot List Layout */
+        .pivot-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .pivot-item-wrapper {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .pivot-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 25px;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+        }
+
+        .pivot-item:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .pivot-item-detail {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(15, 29, 44, 0.05);
+        }
+
+        .pivot-item-wrapper.expanded .pivot-item-detail {
+            max-height: 1000px;
+            opacity: 1;
+            padding: 25px;
+        }
+
+        .pivot-item-wrapper.expanded {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(15, 29, 44, 0.05);
+        }
+
+        .pivot-item-wrapper.expanded .pivot-item {
+            border-bottom: 1px solid rgba(15, 29, 44, 0.05);
+        }
+
+        .pivot-item .bx-chevron-right {
+            transition: transform 0.4s ease;
+        }
+
+        .pivot-item-wrapper.expanded .pivot-item .bx-chevron-right {
+            transform: rotate(90deg);
+        }
+
+        /* Pivot Detail View (Legacy cleanup) */
+        .pivot-detail-container {
+            display: none !important;
+        }
+
         .insights-bg-decor-2 {
             position: fixed;
             bottom: 10%;
@@ -3831,7 +3968,10 @@
 				</div>
 			</div>
 
-			<ul class="box-info">
+            <div class="insights-pivot-wrapper">
+                <!-- View 1: Insights Grid -->
+                <div id="insights-grid-view" class="insights-grid-view">
+                    <ul class="box-info">
 				<li id="unconfirmed-card" class="glass-card" onclick="openUnconfirmedModal()" style="cursor: pointer;">
 					<div style="background: rgba(219, 80, 74, 0.1); color: #DB504A; width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
                         <i class='bx bxs-calendar' style="font-size: 28px;"></i>
@@ -3914,6 +4054,29 @@
                     </div>
 				</div>
 			</div>
+                </div>
+
+                <!-- View 2: Pivot (List/Detail) -->
+                <div id="insights-pivot-view" class="insights-pivot-view">
+                    <div class="pivot-header">
+                        <button class="btn-pivot-back" onclick="pivotBackToGrid()">
+                            <i class='bx bx-left-arrow-alt' style="font-size: 24px;"></i>
+                        </button>
+                        <div class="pivot-title">
+                            <h2 id="pivot-view-title">Appointments</h2>
+                        </div>
+                    </div>
+
+                    <!-- List Container -->
+                    <div id="pivot-list-container" class="pivot-list">
+                        <!-- Populated by JS -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+                </div>
+            </div>
         </div>
 
         <!-- Main Sections Included from separate files -->
@@ -5102,41 +5265,21 @@
                 .catch(err => console.error('Error fetching stats:', err));
         }
 
-        window.openUnconfirmedModal = function() {
-            currentAppointmentsList = currentUnconfirmedList;
-            renderAppointmentsModal('unconfirmed', currentUnconfirmedList);
-        };
+        // Pivot View Logic (Accordion Style)
+        window.pivotToView = function(type, list) {
+            const gridView = document.getElementById('insights-grid-view');
+            const pivotView = document.getElementById('insights-pivot-view');
+            const listContainer = document.getElementById('pivot-list-container');
+            const titleElem = document.getElementById('pivot-view-title');
 
-        window.openConfirmedModal = function() {
-            currentAppointmentsList = currentConfirmedList;
-            renderAppointmentsModal('confirmed', currentConfirmedList);
-        };
+            if (!gridView || !pivotView || !listContainer) return;
 
-        window.openCompletedModal = function() {
-            currentAppointmentsList = currentCompletedList;
-            renderAppointmentsModal('completed', currentCompletedList);
-        };
+            // Set Title
+            titleElem.textContent = type.charAt(0).toUpperCase() + type.slice(1) + ' Appointments';
 
-        window.closeCompletedModal = function() {
-            const overlay = document.getElementById('completed-modal-overlay');
-            const modal = document.getElementById('completed-modal');
-            overlay.classList.remove('show');
-            modal.classList.remove('show');
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                modal.style.display = 'none';
-            }, 300);
-        };
-
-        function renderAppointmentsModal(type, list) {
-            const overlay = document.getElementById(`${type}-modal-overlay`);
-            const modal = document.getElementById(`${type}-modal`);
-            const modalBody = document.getElementById(`${type}-modal-body`);
-
-            if (!overlay || !modal || !modalBody) return;
-
+            // Render List with Accordion Wrappers
             if (list.length === 0) {
-                modalBody.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">No ${type} appointments at this time.</div>`;
+                listContainer.innerHTML = `<div style="padding: 40px; text-align: center; color: #888; font-family: var(--montserrat);">No ${type} appointments at this time.</div>`;
             } else {
                 let html = '';
                 list.forEach((item, index) => {
@@ -5150,56 +5293,140 @@
                     }
 
                     html += `
-                        <div class="um-item" onclick="openAppointmentInfoModal(${index})" style="cursor: pointer;">
-                            <div class="um-client-info">
-                                <span class="um-client-name">${item.client_name}</span>
-                                <span class="um-details">${item.appointment_date} at ${timeFormatted}</span>
+                        <div class="pivot-item-wrapper" id="pivot-wrapper-${index}">
+                            <div class="pivot-item glass-card" onclick="togglePivotDetail(${index})">
+                                <div class="um-client-info">
+                                    <span class="um-client-name" style="font-family: var(--playfair); font-size: 18px; color: var(--brand-navy); font-weight: 600;">${item.client_name}</span>
+                                    <span class="um-details" style="font-family: var(--montserrat); font-size: 13px; color: var(--dark-grey);">${item.appointment_date} at ${timeFormatted}</span>
+                                </div>
+                                <i class='bx bx-chevron-right' style="color: var(--brand-gold); font-size: 24px;"></i>
                             </div>
-                            <i class='bx bx-chevron-right' style="color: #ccc; font-size: 20px;"></i>
+                            <div class="pivot-item-detail" id="pivot-detail-${index}">
+                                <!-- Details will be injected here on expand -->
+                            </div>
                         </div>
                     `;
                 });
-                modalBody.innerHTML = html;
+                listContainer.innerHTML = html;
             }
 
-            overlay.style.display = 'block';
-            modal.style.display = 'flex';
+            // Switch Views
+            gridView.classList.add('hidden');
+            pivotView.classList.add('active');
             
-            setTimeout(() => {
-                overlay.classList.add('show');
-                modal.classList.add('show');
-            }, 10);
+            // Scroll to top of Insights
+            document.getElementById('frontdesk-section').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.togglePivotDetail = function(index) {
+            const wrapper = document.getElementById(`pivot-wrapper-${index}`);
+            const detailContainer = document.getElementById(`pivot-detail-${index}`);
+            const item = currentAppointmentsList[index];
+
+            if (!wrapper || !detailContainer || !item) return;
+
+            // Close others if open (optional, but cleaner)
+            document.querySelectorAll('.pivot-item-wrapper.expanded').forEach(el => {
+                if (el !== wrapper) el.classList.remove('expanded');
+            });
+
+            const isExpanding = !wrapper.classList.contains('expanded');
+            wrapper.classList.toggle('expanded');
+
+            if (isExpanding) {
+                // Populate detail content if not already populated or refresh it
+                renderDetailAccordion(index, detailContainer, item);
+            }
+        };
+
+        function renderDetailAccordion(index, container, item) {
+            // Re-using the structure from our original pivot detail (which we're now nesting)
+            container.innerHTML = `
+                <div class="ai-header">
+                    <div class="ai-header-top">
+                        <div class="ai-avatar" style="background: var(--brand-navy); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 15px;">
+                            ${(item.client_name.split(' ').map(n => n[0]).join('')).toUpperCase()}
+                        </div>
+                        <div class="ai-client-details">
+                            <h2 class="ai-client-name" style="font-size: 1.2rem; margin: 0;">${item.client_name}</h2>
+                            <div class="ai-phone" style="font-size: 0.9rem; color: #666;">${item.client_phone || 'No phone provided'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-stats-row" style="display: flex; gap: 10px; margin-top: 20px;">
+                        <div class="ai-stat-box" style="flex: 1; background: rgba(15, 29, 44, 0.05); padding: 10px; border-radius: 12px; text-align: center;">
+                            <span class="ai-stat-value" id="ai-stat-showrate-${index}" style="display: block; font-weight:600;">...</span>
+                            <span class="ai-stat-label" style="font-size: 0.75rem; color: #888;">Show Rate</span>
+                        </div>
+                        <div class="ai-stat-box" style="flex: 1; background: rgba(15, 29, 44, 0.05); padding: 10px; border-radius: 12px; text-align: center;">
+                            <span class="ai-stat-value" id="ai-stat-visits-${index}" style="display: block; font-weight:600;">...</span>
+                            <span class="ai-stat-label" style="font-size: 0.75rem; color: #888;">Visits</span>
+                        </div>
+                        <div class="ai-stat-box" style="flex: 1; background: rgba(15, 29, 44, 0.05); padding: 10px; border-radius: 12px; text-align: center;">
+                            <span class="ai-stat-value" id="ai-stat-avg-${index}" style="display: block; font-weight:600;">...</span>
+                            <span class="ai-stat-label" style="font-size: 0.75rem; color: #888;">Avg. Visit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-body" style="margin-top: 20px;">
+                    <div class="ai-section-card" style="background: rgba(255,255,255,0.4); padding: 15px; border-radius: 15px;">
+                        <div class="ai-appointment-details">
+                            <div class="ai-detail-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class='bx bx-calendar' style="color: var(--brand-gold);"></i>
+                                <span class="ai-detail-value" style="font-size: 0.95rem;">${formatAppointmentDateTime(item)}</span>
+                            </div>
+                            <div class="ai-detail-item" style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <i class='bx bx-spreadsheet' style="color: var(--brand-gold);"></i>
+                                    <span class="ai-detail-value" style="font-size: 0.95rem;">${item.services} <span style="color: #888;">with</span> ${item.staff_name}</span>
+                                </div>
+                                <div class="ai-price-tag" style="font-weight: 600; color: var(--brand-navy);">$${parseFloat(item.total_price).toFixed(2)}</div>
+                            </div>
+                        </div>
+                        <div class="ai-booking-log" style="font-size: 0.8rem; color: #999; margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px;">
+                            ${formatBookingLog(item)}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-footer" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="cp-mini-btn" style="background: transparent; border: 1px solid #ff5e5e; color: #ff5e5e; padding: 8px 15px; border-radius: 10px; cursor: pointer;">Cancel</button>
+                    ${(currentAppointmentsList === currentUnconfirmedList) ? 
+                        `<button class="cp-mini-btn" onclick="confirmAppointmentInPivot(${item.id})" style="background: var(--brand-navy); color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer;">Confirm Now</button>` 
+                        : ''}
+                </div>
+            `;
+
+            // Fetch stats dynamically for this item
+            fetch(`api/api_get_client_history.php?client_id=${item.client_id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        const total = data.length;
+                        const completedCount = data.filter(a => a.status === 'completed' || a.status === 'confirmed').length;
+                        const showRate = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+                        const totalSpent = data.reduce((sum, a) => sum + parseFloat(a.total_price || 0), 0);
+                        const avgVisit = total > 0 ? Math.round(totalSpent / total) : 0;
+                        
+                        document.getElementById(`ai-stat-showrate-${index}`).textContent = `${showRate}%`;
+                        document.getElementById(`ai-stat-visits-${index}`).textContent = total;
+                        document.getElementById(`ai-stat-avg-${index}`).textContent = `$${avgVisit}`;
+                    }
+                });
         }
 
-        window.openAppointmentInfoModal = function(index) {
-            const item = currentAppointmentsList[index];
-            if (!item) return;
-
-            // Fill Info Modal
-            const initialsElem = document.getElementById('ai-avatar-initials');
-            if (initialsElem) {
-                const names = item.client_name.split(' ');
-                const initials = names.length > 1 ? (names[0][0] + names[names.length - 1][0]).toUpperCase() : names[0][0].toUpperCase();
-                initialsElem.textContent = initials;
-            }
-
-            document.getElementById('ai-client-name').textContent = item.client_name;
-            document.getElementById('ai-phone').textContent = item.client_phone || 'No phone provided';
-            
-            // Format Date for Header (Sun, Jan 11th)
-            const dateObj = new Date(item.appointment_date + 'T00:00:00'); // Ensure local date
+        function formatAppointmentDateTime(item) {
+            const dateObj = new Date(item.appointment_date + 'T00:00:00');
             const daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             const dayName = daysArr[dateObj.getDay()];
             const monthName = monthsArr[dateObj.getMonth()];
             const dayDate = dateObj.getDate();
-            
-            // Ordinal suffix (1st, 2nd, 3rd, 4th)
             const suffix = (dayDate % 10 === 1 && dayDate !== 11) ? 'st' :
                            (dayDate % 10 === 2 && dayDate !== 12) ? 'nd' :
                            (dayDate % 10 === 3 && dayDate !== 13) ? 'rd' : 'th';
             
-            // Time Formatting
             let timeFormatted = '';
             if (item.appointment_time) {
                 const [h, m] = item.appointment_time.split(':');
@@ -5208,105 +5435,62 @@
                 const hour12 = hour % 12 || 12;
                 timeFormatted = `${hour12}:${m}${ampm}`;
             }
+            return `${dayName}, ${monthName} ${dayDate}${suffix} @ ${timeFormatted}`;
+        }
 
-            document.getElementById('ai-datetime').textContent = `${dayName}, ${monthName} ${dayDate}${suffix} @ ${timeFormatted}`;
-            document.getElementById('ai-row-service').textContent = item.services;
-            document.getElementById('ai-row-staff').textContent = item.staff_name;
-            document.getElementById('ai-row-price').textContent = `$${parseFloat(item.total_price).toFixed(2)}`;
-            
-            // Booking Log
+        function formatBookingLog(item) {
             const created = new Date(item.created_at);
             const createdDate = created.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const createdTime = created.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
             const clientInitial = item.client_name.split(' ')[0] + ' ' + (item.client_name.split(' ')[1] ? item.client_name.split(' ')[1][0] + '.' : '');
-            
-            document.getElementById('ai-booking-log').textContent = `Booked by ${clientInitial} on ${createdDate} @ ${createdTime}`;
+            return `Booked by ${clientInitial} on ${createdDate} @ ${createdTime}`;
+        }
 
-            // Fetch client stats for the overview boxes
-            const showRateElem = document.getElementById('ai-stat-showrate');
-            const visitsElem = document.getElementById('ai-stat-visits');
-            const avgElem = document.getElementById('ai-stat-avg');
-            
-            if (showRateElem && visitsElem && avgElem) {
-                fetch(`api/api_get_client_history.php?client_id=${item.client_id}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (Array.isArray(data)) {
-                            const total = data.length;
-                            const completedCount = data.filter(a => a.status === 'completed' || a.status === 'confirmed').length; // confirmed counts for now as intent to show
-                            const showRate = total > 0 ? Math.round((completedCount / total) * 100) : 0;
-                            const totalSpent = data.reduce((sum, a) => sum + parseFloat(a.total_price || 0), 0);
-                            const avgVisit = total > 0 ? Math.round(totalSpent / total) : 0;
-
-                            showRateElem.textContent = `${showRate}%`;
-                            visitsElem.textContent = total;
-                            avgElem.textContent = `$${avgVisit}`;
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error fetching client stats for modal:', err);
-                        showRateElem.textContent = '--';
-                        visitsElem.textContent = '--';
-                        avgElem.textContent = '--';
-                    });
-            }
-
-            const overlay = document.getElementById('appointment-info-overlay');
-            const modal = document.getElementById('appointment-info-modal');
-            
-            overlay.style.display = 'block';
-            modal.style.display = 'flex';
-            
-            setTimeout(() => {
-                overlay.classList.add('show');
-                modal.classList.add('show');
-            }, 10);
-            
-            // Add click event for confirmation
-            const confirmBtn = document.getElementById('btn-ai-confirm');
-            
-            // Hide confirmation button if already confirmed or completed
-            if (currentAppointmentsList === currentConfirmedList || currentAppointmentsList === currentCompletedList) {
-                confirmBtn.style.display = 'none';
-            } else {
-                confirmBtn.style.display = 'block';
-                confirmBtn.onclick = function() {
-                    const btn = this;
-                    if (confirm(`Confirm appointment for ${item.client_name}?`)) {
-                        btn.disabled = true;
-                        btn.textContent = 'Confirming...';
-
-                        fetch('api/api_confirm_appointment.php', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ id: item.id })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                // Close modals
-                                closeAppointmentInfoModal();
-                                closeUnconfirmedModal();
-                                
-                                // Refresh dashboard stats/lists
-                                fetchDashboardStats();
-                                
-                                // Optional: Small feedback toast could go here
-                                console.log('Appointment confirmed successfully');
-                            } else {
-                                alert('Error confirming appointment: ' + (data.message || 'Unknown error'));
-                                btn.disabled = false;
-                                btn.textContent = 'Mark as Confirmed';
-                            }
-                        })
-                        .catch(err => {
-                            console.error('Fetch error:', err);
-                            alert('Network error. Please try again.');
-                            btn.disabled = false;
-                            btn.textContent = 'Mark as Confirmed';
-                        });
+        window.confirmAppointmentInPivot = function(id) {
+            if (confirm("Confirm this appointment?")) {
+                fetch('api/api_confirm_appointment.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        fetchDashboardStats();
+                        pivotBackToGrid();
                     }
-                };
+                });
+            }
+        };
+
+        window.pivotBackToGrid = function() {
+            const gridView = document.getElementById('insights-grid-view');
+            const pivotView = document.getElementById('insights-pivot-view');
+            
+            gridView.classList.remove('hidden');
+            pivotView.classList.remove('active');
+        };
+
+        window.openUnconfirmedModal = function() {
+            currentAppointmentsList = currentUnconfirmedList;
+            pivotToView('unconfirmed', currentUnconfirmedList);
+        };
+
+        window.openConfirmedModal = function() {
+            currentAppointmentsList = currentConfirmedList;
+            pivotToView('confirmed', currentConfirmedList);
+        };
+
+        window.openCompletedModal = function() {
+            currentAppointmentsList = currentCompletedList;
+            pivotToView('completed', currentCompletedList);
+        };
+
+        window.openAppointmentInfoModal = function(index, isPivot = false) {
+            // This function is still used by the Staff Table clicks (if any) or legacy code
+            // For now, we'll keep it as a fallback but the main flow uses togglePivotDetail
+            if (isPivot) {
+                togglePivotDetail(index);
             }
         };
 
@@ -6346,114 +6530,9 @@
             </main>
         </div>
     </div>
-    <!-- Unconfirmed Appointments Modal -->
-    <div id="unconfirmed-modal-overlay" class="glass-modal-overlay" onclick="closeUnconfirmedModal()"></div>
-    <div id="unconfirmed-modal" class="glass-modal">
-        <div class="um-header">
-            <h2>Unconfirmed Requests</h2>
-            <button class="um-close-btn" onclick="closeUnconfirmedModal()">&times;</button>
-        </div>
-        <div class="um-body" id="unconfirmed-modal-body">
-            <!-- Populated dynamically -->
-        </div>
-    </div>
-    <!-- Confirmed Appointments Modal -->
-    <div id="confirmed-modal-overlay" class="glass-modal-overlay" onclick="closeConfirmedModal()"></div>
-    <div id="confirmed-modal" class="glass-modal">
-        <div class="um-header">
-            <h2>Confirmed Appointments</h2>
-            <button class="um-close-btn" onclick="closeConfirmedModal()">&times;</button>
-        </div>
-        <div class="um-body" id="confirmed-modal-body">
-            <!-- Populated dynamically -->
-        </div>
-    </div>
-    <!-- Completed Appointments Modal -->
-    <div id="completed-modal-overlay" class="glass-modal-overlay" onclick="closeCompletedModal()"></div>
-    <div id="completed-modal" class="glass-modal">
-        <div class="um-header">
-            <h2>Completed Sessions</h2>
-            <button class="um-close-btn" onclick="closeCompletedModal()">&times;</button>
-        </div>
-        <div class="um-body" id="completed-modal-body">
-            <!-- Populated dynamically -->
-        </div>
-    </div>
-    <!-- Appointment Info Modal -->
-    <div id="appointment-info-overlay" class="glass-modal-overlay" onclick="closeAppointmentInfoModal()"></div>
-    <div id="appointment-info-modal" class="glass-modal">
-        <div class="ai-header">
-            <button class="um-close-btn" onclick="closeAppointmentInfoModal()" style="position: absolute; top: 20px; right: 20px;">&times;</button>
-            <div class="ai-header-top">
-                <div class="ai-avatar" id="ai-avatar-initials">JS</div>
-                <div class="ai-client-details">
-                    <h2 class="ai-client-name" id="ai-client-name">Loading...</h2>
-                    <div class="ai-phone" id="ai-phone">No phone provided</div>
-                </div>
-            </div>
-            
-            <div class="ai-stats-row">
-                <div class="ai-stat-box">
-                    <span class="ai-stat-value" id="ai-stat-showrate">0%</span>
-                    <span class="ai-stat-label">Show Rate</span>
-                </div>
-                <div class="ai-stat-box">
-                    <span class="ai-stat-value" id="ai-stat-visits">0</span>
-                    <span class="ai-stat-label">Visits</span>
-                </div>
-                <div class="ai-stat-box">
-                    <span class="ai-stat-value" id="ai-stat-avg"> $0</span>
-                    <span class="ai-stat-label">Avg. Visit</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="ai-body">
-            <div class="ai-section-card">
-                <div class="ai-appointment-details">
-                    <!-- Date & Time -->
-                    <div class="ai-detail-item">
-                        <div class="ai-detail-icon">
-                            <i class='bx bx-calendar'></i>
-                        </div>
-                        <div class="ai-detail-content">
-                            <span class="ai-detail-label">Appointment Date</span>
-                            <span class="ai-detail-value" id="ai-datetime">Loading...</span>
-                        </div>
-                    </div>
-
-                    <!-- Service & Staff -->
-                    <div class="ai-detail-item">
-                        <div class="ai-detail-icon">
-                            <i class='bx bx-spreadsheet'></i>
-                        </div>
-                        <div class="ai-detail-content">
-                            <span class="ai-detail-label">Service & Provider</span>
-                            <span class="ai-detail-value"><span id="ai-row-service">Loading...</span> with <span id="ai-row-staff">...</span></span>
-                        </div>
-                        <div class="ai-price-tag" id="ai-row-price">$0.00</div>
-                    </div>
-                </div>
-                
-                <div class="ai-booking-log" id="ai-booking-log">Booked on ...</div>
-            </div>
-
-            <div class="ai-tags-section">
-                <div class="ai-tags-label">Appointment Tags</div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <button class="btn-add-tags">ADD TAGS <i class='bx bx-plus'></i></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="ai-footer">
-            <div class="ai-footer-icons">
-                <i class='bx bx-undo ai-footer-icon' title="Reschedule"></i>
-                <i class='bx bx-x-circle ai-footer-icon' style="color: #ff5e5e;" title="Cancel"></i>
-            </div>
-            <button class="btn-ai-edit">Edit Appointment</button>
-            <button class="btn-ai-confirm" id="btn-ai-confirm">Mark as Confirmed</button>
-        </div>
-    </div>
+    <!-- Unconfirmed Appointments Modal removed -->
+    <!-- Confirmed Appointments Modal removed -->
+    <!-- Completed Appointments Modal removed -->
+    <!-- Appointment Info Modal removed -->
 </body>
 </html>
