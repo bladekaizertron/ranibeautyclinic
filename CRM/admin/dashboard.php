@@ -3884,21 +3884,57 @@
             fetch(`api/api_staff_availability.php?staff=${encodeURIComponent(name)}`)
                 .then(response => response.json())
                 .then(data => {
-                    const serviceRows = document.querySelectorAll('#staff-panel-services tbody tr');
-                    serviceRows.forEach(row => {
-                        const serviceCell = row.querySelector('td:nth-child(2)');
-                        if (!serviceCell) return;
-                        const serviceName = serviceCell.textContent.trim();
-                        const checkbox = row.querySelector('input[type="checkbox"]');
-                        if (!checkbox) return;
-                        
-                        const availability = data.find(item => item.service_name === serviceName);
-                        if (availability) {
-                            checkbox.checked = availability.is_available == 1;
-                        } else {
-                            checkbox.checked = false;
-                        }
+                    const tbody = document.getElementById('staff-panel-services-body');
+                    if (!tbody) return;
+                    tbody.innerHTML = '';
+                    
+                    // Group services by category for better organization
+                    const servicesByCat = {};
+                    serviceRows.forEach(s => {
+                        const cat = s.getAttribute('data-category') || 'Other';
+                        if (!servicesByCat[cat]) servicesByCat[cat] = [];
+                        servicesByCat[cat].push(s);
                     });
+
+                    for (const [cat, items] of Object.entries(servicesByCat)) {
+                        // Category Header
+                        const headTr = document.createElement('tr');
+                        headTr.innerHTML = `<th colspan="10" style="padding:18px 8px 8px 8px; text-align:left; font-size:14px; color:var(--brand-navy); font-weight:700; background:rgba(15,29,44,0.02); text-transform:uppercase; letter-spacing:0.5px;">${cat}</th>`;
+                        tbody.appendChild(headTr);
+
+                        items.forEach(ser => {
+                            const sName = ser.getAttribute('data-service') || ser.querySelector('.service-title')?.innerText || '';
+                            const sPrice = ser.getAttribute('data-price') || ser.querySelector('.service-price')?.innerText.replace('$','') || '0.00';
+                            
+                            const avail = data.find(item => item.service_name.toLowerCase() === sName.toLowerCase());
+                            const isChecked = avail ? (avail.is_available == 1) : false;
+
+                            const tr = document.createElement('tr');
+                            tr.style.borderBottom = '1px solid var(--grey)';
+                            tr.innerHTML = `
+                                <td style="padding:12px 8px; width:60px; padding-left:20px;">
+                                    <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                                        <input type="checkbox" ${isChecked ? 'checked' : ''} style="opacity:0; width:0; height:0;">
+                                        <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:${isChecked ? '#9b5de5' : '#ccc'}; border-radius:24px; transition:0.3s;"></span>
+                                        <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s; transform:${isChecked ? 'translateX(20px)' : 'translateX(0)'};"></span>
+                                    </label>
+                                </td>
+                                <td class="service-name-cell" style="padding:12px 8px; font-weight:500; color:var(--dark);">${sName}</td>
+                                <td style="padding:12px 8px; color:var(--dark-grey);">$${sPrice}</td>
+                                <td style="padding:12px 8px; color:var(--dark-grey);">Default</td>
+                                <td style="padding:12px 8px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; color:var(--dark-grey);">-</td>
+                                <td style="padding:12px 8px; color:var(--dark-grey);">Default</td>
+                                <td style="padding:12px 8px; color:var(--dark-grey);">$0.00</td>
+                                <td style="padding:12px 8px; color:var(--dark-grey);">Default</td>
+                                <td style="padding:12px 8px; text-align:right; padding-right:20px;">
+                                    <button class="btn-customize" style="background:none; border:none; color:var(--brand-gold); cursor:pointer; font-size:12px; font-weight:600;">Customize</button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                    
                     initializeServiceToggles('#staff-panel-services');
                 });
 
@@ -3977,7 +4013,7 @@
                 fetch(`api/api_staff_availability.php?service=${encodeURIComponent(name)}`).then(r => r.json())
             ])
             .then(([allStaff, availabilityData]) => {
-                const tbody = document.querySelector('#service-panel-staff tbody');
+                const tbody = document.getElementById('service-panel-staff-body');
                 if (!tbody || !Array.isArray(allStaff)) return;
                 
                 tbody.innerHTML = ''; // Clear hardcoded content
@@ -4224,7 +4260,7 @@
             saveBtn.addEventListener('click', function() {
                 const serviceName = serviceProfileName.textContent.trim();
                 const staffData = [];
-                const staffRows = document.querySelectorAll('#service-panel-staff tbody tr');
+                const staffRows = document.querySelectorAll('#service-panel-staff-body tr');
                 
                 staffRows.forEach(row => {
                     const staffName = row.querySelector('span:not(.toggle-track):not(.toggle-thumb)').textContent.trim();
@@ -4252,28 +4288,33 @@
         if (staffSaveBtn) {
             staffSaveBtn.addEventListener('click', function() {
                 const staffName = staffProfileName.textContent.trim();
-                const serviceRows = document.querySelectorAll('#staff-panel-services tbody tr');
-                const availability = [];
+                const serviceRows = document.querySelectorAll('#staff-panel-services-body tr'); 
+                const serviceAvailability = [];
                 
                 serviceRows.forEach(row => {
-                    const serviceCell = row.querySelector('td:nth-child(2)');
-                    if (!serviceCell) return;
-                    const serviceName = serviceCell.textContent.trim();
+                    const nameCell = row.querySelector('.service-name-cell');
+                    if (!nameCell) return; // Header row
+                    const serviceName = nameCell.textContent.trim();
                     const checkbox = row.querySelector('input[type="checkbox"]');
                     if (!checkbox) return;
                     
-                    availability.push({
+                    serviceAvailability.push({
                         name: serviceName,
                         available: checkbox.checked
                     });
                 });
                 
+                if (!staffName) {
+                    alert('Staff name not found');
+                    return;
+                }
+
                 fetch('api/api_staff_availability.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         staff: staffName,
-                        availability: availability
+                        services: serviceAvailability
                     })
                 })
                 .then(response => response.json())
@@ -4281,8 +4322,12 @@
                     if (data.status === 'success') {
                         alert('Staff availability updated successfully');
                     } else {
-                        alert('Error updating availability');
+                        alert('Error updating availability: ' + (data.message || 'Unknown error'));
                     }
+                })
+                .catch(err => {
+                    console.error('Error saving staff availability:', err);
+                    alert('Failed to save changes.');
                 });
             });
         }

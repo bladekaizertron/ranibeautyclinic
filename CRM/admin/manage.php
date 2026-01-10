@@ -967,22 +967,8 @@
                         <th style="text-align:left; padding:12px 8px; font-size:12px; font-weight:600; color:var(--dark-grey);">Transition Time</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr style="border-bottom:1px solid var(--grey);">
-                        <td style="padding:12px 8px; display:flex; align-items:center; gap:12px; padding-left:40px;">
-                            <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
-                                <input type="checkbox" checked style="opacity:0; width:0; height:0;">
-                                <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:#9b5de5; border-radius:24px; transition:0.3s;"></span>
-                                <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s; transform:translateX(20px);"></span>
-                            </label>
-                            <span style="font-size:14px; color:var(--dark-grey); font-style:italic;">Ayla K</span>
-                        </td>
-                        <td style="padding:12px 8px; font-size:14px; color:var(--dark);">$99.00</td>
-                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">10 mins</td>
-                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
-                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
-                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">5 mins</td>
-                    </tr>
+                <tbody id="service-panel-staff-body">
+                    <!-- Dynamically populated -->
                 </tbody>
             </table>
         </div>
@@ -1125,9 +1111,8 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr><th colspan="10" style="padding:12px 8px 6px 8px; text-align:left; font-size:15px; color:#333;">Face Fixes</th></tr>
-                        <tr><td class="service-name">Botox / Botox Facial</td><td><a class="status-assignable">Assignable</a></td><td>$14.00</td><td>15 mins</td><td>-</td><td>-</td><td>5 mins</td><td>$0.00</td><td>Pay Rate Default</td><td><button class="btn-customize">Customize</button></td></tr>
+                    <tbody id="staff-panel-services-body">
+                        <!-- Dynamically populated -->
                     </tbody>
                 </table>
             </div>
