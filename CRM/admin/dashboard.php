@@ -55,6 +55,11 @@
 
             --montserrat: 'Montserrat', sans-serif;
             --playfair: 'Playfair Display', serif;
+
+            /* Glassmorphism Colors */
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
 
         html {
@@ -608,6 +613,115 @@
         }
         #content main .table-data .head .bx {
             cursor: pointer;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+        }
+
+        .insights-bg-decor {
+            position: fixed;
+            top: 20%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(243, 214, 190, 0.2) 0%, rgba(243, 214, 190, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(50px);
+            pointer-events: none;
+        }
+
+        .insights-bg-decor-2 {
+            position: fixed;
+            bottom: 10%;
+            left: 15%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(15, 29, 44, 0.03) 0%, rgba(15, 29, 44, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(40px);
+            pointer-events: none;
+        }
+
+        #content main .box-info li.glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+        }
+
+        #content main .box-info li .text h3 {
+            font-family: var(--playfair);
+            font-size: 28px;
+            margin-bottom: 2px;
+        }
+
+        #content main .box-info li .text p {
+            font-family: var(--montserrat);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-grey);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #content main .table-data > div.glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        #content main .table-data .order table th {
+            font-family: var(--montserrat);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--brand-navy);
+            opacity: 0.7;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        #content main .table-data .order table td {
+            font-family: var(--montserrat);
+            font-size: 15px;
+        }
+
+        .calendar-widget {
+            background: transparent !important;
+        }
+
+        .calendar-header {
+            font-family: var(--montserrat);
+            font-weight: 600;
+        }
+
+        .calendar-days div {
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .calendar-days div:hover {
+            background: var(--brand-gold);
+            color: #fff;
+        }
+
+        .calendar-days div.curr-date {
+            background: var(--brand-navy);
+            color: #fff;
         }
 
         #content main .table-data .order {
@@ -3597,38 +3711,46 @@
 		<!-- MAIN -->
 		<main>
         <div id="frontdesk-section" class="main-section">
+            <div class="insights-bg-decor"></div>
+            <div class="insights-bg-decor-2"></div>
 			<div class="head-title">
 				<div class="left">
-					<h1>Insights</h1>
+					<h1 style="font-family: var(--playfair); color: var(--brand-navy);">Insights</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">Dashboard</a>
+							<a href="#" style="font-family: var(--montserrat); font-weight: 500;">Dashboard</a>
 						</li>
 						<li><i class='bx bx-chevron-right' ></i></li>
 						<li>
-							<a class="active" href="#">Stats</a>
+							<a class="active" href="#" style="font-family: var(--montserrat); font-weight: 600;">Stats</a>
 						</li>
 					</ul>
 				</div>
 			</div>
 
 			<ul class="box-info">
-				<li id="unconfirmed-card" onclick="openUnconfirmedModal()" style="cursor: pointer;">
-					<i class='bx bxs-calendar' ></i>
+				<li id="unconfirmed-card" class="glass-card" onclick="openUnconfirmedModal()" style="cursor: pointer;">
+					<div style="background: rgba(219, 80, 74, 0.1); color: #DB504A; width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                        <i class='bx bxs-calendar' style="font-size: 28px;"></i>
+                    </div>
 					<span class="text">
 						<h3 id="stat-unconfirmed">0</h3>
 						<p>Unconfirmed</p>
 					</span>
 				</li>
-				<li id="confirmed-card" onclick="openConfirmedModal()" style="cursor: pointer;">
-					<i class='bx bxs-calendar-check' ></i>
+				<li id="confirmed-card" class="glass-card" onclick="openConfirmedModal()" style="cursor: pointer;">
+					<div style="background: rgba(60, 145, 230, 0.1); color: #3C91E6; width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                        <i class='bx bxs-calendar-check' style="font-size: 28px;"></i>
+                    </div>
 					<span class="text">
 						<h3 id="stat-confirmed">0</h3>
 						<p>Confirmed</p>
 					</span>
 				</li>
-				<li id="completed-card" onclick="openCompletedModal()" style="cursor: pointer;">
-					<i class='bx bxs-user-check' ></i>
+				<li id="completed-card" class="glass-card" onclick="openCompletedModal()" style="cursor: pointer;">
+					<div style="background: rgba(243, 214, 190, 0.2); color: #c4a081; width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                        <i class='bx bxs-user-check' style="font-size: 28px;"></i>
+                    </div>
 					<span class="text">
 						<h3 id="stat-completed">0</h3>
 						<p>Completed</p>
@@ -3638,7 +3760,7 @@
 
 
 			<div class="table-data">
-				<div class="order">
+				<div class="order glass-card">
 					<div class="head">
 						<h3>Staffs</h3>
 						<i class='bx bx-search' ></i>
@@ -3657,7 +3779,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="todo">
+				<div class="todo glass-card">
                     <div class="head">
 						<h3>Calendar</h3>
 						<i class='bx bx-filter' ></i>
