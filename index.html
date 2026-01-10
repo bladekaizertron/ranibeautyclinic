@@ -4463,20 +4463,26 @@
             function getServiceFromCard(card) {
                 const titleEl = card.querySelector('.card-title');
                 const descEl = card.querySelector('.card-desc');
+                const metaPriceEl = card.querySelector('.card-meta-price');
+                const metaDurationEl = card.querySelector('.card-meta-duration');
 
                 const rawTitle = safeText(titleEl ? titleEl.textContent : 'Service');
                 const rawDesc = safeText(descEl ? descEl.textContent : '');
+                const rawMetaPrice = safeText(metaPriceEl ? metaPriceEl.textContent : '');
+                const rawMetaDuration = safeText(metaDurationEl ? metaDurationEl.textContent : '');
 
                 // Prefer explicit data attributes; fallback to parsing text; then defaults.
                 const name = safeText(card.getAttribute('data-service-name')) || rawTitle.replace(/^\s*✨+|\s*✨+\s*$/g, '').trim();
 
-                const priceAttr = parsePrice(card.getAttribute('data-price'));
-                const priceFromText = parsePrice(rawTitle);
-                const price = priceAttr ?? priceFromText ?? 99.00;
+                const priceFromMeta = parsePrice(rawMetaPrice);
+                const priceAttr = Number(card.getAttribute('data-price')) || null;
+                const priceFromTitle = parsePrice(rawTitle);
+                const price = priceFromMeta ?? priceAttr ?? priceFromTitle ?? 99.00;
 
+                const durationFromMeta = parseDuration(rawMetaDuration);
                 const durationAttr = parseDuration(card.getAttribute('data-duration'));
                 const durationFromText = parseDuration(rawTitle) ?? parseDuration(rawDesc);
-                const duration = durationAttr ?? durationFromText ?? 20;
+                const duration = durationFromMeta ?? durationAttr ?? durationFromText ?? 20;
 
                 // Create stable-ish id from name + price + duration
                 const id = `${name.toLowerCase()}|${price.toFixed(2)}|${duration}`;
@@ -4699,7 +4705,11 @@
 
                     allStaffNames.forEach(name => {
                         const isAvailableForAll = cart.every(service => {
-                            return staffAvailabilityData.some(a => a.staff_name === name && a.service_name === service.name && a.is_available == 1);
+                            return staffAvailabilityData.some(a =>
+                                a.staff_name.toLowerCase() === name.toLowerCase() &&
+                                a.service_name.toLowerCase() === service.name.toLowerCase() &&
+                                a.is_available == 1
+                            );
                         });
                         if (isAvailableForAll) {
                             availableStaff.push(name);

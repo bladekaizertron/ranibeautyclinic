@@ -3971,24 +3971,46 @@
             serviceProfileOverlay.style.display = 'block';
             serviceProfilePanel.style.right = '0';
             
-            // Fetch current availability from DB
-            fetch(`api/api_staff_availability.php?service=${encodeURIComponent(name)}`)
-                .then(response => response.json())
-                .then(data => {
-                    const staffRows = document.querySelectorAll('#service-panel-staff tbody tr');
-                    staffRows.forEach(row => {
-                        const staffName = row.querySelector('span:not(.toggle-track):not(.toggle-thumb)').textContent.trim();
-                        const checkbox = row.querySelector('input[type="checkbox"]');
-                        const availability = data.find(item => item.staff_name === staffName);
-                        
-                        if (availability) {
-                            checkbox.checked = availability.is_available == 1;
-                        } else {
-                            // Default to unchecked or maintain current state if not in DB
-                        }
-                    });
-                    initializeServiceToggles();
+            // Fetch all staff AND current availability for this service
+            Promise.all([
+                fetch('api/api_staff_availability.php?get_staff=1').then(r => r.json()),
+                fetch(`api/api_staff_availability.php?service=${encodeURIComponent(name)}`).then(r => r.json())
+            ])
+            .then(([allStaff, availabilityData]) => {
+                const tbody = document.querySelector('#service-panel-staff tbody');
+                if (!tbody || !Array.isArray(allStaff)) return;
+                
+                tbody.innerHTML = ''; // Clear hardcoded content
+                
+                allStaff.forEach(staff => {
+                    const avail = Array.isArray(availabilityData) ? availabilityData.find(a => a.staff_name.toLowerCase() === staff.name.toLowerCase()) : null;
+                    const isChecked = avail ? (avail.is_available == 1) : false;
+                    
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid var(--grey)';
+                    tr.innerHTML = `
+                        <td style="padding:12px 8px; display:flex; align-items:center; gap:12px; padding-left:40px;">
+                            <label class="service-toggle" style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+                                <input type="checkbox" ${isChecked ? 'checked' : ''} style="opacity:0; width:0; height:0;">
+                                <span class="toggle-track" style="position:absolute; top:0; left:0; right:0; bottom:0; background-color:${isChecked ? '#9b5de5' : '#ccc'}; border-radius:24px; transition:0.3s;"></span>
+                                <span class="toggle-thumb" style="position:absolute; top:2px; left:2px; width:20px; height:20px; background-color:#fff; border-radius:50%; transition:0.3s; transform:${isChecked ? 'translateX(20px)' : 'translateX(0)'};"></span>
+                            </label>
+                            <span style="font-size:14px; color:var(--dark-grey);">${staff.name}</span>
+                        </td>
+                        <td style="padding:12px 8px; font-size:14px; color:var(--dark);">$${price || '0.00'}</td>
+                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">Default</td>
+                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey);">-</td>
+                        <td style="padding:12px 8px; font-size:14px; color:var(--dark-grey); font-style:italic;">Default</td>
+                    `;
+                    tbody.appendChild(tr);
                 });
+                
+                initializeServiceToggles();
+            })
+            .catch(err => {
+                console.error('Error fetching staff for service:', err);
+            });
         }
 
         function closeServiceProfile() {
@@ -4067,14 +4089,23 @@
 
         // Toggle switches inside Profile panels
         function initializeServiceToggles(containerSelector = '#service-panel-staff') {
-            const serviceToggles = document.querySelectorAll(containerSelector + ' .service-toggle');
-            serviceToggles.forEach(toggle => {
+            const container = document.querySelector(containerSelector);
+            if (!container) return;
+
+            // Remove old listener if it exists to prevent double-binding
+            if (container._toggleListener) {
+                container.removeEventListener('click', container._toggleListener);
+            }
+
+            container._toggleListener = function(e) {
+                const toggle = e.target.closest('.service-toggle');
+                if (!toggle) return;
+
                 const input = toggle.querySelector('input[type="checkbox"]');
                 const track = toggle.querySelector('.toggle-track');
                 const thumb = toggle.querySelector('.toggle-thumb');
 
-                function applyToggleState() {
-                    const isOn = input.checked;
+                function applyToggleState(isOn) {
                     if (isOn) {
                         if (track) track.style.backgroundColor = '#9b5de5';
                         if (thumb) thumb.style.transform = 'translateX(20px)';
@@ -4084,23 +4115,35 @@
                     }
                 }
 
-                // Initialize state
-                applyToggleState();
+                // If user clicked the hidden input, let it change state normally
+                if (e.target.tagName.toLowerCase() === 'input') {
+                    applyToggleState(input.checked);
+                } else {
+                    // Manual trigger for clicks on the label/spans
+                    input.checked = !input.checked;
+                    applyToggleState(input.checked);
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            };
 
-                // Toggle on click
-                const toggleClickHandler = function(e) {
-                    // avoid double toggling when clicking the hidden input
-                    if (e.target.tagName.toLowerCase() !== 'input') {
-                        input.checked = !input.checked;
-                        applyToggleState();
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                };
+            container.addEventListener('click', container._toggleListener);
 
-                // Remove existing event listeners to avoid duplicates
-                toggle.onclick = null; // Simple way to clear
-                toggle.addEventListener('click', toggleClickHandler);
+            // Initial state for current elements
+            const serviceToggles = container.querySelectorAll('.service-toggle');
+            serviceToggles.forEach(toggle => {
+                const input = toggle.querySelector('input[type="checkbox"]');
+                const track = toggle.querySelector('.toggle-track');
+                const thumb = toggle.querySelector('.toggle-thumb');
+                
+                const isOn = input.checked;
+                if (isOn) {
+                    if (track) track.style.backgroundColor = '#9b5de5';
+                    if (thumb) thumb.style.transform = 'translateX(20px)';
+                } else {
+                    if (track) track.style.backgroundColor = '#ccc';
+                    if (thumb) thumb.style.transform = 'translateX(0)';
+                }
             });
         }
         // Profile panel tab switching
