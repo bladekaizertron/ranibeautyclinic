@@ -1188,166 +1188,271 @@
             padding: 0; /* Let header/body/footer handle padding */
         }
 
+        /* Appointment Info Modal Enhanced Styles */
+        #appointment-info-modal {
+            max-width: 500px;
+            padding: 0;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+
         .ai-header {
-            padding: 30px 40px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
         }
 
-        .ai-body {
-            padding: 20px 40px 40px 40px;
-        }
-
-        .ai-detail-row {
+        .ai-header-top {
             display: flex;
             align-items: center;
+            gap: 20px;
             margin-bottom: 15px;
-            font-size: 14px;
-            color: var(--dark-grey);
         }
 
-        .ai-detail-row i {
-            margin-right: 12px;
-            font-size: 18px;
-            color: var(--brand-navy);
-        }
-
-        .ai-header {
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--brand-navy);
+            color: white;
+            border-radius: 18px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 5px;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(15, 29, 44, 0.2);
+        }
+
+        .ai-client-details {
+            flex: 1;
         }
 
         .ai-client-name {
-            font-size: 24px;
-            font-weight: 500;
-            color: #0088cc;
-            text-decoration: underline;
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--brand-navy);
+            margin: 0;
+            line-height: 1.2;
+            text-decoration: none;
             cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .ai-client-name:hover {
+            color: var(--brand-gold);
         }
 
         .ai-phone {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .ai-stats {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
             color: #666;
-        }
-
-        .ai-stat b {
-            color: #999;
+            margin-top: 4px;
             font-weight: 500;
         }
 
-        .ai-divider {
-            height: 1px;
-            background: #eee;
-            margin: 15px -24px;
+        .ai-body {
+            padding: 30px 40px;
         }
 
-        .ai-datetime-header {
+        .ai-section-card {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .ai-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .ai-stat-box {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+        }
+
+        .ai-stat-value {
+            display: block;
+            font-family: 'Playfair Display', serif;
             font-size: 18px;
-            color: #333;
-            margin: 10px 0;
+            font-weight: 700;
+            color: var(--brand-navy);
         }
 
-        .ai-service-row {
+        .ai-stat-label {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .ai-appointment-details {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 15px;
-            font-size: 16px;
-            color: #333;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .ai-service-info {
-            display: flex;
-            gap: 20px;
-        }
-
-        .ai-service-time { width: 70px; }
-        .ai-service-name { font-weight: 400; }
-
-        .ai-staff-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #333;
-        }
-
-        .ai-staff-icon {
-            color: #ff5e5e;
-            font-size: 18px;
-        }
-
-        .ai-price-row {
+        .ai-detail-item {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-top: 20px;
+        }
+
+        .ai-detail-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(186, 155, 116, 0.1);
+            color: var(--brand-gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .ai-detail-content {
+            flex: 1;
+        }
+
+        .ai-detail-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .ai-detail-value {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--brand-navy);
+        }
+
+        .ai-price-tag {
+            background: var(--brand-gold);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-family: 'Playfair Display', serif;
             font-size: 18px;
-            font-weight: 400;
+            font-weight: 700;
         }
 
         .ai-booking-log {
             font-size: 12px;
             color: #999;
-            margin-top: -20px;
+            font-style: italic;
+            margin-top: 15px;
             text-align: right;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .ai-tags-section {
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .ai-tags-label {
-            font-size: 14px;
+            font-size: 12px;
+            font-weight: 600;
             color: #666;
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         .btn-add-tags {
-            padding: 6px 12px;
-            border: 1px solid #ddd;
-            background: #fdfdfd;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #333;
-            text-transform: uppercase;
-            font-weight: 700;
+            padding: 8px 16px;
+            border: 1px dashed #ccc;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #888;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .btn-add-tags:hover {
+            border-color: var(--brand-gold);
+            color: var(--brand-gold);
         }
 
         .ai-footer {
-            margin-top: 30px;
+            padding: 30px 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            gap: 15px;
+            gap: 20px;
         }
 
         .ai-footer-icons {
-            margin-right: auto;
             display: flex;
-            gap: 20px;
-            font-size: 24px;
-            color: #666;
+            gap: 15px;
         }
 
-        .ai-footer-icons i { cursor: pointer; }
+        .ai-footer-icon {
+            font-size: 22px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .ai-footer-icon:hover {
+            color: var(--brand-navy);
+        }
 
         .btn-ai-edit {
-            padding: 10px 20px;
-            background: #f5f5f5;
+            flex: 1;
+            padding: 14px;
+            background: white;
             border: 1px solid #ddd;
+            border-radius: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-ai-confirm {
+            flex: 2;
+            padding: 14px;
+            background: var(--brand-navy);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(15, 29, 44, 0.15);
+            transition: all 0.3s;
+        }
+
+        .btn-ai-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(15, 29, 44, 0.2);
+        }
             border-radius: 4px;
             color: #666;
             font-weight: 600;
@@ -5071,13 +5176,20 @@
             if (!item) return;
 
             // Fill Info Modal
+            const initialsElem = document.getElementById('ai-avatar-initials');
+            if (initialsElem) {
+                const names = item.client_name.split(' ');
+                const initials = names.length > 1 ? (names[0][0] + names[names.length - 1][0]).toUpperCase() : names[0][0].toUpperCase();
+                initialsElem.textContent = initials;
+            }
+
             document.getElementById('ai-client-name').textContent = item.client_name;
             document.getElementById('ai-phone').textContent = item.client_phone || 'No phone provided';
             
             // Format Date for Header (Sun, Jan 11th)
-            const dateObj = new Date(item.appointment_date);
-            const daysArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dateObj = new Date(item.appointment_date + 'T00:00:00'); // Ensure local date
+            const daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             const dayName = daysArr[dateObj.getDay()];
             const monthName = monthsArr[dateObj.getMonth()];
             const dayDate = dateObj.getDate();
@@ -5097,19 +5209,47 @@
                 timeFormatted = `${hour12}:${m}${ampm}`;
             }
 
-            document.getElementById('ai-datetime').textContent = `${dayName}, ${monthName} ${dayDate}${suffix}, ${timeFormatted}`;
-            document.getElementById('ai-row-time').textContent = timeFormatted;
+            document.getElementById('ai-datetime').textContent = `${dayName}, ${monthName} ${dayDate}${suffix} @ ${timeFormatted}`;
             document.getElementById('ai-row-service').textContent = item.services;
             document.getElementById('ai-row-staff').textContent = item.staff_name;
             document.getElementById('ai-row-price').textContent = `$${parseFloat(item.total_price).toFixed(2)}`;
             
             // Booking Log
             const created = new Date(item.created_at);
-            const createdDate = created.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const createdDate = created.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const createdTime = created.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
             const clientInitial = item.client_name.split(' ')[0] + ' ' + (item.client_name.split(' ')[1] ? item.client_name.split(' ')[1][0] + '.' : '');
             
             document.getElementById('ai-booking-log').textContent = `Booked by ${clientInitial} on ${createdDate} @ ${createdTime}`;
+
+            // Fetch client stats for the overview boxes
+            const showRateElem = document.getElementById('ai-stat-showrate');
+            const visitsElem = document.getElementById('ai-stat-visits');
+            const avgElem = document.getElementById('ai-stat-avg');
+            
+            if (showRateElem && visitsElem && avgElem) {
+                fetch(`api/api_get_client_history.php?client_id=${item.client_id}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (Array.isArray(data)) {
+                            const total = data.length;
+                            const completedCount = data.filter(a => a.status === 'completed' || a.status === 'confirmed').length; // confirmed counts for now as intent to show
+                            const showRate = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+                            const totalSpent = data.reduce((sum, a) => sum + parseFloat(a.total_price || 0), 0);
+                            const avgVisit = total > 0 ? Math.round(totalSpent / total) : 0;
+
+                            showRateElem.textContent = `${showRate}%`;
+                            visitsElem.textContent = total;
+                            avgElem.textContent = `$${avgVisit}`;
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error fetching client stats for modal:', err);
+                        showRateElem.textContent = '--';
+                        visitsElem.textContent = '--';
+                        avgElem.textContent = '--';
+                    });
+            }
 
             const overlay = document.getElementById('appointment-info-overlay');
             const modal = document.getElementById('appointment-info-modal');
@@ -6243,56 +6383,75 @@
     <div id="appointment-info-overlay" class="glass-modal-overlay" onclick="closeAppointmentInfoModal()"></div>
     <div id="appointment-info-modal" class="glass-modal">
         <div class="ai-header">
-            <span class="ai-client-name" id="ai-client-name"></span>
-            <i class='bx bx-chevron-down' style="color: #999; font-size: 24px;"></i>
-        </div>
-        <div class="ai-phone" id="ai-phone"></div>
-        
-        <div class="ai-stats">
-            <span class="ai-stat"><b>Show Rate:</b> 0%</span>
-            <span class="ai-stat"><b>Avg. Visit:</b> $0</span>
-        </div>
-        <div class="ai-stats" style="margin-top: -15px;">
-            <span class="ai-stat"><b>Num Visits:</b> 0</span>
-        </div>
-
-        <div class="ai-divider"></div>
-
-        <div class="ai-datetime-header" id="ai-datetime"></div>
-
-        <div class="ai-divider"></div>
-
-        <div class="ai-service-row">
-            <div class="ai-service-info">
-                <span class="ai-service-time" id="ai-row-time"></span>
-                <span class="ai-service-name" id="ai-row-service"></span>
+            <button class="um-close-btn" onclick="closeAppointmentInfoModal()" style="position: absolute; top: 20px; right: 20px;">&times;</button>
+            <div class="ai-header-top">
+                <div class="ai-avatar" id="ai-avatar-initials">JS</div>
+                <div class="ai-client-details">
+                    <h2 class="ai-client-name" id="ai-client-name">Loading...</h2>
+                    <div class="ai-phone" id="ai-phone">No phone provided</div>
+                </div>
             </div>
-            <div class="ai-staff-info">
-                <i class='bx bxs-heart ai-staff-icon'></i>
-                <span id="ai-row-staff"></span>
+            
+            <div class="ai-stats-row">
+                <div class="ai-stat-box">
+                    <span class="ai-stat-value" id="ai-stat-showrate">0%</span>
+                    <span class="ai-stat-label">Show Rate</span>
+                </div>
+                <div class="ai-stat-box">
+                    <span class="ai-stat-value" id="ai-stat-visits">0</span>
+                    <span class="ai-stat-label">Visits</span>
+                </div>
+                <div class="ai-stat-box">
+                    <span class="ai-stat-value" id="ai-stat-avg"> $0</span>
+                    <span class="ai-stat-label">Avg. Visit</span>
+                </div>
             </div>
         </div>
 
-        <div class="ai-divider"></div>
+        <div class="ai-body">
+            <div class="ai-section-card">
+                <div class="ai-appointment-details">
+                    <!-- Date & Time -->
+                    <div class="ai-detail-item">
+                        <div class="ai-detail-icon">
+                            <i class='bx bx-calendar'></i>
+                        </div>
+                        <div class="ai-detail-content">
+                            <span class="ai-detail-label">Appointment Date</span>
+                            <span class="ai-detail-value" id="ai-datetime">Loading...</span>
+                        </div>
+                    </div>
 
-        <div class="ai-price-row">
-            <span id="ai-row-price"></span>
-            <i class='bx bx-credit-card' style="color: #ccc;"></i>
-        </div>
+                    <!-- Service & Staff -->
+                    <div class="ai-detail-item">
+                        <div class="ai-detail-icon">
+                            <i class='bx bx-spreadsheet'></i>
+                        </div>
+                        <div class="ai-detail-content">
+                            <span class="ai-detail-label">Service & Provider</span>
+                            <span class="ai-detail-value"><span id="ai-row-service">Loading...</span> with <span id="ai-row-staff">...</span></span>
+                        </div>
+                        <div class="ai-price-tag" id="ai-row-price">$0.00</div>
+                    </div>
+                </div>
+                
+                <div class="ai-booking-log" id="ai-booking-log">Booked on ...</div>
+            </div>
 
-        <div class="ai-booking-log" id="ai-booking-log"></div>
-
-        <div class="ai-tags-section">
-            <div class="ai-tags-label">Appointment Tags</div>
-            <button class="btn-add-tags">ADD TAGS <i class='bx bx-plus'></i></button>
+            <div class="ai-tags-section">
+                <div class="ai-tags-label">Appointment Tags</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <button class="btn-add-tags">ADD TAGS <i class='bx bx-plus'></i></button>
+                </div>
+            </div>
         </div>
 
         <div class="ai-footer">
             <div class="ai-footer-icons">
-                <i class='bx bx-undo'></i>
-                <i class='bx bx-x-circle' style="color: #ff5e5e;"></i>
+                <i class='bx bx-undo ai-footer-icon' title="Reschedule"></i>
+                <i class='bx bx-x-circle ai-footer-icon' style="color: #ff5e5e;" title="Cancel"></i>
             </div>
-            <button class="btn-ai-edit">Edit</button>
+            <button class="btn-ai-edit">Edit Appointment</button>
             <button class="btn-ai-confirm" id="btn-ai-confirm">Mark as Confirmed</button>
         </div>
     </div>

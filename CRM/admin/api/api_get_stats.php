@@ -46,7 +46,7 @@ if ($result) {
 // Helper to fetch list by status
 function fetchList($conn, $status) {
     $rows = [];
-    $sql = "SELECT a.id, a.appointment_date, a.appointment_time, a.services, a.total_price, a.created_at, 
+    $sql = "SELECT a.id, a.client_id, a.appointment_date, a.appointment_time, a.services, a.total_price, a.created_at, 
                    c.name as client_name, c.phone as client_phone,
                    s.name as staff_name
             FROM appointments a 
