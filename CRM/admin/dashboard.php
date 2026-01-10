@@ -1056,137 +1056,158 @@
             border-radius: 50%;
         }
 
-        /* Unconfirmed Modal Styles */
-        #unconfirmed-modal-overlay,
-        #confirmed-modal-overlay,
-        #completed-modal-overlay {
+        /* Universal Glass Modal Styles */
+        .glass-modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(15, 29, 44, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 2800;
             display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        #unconfirmed-modal,
-        #confirmed-modal,
-        #completed-modal {
+        .glass-modal-overlay.show {
+            opacity: 1;
+        }
+
+        .glass-modal {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -45%) scale(0.95);
             width: 90%;
             max-width: 600px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.15);
             z-index: 2900;
             display: none;
             flex-direction: column;
             overflow: hidden;
-            font-family: 'Poppins', sans-serif;
+            font-family: var(--montserrat);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .um-header {
-            padding: 20px 30px;
+        .glass-modal.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Stats Modal Specifics */
+        #unconfirmed-modal, #confirmed-modal, #completed-modal, #appointment-info-modal {
+            /* Inherit glass-modal styles via class in HTML */
+        }
+
+        .um-header, .ai-header, .pa-modal-header, .es-header {
+            padding: 30px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .um-header h2 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--dark);
+        .um-header h2, .ai-client-name, .pa-modal-header h2, .es-title {
+            font-family: var(--playfair);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--brand-navy);
+            margin: 0;
         }
 
-        .um-close-btn {
-            font-size: 24px;
-            color: #ccc;
+        .um-close-btn, .ai-close-btn, .pa-modal-close, .es-close {
+            font-size: 28px;
+            color: var(--dark-grey);
             cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
         }
 
-        .um-body {
-            padding: 10px 0;
-            max-height: 450px;
+        .um-close-btn:hover { color: var(--brand-navy); }
+
+        .um-body, .ai-body, .pa-modal-body, .es-body {
+            padding: 20px 0;
+            max-height: 60vh;
             overflow-y: auto;
         }
 
         .um-item {
-            padding: 15px 30px;
-            border-bottom: 1px solid #f5f5f5;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.2s;
+            transition: background 0.3s ease;
         }
         
         .um-item:hover {
-            background: #fcfcfc;
-        }
-
-        .um-item:last-child {
-            border-bottom: none;
-        }
-
-        .um-client-info {
-            display: flex;
-            flex-direction: column;
+            background: rgba(15, 29, 44, 0.02);
         }
 
         .um-client-name {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 15px;
+            font-weight: 700;
+            color: var(--brand-navy);
+            font-size: 16px;
         }
 
         .um-details {
             color: var(--dark-grey);
             font-size: 13px;
-            margin-top: 2px;
+            margin-top: 4px;
         }
-        
-        #unconfirmed-card,
-        #confirmed-card {
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        #unconfirmed-card:hover,
-        #confirmed-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+        /* Icons in Lists */
+        .li-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
         }
 
         /* Appointment Info Modal Styles */
         #appointment-info-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.3);
-            z-index: 3000;
-            display: none;
+            /* Inherit glass-modal-overlay */
         }
 
         #appointment-info-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-            z-index: 3100;
-            display: none;
-            flex-direction: column;
-            padding: 24px;
-            font-family: 'Inter', -apple-system, sans-serif;
+            max-width: 500px;
+            padding: 0; /* Let header/body/footer handle padding */
+        }
+
+        .ai-header {
+            padding: 30px 40px;
+        }
+
+        .ai-body {
+            padding: 20px 40px 40px 40px;
+        }
+
+        .ai-detail-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--dark-grey);
+        }
+
+        .ai-detail-row i {
+            margin-right: 12px;
+            font-size: 18px;
+            color: var(--brand-navy);
         }
 
         .ai-header {
@@ -1774,26 +1795,45 @@
 
         /* Customize Modal Styles */
         .modal-overlay-custom {
+            /* Inherit glass-modal-overlay */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
+            background: rgba(15, 29, 44, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none; /* Changed from flex to block/none for JS handling */
             align-items: center;
             justify-content: center;
-            z-index: 2000;
+            z-index: 2800;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay-custom.show {
+            opacity: 1;
+            display: flex;
         }
 
         .customize-modal {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             width: 100%;
             max-width: 480px;
-            border-radius: 12px;
+            border-radius: 30px;
             padding: 40px 30px;
             position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay-custom.show .customize-modal {
+            transform: translateY(0);
         }
 
         .customize-modal .close-btn {
@@ -2110,33 +2150,13 @@
             margin-top: 4px;
         }
 
-        /* Publish Availability Modal */
         #publish-availability-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 1999;
-            display: none;
+            /* Inherit glass-modal-overlay */
         }
 
         #publish-availability-modal {
-            position: fixed;
-            top: 50%;
-            left: 51%; /* Slight offset to look centered against sidebar */
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 800px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            font-family: 'Inter', sans-serif;
+            max-width: 900px;
+            left: 50%; /* Adjusted from 51% */
         }
 
         .pa-modal-header {
@@ -2416,31 +2436,9 @@
             font-size: 14px;
             opacity: 0.8;
         }
-        /* Edit Shift Modal Styles */
-        #edit-shift-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2100;
-        }
+        /* Edit Shift Modal Specifics */
         #edit-shift-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #fff;
-            width: 500px;
-            max-width: 90%;
-            border-radius: 12px;
-            z-index: 2200;
-            padding: 30px;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 500px;
         }
         .es-header { text-align: center; margin-bottom: 25px; position: relative; }
         .es-staff-name { font-size: 16px; font-weight: 600; color: #666; margin-bottom: 8px; }
@@ -4073,11 +4071,20 @@
             const staffName = document.getElementById('staff-profile-name').innerText;
             document.getElementById('cust-modal-service-name').innerText = serviceName;
             document.getElementById('cust-modal-staff-name').innerText = staffName;
-            document.getElementById('customize-service-modal').style.display = 'flex';
+            
+            const overlay = document.getElementById('customize-service-modal');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
         }
 
         function closeCustomizeModal() {
-            document.getElementById('customize-service-modal').style.display = 'none';
+            const overlay = document.getElementById('customize-service-modal');
+            overlay.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
         }
 
         // Add event listeners for customize buttons
@@ -4545,7 +4552,7 @@
             overlay.style.display = 'block';
             modal.style.display = 'flex';
             setTimeout(() => {
-                overlay.style.opacity = '1';
+                overlay.classList.add('show');
                 modal.classList.add('show');
             }, 10);
 
@@ -5006,8 +5013,14 @@
         };
 
         window.closeCompletedModal = function() {
-            document.getElementById('completed-modal-overlay').style.display = 'none';
-            document.getElementById('completed-modal').style.display = 'none';
+            const overlay = document.getElementById('completed-modal-overlay');
+            const modal = document.getElementById('completed-modal');
+            overlay.classList.remove('show');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                modal.style.display = 'none';
+            }, 300);
         };
 
         function renderAppointmentsModal(type, list) {
@@ -5046,6 +5059,11 @@
 
             overlay.style.display = 'block';
             modal.style.display = 'flex';
+            
+            setTimeout(() => {
+                overlay.classList.add('show');
+                modal.classList.add('show');
+            }, 10);
         }
 
         window.openAppointmentInfoModal = function(index) {
@@ -5095,8 +5113,14 @@
 
             const overlay = document.getElementById('appointment-info-overlay');
             const modal = document.getElementById('appointment-info-modal');
+            
             overlay.style.display = 'block';
             modal.style.display = 'flex';
+            
+            setTimeout(() => {
+                overlay.classList.add('show');
+                modal.classList.add('show');
+            }, 10);
             
             // Add click event for confirmation
             const confirmBtn = document.getElementById('btn-ai-confirm');
@@ -5147,18 +5171,36 @@
         };
 
         window.closeAppointmentInfoModal = function() {
-            document.getElementById('appointment-info-overlay').style.display = 'none';
-            document.getElementById('appointment-info-modal').style.display = 'none';
+            const overlay = document.getElementById('appointment-info-overlay');
+            const modal = document.getElementById('appointment-info-modal');
+            overlay.classList.remove('show');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                modal.style.display = 'none';
+            }, 300);
         };
 
         window.closeUnconfirmedModal = function() {
-            document.getElementById('unconfirmed-modal-overlay').style.display = 'none';
-            document.getElementById('unconfirmed-modal').style.display = 'none';
+            const overlay = document.getElementById('unconfirmed-modal-overlay');
+            const modal = document.getElementById('unconfirmed-modal');
+            overlay.classList.remove('show');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                modal.style.display = 'none';
+            }, 300);
         };
 
         window.closeConfirmedModal = function() {
-            document.getElementById('confirmed-modal-overlay').style.display = 'none';
-            document.getElementById('confirmed-modal').style.display = 'none';
+            const overlay = document.getElementById('confirmed-modal-overlay');
+            const modal = document.getElementById('confirmed-modal');
+            overlay.classList.remove('show');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                modal.style.display = 'none';
+            }, 300);
         };
 
         // Initialize Clients Directory Logic
@@ -5559,11 +5601,22 @@
 
                 overlay.style.display = 'block';
                 modal.style.display = 'flex';
+                
+                setTimeout(() => {
+                    overlay.classList.add('show');
+                    modal.classList.add('show');
+                }, 10);
             };
 
             window.closePublishAvailabilityModal = function() {
-                document.getElementById('publish-availability-modal').style.display = 'none';
-                document.getElementById('publish-availability-overlay').style.display = 'none';
+                const overlay = document.getElementById('publish-availability-overlay');
+                const modal = document.getElementById('publish-availability-modal');
+                overlay.classList.remove('show');
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    modal.style.display = 'none';
+                }, 300);
             };
 
             window.submitPublishAvailability = function() {
@@ -5688,11 +5741,22 @@
 
                 overlay.style.display = 'block';
                 modal.style.display = 'flex';
+
+                setTimeout(() => {
+                    overlay.classList.add('show');
+                    modal.classList.add('show');
+                }, 10);
             };
 
             window.closeEditShiftModal = function() {
-                document.getElementById('edit-shift-overlay').style.display = 'none';
-                document.getElementById('edit-shift-modal').style.display = 'none';
+                const overlay = document.getElementById('edit-shift-overlay');
+                const modal = document.getElementById('edit-shift-modal');
+                overlay.classList.remove('show');
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    modal.style.display = 'none';
+                }, 300);
             };
 
             window.saveEditedShift = function() {
@@ -5769,8 +5833,8 @@
 
 	</script>
     <!-- Publish Availability Modal -->
-    <div id="publish-availability-overlay"></div>
-    <div id="publish-availability-modal">
+    <div id="publish-availability-overlay" class="glass-modal-overlay" onclick="closePublishAvailabilityModal()"></div>
+    <div id="publish-availability-modal" class="glass-modal">
         <button class="pa-modal-close" onclick="closePublishAvailabilityModal()">&times;</button>
         <div class="pa-modal-header">
             <h2>Publish Availability</h2>
@@ -5886,9 +5950,9 @@
         </div>
     </div>
     <!-- Edit Shift Modal -->
-    <div id="edit-shift-overlay"></div>
-    <div id="edit-shift-modal">
-        <span class="es-close" onclick="closeEditShiftModal()">&times;</span>
+    <div id="edit-shift-overlay" class="glass-modal-overlay" onclick="closeEditShiftModal()"></div>
+    <div id="edit-shift-modal" class="glass-modal">
+        <button class="es-close" onclick="closeEditShiftModal()">&times;</button>
         <div class="es-header">
             <div id="es-staff-name" class="es-staff-name">Staff Name</div>
             <h2 id="es-title" class="es-title">Edit Shift on Sunday Jan 4, 2026</h2>
@@ -5916,7 +5980,7 @@
         </div>
     </div>
     <!-- Client Profile Modal -->
-    <div id="client-profile-overlay"></div>
+    <div id="client-profile-overlay" class="glass-modal-overlay" onclick="closeClientProfile()"></div>
     <div id="client-profile-modal">
         <div class="cp-container">
             <!-- New Sidebar Architecture -->
@@ -6143,41 +6207,41 @@
         </div>
     </div>
     <!-- Unconfirmed Appointments Modal -->
-    <div id="unconfirmed-modal-overlay" onclick="closeUnconfirmedModal()"></div>
-    <div id="unconfirmed-modal">
+    <div id="unconfirmed-modal-overlay" class="glass-modal-overlay" onclick="closeUnconfirmedModal()"></div>
+    <div id="unconfirmed-modal" class="glass-modal">
         <div class="um-header">
             <h2>Unconfirmed Requests</h2>
-            <span class="um-close-btn" onclick="closeUnconfirmedModal()">&times;</span>
+            <button class="um-close-btn" onclick="closeUnconfirmedModal()">&times;</button>
         </div>
         <div class="um-body" id="unconfirmed-modal-body">
             <!-- Populated dynamically -->
         </div>
     </div>
     <!-- Confirmed Appointments Modal -->
-    <div id="confirmed-modal-overlay" onclick="closeConfirmedModal()"></div>
-    <div id="confirmed-modal">
+    <div id="confirmed-modal-overlay" class="glass-modal-overlay" onclick="closeConfirmedModal()"></div>
+    <div id="confirmed-modal" class="glass-modal">
         <div class="um-header">
             <h2>Confirmed Appointments</h2>
-            <span class="um-close-btn" onclick="closeConfirmedModal()">&times;</span>
+            <button class="um-close-btn" onclick="closeConfirmedModal()">&times;</button>
         </div>
         <div class="um-body" id="confirmed-modal-body">
             <!-- Populated dynamically -->
         </div>
     </div>
     <!-- Completed Appointments Modal -->
-    <div id="completed-modal-overlay" onclick="closeCompletedModal()"></div>
-    <div id="completed-modal">
+    <div id="completed-modal-overlay" class="glass-modal-overlay" onclick="closeCompletedModal()"></div>
+    <div id="completed-modal" class="glass-modal">
         <div class="um-header">
             <h2>Completed Sessions</h2>
-            <span class="um-close-btn" onclick="closeCompletedModal()">&times;</span>
+            <button class="um-close-btn" onclick="closeCompletedModal()">&times;</button>
         </div>
         <div class="um-body" id="completed-modal-body">
             <!-- Populated dynamically -->
         </div>
     </div>
     <!-- Appointment Info Modal -->
-    <div id="appointment-info-overlay" onclick="closeAppointmentInfoModal()"></div>
-    <div id="appointment-info-modal">
+    <div id="appointment-info-overlay" class="glass-modal-overlay" onclick="closeAppointmentInfoModal()"></div>
+    <div id="appointment-info-modal" class="glass-modal">
         <div class="ai-header">
             <span class="ai-client-name" id="ai-client-name"></span>
             <i class='bx bx-chevron-down' style="color: #999; font-size: 24px;"></i>

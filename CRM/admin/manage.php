@@ -1129,29 +1129,27 @@
 </div>
 
 <!-- Customize Service Modal -->
-<div id="customize-service-modal" class="modal-overlay-custom" style="display:none;">
+<div id="customize-service-modal" class="modal-overlay-custom">
     <div class="customize-modal">
         <button class="close-btn" onclick="closeCustomizeModal()">&times;</button>
         <h2 id="cust-modal-service-name">Service Name</h2>
-        <p class="modal-subtitle">Overrides for <span id="cust-modal-staff-name">Staff Name</span></p>
+        <p class="modal-subtitle">Overrides for <span id="cust-modal-staff-name" style="font-weight: 700; color: var(--brand-navy);">Staff Name</span></p>
 
-        <div class="option-row">
-            <label class="custom-checkbox-container">
-                <input type="checkbox" checked>
-                <span class="checkmark"></span>
+        <div class="option-row" style="margin-bottom: 20px;">
+            <label class="custom-checkbox-container" style="display: flex; align-items: center; gap: 15px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 500;">
+                <input type="checkbox" id="cust-assignable" checked style="width: 20px; height: 20px; accent-color: var(--brand-navy);">
                 Assignable
             </label>
         </div>
 
-        <div class="option-row">
-            <label class="custom-checkbox-container">
-                <input type="checkbox" checked>
-                <span class="checkmark"></span>
+        <div class="option-row" style="margin-bottom: 35px;">
+            <label class="custom-checkbox-container" style="display: flex; align-items: center; gap: 15px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 500;">
+                <input type="checkbox" id="cust-bookable" checked style="width: 20px; height: 20px; accent-color: var(--brand-navy);">
                 Bookable Online
             </label>
         </div>
 
-        <button class="btn-update-service" onclick="closeCustomizeModal()">Update Service</button>
+        <button class="btn-update-service" onclick="closeCustomizeModal()" style="width: 100%; padding: 16px; background: var(--brand-navy); color: white; border: none; border-radius: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 20px rgba(15, 29, 44, 0.15);">Update Service</button>
     </div>
 </div>
 
