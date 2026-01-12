@@ -4877,7 +4877,7 @@
                                     kicker.textContent = 'Success!';
                                     title.textContent = 'Booking Submitted Successfully';
                                     step2.innerHTML = `
-                                        <div style="text-align: center; padding: 30px 20px;">
+                                        <div style="text-align: center; padding: 10px 20px;">
                                             <div style="font-size: 56px; margin-bottom: 20px;">✅</div>
                                             <h3 style="font-size: 20px; color: var(--text-dark); margin-bottom: 16px;">See you soon, ${name}!</h3>
                                             
@@ -4900,12 +4900,42 @@
                                                 </div>
                                             </div>
 
-                                            <p style="font-size: 14px; color: var(--text-gray); margin-bottom: 32px;">
-                                                Your appointment is currently <strong>Unconfirmed</strong>. We will review your request and send a confirmation shortly.
-                                            </p>
+                                            <div id="countdown-container" style="margin-bottom: 32px; background: rgba(15, 29, 44, 0.05); padding: 20px; border-radius: 12px;">
+                                                <p style="font-size: 14px; color: var(--text-gray); margin-bottom: 15px;">
+                                                    Redirecting to intake form in <span id="countdown-seconds" style="font-weight: bold; color: var(--primary-navy);">30</span> seconds...
+                                                </p>
+                                                <div style="width: 100%; background: #e0e0e0; height: 8px; border-radius: 4px; overflow: hidden;">
+                                                    <div id="countdown-bar" style="width: 100%; height: 100%; background: var(--primary-navy); transition: width 1s linear;"></div>
+                                                </div>
+                                            </div>
+
+                                            <button id="btnRedirectNow" style="width: 100%; padding: 14px; background: var(--primary-navy); color: white; border: none; border-radius: var(--radius-pill); font-weight: 700; cursor: pointer; transition: transform 0.2s;">
+                                                Proceed to Intake Form Now
+                                            </button>
                                         </div>
                                     `;
                                     sidebar.style.display = 'none';
+
+                                    let seconds = 30;
+                                    const secondsEl = document.getElementById('countdown-seconds');
+                                    const barEl = document.getElementById('countdown-bar');
+                                    const redirectBtn = document.getElementById('btnRedirectNow');
+
+                                    const timer = setInterval(() => {
+                                        seconds--;
+                                        if (secondsEl) secondsEl.textContent = seconds;
+                                        if (barEl) barEl.style.width = (seconds / 30 * 100) + '%';
+
+                                        if (seconds <= 0) {
+                                            clearInterval(timer);
+                                            window.location.href = 'intakeform.php';
+                                        }
+                                    }, 1000);
+
+                                    redirectBtn.addEventListener('click', () => {
+                                        clearInterval(timer);
+                                        window.location.href = 'intakeform.php';
+                                    });
                                 }
 
                                 // Clear cart after booking
