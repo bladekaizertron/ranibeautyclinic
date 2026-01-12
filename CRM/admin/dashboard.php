@@ -4940,8 +4940,9 @@
                     const tabName = this.getAttribute('data-tab');
                     const overviewContent = document.getElementById('cp-overview-content');
                     const historyContent = document.getElementById('cp-history-content');
+                    const formsContent = document.getElementById('cp-forms-content');
                     
-                    if (!overviewContent || !historyContent) return;
+                    if (!overviewContent || !historyContent || !formsContent) return;
 
                     // Update active tab UI
                     document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(t => t.classList.remove('active'));
@@ -4951,19 +4952,33 @@
                     if (tabName === 'overview') {
                         overviewContent.style.display = 'block';
                         historyContent.style.display = 'none';
+                        formsContent.style.display = 'none';
                     } else if (tabName === 'history') {
                         overviewContent.style.display = 'none';
                         historyContent.style.display = 'block';
+                        formsContent.style.display = 'none';
                         
-                        // Load history if needed (could be optimized with a 'loaded' flag)
+                        // Load history if needed
                         if (window.currentActiveClient) {
                             loadClientHistory(window.currentActiveClient.id);
                         }
+                    } else if (tabName === 'forms') {
+                        overviewContent.style.display = 'none';
+                        historyContent.style.display = 'none';
+                        formsContent.style.display = 'block';
+                        
+                        // Reset to list view if detail was open
+                        if (window.showFormsList) {
+                            window.showFormsList();
+                        }
+                        
+                        if (window.currentActiveClient) {
+                            loadClientForms(window.currentActiveClient.id);
+                        }
                     } else {
-                        // For other tabs (Forms, Gallery, Files etc.), dim the overview for now as before
-                        // or we could show a "Coming Soon" or empty state
                         overviewContent.style.display = 'block';
                         historyContent.style.display = 'none';
+                        formsContent.style.display = 'none';
                         const scrollArea = document.querySelector('.cp-scroll-area');
                         if (scrollArea) {
                             scrollArea.style.opacity = '0.3';
@@ -4971,7 +4986,7 @@
                         }
                     }
 
-                    if (tabName === 'overview' || tabName === 'history') {
+                    if (tabName === 'overview' || tabName === 'history' || tabName === 'forms') {
                         const scrollArea = document.querySelector('.cp-scroll-area');
                         if (scrollArea) {
                             scrollArea.style.opacity = '1';
@@ -5040,9 +5055,132 @@
                 })
                 .catch(err => {
                     console.error('Error loading history:', err);
-                    historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #C62828;">Error loading history data.</td></tr>';
+                    historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 10px; color: var(--red);">Error loading history.</td></tr>';
                 });
         }
+
+        window.loadClientForms = function(clientId) {
+            const formsList = document.getElementById('cp-forms-list');
+            if (!formsList) return;
+
+            formsList.innerHTML = '<div class="cp-loading" style="padding: 40px; text-align: center; color: #999;">Fetching intake history...</div>';
+
+            fetch(`api/api_get_intake_forms.php?client_id=${clientId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success' && data.data.length > 0) {
+                        window.currentClientForms = data.data; // Store for viewing details
+                        let html = '';
+                        data.data.forEach((form, index) => {
+                            const dateObj = new Date(form.submitted_at);
+                            const options = { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                            const dateFormatted = dateObj.toLocaleDateString('en-US', options);
+
+                            html += `
+                                <div class="cp-form-item" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: rgba(255,255,255,0.6); border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(15, 29, 44, 0.05); cursor: pointer;" onclick="viewIntakeFormDetails(${index})">
+                                    <div class="cp-form-info">
+                                        <div style="font-weight: 600; color: var(--brand-navy); margin-bottom: 5px;">Intake Form Submission</div>
+                                        <div style="font-size: 13px; color: var(--text-soft);">${dateFormatted}</div>
+                                    </div>
+                                    <i class='bx bx-chevron-right' style="font-size: 24px; color: var(--brand-gold);"></i>
+                                </div>
+                            `;
+                        });
+                        formsList.innerHTML = html;
+                    } else {
+                        formsList.innerHTML = '<div style="padding: 40px; text-align: center; color: #999;">No intake forms found for this client.</div>';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading forms:', err);
+                    formsList.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--red);">Error loading forms.</div>';
+                });
+        };
+
+        window.showFormsList = function() {
+            document.getElementById('cp-forms-list').style.display = 'block';
+            document.getElementById('cp-form-detail-view').style.display = 'none';
+        };
+
+        window.viewIntakeFormDetails = function(index) {
+            const form = window.currentClientForms[index];
+            if (!form) return;
+
+            const detailBody = document.getElementById('cp-form-data-body');
+            document.getElementById('cp-forms-list').style.display = 'none';
+            document.getElementById('cp-form-detail-view').style.display = 'block';
+
+            let html = `
+                <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <h2 style="font-family: 'Playfair Display', serif; color: var(--brand-navy); margin-bottom: 25px; border-bottom: 2px solid var(--brand-bg); padding-bottom: 10px;">Submission Details</h2>
+                    <div class="cp-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            `;
+
+            const fields = [
+                { label: 'Name', value: form.name },
+                { label: 'DOB', value: form.dob },
+                { label: 'Email', value: form.email },
+                { label: 'Phone', value: form.phone },
+                { label: 'Contact Pref', value: form.contact_pref },
+                { label: 'Referral', value: form.referral },
+                { label: 'Concerns', value: form.concerns },
+                { label: 'Areas', value: form.areas },
+                { label: 'Interested Treatments', value: form.treatments },
+                { label: 'Preparing for Event?', value: form.special_event },
+                { label: 'Recent Treatments', value: form.recent_treatments },
+                { label: 'Medical Conditions?', value: form.medical_cond_choice },
+                { label: 'Medical Context', value: form.medical_cond_text },
+                { label: 'Allergies/Sensitivities', value: form.sensitivities },
+                { label: 'Habits', value: form.habits },
+                { label: 'Daily Water Intake', value: form.water },
+                { label: 'Skin Type', value: form.skin_type },
+                { label: 'Best Days', value: form.best_days },
+                { label: 'Best Time', value: form.best_time }
+            ];
+
+            fields.forEach(f => {
+                if (f.value) {
+                    html += `
+                        <div class="cp-detail-item">
+                            <label style="font-size: 11px; text-transform: uppercase; color: #999; font-weight: 700; display: block; margin-bottom: 5px;">${f.label}</label>
+                            <div style="font-size: 15px; color: var(--brand-navy); font-weight: 500;">${f.value}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `</div>`; // Close grid
+
+            // Images Section
+            if (form.aura_scan || form.routine_pics) {
+                html += `<div style="margin-top: 30px; border-top: 1px solid var(--brand-bg); padding-top: 25px;">
+                            <h3 style="font-family: 'Playfair Display', serif; color: var(--brand-navy); margin-bottom: 20px;">Uploaded Media</h3>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap;">`;
+                
+                if (form.aura_scan) {
+                    html += `
+                        <div style="flex: 1; min-width: 250px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: #999; font-weight: 700; display: block; margin-bottom: 10px;">Aura Scan / Selfie</label>
+                            <img src="uploads/intake/${form.aura_scan}" style="width: 100%; border-radius: 15px; border: 1px solid #eee; cursor: pointer;" onclick="window.open('uploads/intake/${form.aura_scan}', '_blank')">
+                        </div>
+                    `;
+                }
+
+                if (form.routine_pics) {
+                    html += `
+                        <div style="flex: 1; min-width: 250px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: #999; font-weight: 700; display: block; margin-bottom: 10px;">Skincare Routine</label>
+                            <img src="uploads/intake/${form.routine_pics}" style="width: 100%; border-radius: 15px; border: 1px solid #eee; cursor: pointer;" onclick="window.open('uploads/intake/${form.routine_pics}', '_blank')">
+                        </div>
+                    `;
+                }
+
+                html += `</div></div>`;
+            }
+
+            html += `</div>`; // Close container
+            detailBody.innerHTML = html;
+        };
 
 
         // Calendar Logic
@@ -6526,6 +6664,26 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forms & Charts Tab Content (Initially Hidden) -->
+                    <div class="cp-forms-container" id="cp-forms-content" style="display: none;">
+                        <div class="cp-forms-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(15, 29, 44, 0.05);">
+                            <h3 style="font-family: 'Playfair Display', serif; color: var(--brand-navy); font-size: 18px;"><i class='bx bx-file'></i> Intake Forms & Charts</h3>
+                            <button class="cp-mini-btn" onclick="loadClientForms(window.currentActiveClient ? window.currentActiveClient.id : null)">Refresh List</button>
+                        </div>
+                        <div id="cp-forms-list" class="cp-forms-list">
+                            <!-- List of submissions will be injected here -->
+                            <div class="cp-loading" style="padding: 40px; text-align: center; color: #999;">Select the "Forms" tab to view history.</div>
+                        </div>
+                        <div id="cp-form-detail-view" class="cp-form-detail-view" style="display: none;">
+                            <button class="cp-mini-btn" onclick="showFormsList()" style="margin-bottom: 20px; display: inline-flex; align-items: center; gap: 5px; color: var(--brand-gold);">
+                                <i class='bx bx-arrow-back'></i> Back to List
+                            </button>
+                            <div id="cp-form-data-body" class="cp-form-detail-content">
+                                <!-- Full form answers will be injected here -->
                             </div>
                         </div>
                     </div>

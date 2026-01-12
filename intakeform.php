@@ -372,7 +372,7 @@
             { id: 'skin_type', text: '18. How would you describe your skin type?', type: 'multi-select', options: ['Oily', 'Dry', 'Combination', 'Sensitive'] },
             { id: 'best_days', text: '19. Which days are best for your appointments?', type: 'multi-select', options: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] },
             { id: 'best_time', text: '20. What time of day do you prefer for your appointments?', type: 'multi-select', options: ['Morning', 'Afternoon', 'Evening'] },
-            { id: 'routine_pics', text: '21. Please upload pictures of your day and nighttime skin care routine.', type: 'file', isSubmit: true }
+            { id: 'routine_pics', text: '21. Please upload pictures of your day and night time skin care routine.', type: 'file', isSubmit: true }
         ];
 
         function startForm() {
@@ -477,10 +477,44 @@
         }
 
         function finishForm() {
-            screens.question.classList.remove('active');
-            screens.thankyou.classList.add('active');
-            btnBack.style.display = 'none';
-            progressBar.style.width = '100%';
+            // Show loading state
+            btnOk.disabled = true;
+            btnOk.innerText = 'Submitting...';
+
+            const formData = new FormData();
+            for (const key in answers) {
+                if (answers[key] instanceof File) {
+                    formData.append(key, answers[key]);
+                } else if (Array.isArray(answers[key])) {
+                    formData.append(key, answers[key].join(', '));
+                } else {
+                    formData.append(key, answers[key]);
+                }
+            }
+
+            fetch('CRM/admin/api/api_submit_intake.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    screens.question.classList.remove('active');
+                    screens.thankyou.classList.add('active');
+                    btnBack.style.display = 'none';
+                    progressBar.style.width = '100%';
+                } else {
+                    alert('Submission failed: ' + data.message);
+                    btnOk.disabled = false;
+                    btnOk.innerText = 'Submit';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                btnOk.disabled = false;
+                btnOk.innerText = 'Submit';
+            });
         }
 
         function updateProgress() { progressBar.style.width = ((currentStep + 1) / questions.length) * 100 + '%'; }

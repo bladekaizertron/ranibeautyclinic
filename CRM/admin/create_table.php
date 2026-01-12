@@ -1,0 +1,39 @@
+<?php
+include 'db_conn.php';
+
+$sql = "CREATE TABLE IF NOT EXISTS intake_submissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT,
+    name VARCHAR(255),
+    dob DATE,
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    contact_pref TEXT,
+    referral TEXT,
+    aura_scan VARCHAR(255),
+    concerns TEXT,
+    areas TEXT,
+    treatments TEXT,
+    special_event TEXT,
+    recent_treatments TEXT,
+    medical_cond_choice TEXT,
+    medical_cond_text TEXT,
+    sensitivities TEXT,
+    habits TEXT,
+    water TEXT,
+    skin_type TEXT,
+    best_days TEXT,
+    best_time TEXT,
+    routine_pics VARCHAR(255),
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE SET NULL
+)";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Table intake_submissions created successfully or already exists.";
+} else {
+    echo "Error creating table: " . $conn->error;
+}
+
+$conn->close();
+?>
