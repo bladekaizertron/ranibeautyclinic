@@ -14,12 +14,19 @@
                 extend: {
                     colors: {
                         primary: {
-                            light: '#46ACD7',
-                            dark: '#2D6FAA',
+                            navy: '#0F1D2C',
+                            gold: '#F3D6BE',
+                        },
+                        brand: {
+                            navy: '#0F1D2C',
+                            gold: '#F3D6BE',
+                            light: '#FAF8F5',
+                            dark: '#2A2A2A',
                         }
                     },
                     fontFamily: {
                         sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
                     }
                 }
             }
@@ -150,9 +157,9 @@
     <div class="relative min-h-screen flex ">
         <div
             class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
-            <div class="sm:w-1/2 xl:w-2/5 h-full hidden md:flex flex-auto items-center justify-start p-10 overflow-hidden bg-primary-dark text-white bg-no-repeat bg-cover relative"
+            <div class="sm:w-1/2 xl:w-2/5 h-full hidden md:flex flex-auto items-center justify-start p-10 overflow-hidden bg-primary-navy text-white bg-no-repeat bg-cover relative"
                 style="background-image: url(../assets/bgimage.webp);">
-                <div class="absolute bg-gradient-to-b from-primary-dark to-gray-900 opacity-75 inset-0 z-0"></div>
+                <div class="absolute bg-gradient-to-b from-primary-navy to-gray-900 opacity-75 inset-0 z-0"></div>
                 <div class="absolute triangle  min-h-screen right-0 w-16"></div>
                 <div class="flex absolute top-5 left-1 text-center text-gray-100 z-20">
                     <img src="../assets/coderebuiltlogo.png" alt="Code Rebuilt Logo"
@@ -166,9 +173,9 @@
                             class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
                             <span class="text-sm font-semibold text-white/90">🚀 Join Us Today</span>
                         </div>
-                        <h1 class="text-5xl xl:text-6xl font-extrabold leading-tight">
+                        <h1 class="text-5xl xl:text-6xl font-extrabold leading-tight font-serif">
                             <span
-                                class="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
+                                class="bg-gradient-to-r from-white via-primary-gold to-white bg-clip-text text-transparent">
                                 Start Your
                             </span>
                             <br>
@@ -208,7 +215,7 @@
                         <div class="relative">
                             <label class="ml-3 text-sm font-bold text-gray-700 tracking-wide">Email</label>
                             <input
-                                class=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-primary-dark"
+                                class=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-primary-navy"
                                 type="email" name="email" placeholder="mail@gmail.com" required>
                         </div>
                         <div class="mt-8 content-center">
@@ -216,7 +223,7 @@
                                 Password
                             </label>
                             <input
-                                class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-primary-dark"
+                                class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-primary-navy"
                                 type="password" name="password" placeholder="Enter your password" required>
                         </div>
                         <div class="mt-8 content-center">
@@ -224,19 +231,19 @@
                                 Confirm Password
                             </label>
                             <input
-                                class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-primary-dark"
+                                class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-primary-navy"
                                 type="password" name="re_password" placeholder="Confirm your password" required>
                         </div>
                         <div>
                             <button type="submit"
-                                class="w-full flex justify-center bg-gradient-to-r from-primary-dark to-primary-light  hover:bg-gradient-to-l hover:from-primary-light hover:to-primary-dark text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
+                                class="w-full flex justify-center bg-gradient-to-r from-primary-navy to-primary-gold hover:bg-gradient-to-l hover:from-primary-gold hover:to-primary-navy text-primary-navy p-4 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">
                                 Sign up
                             </button>
                         </div>
                         <p class="flex flex-col items-center justify-center mt-10 text-center text-md text-gray-500">
                             <span>Already have an account?</span>
                             <a href="../index.html"
-                                class="text-primary-dark hover:text-primary-light no-underline hover:underline cursor-pointer transition ease-in duration-300">Sign
+                                class="text-primary-navy hover:text-primary-gold no-underline hover:underline cursor-pointer transition ease-in duration-300">Sign
                                 in</a>
                         </p>
                     </form>

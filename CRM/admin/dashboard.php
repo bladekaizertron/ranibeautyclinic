@@ -30,20 +30,8 @@
         }
 
         :root {
-            --poppins: 'Poppins', sans-serif;
-            --lato: 'Lato', sans-serif;
-
-            --light: #F9F9F9;
-            --blue: #3C91E6;
-            --light-blue: #CFE8FF;
-            --grey: #eee;
-            --dark-grey: #AAAAAA;
-            --dark: #342E37;
-            --red: #DB504A;
-            --yellow: #FFCE26;
-            --light-yellow: #FFF2C6;
-            --orange: #FD7238;
-            --light-orange: #FFE0D3;
+            --poppins: 'Montserrat', 'Poppins', sans-serif;
+            --lato: 'Montserrat', 'Lato', sans-serif;
 
             /* Rani Beauty Clinic Brand Colors */
             --brand-navy: #0F1D2C;
@@ -52,6 +40,18 @@
             --brand-white: #FFFFFF;
             --brand-text: #2A2A2A;
             --brand-soft-shadow: 0 10px 30px rgba(0,0,0,0.06);
+
+            --light: var(--brand-bg);
+            --blue: var(--brand-navy);
+            --light-blue: var(--brand-gold);
+            --grey: #f1f1f1;
+            --dark-grey: #AAAAAA;
+            --dark: var(--brand-text);
+            --red: #DB504A;
+            --yellow: #FFCE26;
+            --light-yellow: #FFF2C6;
+            --orange: #FD7238;
+            --light-orange: #FFE0D3;
 
             --montserrat: 'Montserrat', sans-serif;
             --playfair: 'Playfair Display', serif;
@@ -107,7 +107,7 @@
             height: 56px;
             display: flex;
             align-items: center;
-            color: var(--blue);
+            color: var(--brand-navy);
             position: sticky;
             top: 0;
             left: 0;
@@ -115,6 +115,7 @@
             z-index: 500;
             padding-bottom: 20px;
             box-sizing: content-box;
+            font-family: var(--playfair);
         }
         #sidebar .brand .bx {
             min-width: 60px;
@@ -171,7 +172,8 @@
             overflow-x: hidden;
         }
         #sidebar .side-menu.top li.active a {
-            color: var(--blue);
+            color: var(--brand-navy);
+            font-weight: 700;
         }
         #sidebar.hide .side-menu li a {
             width: calc(48px - (4px * 2));
@@ -181,7 +183,8 @@
             color: var(--red);
         }
         #sidebar .side-menu.top li a:hover {
-            color: var(--blue);
+            color: var(--brand-navy);
+            background: rgba(243, 214, 190, 0.3);
         }
         #sidebar .side-menu li a .bx {
             min-width: calc(60px  - ((4px + 6px) * 2));
