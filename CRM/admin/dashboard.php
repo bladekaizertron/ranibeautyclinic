@@ -122,6 +122,117 @@
             display: flex;
             justify-content: center;
         }
+
+        /* CLIENT GALLERY STYLES */
+        .cp-gallery-container {
+            padding: 20px;
+        }
+        .cp-gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.05);
+        }
+        .cp-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .cp-gallery-item {
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f1f1f1;
+            border: 1px solid rgba(15, 29, 44, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        .cp-gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .cp-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .cp-gallery-item .cp-gallery-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: rgba(219, 80, 74, 0.9);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            border: none;
+            z-index: 5;
+        }
+        .cp-gallery-item:hover .cp-gallery-delete {
+            opacity: 1;
+        }
+        .cp-gallery-item .cp-gallery-delete:hover {
+            background: var(--red);
+            transform: scale(1.1);
+        }
+        .cp-gallery-empty {
+            grid-column: span 3;
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            background: rgba(15, 29, 44, 0.02);
+            border-radius: 20px;
+            border: 2px dashed rgba(15, 29, 44, 0.05);
+        }
+        .cp-gallery-upload-zone {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .cp-gallery-add-btn {
+            background: var(--brand-navy);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(15, 29, 44, 0.2);
+        }
+        .cp-gallery-add-btn:hover {
+            background: var(--brand-gold);
+            color: var(--brand-navy);
+            transform: translateY(-2px);
+        }
+        .cp-gallery-add-btn i {
+            font-size: 20px;
+        }
+
+        /* Responsive Gallery */
+        @media screen and (max-width: 768px) {
+            .cp-gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .cp-gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         #sidebar .side-menu {
             width: 100%;
             margin-top: 48px;
@@ -4975,10 +5086,20 @@
                         if (window.currentActiveClient) {
                             loadClientForms(window.currentActiveClient.id);
                         }
+                    } else if (tabName === 'gallery') {
+                        overviewContent.style.display = 'none';
+                        historyContent.style.display = 'none';
+                        formsContent.style.display = 'none';
+                        document.getElementById('cp-gallery-content').style.display = 'block';
+                        
+                        if (window.currentActiveClient) {
+                            loadClientGallery(window.currentActiveClient.id);
+                        }
                     } else {
                         overviewContent.style.display = 'block';
                         historyContent.style.display = 'none';
                         formsContent.style.display = 'none';
+                        document.getElementById('cp-gallery-content').style.display = 'none';
                         const scrollArea = document.querySelector('.cp-scroll-area');
                         if (scrollArea) {
                             scrollArea.style.opacity = '0.3';
@@ -4986,7 +5107,7 @@
                         }
                     }
 
-                    if (tabName === 'overview' || tabName === 'history' || tabName === 'forms') {
+                    if (tabName === 'overview' || tabName === 'history' || tabName === 'forms' || tabName === 'gallery') {
                         const scrollArea = document.querySelector('.cp-scroll-area');
                         if (scrollArea) {
                             scrollArea.style.opacity = '1';
@@ -5181,6 +5302,117 @@
             html += `</div>`; // Close container
             detailBody.innerHTML = html;
         };
+
+        window.triggerGalleryUpload = function() {
+            document.getElementById('cp-gallery-input').click();
+        };
+
+        window.handleGalleryUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file || !window.currentActiveClient) return;
+
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('client_id', window.currentActiveClient.id);
+
+            // Show loading state in grid
+            const grid = document.getElementById('cp-gallery-grid');
+            const originalHTML = grid.innerHTML;
+            grid.innerHTML = '<div class="cp-gallery-empty" style="grid-column: span 3;"><div class="cg-spinner" style="margin: 0 auto 10px;"></div>Uploading image...</div>';
+
+            fetch('api/api_upload_gallery.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async res => {
+                const text = await res.text();
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Server response was not JSON:', text);
+                    throw new Error('Server returned an invalid response.');
+                }
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    loadClientGallery(window.currentActiveClient.id);
+                } else {
+                    alert('Upload failed: ' + (data.message || 'Unknown error'));
+                    grid.innerHTML = originalHTML;
+                }
+            })
+            .catch(err => {
+                console.error('Gallery upload error:', err);
+                alert('Gallery error: ' + err.message);
+                grid.innerHTML = originalHTML;
+            });
+        };
+
+        window.loadClientGallery = function(clientId) {
+            const grid = document.getElementById('cp-gallery-grid');
+            if (!grid) return;
+
+            grid.innerHTML = '<div class="cp-gallery-empty" style="grid-column: span 3;"><div class="cg-spinner" style="margin: 0 auto 10px;"></div>Curating gallery...</div>';
+
+            fetch(`api/api_get_client_gallery.php?client_id=${clientId}`)
+            .then(async res => {
+                const text = await res.text();
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Server response was not JSON:', text);
+                    throw new Error('Server error: ' + text.substring(0, 50));
+                }
+            })
+            .then(data => {
+                if (data.status === 'success' && data.images.length > 0) {
+                    let html = '';
+                    data.images.forEach(img => {
+                        html += `
+                            <div class="cp-gallery-item">
+                                <button class="cp-gallery-delete" onclick="deleteGalleryImage(event, ${img.id}, '${img.image_path}')" title="Delete Image">
+                                    <i class='bx bx-trash'></i>
+                                </button>
+                                <img src="${img.image_path}" alt="Client Photo" onclick="window.open('${img.image_path}', '_blank')">
+                            </div>
+                        `;
+                    });
+                    grid.innerHTML = html;
+                } else if (data.status === 'success') {
+                    grid.innerHTML = '<div class="cp-gallery-empty">No images in this patient\'s gallery yet.</div>';
+                } else {
+                    throw new Error(data.message || 'Failed to fetch images');
+                }
+            })
+            .catch(err => {
+                console.error('Error loading gallery:', err);
+                grid.innerHTML = `<div class="cp-gallery-empty" style="color: var(--red);">Error loading gallery: ${err.message}</div>`;
+            });
+        };
+
+        window.deleteGalleryImage = function(event, imageId, imagePath) {
+            event.stopPropagation();
+            if (!confirm('Are you sure you want to delete this exquisite capture?')) return;
+
+            fetch('api/api_delete_gallery_image.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image_id: imageId, image_path: imagePath })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    loadClientGallery(window.currentActiveClient.id);
+                } else {
+                    alert('Deletion failed: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Gallery deletion error:', err);
+                alert('An error occurred during deletion.');
+            });
+        };
+
 
 
         // Calendar Logic
@@ -6684,6 +6916,26 @@
                             </button>
                             <div id="cp-form-data-body" class="cp-form-detail-content">
                                 <!-- Full form answers will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Gallery Tab Content (Initially Hidden) -->
+                    <div class="cp-gallery-container" id="cp-gallery-content" style="display: none;">
+                        <div class="cp-gallery-header">
+                            <h3 style="font-family: 'Playfair Display', serif; color: var(--brand-navy); font-size: 18px;"><i class='bx bx-images'></i> Patient Gallery</h3>
+                            <div class="cp-gallery-actions">
+                                <button class="cp-gallery-add-btn" onclick="triggerGalleryUpload()">
+                                    <i class='bx bx-plus-circle'></i> Add Image
+                                </button>
+                                <input type="file" id="cp-gallery-input" style="display: none;" accept="image/*" onchange="handleGalleryUpload(event)">
+                            </div>
+                        </div>
+                        
+                        <div id="cp-gallery-grid" class="cp-gallery-grid">
+                            <!-- Images will be injected here -->
+                            <div class="cp-gallery-empty">
+                                <div class="cg-spinner" style="margin: 0 auto 15px;"></div>
+                                Loading gallery...
                             </div>
                         </div>
                     </div>
