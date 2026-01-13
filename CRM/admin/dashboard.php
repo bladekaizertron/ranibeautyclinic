@@ -4056,17 +4056,28 @@
                 </ul>
 			</li>
 		</ul>
-		<ul class="side-menu bottom">
+		<ul class="side-menu bottom" style="padding-bottom: 20px;">
 			<li>
-				<a href="#">
-					<i class='bx bxs-cog bx-sm bx-spin-hover' ></i>
-					<span class="text">Settings</span>
-				</a>
-			</li>
-			<li>
-				<a href="#" class="logout">
-					<i class='bx bx-power-off bx-sm bx-burst-hover' ></i>
-					<span class="text">Logout</span>
+				<a href="../../admin/index.php" class="booking-cms-btn" style="
+                    background: linear-gradient(45deg, var(--brand-gold), #f3d6be);
+                    color: var(--brand-navy) !important;
+                    margin: 0 15px;
+                    border-radius: 15px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 12px;
+                    height: 54px;
+                    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    position: relative;
+                    overflow: hidden;
+                " onmouseover="this.style.transform='translateY(-5px) scale(1.02)'; this.style.boxShadow='0 12px 25px rgba(212, 175, 55, 0.4)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 8px 20px rgba(212, 175, 55, 0.25)';" >
+					<div style="background: rgba(255,255,255,0.4); width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class='bx bxs-grid-alt' style="font-size: 18px;"></i>
+                    </div>
+					<span class="text" style="font-weight: 700; font-family: var(--montserrat); text-transform: uppercase; letter-spacing: 0.5px; font-size: 11px;">Booking CMS</span>
 				</a>
 			</li>
 		</ul>
