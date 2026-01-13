@@ -5052,6 +5052,7 @@
                     const overviewContent = document.getElementById('cp-overview-content');
                     const historyContent = document.getElementById('cp-history-content');
                     const formsContent = document.getElementById('cp-forms-content');
+                    const galleryContent = document.getElementById('cp-gallery-content');
                     
                     if (!overviewContent || !historyContent || !formsContent) return;
 
@@ -5059,47 +5060,34 @@
                     document.querySelectorAll('.cp-nav-vertical .cp-tab').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     
+                    // Hide all sections first
+                    overviewContent.style.display = 'none';
+                    historyContent.style.display = 'none';
+                    formsContent.style.display = 'none';
+                    if (galleryContent) galleryContent.style.display = 'none';
+                    
                     // Toggle content visibility
                     if (tabName === 'overview') {
                         overviewContent.style.display = 'block';
-                        historyContent.style.display = 'none';
-                        formsContent.style.display = 'none';
                     } else if (tabName === 'history') {
-                        overviewContent.style.display = 'none';
                         historyContent.style.display = 'block';
-                        formsContent.style.display = 'none';
-                        
-                        // Load history if needed
                         if (window.currentActiveClient) {
                             loadClientHistory(window.currentActiveClient.id);
                         }
                     } else if (tabName === 'forms') {
-                        overviewContent.style.display = 'none';
-                        historyContent.style.display = 'none';
                         formsContent.style.display = 'block';
-                        
-                        // Reset to list view if detail was open
-                        if (window.showFormsList) {
-                            window.showFormsList();
-                        }
-                        
+                        if (window.showFormsList) window.showFormsList();
                         if (window.currentActiveClient) {
                             loadClientForms(window.currentActiveClient.id);
                         }
                     } else if (tabName === 'gallery') {
-                        overviewContent.style.display = 'none';
-                        historyContent.style.display = 'none';
-                        formsContent.style.display = 'none';
-                        document.getElementById('cp-gallery-content').style.display = 'block';
-                        
+                        if (galleryContent) galleryContent.style.display = 'block';
                         if (window.currentActiveClient) {
                             loadClientGallery(window.currentActiveClient.id);
                         }
                     } else {
+                        // Default fallback (e.g. for Files which isn't implemented yet)
                         overviewContent.style.display = 'block';
-                        historyContent.style.display = 'none';
-                        formsContent.style.display = 'none';
-                        document.getElementById('cp-gallery-content').style.display = 'none';
                         const scrollArea = document.querySelector('.cp-scroll-area');
                         if (scrollArea) {
                             scrollArea.style.opacity = '0.3';
