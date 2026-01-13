@@ -435,45 +435,106 @@
         #content nav .notification-menu {
             display: none;
             position: absolute;
-            top: 56px;
+            top: 60px;
             right: 0;
-            background: var(--light);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            width: 250px;
-            max-height: 300px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            width: 320px;
+            max-height: 450px;
             overflow-y: auto;
+            overflow-x: hidden; /* Fix horizontal scrollbar */
             z-index: 9999;
-            font-family: var(--lato);
+            font-family: var(--poppins);
+            padding: 10px 0;
         }
 
         #content nav .notification-menu ul {
             list-style: none;
-            padding: 10px;
+            padding: 0;
             margin: 0;
         }
 
+        #content nav .notification-menu .notif-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-weight: 700;
+            color: var(--brand-navy);
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         #content nav .notification-menu li {
-            padding: 10px;
-            border-bottom: 1px solid var(--grey);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
             color: var(--dark);
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        #content nav .notification-menu li:last-child {
+            border-bottom: none;
         }
 
         #content nav .notification-menu li:hover {
-            background-color: var(--light-blue);
-            color: var(--dark);
+            background-color: rgba(243, 214, 190, 0.3);
+            padding-left: 25px; /* Subtle shifting instead of scaling to avoid overflow */
         }
-        #content nav .notification-menu li:hover a{
-            background-color: var(--dark-grey);
-            color: var(--light);
+
+        #content nav .notification-menu .notif-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            background: rgba(219, 80, 74, 0.1);
+            color: #DB504A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
         }
-        body.dark #content nav .notification-menu li:hover {
-            background-color: var(--light-blue);
-            color: var(--light);
+
+        #content nav .notification-menu .notif-content {
+            flex: 1;
+            min-width: 0; /* Prevents flex items from overflowing their container */
         }
-        body.dark #content nav .notification-menu li a{
-            background-color: var(--dark-grey);
-            color: var(--light);
+
+        #content nav .notification-menu .notif-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--brand-navy);
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        #content nav .notification-menu .notif-details {
+            font-size: 12px;
+            color: var(--dark-grey);
+            display: block;
+        }
+
+        #content nav .notification-menu .notif-time {
+            font-size: 10px;
+            color: #999;
+            margin-top: 5px;
+            display: block;
+            text-align: right;
+        }
+
+        body.dark #content nav .notification-menu {
+            background: rgba(12, 12, 30, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark #content nav .notification-menu .notif-title {
+            color: #fff;
         }
         #content nav .profile img {
             width: 36px;
@@ -4035,15 +4096,11 @@
     <!-- Notification Bell -->
     <a href="#" class="notification" id="notificationIcon">
         <i class='bx bxs-bell bx-tada-hover' ></i>
-        <span class="num">8</span>
+        <span class="num" id="notificationCount" style="display: none;">0</span>
     </a>
     <div class="notification-menu" id="notificationMenu">
-        <ul>
-            <li>New message from John</li>
-            <li>Your order has been shipped</li>
-            <li>New comment on your post</li>
-            <li>Update available for your app</li>
-            <li>Reminder: Meeting at 3PM</li>
+        <ul id="notificationList">
+            <li style="text-align: center; color: #888;">No new notifications</li>
         </ul>
     </div>
 
@@ -4069,14 +4126,14 @@
             <div class="insights-bg-decor-2"></div>
 			<div class="head-title">
 				<div class="left">
-					<h1 style="font-family: var(--playfair); color: var(--brand-navy);">Insights</h1>
+					<h1 style="font-family: var(--playfair); color: var(--brand-navy);">Front Desk</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a href="#" style="font-family: var(--montserrat); font-weight: 500;">Dashboard</a>
 						</li>
 						<li><i class='bx bx-chevron-right' ></i></li>
 						<li>
-							<a class="active" href="#" style="font-family: var(--montserrat); font-weight: 600;">Stats</a>
+							<a class="active" href="#" style="font-family: var(--montserrat); font-weight: 600;">Overview</a>
 						</li>
 					</ul>
 				</div>
@@ -5605,6 +5662,8 @@
             const unconfirmedElem = document.getElementById('stat-unconfirmed');
             const confirmedElem = document.getElementById('stat-confirmed');
             const completedElem = document.getElementById('stat-completed');
+            const notificationCount = document.getElementById('notificationCount');
+            const notificationList = document.getElementById('notificationList');
 
             if (!confirmedElem || !completedElem) return;
 
@@ -5619,8 +5678,56 @@
                     currentConfirmedList = data.confirmed_list || [];
                     currentCompletedList = data.completed_list || [];
                     
+                    const unconfirmedCount = data.unconfirmed || 0;
                     if (unconfirmedElem) {
-                        unconfirmedElem.textContent = data.unconfirmed || 0;
+                        unconfirmedElem.textContent = unconfirmedCount;
+                    }
+
+                    // Update dynamic notifications
+                    if (notificationCount) {
+                        if (unconfirmedCount > 0) {
+                            notificationCount.textContent = unconfirmedCount;
+                            notificationCount.style.display = 'flex';
+                        } else {
+                            notificationCount.style.display = 'none';
+                        }
+                    }
+
+                    if (notificationList) {
+                        if (unconfirmedCount > 0) {
+                            let html = `<div class="notif-header">
+                                Notifications
+                                <span style="font-size: 11px; background: rgba(219, 80, 74, 0.1); color: #DB504A; padding: 2px 8px; border-radius: 10px;">${unconfirmedCount} New</span>
+                            </div>`;
+                            currentUnconfirmedList.forEach(item => {
+                                // Format time for notification
+                                let timeFormatted = item.appointment_time;
+                                if (item.appointment_time) {
+                                    const [h, m] = item.appointment_time.split(':');
+                                    const hour = parseInt(h);
+                                    const ampm = hour >= 12 ? 'pm' : 'am';
+                                    const hour12 = hour % 12 || 12;
+                                    timeFormatted = `${hour12}:${m}${ampm}`;
+                                }
+
+                                html += `<li onclick="openUnconfirmedModal()" style="cursor: pointer;">
+                                    <div class="notif-icon"><i class='bx bxs-calendar-plus'></i></div>
+                                    <div class="notif-content">
+                                        <span class="notif-title">New Unconfirmed Booking</span>
+                                        <span class="notif-details">${item.client_name} - ${item.services}</span>
+                                        <span class="notif-time">${item.appointment_date} @ ${timeFormatted}</span>
+                                    </div>
+                                </li>`;
+                            });
+                            notificationList.innerHTML = html;
+                        } else {
+                            notificationList.innerHTML = `
+                                <div class="notif-header">Notifications</div>
+                                <li style="text-align: center; color: #888; padding: 30px 20px;">
+                                    <i class='bx bx-bell-off' style="font-size: 30px; display: block; margin-bottom: 10px; opacity: 0.3;"></i>
+                                    No new notifications
+                                </li>`;
+                        }
                     }
                 })
                 .catch(err => console.error('Error fetching stats:', err));
