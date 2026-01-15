@@ -5510,9 +5510,20 @@
             });
         });
 
+        // Services List extracted from index.html
+        const RAN_SERVICES = [
+            'Exosomes', 'Laser Acne Facial', 'Laser Rosacea Facial', 'Laser Resurfacing Facial', 
+            'Upper Lip Laser Hair Removal', 'Eyebrows', 'Sideburns', 'Full Back', 'Pantyline', 'Neck', 
+            'Full Face Laser Hair Removal', 'Hands and fingers', 'Full Chest', 'Happy Trail', 'Areolas', 
+            'Forehead', 'Jawline', 'Underarms', 'Feet & Toes', 'Full Brazilian', 'Ears', 
+            'Full Body Laser Hair Removal', 'Ponytail Laser', 'Full Abs', 'Full Legs', 'Cheeks', 'Chin', 'Buttocks'
+        ];
+
         function loadClientHistory(clientId) {
             const historyBody = document.getElementById('cp-appointment-history-body');
             if (!historyBody) return;
+
+            window.currentActiveClientId = clientId; // Store for the modal
 
             historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #999;">Loading history...</td></tr>';
 
@@ -5553,7 +5564,16 @@
                         });
                         historyBody.innerHTML = html;
                     } else {
-                        historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #999;">No appointment history found.</td></tr>';
+                        // User Request: Add "Add Appointment" button if history is empty
+                        historyBody.innerHTML = `
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px;">
+                                    <div style="color: #999; margin-bottom: 15px;">No appointment history found.</div>
+                                    <button class="cp-mini-btn" onclick="openAddApptModal(${clientId})" style="background: var(--brand-gold); color: var(--brand-navy); font-weight: 600;">
+                                        <i class='bx bx-plus'></i> Add Appointment
+                                    </button>
+                                </td>
+                            </tr>`;
                     }
                 })
                 .catch(err => {
@@ -5561,6 +5581,108 @@
                     historyBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 10px; color: var(--red);">Error loading history.</td></tr>';
                 });
         }
+
+        // ========================================
+        // ADD APPOINTMENT MODAL LOGIC
+        // ========================================
+        
+        function openAddApptModal(clientId) {
+            const modal = document.getElementById('add-appt-modal');
+            const dateInput = document.getElementById('appt-date');
+            const clientInput = document.getElementById('appt-client-id');
+            const staffSelect = document.getElementById('appt-staff');
+            const serviceSelect = document.getElementById('appt-services');
+            
+            // Set auto fields
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+            clientInput.value = clientId || window.currentActiveClientId;
+            
+            // Populate Services
+            serviceSelect.innerHTML = '<option value="">Select Service</option>';
+            RAN_SERVICES.forEach(svc => {
+                const opt = document.createElement('option');
+                opt.value = svc;
+                opt.textContent = svc;
+                serviceSelect.appendChild(opt);
+            });
+
+            // Populate Staff
+            fetch('api/api_staff_availability.php?get_staff=true')
+                .then(res => res.json())
+                .then(data => {
+                    staffSelect.innerHTML = '<option value="">Select Staff</option>';
+                    if(Array.isArray(data)) {
+                        data.forEach(staff => {
+                            const opt = document.createElement('option');
+                            opt.value = staff.id;
+                            opt.textContent = staff.name;
+                            staffSelect.appendChild(opt);
+                        });
+                    }
+                })
+                .catch(err => console.error('Error fetching staff:', err));
+
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeAddApptModal() {
+            const modal = document.getElementById('add-appt-modal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('add-appt-form').reset();
+            }, 300);
+        }
+
+        // Handle Appointment Form Submit
+        // Handle Appointment Form Submit
+        document.addEventListener('DOMContentLoaded', function() {
+            const addApptForm = document.getElementById('add-appt-form');
+            if (addApptForm) {
+                addApptForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const btn = document.getElementById('save-appt-btn');
+                    const originalText = btn.innerHTML;
+                    
+                    const formData = new FormData(this);
+                    const data = {};
+                    formData.forEach((value, key) => data[key] = value);
+                    
+                    let clientData = window.currentActiveClient || {};
+                    // Fallbacks for data enrichment
+                    data.name = clientData.name || 'Walk-in Client'; 
+                    data.email = clientData.email || 'walkin@example.com';
+                    data.phone = clientData.phone || '0000000000';
+                    data.time = new Date().toLocaleTimeString('en-US', {hour12: false}); 
+                    
+                    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Saving...';
+                    
+                    try {
+                        const response = await fetch('api/api_book_appointment.php', {
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {'Content-Type': 'application/json'}
+                        });
+                        const res = await response.json();
+                        
+                        if (res.status === 'success') {
+                            showToast('Appointment added successfully!');
+                            closeAddApptModal();
+                            loadClientHistory(data.client_id); 
+                        } else {
+                            showToast(res.message || 'Error booking appointment', 'error');
+                        }
+                    } catch (err) {
+                        showToast('Server error', 'error');
+                        console.error(err);
+                    } finally {
+                        btn.innerHTML = originalText;
+                    }
+                });
+            }
+        });
 
         window.loadClientForms = function(clientId) {
             const formsList = document.getElementById('cp-forms-list');
@@ -7635,6 +7757,75 @@
     <!-- Confirmed Appointments Modal removed -->
     <!-- Completed Appointments Modal removed -->
     <!-- Appointment Info Modal removed -->
+    
+    <!-- Add Appointment Modal (For Walk-ins with no history) -->
+    <div id="add-appt-modal" class="add-client-modal" style="display: none; z-index: 3000;">
+        <div class="acm-overlay"></div>
+        <div class="acm-container">
+            <div class="acm-header">
+                <div class="acm-title-area">
+                    <span class="acm-subtitle">Walk-in Appointment</span>
+                    <h2 class="acm-title">Add New Appointment</h2>
+                </div>
+                <button class="acm-close-btn" onclick="closeAddApptModal()">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form id="add-appt-form" class="acm-form">
+                <input type="hidden" id="appt-client-id" name="client_id">
+                <div class="acm-form-grid">
+                    <!-- Auto-filled Fields -->
+                    <div class="acm-form-group">
+                        <label>Date</label>
+                        <input type="date" id="appt-date" name="date" readonly style="background: rgba(0,0,0,0.02);">
+                    </div>
+                    
+                    <div class="acm-form-group">
+                        <label>Location</label>
+                        <input type="text" value="Clinic - Walk in" readonly style="background: rgba(0,0,0,0.02);">
+                    </div>
+
+                    <div class="acm-form-group">
+                        <label>Status</label>
+                        <input type="text" name="status" value="completed" readonly style="background: rgba(0,0,0,0.02); text-transform: capitalize;">
+                    </div>
+
+                    <!-- User Selection Fields -->
+                     <div class="acm-form-group">
+                        <label for="appt-staff">Staff <span class="acm-required">*</span></label>
+                        <select id="appt-staff" name="staff_id" required>
+                            <option value="">Select Staff</option>
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
+
+                    <div class="acm-form-group acm-full-width">
+                        <label for="appt-services">Services <span class="acm-required">*</span></label>
+                        <select id="appt-services" name="services" required>
+                             <option value="">Select Service</option>
+                             <!-- Populated via JS -->
+                        </select>
+                    </div>
+                    
+                    <div class="acm-form-group acm-full-width">
+                         <label>Total Price ($)</label>
+                         <input type="number" id="appt-price" name="total_price" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <div class="acm-footer">
+                    <button type="button" class="acm-btn-secondary" onclick="closeAddApptModal()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="acm-btn-primary" id="save-appt-btn">
+                        <i class='bx bx-check'></i>
+                        <span>Save Appointment</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         // ========================================

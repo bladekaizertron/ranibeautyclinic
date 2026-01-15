@@ -69,19 +69,24 @@ if (empty($missing_fields)) {
 
     // 1. Check if client exists, or create new
     $client_id = 0;
-    $check_client = "SELECT id FROM clients WHERE email = '$email' OR phone = '$phone' LIMIT 1";
-    $res_client = mysqli_query($conn, $check_client);
-    
-    if ($res_client && mysqli_num_rows($res_client) > 0) {
-        $row = mysqli_fetch_assoc($res_client);
-        $client_id = $row['id'];
+
+    if (isset($data['client_id']) && !empty($data['client_id'])) {
+        $client_id = (int)$data['client_id'];
     } else {
-        $ins_client = "INSERT INTO clients(name, phone, email) VALUES('$name', '$phone', '$email')";
-        if (mysqli_query($conn, $ins_client)) {
-            $client_id = mysqli_insert_id($conn);
+        $check_client = "SELECT id FROM clients WHERE email = '$email' OR phone = '$phone' LIMIT 1";
+        $res_client = mysqli_query($conn, $check_client);
+        
+        if ($res_client && mysqli_num_rows($res_client) > 0) {
+            $row = mysqli_fetch_assoc($res_client);
+            $client_id = $row['id'];
         } else {
-            echo json_encode(["status" => "error", "message" => "Failed to create client: " . mysqli_error($conn)]);
-            exit();
+            $ins_client = "INSERT INTO clients(name, phone, email) VALUES('$name', '$phone', '$email')";
+            if (mysqli_query($conn, $ins_client)) {
+                $client_id = mysqli_insert_id($conn);
+            } else {
+                echo json_encode(["status" => "error", "message" => "Failed to create client: " . mysqli_error($conn)]);
+                exit();
+            }
         }
     }
 
@@ -100,9 +105,11 @@ if (empty($missing_fields)) {
         exit();
     }
 
+    $status = isset($data['status']) ? mysqli_real_escape_string($conn, validate($data['status'])) : 'unconfirmed';
+
     // 3. Create appointment
     $sql = "INSERT INTO appointments(client_id, staff_id, appointment_date, appointment_time, services, total_price, status) 
-            VALUES('$client_id', '$staff_id', '$date', '$time', '$services', '$total_price', 'unconfirmed')";
+            VALUES('$client_id', '$staff_id', '$date', '$time', '$services', '$total_price', '$status')";
     
     if (mysqli_query($conn, $sql)) {
         echo json_encode(["status" => "success", "message" => "Appointment booked successfully", "appointment_id" => mysqli_insert_id($conn)]);
