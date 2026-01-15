@@ -104,23 +104,33 @@
         #sidebar .brand {
             font-size: 24px;
             font-weight: 700;
-            height: 56px;
+            height: 100px;
             display: flex;
             align-items: center;
+            justify-content: center;
             color: var(--brand-navy);
             position: sticky;
-            top: 0;
+            top: 10;
             left: 0;
             background: var(--light);
             z-index: 500;
-            padding-bottom: 20px;
-            box-sizing: content-box;
+            padding: 20px 0;
+            box-sizing: border-box;
             font-family: var(--playfair);
+            transition: all 0.3s ease;
         }
         #sidebar .brand .bx {
             min-width: 60px;
             display: flex;
             justify-content: center;
+        }
+
+        #sidebar.hide .brand .logo-container img {
+            width: 40px !important;
+            transition: all 0.3s ease;
+        }
+        #sidebar .brand .logo-container img {
+            transition: all 0.3s ease;
         }
 
         /* CLIENT GALLERY STYLES */
@@ -3996,10 +4006,9 @@
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="#" class="brand">
-			<div style="min-width: 60px; display: flex; justify-content: center; align-items: center;">
-				<img src="../assets/coderebuiltlogo.png" style="width: 40px; height: auto;" alt="CodeRebuilt Logo">
+			<div class="logo-container" style="display: flex; justify-content: center; align-items: center; width: 100%;">
+				<img src="../assets/medspalogo.png" style="width: 140px; height: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));" alt="MedSpa Logo">
 			</div>
-			<span class="text">MedSpa-CRM</span>
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
