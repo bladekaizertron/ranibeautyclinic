@@ -5591,7 +5591,31 @@
                         });
                         formsList.innerHTML = html;
                     } else {
-                        formsList.innerHTML = '<div style="padding: 40px; text-align: center; color: #999;">No intake forms found for this client.</div>';
+                        formsList.innerHTML = `
+                            <div style="padding: 40px; text-align: center;">
+                                <div style="color: #999; margin-bottom: 20px; font-size: 15px;">No intake forms found for this client.</div>
+                                <button onclick="window.open('../../intakeform.php', '_blank')" style="
+                                    background: var(--brand-navy);
+                                    color: var(--brand-white);
+                                    border: none;
+                                    padding: 12px 28px;
+                                    border-radius: 16px;
+                                    font-weight: 700;
+                                    font-size: 13px;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1px;
+                                    cursor: pointer;
+                                    transition: all 0.3s;
+                                    box-shadow: 0 8px 20px rgba(15, 29, 44, 0.15);
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(15, 29, 44, 0.25)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(15, 29, 44, 0.15)'">
+                                    <i class='bx bx-plus' style="font-size: 18px;"></i>
+                                    Add Forms
+                                </button>
+                            </div>
+                        `;
                     }
                 })
                 .catch(err => {
