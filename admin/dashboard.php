@@ -32,7 +32,7 @@ if (!isset($_SESSION['user'])) {
                     <a href="dashboard.php" class="sidebar-link active"><i class="fa fa-home"></i> Dashboard</a>
                     <a href="edit_media.php" class="sidebar-link"><i class="fa fa-image"></i> Media</a>
                     <a href="edit_content.php" class="sidebar-link"><i class="fa fa-file-alt"></i> Content</a>
-                    <a href="logout.php" class="sidebar-link"><i class="fa fa-sign-out-alt"></i> Logout</a>
+                    <a href="../CRM/admin/dashboard.php" class="sidebar-link"><i class="fa fa-sign-out-alt"></i> Go back to CMS </a>
                 </nav>
             </aside>
 
