@@ -4000,6 +4000,316 @@
         .cp-save-btn:active {
             transform: translateY(-1px);
         }
+
+        /* ADD CLIENT MODAL STYLES */
+        .add-client-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .add-client-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .acm-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 29, 44, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .acm-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 35px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+            transform: scale(0.9) translateY(30px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .add-client-modal.active .acm-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .acm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 40px 40px 30px;
+            border-bottom: 1px solid rgba(15, 29, 44, 0.06);
+        }
+
+        .acm-subtitle {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--brand-gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .acm-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--brand-navy);
+            margin: 0;
+        }
+
+        .acm-close-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(15, 29, 44, 0.04);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-navy);
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .acm-close-btn:hover {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            transform: rotate(90deg);
+        }
+
+        .acm-form {
+            padding: 40px;
+        }
+
+        .acm-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .acm-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .acm-form-group.acm-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .acm-form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dark-grey);
+            margin-bottom: 10px;
+        }
+
+        .acm-required {
+            color: #DB504A;
+        }
+
+        .acm-form-group input,
+        .acm-form-group select,
+        .acm-form-group textarea {
+            width: 100%;
+            background: #fff;
+            border: 2px solid rgba(15, 29, 44, 0.08);
+            border-radius: 18px;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--brand-navy);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .acm-form-group input:focus,
+        .acm-form-group select:focus,
+        .acm-form-group textarea:focus {
+            border-color: var(--brand-navy);
+            box-shadow: 0 0 0 4px rgba(15, 29, 44, 0.04);
+        }
+
+        .acm-form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .acm-membership-toggle {
+            display: flex;
+            gap: 15px;
+        }
+
+        .acm-radio-option {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .acm-radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .acm-radio-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 20px;
+            background: #fff;
+            border: 2px solid rgba(15, 29, 44, 0.08);
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--brand-navy);
+            transition: all 0.3s;
+        }
+
+        .acm-radio-option input[type="radio"]:checked + .acm-radio-label {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            border-color: var(--brand-navy);
+            box-shadow: 0 8px 20px rgba(15, 29, 44, 0.2);
+        }
+
+        .acm-radio-label i {
+            font-size: 20px;
+        }
+
+        .acm-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(15, 29, 44, 0.06);
+        }
+
+        .acm-btn-secondary,
+        .acm-btn-primary {
+            padding: 14px 32px;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .acm-btn-secondary {
+            background: transparent;
+            color: var(--brand-navy);
+            border: 2px solid rgba(15, 29, 44, 0.1);
+        }
+
+        .acm-btn-secondary:hover {
+            background: rgba(15, 29, 44, 0.04);
+            border-color: rgba(15, 29, 44, 0.2);
+        }
+
+        .acm-btn-primary {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            box-shadow: 0 10px 25px rgba(15, 29, 44, 0.2);
+        }
+
+        .acm-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(15, 29, 44, 0.3);
+            background: #1a2f45;
+        }
+
+        .acm-btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .acm-btn-primary.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .acm-btn-primary.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            padding: 18px 28px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            font-size: 15px;
+            font-weight: 600;
+            z-index: 11000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast-notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-notification.success {
+            background: #27ae60;
+        }
+
+        .toast-notification.error {
+            background: #DB504A;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .acm-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .acm-header,
+            .acm-form {
+                padding: 30px 25px;
+            }
+
+            .acm-title {
+                font-size: 24px;
+            }
+
+            .acm-membership-toggle {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -7301,5 +7611,151 @@
     <!-- Confirmed Appointments Modal removed -->
     <!-- Completed Appointments Modal removed -->
     <!-- Appointment Info Modal removed -->
+
+    <script>
+        // ========================================
+        // ADD CLIENT MODAL FUNCTIONALITY
+        // ========================================
+
+        // Open Add Client Modal
+        function openAddClientModal() {
+            const modal = document.getElementById('add-client-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+            
+            // Focus on first input
+            setTimeout(() => {
+                document.getElementById('client-name').focus();
+            }, 300);
+        }
+
+        // Close Add Client Modal
+        function closeAddClientModal() {
+            const modal = document.getElementById('add-client-modal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                // Reset form
+                document.getElementById('add-client-form').reset();
+            }, 300);
+        }
+
+        // Show Toast Notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.className = 'toast-notification ' + type;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Refresh Clients List
+        function refreshClientsList() {
+            // This function should reload the clients grid/list
+            // You may need to call your existing loadClients function
+            if (typeof loadClients === 'function') {
+                loadClients();
+            } else {
+                // Fallback: reload the page or fetch clients manually
+                console.log('Refreshing clients list...');
+                // Add your client loading logic here
+            }
+        }
+
+        // Submit New Client
+        async function submitNewClient(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('add-client-form');
+            const saveBtn = document.getElementById('save-client-btn');
+            
+            // Get form data
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Basic validation
+            if (!data.name || !data.email || !data.phone) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                showToast('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Show loading state
+            saveBtn.classList.add('loading');
+            saveBtn.querySelector('span').textContent = 'Saving...';
+            
+            try {
+                const response = await fetch('api/api_save_client.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    showToast('Client added successfully!', 'success');
+                    closeAddClientModal();
+                    refreshClientsList();
+                } else {
+                    showToast(result.message || 'Failed to add client', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            } finally {
+                // Remove loading state
+                saveBtn.classList.remove('loading');
+                saveBtn.querySelector('span').textContent = 'Save Client';
+            }
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add Client Button Click
+            const addClientBtn = document.getElementById('add-client-btn');
+            if (addClientBtn) {
+                addClientBtn.addEventListener('click', openAddClientModal);
+            }
+            
+            // Form Submit
+            const addClientForm = document.getElementById('add-client-form');
+            if (addClientForm) {
+                addClientForm.addEventListener('submit', submitNewClient);
+            }
+            
+            // Close modal on overlay click
+            const overlay = document.querySelector('.acm-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', closeAddClientModal);
+            }
+            
+            // Close modal on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('add-client-modal');
+                    if (modal && modal.classList.contains('active')) {
+                        closeAddClientModal();
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

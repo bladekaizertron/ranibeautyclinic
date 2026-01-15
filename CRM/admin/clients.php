@@ -10,7 +10,7 @@
             <div class="cg-actions">
                 <button class="cg-action-btn" title="Export Data"><i class='bx bx-export'></i></button>
                 <button class="cg-action-btn" title="Merge Directory"><i class='bx bx-git-merge'></i></button>
-                <button class="cg-primary-btn">
+                <button class="cg-primary-btn" id="add-client-btn">
                     <i class='bx bx-plus'></i>
                     <span>Add New Client</span>
                 </button>
@@ -59,4 +59,100 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Client Modal -->
+    <div id="add-client-modal" class="add-client-modal" style="display: none;">
+        <div class="acm-overlay"></div>
+        <div class="acm-container">
+            <div class="acm-header">
+                <div class="acm-title-area">
+                    <span class="acm-subtitle">New Client Registration</span>
+                    <h2 class="acm-title">Add Client Profile</h2>
+                </div>
+                <button class="acm-close-btn" onclick="closeAddClientModal()">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form id="add-client-form" class="acm-form">
+                <div class="acm-form-grid">
+                    <!-- Required Fields -->
+                    <div class="acm-form-group acm-full-width">
+                        <label for="client-name">Full Name <span class="acm-required">*</span></label>
+                        <input type="text" id="client-name" name="name" placeholder="Enter client's full name" required>
+                    </div>
+
+                    <div class="acm-form-group">
+                        <label for="client-email">Email Address <span class="acm-required">*</span></label>
+                        <input type="email" id="client-email" name="email" placeholder="client@example.com" required>
+                    </div>
+
+                    <div class="acm-form-group">
+                        <label for="client-phone">Phone Number <span class="acm-required">*</span></label>
+                        <input type="tel" id="client-phone" name="phone" placeholder="(123) 456-7890" required>
+                    </div>
+
+                    <!-- Optional Fields -->
+                    <div class="acm-form-group acm-full-width">
+                        <label for="client-address">Address</label>
+                        <input type="text" id="client-address" name="address" placeholder="Street address, City, State, ZIP">
+                    </div>
+
+                    <div class="acm-form-group">
+                        <label for="client-birthday">Birthday</label>
+                        <input type="date" id="client-birthday" name="birthday">
+                    </div>
+
+                    <div class="acm-form-group">
+                        <label for="client-gender">Gender</label>
+                        <select id="client-gender" name="gender">
+                            <option value="">Select gender</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="acm-form-group acm-full-width">
+                        <label for="client-membership">Membership Status</label>
+                        <div class="acm-membership-toggle">
+                            <label class="acm-radio-option">
+                                <input type="radio" name="membership_status" value="regular" checked>
+                                <span class="acm-radio-label">
+                                    <i class='bx bx-user'></i>
+                                    Regular Client
+                                </span>
+                            </label>
+                            <label class="acm-radio-option">
+                                <input type="radio" name="membership_status" value="vip">
+                                <span class="acm-radio-label">
+                                    <i class='bx bxs-crown'></i>
+                                    VIP Member
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="acm-form-group acm-full-width">
+                        <label for="client-notes">Notes & Preferences</label>
+                        <textarea id="client-notes" name="notes" rows="4" placeholder="Add any special notes, preferences, or allergies..."></textarea>
+                    </div>
+                </div>
+
+                <div class="acm-footer">
+                    <button type="button" class="acm-btn-secondary" onclick="closeAddClientModal()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="acm-btn-primary" id="save-client-btn">
+                        <i class='bx bx-check'></i>
+                        <span>Save Client</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="toast-notification"></div>
 </div>
