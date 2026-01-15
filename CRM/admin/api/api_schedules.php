@@ -8,7 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+ob_start();
 include "../db_conn.php";
+$conn_output = ob_get_clean();
+
+if (!$conn) {
+    echo json_encode(['status' => 'error', 'message' => 'Database connection failed']);
+    exit;
+}
 
 $method = $_SERVER['REQUEST_METHOD'];
 

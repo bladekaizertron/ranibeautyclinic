@@ -4340,6 +4340,13 @@
                 if (section === 'clients' && typeof fetchClients === 'function') {
                     fetchClients();
                 }
+
+                // Special logic for Main Calendar
+                if (section === 'calendar') {
+                    if (typeof MainCalendar !== 'undefined') {
+                        MainCalendar.init();
+                    }
+                }
             }
         }
 
@@ -6634,6 +6641,238 @@
                 updateScheduleGrid();
             }
 
+            // =========================================================================
+            // MAIN APPOINTMENTS CALENDAR LOGIC
+            // =========================================================================
+            window.MainCalendar = {
+                currentDate: getTodayDate(),
+                currMonth: getTodayDate().getMonth(),
+                currYear: getTodayDate().getFullYear(),
+                selectedDate: getTodayDate(),
+                appointments: [],
+                staff: [],
+                services: [],
+                filters: {
+                    staff: 'all',
+                    service: 'all'
+                },
+
+                init: function() {
+                    this.bindEvents();
+                    this.fetchData();
+                    this.render();
+                },
+
+                bindEvents: function() {
+                    const prevBtn = document.getElementById('prev-month-btn');
+                    const nextBtn = document.getElementById('next-month-btn');
+                    const todayBtn = document.getElementById('today-btn');
+                    const refreshBtn = document.getElementById('refresh-cal');
+                    const staffFilter = document.getElementById('staff-filter');
+                    const serviceFilter = document.getElementById('service-filter');
+
+                    if (prevBtn) prevBtn.onclick = () => this.changeMonth(-1);
+                    if (nextBtn) nextBtn.onclick = () => this.changeMonth(1);
+                    if (todayBtn) todayBtn.onclick = () => this.goToToday();
+                    if (refreshBtn) refreshBtn.onclick = () => this.fetchData();
+                    
+                    if (staffFilter) {
+                        staffFilter.onchange = (e) => {
+                            this.filters.staff = e.target.value;
+                            this.render();
+                        };
+                    }
+                    if (serviceFilter) {
+                        serviceFilter.onchange = (e) => {
+                            this.filters.service = e.target.value;
+                            this.render();
+                        };
+                    }
+                },
+
+                fetchData: function() {
+                    const start = new Date(this.currYear, this.currMonth, 1);
+                    const end = new Date(this.currYear, this.currMonth + 1, 0);
+                    
+                    const startStr = formatScheduleDate(start);
+                    const endStr = formatScheduleDate(end);
+
+                    fetch(`api/get_appointments.php?start=${startStr}&end=${endStr}`)
+                        .then(r => r.json())
+                        .then(res => {
+                            if (res.status === 'success') {
+                                this.appointments = res.data;
+                                this.render();
+                                this.updateFilters();
+                            }
+                        });
+                },
+
+                updateFilters: function() {
+                    const staffSelect = document.getElementById('staff-filter');
+                    const serviceSelect = document.getElementById('service-filter');
+                    
+                    if (!staffSelect || !serviceSelect) return;
+
+                    // Only populate if empty (except "all")
+                    if (staffSelect.options.length <= 1) {
+                        const uniqueStaff = [...new Set(this.appointments.map(a => JSON.stringify({id: a.staff_id, name: a.staff_name})))].map(s => JSON.parse(s));
+                        uniqueStaff.forEach(s => {
+                            const opt = new Option(s.name, s.id);
+                            staffSelect.add(opt);
+                        });
+                    }
+
+                    if (serviceSelect.options.length <= 1) {
+                        // Assuming services is a comma separated string in DB for now as per schema "services TEXT"
+                        // For simplicity in filter, let's just list unique service strings if present
+                        const uniqueServices = [...new Set(this.appointments.filter(a => a.services).map(a => a.services))];
+                        uniqueServices.forEach(s => {
+                            const opt = new Option(s, s);
+                            serviceSelect.add(opt);
+                        });
+                    }
+                },
+
+                changeMonth: function(delta) {
+                    this.currMonth += delta;
+                    if (this.currMonth < 0) {
+                        this.currMonth = 11;
+                        this.currYear--;
+                    } else if (this.currMonth > 11) {
+                        this.currMonth = 0;
+                        this.currYear++;
+                    }
+                    this.fetchData();
+                },
+
+                goToToday: function() {
+                    const today = getTodayDate();
+                    this.currMonth = today.getMonth();
+                    this.currYear = today.getFullYear();
+                    this.selectedDate = today;
+                    this.fetchData();
+                },
+
+                render: function() {
+                    const grid = document.getElementById('main-calendar-grid');
+                    const monthDisplay = document.getElementById('current-month-display');
+                    if (!grid || !monthDisplay) return;
+
+                    grid.innerHTML = '';
+                    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    monthDisplay.innerText = `${months[this.currMonth]} ${this.currYear}`;
+
+                    const firstDay = new Date(this.currYear, this.currMonth, 1).getDay();
+                    const daysInMonth = new Date(this.currYear, this.currMonth + 1, 0).getDate();
+                    const daysInPrevMonth = new Date(this.currYear, this.currMonth, 0).getDate();
+
+                    // Prev month days
+                    for (let i = firstDay - 1; i >= 0; i--) {
+                        const day = document.createElement('div');
+                        day.className = 'cal-day other-month';
+                        day.innerHTML = `<span class="day-num">${daysInPrevMonth - i}</span>`;
+                        grid.appendChild(day);
+                    }
+
+                    // Current month days
+                    const today = getTodayDate();
+                    for (let i = 1; i <= daysInMonth; i++) {
+                        const dayDate = new Date(this.currYear, this.currMonth, i);
+                        const dayStr = formatScheduleDate(dayDate);
+                        
+                        const day = document.createElement('div');
+                        day.className = 'cal-day';
+                        if (i === today.getDate() && this.currMonth === today.getMonth() && this.currYear === today.getFullYear()) {
+                            day.classList.add('today');
+                        }
+                        if (formatScheduleDate(this.selectedDate) === dayStr) {
+                            day.classList.add('selected');
+                            day.style.border = '2px solid var(--brand-gold)';
+                        }
+
+                        day.onclick = () => {
+                            this.selectedDate = dayDate;
+                            this.render();
+                            this.renderSidebar();
+                        };
+
+                        const dayEvents = this.appointments.filter(a => {
+                            const isSameDay = a.appointment_date === dayStr;
+                            const matchesStaff = this.filters.staff === 'all' || a.staff_id == this.filters.staff;
+                            const matchesService = this.filters.service === 'all' || a.services == this.filters.service;
+                            return isSameDay && matchesStaff && matchesService;
+                        });
+
+                        let eventsHtml = '<div class="day-events">';
+                        dayEvents.slice(0, 3).forEach(e => {
+                            const time = e.appointment_time.substring(0, 5);
+                            eventsHtml += `<div class="cal-event" onclick="event.stopPropagation(); window.location.href='edit_sched_appointments.php?id=${e.id}'" style="border-left: 3px solid ${e.avatar_color || 'var(--brand-gold)'}">
+                                ${time} ${e.client_name}
+                            </div>`;
+                        });
+                        if (dayEvents.length > 3) {
+                            eventsHtml += `<div style="font-size:10px; color:var(--dark-grey); text-align:center;">+${dayEvents.length - 3} more</div>`;
+                        }
+                        eventsHtml += '</div>';
+
+                        day.innerHTML = `<span class="day-num">${i}</span>${eventsHtml}`;
+                        grid.appendChild(day);
+                    }
+
+                    // Next month days to fill grid (6 rows * 7 days = 42 total)
+                    const totalFilled = firstDay + daysInMonth;
+                    const remaining = 42 - totalFilled;
+                    for (let i = 1; i <= remaining; i++) {
+                        const day = document.createElement('div');
+                        day.className = 'cal-day other-month';
+                        day.innerHTML = `<span class="day-num">${i}</span>`;
+                        grid.appendChild(day);
+                    }
+
+                    this.renderSidebar();
+                },
+
+                renderSidebar: function() {
+                    const list = document.getElementById('day-appointments-list');
+                    const label = document.getElementById('selected-date-label');
+                    if (!list || !label) return;
+
+                    const d = this.selectedDate;
+                    label.innerText = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                    const dayStr = formatScheduleDate(d);
+                    const dayEvents = this.appointments.filter(a => a.appointment_date === dayStr);
+
+                    if (dayEvents.length === 0) {
+                        list.innerHTML = `
+                            <div class="empty-state">
+                                <i class='bx bx-calendar-event'></i>
+                                <p>No appointments for this day</p>
+                            </div>
+                        `;
+                    } else {
+                        let html = '';
+                        // Sort by time
+                        dayEvents.sort((a,b) => a.appointment_time.localeCompare(b.appointment_time));
+                        
+                        dayEvents.forEach(e => {
+                            const time = new Date("1970-01-01T" + e.appointment_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            html += `
+                                <div class="appt-card" onclick="window.location.href='edit_sched_appointments.php?id=${e.id}'">
+                                    <div class="appt-time">${time}</div>
+                                    <div class="appt-info">
+                                        <div class="name">${e.client_name}</div>
+                                        <div class="staff"><i class='bx bx-user' style="color:${e.avatar_color}"></i> ${e.staff_name}</div>
+                                    </div>
+                                    <i class='bx bx-chevron-right'></i>
+                                </div>
+                            `;
+                        });
+                        list.innerHTML = html;
+                    }
+                }
+            };
 	</script>
     <!-- Publish Availability Modal -->
     <div id="publish-availability-overlay" class="glass-modal-overlay" onclick="closePublishAvailabilityModal()"></div>

@@ -2,7 +2,14 @@
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
+ob_start();
 include "../db_conn.php";
+$conn_output = ob_get_clean();
+
+if (!$conn) {
+    echo json_encode(['status' => 'error', 'message' => 'Database connection failed']);
+    exit;
+}
 
 // Self-healing: Ensure appointments table exists
 $check_table = "CREATE TABLE IF NOT EXISTS appointments (
