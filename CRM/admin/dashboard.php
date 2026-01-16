@@ -5510,13 +5510,99 @@
             });
         });
 
-        // Services List extracted from index.html
+        // Services List extracted from manage.php and index.html
         const RAN_SERVICES = [
-            'Exosomes', 'Laser Acne Facial', 'Laser Rosacea Facial', 'Laser Resurfacing Facial', 
-            'Upper Lip Laser Hair Removal', 'Eyebrows', 'Sideburns', 'Full Back', 'Pantyline', 'Neck', 
-            'Full Face Laser Hair Removal', 'Hands and fingers', 'Full Chest', 'Happy Trail', 'Areolas', 
-            'Forehead', 'Jawline', 'Underarms', 'Feet & Toes', 'Full Brazilian', 'Ears', 
-            'Full Body Laser Hair Removal', 'Ponytail Laser', 'Full Abs', 'Full Legs', 'Cheeks', 'Chin', 'Buttocks'
+            // Face Fixes
+            { name: 'Botox / Botox Facial', price: 14 },
+            { name: 'Sculptra', price: 950 },
+            { name: 'Lip Filler', price: 650 },
+            { name: 'Eye Filler', price: 750 },
+            { name: 'Cheek Filler', price: 850 },
+            { name: 'Nose Filler', price: 795 },
+            { name: 'Jawline Filler', price: 795 },
+            { name: 'Neck Filler', price: 795 },
+            
+            // Body Fixes
+            { name: 'Radiesse', price: 950 },
+            { name: 'Sculptra Skinny BBL', price: 895 },
+            { name: 'Traptox', price: 895 },
+            { name: 'Cutera Secret', price: 895 },
+            { name: 'Sofwave (Body)', price: 495 },
+
+            // Skin Fixes
+            { name: 'Laser Facials', price: 495 },
+            { name: 'Hydrafacial', price: 250 },
+            { name: 'VI Peel', price: 399 },
+            { name: 'Cosmelan', price: 995 },
+            { name: 'Sofwave (Skin)', price: 495 },
+
+            // Laser Hair Removal
+            { name: 'Laser Acne Facial', price: 495 },
+            { name: 'Laser Rosacea Facial', price: 495 },
+            { name: 'Laser Resurfacing Facial', price: 795 },
+            { name: 'Upper Lip Laser Hair Removal', price: 29 },
+            { name: 'Eyebrows', price: 99 },
+            { name: 'Sideburns', price: 99 },
+            { name: 'Full Back', price: 400 },
+            { name: 'Pantyline', price: 150 },
+            { name: 'Neck', price: 299 },
+            { name: 'Full Face Laser Hair Removal', price: 299 },
+            { name: 'Hands and fingers', price: 99 },
+            { name: 'Full Chest', price: 250 },
+            { name: 'Happy Trail', price: 99 },
+            { name: 'Areolas', price: 99 },
+            { name: 'Forehead', price: 99 },
+            { name: 'Jawline', price: 99 },
+            { name: 'Underarms', price: 175 },
+            { name: 'Feet & Toes', price: 99 },
+            { name: 'Full Brazilian', price: 250 },
+            { name: 'Ears', price: 99 },
+            { name: 'Full Body Laser Hair Removal', price: 1299 },
+            { name: 'Ponytail Laser', price: 125 },
+            { name: 'Full Abs', price: 300 },
+            { name: 'Full Legs', price: 450 },
+            { name: 'Cheeks', price: 99 },
+            { name: 'Chin', price: 99 },
+            { name: 'Buttocks', price: 299 },
+
+            // RF Microneedling
+            { name: 'Full Face', price: 495 },
+            // { name: 'Neck', price: 495 }, // Duplicate name, handling below
+            { name: 'Arms', price: 595 },
+            { name: 'Abdomen', price: 1100 },
+            { name: 'Bra Far Sculp', price: 695 },
+            { name: 'Legs', price: 1500 },
+
+            // Hydrafacial
+            { name: 'Signature Hydrafacial', price: 250 },
+            { name: 'Dior Hydrafacial', price: 399 },
+            { name: 'Keravive Hydrafacial (Hair)', price: 450 },
+            { name: 'Underarm Hydrafacial', price: 199 },
+            { name: 'Back Hydrafacial', price: 375 },
+
+            // Chemical Peels
+            { name: 'BioRepeel', price: 295 },
+            { name: 'Face & Neck', price: 225 },
+            // { name: 'Back', price: 275 }, // Duplicate
+            // { name: 'Underarms', price: 175 }, // Duplicate
+            { name: 'Intimate Area', price: 195 },
+
+            // VI Peels
+            { name: 'Acne VI Peel', price: 350 },
+            { name: 'Acne Scarring VI Peel', price: 350 },
+            { name: 'Rosacea Peel', price: 350 },
+            { name: 'Sensitive Skin Peel', price: 350 },
+            { name: 'VI Hyperpigmentation Peel', price: 350 },
+
+            // Skin Boosters & Wellness
+            { name: 'Salmon DNA', price: 450 },
+            { name: 'Exosomes', price: 595 },
+
+            // Add Ons
+            { name: 'Hydrafacial Skin Booster', price: 75 },
+            { name: 'Dermaplanning', price: 70 },
+            { name: 'Red Light Therapy', price: 50 },
+            { name: 'Blue Light Therapy', price: 50 }
         ];
 
         function loadClientHistory(clientId) {
@@ -5598,12 +5684,13 @@
             dateInput.value = today;
             clientInput.value = clientId || window.currentActiveClientId;
             
-            // Populate Services
+            // Populate Services with Price
             serviceSelect.innerHTML = '<option value="">Select Service</option>';
             RAN_SERVICES.forEach(svc => {
                 const opt = document.createElement('option');
-                opt.value = svc;
-                opt.textContent = svc;
+                opt.value = svc.name;
+                opt.textContent = svc.name;
+                opt.setAttribute('data-price', svc.price);
                 serviceSelect.appendChild(opt);
             });
 
@@ -5635,6 +5722,24 @@
                 document.getElementById('add-appt-form').reset();
             }, 300);
         }
+    
+        // Add Service Change Listener for Dynamic Price
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceSelect = document.getElementById('appt-services');
+            const priceInput = document.getElementById('appt-price');
+
+            if (serviceSelect && priceInput) {
+                serviceSelect.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const price = selectedOption.getAttribute('data-price');
+                    if (price) {
+                        priceInput.value = price;
+                    } else {
+                        priceInput.value = '';
+                    }
+                });
+            }
+        });
 
         // Handle Appointment Form Submit
         // Handle Appointment Form Submit
