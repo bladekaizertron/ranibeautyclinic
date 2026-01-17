@@ -86,10 +86,7 @@ function sendAppointmentConfirmation($appointmentId, $conn) {
 
     try {
         // Server settings
-        $mail->SMTPDebug = 2; // Enable verbose debug output
-        $mail->Debugoutput = function($str, $level) {
-            error_log("SMTP DEBUG: $str");
-        };
+        $mail->SMTPDebug = 0; // Disable verbose debug output
         $mail->isSMTP();
         $mail->Host       = SMTP_HOST;
         $mail->SMTPAuth   = true;
