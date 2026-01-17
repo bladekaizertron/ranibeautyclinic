@@ -4447,7 +4447,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
     </a>
     <div class="profile-menu" id="profileMenu">
         <ul>
-            <li><a href="#">My Profile</a></li>
+            <li><a href="profile.php">My Profile</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="logout.php">Log Out</a></li>
         </ul>
