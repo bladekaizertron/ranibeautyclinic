@@ -731,19 +731,57 @@
         }
 
         footer.site-footer {
-            margin-top: 56px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(15, 29, 44, 0.08);
+            margin-top: 80px;
+            padding: 48px 24px 32px;
+            background: linear-gradient(180deg, rgba(15, 29, 44, 0.02) 0%, rgba(15, 29, 44, 0.04) 100%);
+            border-top: 2px solid rgba(15, 29, 44, 0.08);
             color: rgba(42, 42, 42, 0.78);
             font-size: 14px;
+            position: relative;
         }
 
         .footer-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 16px;
+            justify-content: center;
             align-items: center;
+            text-align: center;
+        }
+
+        .footer-inner>div:first-child {
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .footer-inner>div:last-child {
+            font-size: 13px;
+            color: rgba(42, 42, 42, 0.65);
+            font-weight: 400;
+        }
+
+        @media (min-width: 768px) {
+            footer.site-footer {
+                padding: 56px 32px 40px;
+            }
+
+            .footer-inner {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+
+            .footer-inner>div:first-child {
+                font-size: 16px;
+            }
+
+            .footer-inner>div:last-child {
+                font-size: 14px;
+            }
         }
 
         /* --- BOOKING (DATE & TIME) --- */
@@ -4158,31 +4196,6 @@
             </div>
         </section>
 
-        <section id="consultation" class="cta-section" aria-label="Consultation">
-            <div class="hero-card hero-card--compact">
-                <span class="badge">Powered by Code Rebuilt</span>
-                <h2 class="cta-title">Transform Your Business with Smart Automation</h2>
-                <p class="cta-copy">
-                    Ready to streamline your operations? Get a custom booking form and automated CRM system designed specifically for your business. Say goodbye to manual scheduling and hello to effortless client management.
-
-                </p>
-                <div class="hero-cta hero-cta--tight">
-                    <a class="btn btn--primary" href="https://code-rebuilt.com/" target="_blank"
-                        rel="noopener noreferrer">Visit Code Rebuilt</a>
-                    <a class="btn btn--secondary" href="mailto:support@code-rebuilt.com">Email Us:
-                        support@code-rebuilt.com</a>
-                </div>
-            </div>
-        </section>
-
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <div><strong style="color: var(--primary-navy);">Rani Beauty Clinic</strong> — Award Winning Medical
-                    Aesthetics</div>
-                <div>© <span id="year">2025</span> All rights reserved.</div>
-            </div>
-        </footer>
-
     </main>
 
     <div id="bookingModal" class="booking-modal" role="dialog" aria-modal="true" aria-label="Booking date and time">
@@ -5714,6 +5727,15 @@
             </div>
         </div>
     </div>
+
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div><strong style="color: var(--primary-navy);">Rani Beauty Clinic</strong> — Award Winning Medical
+                Aesthetics</div>
+            <div>© <span id="year">2025</span> All rights reserved.</div>
+        </div>
+    </footer>
 
 </body>
 
