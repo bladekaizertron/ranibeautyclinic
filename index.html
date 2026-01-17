@@ -4926,8 +4926,12 @@
                     const staff = staffData.find(s => s.name === selectedStaff);
                     const staffId = staff ? staff.id : 0;
                     const dateStr = toYMD(selectedDate);
-                    const serviceNames = cart.map(i => i.name).join(', ');
-                    const totalPrice = cart.reduce((sum, i) => sum + Number(i.price || 0), 0);
+                    // Include quantity in service names: "Service Name (x2)"
+                    const serviceNames = cart.map(i => {
+                        const qty = i.quantity || 1;
+                        return qty > 1 ? `${i.name} (×${qty})` : i.name;
+                    }).join(', ');
+                    const totalPrice = cart.reduce((sum, i) => sum + (Number(i.price || 0) * (i.quantity || 1)), 0);
 
                     // Prevent double submission
                     btnSubmit.disabled = true;
