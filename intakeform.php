@@ -409,7 +409,7 @@
                             grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
                             card.classList.add('selected');
                             answers[q.id] = opt;
-                            setTimeout(nextStep, 300);
+                            // setTimeout(nextStep, 300); // Auto-advance disabled
                         } else {
                             card.classList.toggle('selected');
                             if (card.classList.contains('selected')) selected.push(opt);
