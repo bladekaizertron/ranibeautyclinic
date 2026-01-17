@@ -4666,6 +4666,11 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                 if (section === 'clients' && typeof fetchClients === 'function') {
                     fetchClients();
                 }
+                
+                // Special logic for Manage Staff
+                if (section === 'manage' && subsection === 'staff') {
+                   fetchManageStaffs();
+                }
 
                 // Special logic for Main Calendar
                 if (section === 'calendar') {
@@ -4714,6 +4719,11 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
 
                 const activeSub = document.getElementById(`manage-${target}`);
                 if (activeSub) activeSub.style.display = 'block';
+
+                // Trigger data fetch if switching to Staff
+                if (target === 'staff') {
+                    fetchManageStaffs();
+                }
             });
         });
 
@@ -8162,6 +8172,69 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                     });
                 })
                 .catch(err => console.error('Error fetching staff status:', err));
+        }
+
+        // Fetch Staff for Manage Section
+        function fetchManageStaffs() {
+            const tbody = document.getElementById('manage-staff-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:#888;">Loading staff...</td></tr>';
+
+            fetch('api/api_staff_availability.php?get_staff=true')
+                .then(res => res.json())
+                .then(data => {
+                    tbody.innerHTML = '';
+                    
+                    if (!Array.isArray(data) || data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:#888;">No staff members found.</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(staff => {
+                        const tr = document.createElement('tr');
+                        // Add data attributes for profile modal
+                        tr.setAttribute('data-name', staff.name);
+                        tr.setAttribute('data-email', staff.email);
+                        tr.setAttribute('data-phone', staff.phone);
+                        tr.setAttribute('data-role', staff.role);
+                        
+                        // Click to open profile
+                        tr.style.cursor = 'pointer';
+                        tr.onclick = function(e) {
+                            if(e.target.tagName !== 'BUTTON') {
+                                openStaffProfile(this);
+                            }
+                        };
+
+                        const initials = staff.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                        
+                        tr.innerHTML = `
+                            <td>
+                                <div style="display:flex; align-items:center;">
+                                    <div style="width:32px; height:32px; border-radius:50%; background:${staff.avatar_color || '#9b5de5'}; color:#fff; display:flex; align-items:center; justify-content:center; margin-right:10px; font-size:12px; font-weight:600;">
+                                        ${initials}
+                                    </div>
+                                    <span style="font-weight: 500;">${staff.name}</span>
+                                </div>
+                            </td>
+                            <td>${staff.phone || '-'}</td>
+                            <td>${staff.email || '-'}</td>
+                            <td><span style="background:#eee; padding:2px 8px; border-radius:4px; font-size:12px;">${staff.role || 'Staff'}</span></td>
+                            <td>${staff.role === 'Admin' ? 'Admin' : 'Service Provider'}</td>
+                            <td>
+                                <button style="background:transparent; border:1px solid var(--brand-navy); color:var(--brand-navy); padding:4px 10px; border-radius:4px; cursor:pointer; font-size:12px;" onclick="event.stopPropagation(); alert('Invite feature coming soon');">
+                                    Resend Invite
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error fetching manage staff:', err);
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--red);">Error loading staff.</td></tr>';
+                });
         }
 
         // Initialize dashboard components
