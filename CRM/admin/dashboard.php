@@ -6081,40 +6081,61 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
 
         const generateCalendar = (month, year) => {
             calendarDays.innerHTML = '';
-            
-            // Get last day of the month
-            let daysInMonth = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            
-            // Date object for the first day of the month
-            let firstDay = new Date(year, month, 1);
-            
-            // 0 = Sunday, 1 = Monday, etc.
-            let startDay = firstDay.getDay();
-
             monthPicker.innerHTML = `${months[month]} ${year}`;
 
-            // Add empty divs for previous month days
-            for (let i = 0; i < startDay; i++) {
-                const day = document.createElement('div');
-                day.classList.add('empty');
-                calendarDays.appendChild(day);
-            }
+            // Fetch appointment data for the month
+            fetch(`api/api_get_month_appointments.php?month=${month}&year=${year}`)
+                .then(res => res.json())
+                .then(data => {
+                    const bookedDates = data.data || {};
 
-            // Add days of current month
-            for (let i = 1; i <= daysInMonth[month]; i++) {
-                const day = document.createElement('div');
-                day.innerHTML = i;
-                
-                // Highlight current date
-                if (i === currentDate.getDate() && year === currentDate.getFullYear() && month === currentDate.getMonth()) {
-                    day.classList.add('curr-date');
-                }
+                    // Get last day of the month
+                    let daysInMonth = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                    
+                    // Date object for the first day of the month
+                    let firstDay = new Date(year, month, 1);
+                    
+                    // 0 = Sunday, 1 = Monday, etc.
+                    let startDay = firstDay.getDay();
 
-                calendarDays.appendChild(day);
-            }
+                    // Add empty divs for previous month days
+                    for (let i = 0; i < startDay; i++) {
+                        const day = document.createElement('div');
+                        day.classList.add('empty');
+                        calendarDays.appendChild(day);
+                    }
+
+                    // Add days of current month
+                    for (let i = 1; i <= daysInMonth[month]; i++) {
+                        const day = document.createElement('div');
+                        day.innerHTML = i;
+                        
+                        // Construct date string YYYY-MM-DD
+                        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+
+                        // Highlight current date
+                        if (i === currentDate.getDate() && year === currentDate.getFullYear() && month === currentDate.getMonth()) {
+                            day.classList.add('curr-date');
+                        }
+
+                        // Add booking indicator if present
+                        if (bookedDates[dateStr] > 0) {
+                            const indicator = document.createElement('span');
+                            indicator.style.cssText = 'position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background-color: var(--brand-gold); border-radius: 50%; display: block;';
+                            day.style.position = 'relative'; // Ensure relative positioning for dot
+                            day.appendChild(indicator);
+                            day.classList.add('has-booking'); // Optional for extra styling
+                            day.title = `${bookedDates[dateStr]} bookings`;
+                        }
+
+                        calendarDays.appendChild(day);
+                    }
+                })
+                .catch(err => console.error('Error fetching calendar data:', err));
         };
 
-        prevMonthBtn.onclick = () => {
+        prevMonthBtn.onclick = (e) => {
+            e.stopPropagation(); // Prevent widget click
             currMonth--;
             if (currMonth < 0) {
                 currMonth = 11;
@@ -6123,7 +6144,8 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
             generateCalendar(currMonth, currYear);
         };
 
-        nextMonthBtn.onclick = () => {
+        nextMonthBtn.onclick = (e) => {
+            e.stopPropagation(); // Prevent widget click
             currMonth++;
             if (currMonth > 11) {
                 currMonth = 0;
@@ -6135,13 +6157,17 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
         // Initialize Calendar
         generateCalendar(currMonth, currYear);
 
-        // Calendar Widget Linking
+        // Calendar Widget Linking - Link to Calendar Tab
         const calendarWidget = document.querySelector('.calendar-widget');
         if (calendarWidget) {
             calendarWidget.onclick = (e) => {
                 // Don't switch if clicking on controls
                 if (e.target.closest('.month-picker') || e.target.closest('.year-picker')) return;
-                switchSection('manage', 'schedule');
+                
+                // Switch to Calendar Section
+                // Assuming switchSection takes (sectionId, subsectionId)
+                // And the calendar section is just 'calendar'
+                switchSection('calendar'); 
             };
         }
 
