@@ -8098,6 +8098,51 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
             });
         });
 
+        // Fetch Staff Status for Dashboard
+        function fetchStaffs() {
+            fetch('api/api_get_staff_status.php')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('dashboard-staff-table-body');
+                    if (!tbody) return;
+                    
+                    tbody.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:15px; color:#888;">No staff found</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(staff => {
+                        const tr = document.createElement('tr');
+                        const statusClass = staff.status === 'Available' ? 'available' : 'unavailable';
+                        
+                        // Extract initials
+                        const initials = staff.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+                        tr.innerHTML = `
+                            <td style="padding: 12px 0;">
+                                <div style="display:flex; align-items:center;">
+                                    <div style="width:36px; height:36px; border-radius:50%; background:${staff.avatar_color || '#9b5de5'}; color:#fff; display:flex; align-items:center; justify-content:center; margin-right:12px; font-weight:600; font-size:13px;">
+                                        ${initials}
+                                    </div>
+                                    <span style="font-weight: 600; font-size: 14px; color: var(--brand-navy);">${staff.name}</span>
+                                </div>
+                            </td>
+                            <td style="color: var(--dark-grey); font-size: 14px;">${staff.role}</td>
+                            <td><span class="status ${statusClass}" style="font-size: 12px; border-radius: 20px;">${staff.status}</span></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => console.error('Error fetching staff status:', err));
+        }
+
+        // Initialize dashboard components
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchStaffs();
+        });
+
         // Handle URL Hash for external navigation (e.g., coming from profile.php)
         window.addEventListener('load', function() {
             const hash = window.location.hash.substring(1); // remove #
