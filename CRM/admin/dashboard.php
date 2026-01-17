@@ -8240,8 +8240,136 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
         // Initialize dashboard components
         document.addEventListener('DOMContentLoaded', function() {
             fetchStaffs();
+            fetchManageStaffs();
+
+            // Staff Profile Tab Handler for Appointments
+            const staffTabAppointments = document.getElementById('staff-tab-appointments');
+            if (staffTabAppointments) {
+                staffTabAppointments.addEventListener('click', function() {
+                    const currentStaffName = document.getElementById('staff-profile-name').textContent;
+                    if (currentStaffName && currentStaffName !== 'Staff Profile') {
+                        loadStaffAppointments(currentStaffName);
+                    }
+                });
+            }
         });
 
+        // Load Staff Appointments History
+        window.loadStaffAppointments = function(staffName) {
+            const container = document.getElementById('staff-panel-appointments');
+            if (!container) return;
+            
+            container.innerHTML = '<div style="padding:40px; text-align:center; color:#888;">Loading appointment history...</div>';
+            
+            fetch(`api/api_get_staff_history.php?staff_name=${encodeURIComponent(staffName)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'error') {
+                        container.innerHTML = `<div style="padding:20px; color:var(--red); text-align:center;">${data.message}</div>`;
+                        return;
+                    }
+                    
+                    const appointments = data.data || [];
+                    
+                    if (appointments.length === 0) {
+                        container.innerHTML = `
+                            <div style="padding:60px 20px; text-align:center; color:#999;">
+                                <i class='bx bx-calendar-x' style="font-size:48px; margin-bottom:10px; opacity:0.5;"></i>
+                                <div style="font-size:16px;">No appointment history found for ${staffName}.</div>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    // Separate into Upcoming and Past
+                    const now = new Date();
+                    const pending = [];
+                    const history = []; // Completed or Past dates
+                    
+                    appointments.forEach(appt => {
+                        const apptDate = new Date(`${appt.appointment_date}T${appt.appointment_time}`);
+                        if (appt.status === 'completed' || apptDate < now) {
+                            history.push(appt);
+                        } else {
+                            if (appt.status !== 'cancelled') pending.push(appt);
+                        }
+                    });
+                    
+                    let html = `<div style="padding:0 20px 40px 20px;">`;
+                    
+                    // UPCOMING SECTION
+                    if (pending.length > 0) {
+                        html += `<h3 style="font-size:16px; color:var(--brand-navy); margin:25px 0 15px 0; border-bottom:1px solid #eee; padding-bottom:10px;">Upcoming Schedule</h3>`;
+                        html += `<table style="width:100%; border-collapse:collapse; font-size:14px;">
+                                    <thead>
+                                        <tr style="color:#888; text-align:left; border-bottom:1px solid #eee;">
+                                            <th style="padding:10px; font-weight:600;">Date & Time</th>
+                                            <th style="padding:10px; font-weight:600;">Client</th>
+                                            <th style="padding:10px; font-weight:600;">Service</th>
+                                            <th style="padding:10px; font-weight:600;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+                        
+                        pending.forEach(appt => {
+                            const dateObj = new Date(appt.appointment_date);
+                            const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                            const timeStr = appt.appointment_time.substring(0, 5);
+                            
+                            html += `<tr style="border-bottom:1px solid #f9f9f9;">
+                                        <td style="padding:12px 10px; font-weight:500;">
+                                            <div style="color:var(--brand-navy);">${dateStr}</div>
+                                            <div style="font-size:12px; color:#888;">${timeStr}</div>
+                                        </td>
+                                        <td style="padding:12px 10px;">
+                                            <div style="font-weight:500;">${appt.client_name}</div>
+                                            <div style="font-size:12px; color:#888;">${appt.client_phone}</div>
+                                        </td>
+                                        <td style="padding:12px 10px; color:var(--dark-grey);">${appt.services}</td>
+                                        <td style="padding:12px 10px;">
+                                            <span style="background:rgba(255, 193, 7, 0.15); color:#ffc107; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; text-transform:uppercase;">${appt.status}</span>
+                                        </td>
+                                     </tr>`;
+                        });
+                        html += `</tbody></table>`;
+                    }
+                    
+                    // PAST HISTORY SECTION
+                    if (history.length > 0) {
+                        html += `<h3 style="font-size:16px; color:var(--brand-navy); margin:35px 0 15px 0; border-bottom:1px solid #eee; padding-bottom:10px;">Past History</h3>`;
+                        html += `<table style="width:100%; border-collapse:collapse; font-size:14px; opacity:0.8;">
+                                    <thead>
+                                        <tr style="color:#888; text-align:left; border-bottom:1px solid #eee;">
+                                            <th style="padding:10px; font-weight:600;">Date</th>
+                                            <th style="padding:10px; font-weight:600;">Client</th>
+                                            <th style="padding:10px; font-weight:600;">Service</th>
+                                            <th style="padding:10px; font-weight:600;">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+                        
+                        history.forEach(appt => {
+                            const dateObj = new Date(appt.appointment_date);
+                            const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                            
+                            html += `<tr style="border-bottom:1px solid #f9f9f9;">
+                                        <td style="padding:12px 10px;">${dateStr}</td>
+                                        <td style="padding:12px 10px;">${appt.client_name}</td>
+                                        <td style="padding:12px 10px;">${appt.services}</td>
+                                        <td style="padding:12px 10px; font-weight:500;">$${parseFloat(appt.total_price).toFixed(2)}</td>
+                                     </tr>`;
+                        });
+                        html += `</tbody></table>`;
+                    }
+                    
+                    html += `</div>`;
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error('Error loading staff history:', err);
+                    container.innerHTML = `<div style="padding:20px; color:var(--red); text-align:center;">Failed to load history.</div>`;
+                });
+        };
         // Handle URL Hash for external navigation (e.g., coming from profile.php)
         window.addEventListener('load', function() {
             const hash = window.location.hash.substring(1); // remove #
