@@ -8252,7 +8252,68 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                     }
                 });
             }
+
+            // Staff Profile Save Handler
+            const saveStaffBtn = document.getElementById('staff-profile-save-btn');
+            if (saveStaffBtn) {
+                saveStaffBtn.addEventListener('click', saveStaffProfile);
+            }
         });
+
+        // Save Staff Profile
+        function saveStaffProfile() {
+            const btn = document.getElementById('staff-profile-save-btn');
+            const originalText = btn.textContent;
+            
+            // Collect Data
+            const data = {
+                original_name: document.getElementById('staff-profile-name').getAttribute('data-original-name') || document.getElementById('staff-profile-name').textContent,
+                firstname: document.getElementById('staff-profile-firstname').value,
+                lastname: document.getElementById('staff-profile-lastname').value,
+                email: document.getElementById('staff-profile-email').value,
+                phone: document.getElementById('staff-profile-phone').value,
+                role: document.getElementById('staff-profile-role').value,
+                alias: document.getElementById('staff-profile-alias') ? document.getElementById('staff-profile-alias').value : '',
+                bio: document.getElementById('staff-profile-bio') ? document.getElementById('staff-profile-bio').value : '',
+                permission_group: document.getElementById('staff-profile-permission-group') ? document.getElementById('staff-profile-permission-group').value : '',
+                location: document.getElementById('staff-profile-location') ? document.getElementById('staff-profile-location').value : '',
+                avatar_color: document.querySelector('.color-circle.selected') ? document.querySelector('.color-circle.selected').getAttribute('data-color') : '#9b5de5'
+            };
+            
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+
+            fetch('api/api_update_staff.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    alert('Profile updated successfully!');
+                    // Update UI immediately (update name header)
+                    const newName = `${data.firstname} ${data.lastname}`;
+                    document.getElementById('staff-profile-name').textContent = newName;
+                    document.getElementById('staff-profile-name').setAttribute('data-original-name', newName); // Update ref
+                    
+                    // Refresh lists
+                    fetchStaffs(); // Dashboard list
+                    fetchManageStaffs(); // Manage list
+                    
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('An error occurred while saving.');
+            })
+            .finally(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+        }
 
         // Load Staff Appointments History
         window.loadStaffAppointments = function(staffName) {

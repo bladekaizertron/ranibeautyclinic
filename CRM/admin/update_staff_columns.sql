@@ -1,0 +1,4 @@
+ALTER TABLE staff ADD COLUMN alias VARCHAR(255);
+ALTER TABLE staff ADD COLUMN bio TEXT;
+ALTER TABLE staff ADD COLUMN permission_group VARCHAR(50) DEFAULT 'provider';
+ALTER TABLE staff ADD COLUMN location VARCHAR(100) DEFAULT 'renton';
