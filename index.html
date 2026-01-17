@@ -175,6 +175,17 @@
             transform: none !important;
         }
 
+        /* Quantity Controls */
+        .qty-btn:hover {
+            background: rgba(15, 29, 44, 0.05) !important;
+            border-color: rgba(15, 29, 44, 0.3) !important;
+            transform: scale(1.05);
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
         /* --- HEADER --- */
         header {
             background: var(--primary-navy);
@@ -4568,9 +4579,15 @@
             }
 
             function addToCart(item) {
-                // Avoid duplicates by id (common for appointment flows)
-                const exists = cart.some(i => i.id === item.id);
-                if (!exists) cart.push(item);
+                // Check if item already exists in cart
+                const existingItem = cart.find(i => i.id === item.id);
+                if (existingItem) {
+                    // Increment quantity if item already exists
+                    existingItem.quantity = (existingItem.quantity || 1) + 1;
+                } else {
+                    // Add new item with quantity 1
+                    cart.push({ ...item, quantity: 1 });
+                }
                 saveCart();
                 renderCart();
                 showToast(item.name);
@@ -4603,7 +4620,7 @@
                     cartNavBadgeEl.style.display = count > 0 ? 'inline-block' : 'none';
                 }
 
-                const total = cart.reduce((sum, i) => sum + Number(i.price || 0), 0);
+                const total = cart.reduce((sum, i) => sum + (Number(i.price || 0) * (i.quantity || 1)), 0);
                 cartTotalEl.textContent = toMoney(total);
 
                 if (cartNext) {
@@ -4628,12 +4645,53 @@
                     h4.textContent = item.name;
                     const meta = document.createElement('div');
                     meta.className = 'cart-item-meta';
-                    meta.textContent = `${toMoney(item.price)} \u2022 ${item.duration} min`;
+                    const itemQuantity = item.quantity || 1;
+                    const itemTotal = Number(item.price || 0) * itemQuantity;
+                    meta.textContent = `${toMoney(item.price)} × ${itemQuantity} = ${toMoney(itemTotal)} \u2022 ${item.duration} min`;
                     left.appendChild(h4);
                     left.appendChild(meta);
 
                     const actions = document.createElement('div');
                     actions.className = 'cart-item-actions';
+
+                    // Quantity controls
+                    const qtyControls = document.createElement('div');
+                    qtyControls.className = 'qty-controls';
+                    qtyControls.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-right: 8px;';
+
+                    const decrementBtn = document.createElement('button');
+                    decrementBtn.type = 'button';
+                    decrementBtn.className = 'qty-btn';
+                    decrementBtn.textContent = '−';
+                    decrementBtn.style.cssText = 'width: 24px; height: 24px; border: 1px solid rgba(15, 29, 44, 0.2); background: white; border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;';
+                    decrementBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const currentQty = item.quantity || 1;
+                        if (currentQty > 1) {
+                            updateCartItem(item.id, { quantity: currentQty - 1 });
+                        }
+                    });
+
+                    const qtyDisplay = document.createElement('span');
+                    qtyDisplay.style.cssText = 'min-width: 20px; text-align: center; font-weight: 600; font-size: 14px;';
+                    qtyDisplay.textContent = itemQuantity;
+
+                    const incrementBtn = document.createElement('button');
+                    incrementBtn.type = 'button';
+                    incrementBtn.className = 'qty-btn';
+                    incrementBtn.textContent = '+';
+                    incrementBtn.style.cssText = 'width: 24px; height: 24px; border: 1px solid rgba(15, 29, 44, 0.2); background: white; border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;';
+                    incrementBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const currentQty = item.quantity || 1;
+                        updateCartItem(item.id, { quantity: currentQty + 1 });
+                    });
+
+                    qtyControls.appendChild(decrementBtn);
+                    qtyControls.appendChild(qtyDisplay);
+                    qtyControls.appendChild(incrementBtn);
 
                     const editBtn = document.createElement('button');
                     editBtn.type = 'button';
@@ -4654,7 +4712,12 @@
                         const newDuration = Number(String(newDurationRaw).replace(/[^\d]/g, ''));
                         if (!Number.isFinite(newDuration) || newDuration <= 0) return;
 
-                        updateCartItem(item.id, { price: newPrice, duration: newDuration });
+                        const newQuantityRaw = prompt('Edit quantity:', String(item.quantity || 1));
+                        if (newQuantityRaw === null) return;
+                        const newQuantity = Number(String(newQuantityRaw).replace(/[^\d]/g, ''));
+                        if (!Number.isFinite(newQuantity) || newQuantity <= 0) return;
+
+                        updateCartItem(item.id, { price: newPrice, duration: newDuration, quantity: newQuantity });
                     });
 
                     const removeBtn = document.createElement('button');
@@ -4669,6 +4732,7 @@
                         removeFromCart(item.id);
                     });
 
+                    actions.appendChild(qtyControls);
                     actions.appendChild(editBtn);
                     actions.appendChild(removeBtn);
 
@@ -4687,7 +4751,7 @@
                 if (!bookingCartSlot || !staffSelectionSlot) return;
 
                 const count = cart.length;
-                const total = cart.reduce((sum, i) => sum + Number(i.price || 0), 0);
+                const total = cart.reduce((sum, i) => sum + (Number(i.price || 0) * (i.quantity || 1)), 0);
 
                 let html = '<h3 class="booking-cart__title">Your Appointment</h3>';
 
@@ -4697,10 +4761,12 @@
                 } else {
                     html += '<ul class="booking-cart__items">';
                     cart.forEach(item => {
+                        const itemQuantity = item.quantity || 1;
+                        const itemTotal = Number(item.price || 0) * itemQuantity;
                         html += `
                             <li class="booking-cart__item">
                                 <div class="booking-cart__item-name">${item.name}</div>
-                                <div class="booking-cart__item-meta">${toMoney(item.price)} • ${item.duration} min</div>
+                                <div class="booking-cart__item-meta">${toMoney(item.price)} × ${itemQuantity} = ${toMoney(itemTotal)} • ${item.duration} min</div>
                             </li>
                         `;
                     });
