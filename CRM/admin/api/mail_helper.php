@@ -39,8 +39,48 @@ function sendAppointmentConfirmation($appointmentId, $conn) {
     $timeFormatted = $timeObj->format('g:i A');
 
     // 3. Prepare Email Body (HTML)
-    $subject = "Appointment Confirmed - Rani Beauty Clinic";
+    // Try to fetch custom template
+    $tmplSql = "SELECT subject, body FROM message_templates WHERE name='appointment_confirmation' AND type='email' LIMIT 1";
+    $tmplRes = mysqli_query($conn, $tmplSql);
     
+    $subject = "";
+    $contentBody = "";
+
+    if ($tmplRes && mysqli_num_rows($tmplRes) > 0) {
+        $row = mysqli_fetch_assoc($tmplRes);
+        $subject = $row['subject'];
+        $contentBody = $row['body'];
+    } else {
+        // Fallback if no template found
+        $subject = "Appointment Confirmed - Rani Beauty Clinic";
+        $contentBody = "<p>Hello <strong>{{client_name}}</strong>,</p>
+                        <p>Great news! Your appointment at Rani Beauty Clinic has been successfully confirmed.</p>
+                        <div class='details'>
+                            <p><strong>Date:</strong> {{appointment_date}}</p>
+                            <p><strong>Time:</strong> {{appointment_time}}</p>
+                            <p><strong>Staff:</strong> {{staff_name}}</p>
+                            <p><strong>Services:</strong> {{service_name}}</p>
+                            <p><strong>Total Price:</strong> \${{price}}</p>
+                        </div>
+                        <p>We look forward to seeing you soon!</p>";
+    }
+
+    // Replace Variables
+    $vars = [
+        '{{client_name}}' => $clientName,
+        '{{appointment_date}}' => $dateFormatted,
+        '{{appointment_time}}' => $timeFormatted,
+        '{{staff_name}}' => $staffName,
+        '{{service_name}}' => $services,
+        '{{price}}' => $price
+    ];
+    
+    foreach ($vars as $key => $val) {
+        $subject = str_replace($key, $val, $subject);
+        $contentBody = str_replace($key, $val, $contentBody);
+    }
+
+    // Wrap in standard HTML Container
     $body = "
     <html>
     <head>
@@ -59,19 +99,7 @@ function sendAppointmentConfirmation($appointmentId, $conn) {
                 <h1>Appointment Confirmed</h1>
             </div>
             <div class='content'>
-                <p>Hello <strong>$clientName</strong>,</p>
-                <p>Great news! Your appointment at Rani Beauty Clinic has been successfully confirmed.</p>
-                
-                <div class='details'>
-                    <p><strong>Date:</strong> $dateFormatted</p>
-                    <p><strong>Time:</strong> $timeFormatted</p>
-                    <p><strong>Staff:</strong> $staffName</p>
-                    <p><strong>Services:</strong> $services</p>
-                    <p><strong>Total Price:</strong> $$price</p>
-                </div>
-                
-                <p>We look forward to seeing you soon!</p>
-                <p>If you need to reschedule, please contact us at least 24 hours in advance.</p>
+                $contentBody
             </div>
             <div class='footer'>
                 <p>&copy; " . date('Y') . " Rani Beauty Clinic. All rights reserved.</p>
