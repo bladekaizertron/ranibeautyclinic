@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
+    header("Location: ../index.html");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -4442,7 +4449,7 @@
         <ul>
             <li><a href="#">My Profile</a></li>
             <li><a href="#">Settings</a></li>
-            <li><a href="#">Log Out</a></li>
+            <li><a href="logout.php">Log Out</a></li>
         </ul>
     </div>
 </nav>
