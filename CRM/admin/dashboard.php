@@ -6158,7 +6158,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                         // Add booking indicator if present
                         if (bookedDates[dateStr] > 0) {
                             const indicator = document.createElement('span');
-                            indicator.style.cssText = 'position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background-color: var(--brand-gold); border-radius: 50%; display: block;';
+                            indicator.style.cssText = 'position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background-color: var(--brand-navy); border-radius: 50%; display: block;';
                             day.style.position = 'relative'; // Ensure relative positioning for dot
                             day.appendChild(indicator);
                             day.classList.add('has-booking'); // Optional for extra styling
