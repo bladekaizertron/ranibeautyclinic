@@ -500,6 +500,29 @@
             display: grid;
             padding: 10px;
             gap: 6px;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar for mobile menu */
+        .nav-drawer__links::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .nav-drawer__links::-webkit-scrollbar-track {
+            background: rgba(15, 29, 44, 0.05);
+            border-radius: 10px;
+        }
+
+        .nav-drawer__links::-webkit-scrollbar-thumb {
+            background: rgba(15, 29, 44, 0.2);
+            border-radius: 10px;
+        }
+
+        .nav-drawer__links::-webkit-scrollbar-thumb:hover {
+            background: rgba(15, 29, 44, 0.3);
         }
 
         .nav-drawer__links a {
@@ -524,6 +547,76 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
             background: rgba(243, 214, 190, 0.30);
+        }
+
+        /* Mobile Accordion Menu */
+        .mobile-nav-section {
+            border-bottom: 1px solid rgba(15, 29, 44, 0.08);
+        }
+
+        .mobile-nav-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 12px;
+            background: transparent;
+            border: none;
+            font-family: var(--font-primary);
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            font-size: 13px;
+            color: var(--primary-navy);
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-align: left;
+        }
+
+        .mobile-nav-toggle:hover {
+            background: rgba(243, 214, 190, 0.1);
+        }
+
+        .mobile-nav-toggle.active {
+            background: rgba(243, 214, 190, 0.15);
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            font-weight: 300;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-nav-toggle.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .mobile-nav-content {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-nav-content.expanded {
+            max-height: 500px;
+        }
+
+        .mobile-nav-content a {
+            display: block;
+            padding: 12px 12px 12px 24px;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-nav-content a:hover {
+            background: rgba(243, 214, 190, 0.15);
+            border-left-color: var(--accent-gold);
+            padding-left: 28px;
+            color: var(--primary-navy);
         }
 
         .cart-btn {
@@ -2750,13 +2843,108 @@
                 <button id="navClose" class="nav-btn" type="button" aria-label="Close menu">×</button>
             </div>
             <div class="nav-drawer__links">
-                <a href="#shop">Home <span aria-hidden="true">→</span></a>
-                <a href="#shop">Shop <span aria-hidden="true">→</span></a>
-                <a href="#learn">Learn <span aria-hidden="true">→</span></a>
-                <a href="#technology">Technology <span aria-hidden="true">→</span></a>
-                <a href="#skin">Skin <span aria-hidden="true">→</span></a>
-                <a href="#about">About <span aria-hidden="true">→</span></a>
-                <a href="#support">Support <span aria-hidden="true">→</span></a>
+                <!-- HOME Section -->
+                <div class="mobile-nav-section">
+                    <button class="mobile-nav-toggle" type="button">
+                        <span>HOME</span>
+                        <span class="toggle-icon">−</span>
+                    </button>
+                    <div class="mobile-nav-content" style="display: none;">
+                        <a href="#hero">Welcome</a>
+                        <a href="#services">Services</a>
+                        <a href="#book-appointment">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- SHOP Section -->
+                <div class="mobile-nav-section">
+                    <button class="mobile-nav-toggle" type="button">
+                        <span>SHOP</span>
+                        <span class="toggle-icon">−</span>
+                    </button>
+                    <div class="mobile-nav-content" style="display: none;">
+                        <a href="#services" data-filter-tab="face-fixes">Face Fixes</a>
+                        <a href="#services" data-filter-tab="body-fixes">Body Fixes</a>
+                        <a href="#services" data-filter-tab="skin-fixes">Skin Fixes</a>
+                        <a href="#services" data-filter-tab="add-ons">Add Ons</a>
+                    </div>
+                </div>
+
+                <!-- LEARN Section -->
+                <div class="mobile-nav-section">
+                    <button class="mobile-nav-toggle" type="button">
+                        <span>LEARN</span>
+                        <span class="toggle-icon">−</span>
+                    </button>
+                    <div class="mobile-nav-content" style="display: none;">
+                        <a href="#how-it-works">How It Works</a>
+                        <a href="#before-after">Before & After</a>
+                        <a href="#faqs">FAQs</a>
+                        <a href="#blog">Blog</a>
+                    </div>
+                </div>
+
+                <!-- TECHNOLOGY Section -->
+                <div class="mobile-nav-section">
+                    <button class="mobile-nav-toggle" type="button">
+                        <span>TECHNOLOGY</span>
+                        <span class="toggle-icon">−</span>
+                    </button>
+                    <div class="mobile-nav-content" style="display: none;">
+                        <a href="#sofwave">Sofwave</a>
+                        <a href="#pain-free-laser">Pain Free Laser Hair Removal</a>
+                        <a href="#hydrafacial-syndeo">Hydrafacial Syndeo</a>
+                        <a href="#aura-skin-scan">Aura Skin Scan</a>
+                    </div>
+                </div>
+
+                <!-- SKIN Section -->
+                <div class="mobile-nav-section">
+                    <button class="mobile-nav-toggle" type="button">
+                        <span>SKIN</span>
+                        <span class="toggle-icon">−</span>
+                    </button>
+                    <div class="mobile-nav-content" style="display: none;">
+                        <a href="#salmon-dna">Salmon DNA</a>
+                        <a href="#exosomes">Exosomes</a>
+                        <a href="#hydrafacials">Hydrafacials</a>
+                        <a href="#vi-peel">VI Peel</a>
+                        <a href="#dermaplanning">Dermaplanning</a>
+                    </div>
+                </div>
+
+                <!-- ABOUT Section -->
+                <div class="mobile-nav-section">
+                    <button class="mobile-nav-toggle" type="button">
+                        <span>ABOUT</span>
+                        <span class="toggle-icon">−</span>
+                    </button>
+                    <div class="mobile-nav-content" style="display: none;">
+                        <a href="#who-we-are">Who We Are</a>
+                        <a href="#our-providers">Our Providers</a>
+                        <a href="#careers">Careers</a>
+                        <a href="#rani-rewards">Rani Rewards</a>
+                        <a href="#recent-press">Recent Press</a>
+                        <a href="#angel-membership">Angel Membership</a>
+                    </div>
+                </div>
+
+                <!-- SUPPORT Section -->
+                <div class="mobile-nav-section">
+                    <button class="mobile-nav-toggle" type="button">
+                        <span>SUPPORT</span>
+                        <span class="toggle-icon">−</span>
+                    </button>
+                    <div class="mobile-nav-content" style="display: none;">
+                        <a href="tel:+14255394440">Contact Us</a>
+                        <a href="#financing">Financing</a>
+                        <a href="#pre-post-care">Pre and Post Care</a>
+                        <a href="#faqs">FAQs</a>
+                        <a href="#cancellation-policy">Cancellation Policy</a>
+                        <a href="#influencer-application">Influencer Application</a>
+                        <a href="#client-reviews">Client Reviews</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -4486,6 +4674,40 @@
                 document.addEventListener('keydown', (e) => {
                     if (!navDrawer.classList.contains('is-open')) return;
                     if (e.key === 'Escape') closeNav();
+                });
+
+                // Mobile Accordion Menu Functionality
+                const mobileNavToggles = navDrawer.querySelectorAll('.mobile-nav-toggle');
+                mobileNavToggles.forEach(toggle => {
+                    toggle.addEventListener('click', function () {
+                        const content = this.nextElementSibling;
+                        const isActive = this.classList.contains('active');
+
+                        // Close all other sections
+                        mobileNavToggles.forEach(otherToggle => {
+                            if (otherToggle !== this) {
+                                otherToggle.classList.remove('active');
+                                const otherContent = otherToggle.nextElementSibling;
+                                otherContent.classList.remove('expanded');
+                                otherContent.style.display = 'none';
+                            }
+                        });
+
+                        // Toggle current section
+                        if (isActive) {
+                            this.classList.remove('active');
+                            content.classList.remove('expanded');
+                            setTimeout(() => {
+                                content.style.display = 'none';
+                            }, 300);
+                        } else {
+                            this.classList.add('active');
+                            content.style.display = 'block';
+                            setTimeout(() => {
+                                content.classList.add('expanded');
+                            }, 10);
+                        }
+                    });
                 });
             }
             const cartItemsEl = document.getElementById('cartItems');
