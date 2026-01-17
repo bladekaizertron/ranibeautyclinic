@@ -6509,12 +6509,25 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id: id })
                 })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        fetchDashboardStats();
-                        pivotBackToGrid();
+                .then(async res => {
+                    const text = await res.text();
+                    try {
+                        const data = JSON.parse(text);
+                        if (data.status === 'success') {
+                            alert(data.message || 'Confirmed!');
+                            fetchDashboardStats();
+                            pivotBackToGrid();
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    } catch (e) {
+                        console.error('Server returned invalid JSON:', text);
+                        alert('Server Error: See console for details (F12).');
                     }
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    alert('Network error occurred.');
                 });
             }
         };
