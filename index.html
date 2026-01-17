@@ -756,20 +756,31 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
             justify-content: center;
             align-items: center;
             text-align: center;
         }
 
-        .footer-inner>div:first-child {
+        .footer-brand {
             font-size: 15px;
             font-weight: 500;
             line-height: 1.6;
             color: var(--text-dark);
         }
 
-        .footer-inner>div:last-child {
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .footer-contact a:hover {
+            color: var(--primary-navy);
+        }
+
+        .footer-copyright {
             font-size: 13px;
             color: rgba(42, 42, 42, 0.65);
             font-weight: 400;
@@ -783,15 +794,24 @@
             .footer-inner {
                 flex-direction: row;
                 justify-content: space-between;
+                align-items: flex-start;
                 text-align: left;
             }
 
-            .footer-inner>div:first-child {
+            .footer-brand {
                 font-size: 16px;
+                flex: 1;
             }
 
-            .footer-inner>div:last-child {
+            .footer-contact {
+                align-items: flex-start;
+                flex: 0 0 auto;
+            }
+
+            .footer-copyright {
                 font-size: 14px;
+                flex: 0 0 auto;
+                align-self: center;
             }
         }
 
@@ -1811,6 +1831,10 @@
             line-height: 1.6;
         }
 
+        .location-contact a:hover {
+            color: var(--primary-navy) !important;
+        }
+
         /* --- TABS --- */
         .tabs-wrapper {
             margin: 40px calc(50% - 50vw) 60px calc(50% - 50vw);
@@ -2757,8 +2781,31 @@
         <div class="top-nav">
             <div class="location-info" style="outline: none;">
                 <h1 id="services" style="outline: none;">What services are you interested in?</h1>
-                <div class="location-name">MN Apple Valley</div>
-                <div class="location-address">14960 Florence Trail Apple Valley, MN 55124</div>
+                <div class="location-name">Renton, WA</div>
+                <div class="location-address">401 Olympia Ave NE #101, Renton, WA 98056, United States</div>
+                <div class="location-contact"
+                    style="display: flex; gap: 20px; justify-content: center; margin-top: 12px; flex-wrap: wrap; font-size: 14px; color: var(--text-gray);">
+                    <a href="tel:+14255394440"
+                        style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-gray); transition: color 0.2s;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+                        <span>+1 (425) 539-4440</span>
+                    </a>
+                    <a href="mailto:Info@ranibeautyclinic.com"
+                        style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-gray); transition: color 0.2s;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <span>Info@ranibeautyclinic.com</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -5806,9 +5853,34 @@
 
     <footer class="site-footer">
         <div class="footer-inner">
-            <div><strong style="color: var(--primary-navy);">Rani Beauty Clinic</strong> — Award Winning Medical
-                Aesthetics</div>
-            <div>© <span id="year">2025</span> All rights reserved.</div>
+            <div class="footer-brand">
+                <div><strong style="color: var(--primary-navy);">Rani Beauty Clinic</strong> — Award Winning Medical
+                    Aesthetics</div>
+                <div style="margin-top: 8px; font-size: 13px; color: rgba(42, 42, 42, 0.7);">401 Olympia Ave NE #101,
+                    Renton, WA 98056</div>
+            </div>
+            <div class="footer-contact">
+                <a href="tel:+14255394440"
+                    style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-dark); transition: color 0.2s; font-size: 14px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                        </path>
+                    </svg>
+                    <span>+1 (425) 539-4440</span>
+                </a>
+                <a href="mailto:Info@ranibeautyclinic.com"
+                    style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-dark); transition: color 0.2s; font-size: 14px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span>Info@ranibeautyclinic.com</span>
+                </a>
+            </div>
+            <div class="footer-copyright">© <span id="year">2025</span> All rights reserved.</div>
         </div>
     </footer>
 
