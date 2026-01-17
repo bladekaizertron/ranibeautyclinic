@@ -4851,6 +4851,33 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                     initializeServiceToggles('#staff-panel-services');
                 });
 
+            // Reset to Personal Information tab
+            const staffTabPersonal = document.getElementById('staff-tab-personal');
+            const staffTabServices = document.getElementById('staff-tab-services');
+            const staffTabAppointments = document.getElementById('staff-tab-appointments');
+            const staffPanelPersonal = document.getElementById('staff-panel-personal');
+            const staffPanelServices = document.getElementById('staff-panel-services');
+            const staffPanelAppointments = document.getElementById('staff-panel-appointments');
+
+            if (staffTabPersonal && staffTabServices && staffTabAppointments) {
+                // Reset all tabs to inactive state
+                document.querySelectorAll('.staff-profile-tab').forEach(tab => {
+                    tab.style.color = 'var(--dark-grey)';
+                    tab.style.borderBottom = '2px solid transparent';
+                    tab.style.fontWeight = '400';
+                });
+
+                // Activate Personal Information tab
+                staffTabPersonal.style.color = 'var(--brand-navy)';
+                staffTabPersonal.style.borderBottom = '2px solid #000';
+                staffTabPersonal.style.fontWeight = '600';
+
+                // Show Personal Information panel, hide others
+                if (staffPanelPersonal) staffPanelPersonal.style.display = 'block';
+                if (staffPanelServices) staffPanelServices.style.display = 'none';
+                if (staffPanelAppointments) staffPanelAppointments.style.display = 'none';
+            }
+
             staffProfileOverlay.style.display = 'block';
             staffProfilePanel.style.right = '0';
         }
