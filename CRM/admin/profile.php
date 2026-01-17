@@ -301,25 +301,25 @@ if (mysqli_num_rows($res_staff) > 0) {
 				</a>
 			</li>
 			<li>
-				<a href="manage.php">
+				<a href="dashboard.php#manage">
 					<i class='bx bxs-shopping-bag-alt' ></i>
 					<span class="text">Manage</span>
 				</a>
 			</li>
             <li>
-				<a href="reports.php">
+				<a href="dashboard.php#reports">
 					<i class='bx bxs-doughnut-chart' ></i>
 					<span class="text">Reports</span>
 				</a>
 			</li>
 			<li>
-				<a href="clients.php">
+				<a href="dashboard.php#clients">
 					<i class='bx bxs-group' ></i>
 					<span class="text">Clients</span>
 				</a>
 			</li>
 			<li>
-				<a href="marketing.php">
+				<a href="dashboard.php#marketing">
 					<i class='bx bxs-message-dots' ></i>
 					<span class="text">Marketing</span>
 				</a>

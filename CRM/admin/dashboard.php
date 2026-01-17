@@ -5215,6 +5215,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                         available: checkbox.checked
                     });
                 });
+
                 
                 if (!staffName) {
                     alert('Staff name not found');
@@ -8095,6 +8096,26 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                     }
                 }
             });
+        });
+
+        // Handle URL Hash for external navigation (e.g., coming from profile.php)
+        window.addEventListener('load', function() {
+            const hash = window.location.hash.substring(1); // remove #
+            if (hash) {
+                // Determine section
+                let section = hash;
+                let subsection = null;
+                
+                // If specific manage sub-link logic is needed:
+                if (hash === 'manage') {
+                   section = 'manage';
+                   subsection = 'schedule';
+                }
+                
+                if (typeof switchSection === 'function') {
+                    switchSection(section, subsection);
+                }
+            }
         });
     </script>
 </body>
