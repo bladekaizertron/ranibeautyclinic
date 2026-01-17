@@ -843,7 +843,7 @@
                 <div>
                     <h3>Staff</h3>
                 </div>
-                <button style="padding: 8px 16px; background: var(--dark); color: var(--light); border: none; border-radius: 4px; cursor: pointer;">
+                <button id="btn-new-staff" style="padding: 8px 16px; background: var(--dark); color: var(--light); border: none; border-radius: 4px; cursor: pointer;">
                     New staff
                 </button>
             </div>
@@ -1150,6 +1150,55 @@
         </div>
 
         <button class="btn-update-service" onclick="closeCustomizeModal()" style="width: 100%; padding: 16px; background: var(--brand-navy); color: white; border: none; border-radius: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 20px rgba(15, 29, 44, 0.15);">Update Service</button>
+    </div>
+</div>
+
+<!-- Add New Staff Modal -->
+<div id="new-staff-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div style="background:var(--light); padding:24px; border-radius:12px; width:400px; max-width:90%; position:relative;">
+        <h2 style="margin-bottom:20px; font-size:20px; color:var(--brand-navy);">New Staff Member</h2>
+        <button id="close-new-staff-modal" style="position:absolute; top:16px; right:16px; background:transparent; border:none; font-size:24px; cursor:pointer;">&times;</button>
+        
+        <form id="new-staff-form" style="display:flex; flex-direction:column; gap:16px;">
+            <div style="display:flex; gap:16px;">
+                <div style="flex:1;">
+                    <label style="display:block; margin-bottom:6px; font-size:14px; font-weight:500;">First Name *</label>
+                    <input type="text" name="firstname" required style="width:100%; padding:10px; border:1px solid var(--grey); border-radius:6px; outline:none;">
+                </div>
+                <div style="flex:1;">
+                    <label style="display:block; margin-bottom:6px; font-size:14px; font-weight:500;">Last Name *</label>
+                    <input type="text" name="lastname" required style="width:100%; padding:10px; border:1px solid var(--grey); border-radius:6px; outline:none;">
+                </div>
+            </div>
+            
+            <div>
+                <label style="display:block; margin-bottom:6px; font-size:14px; font-weight:500;">Email *</label>
+                <input type="email" name="email" required style="width:100%; padding:10px; border:1px solid var(--grey); border-radius:6px; outline:none;">
+            </div>
+            
+            <div>
+                <label style="display:block; margin-bottom:6px; font-size:14px; font-weight:500;">Phone</label>
+                <input type="text" name="phone" style="width:100%; padding:10px; border:1px solid var(--grey); border-radius:6px; outline:none;">
+            </div>
+            
+            <div>
+                <label style="display:block; margin-bottom:6px; font-size:14px; font-weight:500;">Role</label>
+                <input type="text" name="role" placeholder="e.g. Esthetician" style="width:100%; padding:10px; border:1px solid var(--grey); border-radius:6px; outline:none;">
+            </div>
+            
+            <div>
+                <label style="display:block; margin-bottom:6px; font-size:14px; font-weight:500;">Permission Group</label>
+                <select name="permission_group" style="width:100%; padding:10px; border:1px solid var(--grey); border-radius:6px; outline:none;">
+                    <option value="provider">Service Provider</option>
+                    <option value="frontdesk">Front Desk</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <button type="submit" style="margin-top:10px; padding:12px; background:var(--brand-navy); color:white; border:none; border-radius:6px; font-weight:600; cursor:pointer;">
+                Create Staff
+            </button>
+        </form>
     </div>
 </div>
 

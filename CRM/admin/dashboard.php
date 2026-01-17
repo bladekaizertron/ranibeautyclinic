@@ -8450,6 +8450,94 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                 }
             }
         });
+    // New Staff Modal Logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnNewStaff = document.getElementById('btn-new-staff');
+        const modalNewStaff = document.getElementById('new-staff-modal');
+        const btnCloseNewStaff = document.getElementById('close-new-staff-modal');
+        const formNewStaff = document.getElementById('new-staff-form');
+
+        if (btnNewStaff) {
+            btnNewStaff.addEventListener('click', function() {
+                if (modalNewStaff) {
+                    modalNewStaff.style.display = 'flex';
+                }
+            });
+        }
+
+        if (btnCloseNewStaff) {
+            btnCloseNewStaff.addEventListener('click', function() {
+                if (modalNewStaff) {
+                    modalNewStaff.style.display = 'none';
+                }
+            });
+        }
+
+        // Close on outside click
+        if (modalNewStaff) {
+            modalNewStaff.addEventListener('click', function(e) {
+                if (e.target === modalNewStaff) {
+                    modalNewStaff.style.display = 'none';
+                }
+            });
+        }
+
+        if (formNewStaff) {
+            formNewStaff.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const submitBtn = formNewStaff.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Creating...';
+                submitBtn.disabled = true;
+
+                const formData = new FormData(formNewStaff);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                fetch('api/api_create_staff.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    return response.text().then(text => {
+                        try {
+                            return JSON.parse(text);
+                        } catch (e) {
+                            console.error('Server response:', text);
+                            throw new Error('Invalid server response: ' + text.substring(0, 100)); // Show start of response
+                        }
+                    });
+                })
+                .then(result => {
+                    if (result.status === 'success') {
+                        alert('Staff member created successfully!');
+                        modalNewStaff.style.display = 'none';
+                        formNewStaff.reset();
+                        // Refresh staff lists
+                        if (typeof fetchManageStaffs === 'function') fetchManageStaffs();
+                        if (typeof fetchStaffs === 'function') fetchStaffs();
+                    } else {
+                        alert(result.message || 'Failed to create staff member.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error: ' + error.message);
+                })
+                .finally(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
+            });
+        }
+    });
+
     </script>
 </body>
 </html>
