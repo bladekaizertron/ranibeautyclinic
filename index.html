@@ -1841,11 +1841,17 @@
             position: relative;
             box-shadow: var(--shadow-lg);
             max-width: 100%;
-            width: fit-content;
+            width: 100%;
             margin: 0 auto;
             flex-wrap: nowrap;
             gap: 0;
             padding: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .tabs-container {
+                width: fit-content;
+            }
         }
 
         .tab {
@@ -2732,7 +2738,6 @@
                     results-driven treatments and elevated care.
                 </p>
                 <div class="hero-cta" style="outline: none;">
-                    <a class="btn btn--primary" href="#consultation">Book a Consultation</a>
                     <a class="btn btn--secondary" href="#services">Browse Treatments</a>
                 </div>
             </div>
