@@ -6518,7 +6518,9 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                 </div>
 
                 <div class="ai-footer" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                    <button class="cp-mini-btn" style="background: transparent; border: 1px solid #ff5e5e; color: #ff5e5e; padding: 8px 15px; border-radius: 10px; cursor: pointer;">Cancel</button>
+                    ${(currentAppointmentsList !== currentCompletedList) ? 
+                        `<button class="cp-mini-btn" onclick="cancelAppointmentInPivot(${item.id})" style="background: transparent; border: 1px solid #ff5e5e; color: #ff5e5e; padding: 8px 15px; border-radius: 10px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='#ff5e5e'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#ff5e5e';">Cancel</button>` 
+                        : ''}
                     ${(currentAppointmentsList === currentUnconfirmedList) ? 
                         `<button class="cp-mini-btn" onclick="confirmAppointmentInPivot(${item.id})" style="background: var(--brand-navy); color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer;">Confirm Now</button>` 
                         : ''}
@@ -6586,6 +6588,36 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email'])) {
                         const data = JSON.parse(text);
                         if (data.status === 'success') {
                             alert(data.message || 'Confirmed!');
+                            fetchDashboardStats();
+                            pivotBackToGrid();
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    } catch (e) {
+                        console.error('Server returned invalid JSON:', text);
+                        alert('Server Error: See console for details (F12).');
+                    }
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    alert('Network error occurred.');
+                });
+            }
+        };
+
+        window.cancelAppointmentInPivot = function(id) {
+            if (confirm("Are you sure you want to cancel this appointment?")) {
+                fetch('api/api_cancel_appointment.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id })
+                })
+                .then(async res => {
+                    const text = await res.text();
+                    try {
+                        const data = JSON.parse(text);
+                        if (data.status === 'success') {
+                            alert(data.message || 'Appointment cancelled successfully!');
                             fetchDashboardStats();
                             pivotBackToGrid();
                         } else {
