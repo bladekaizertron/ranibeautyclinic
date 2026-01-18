@@ -43,6 +43,18 @@ if (!isset($_SESSION['user'])) {
                         </div>
                     </div>
                     
+                    <!-- Before & After with collapsible submenu -->
+                    <div class="sidebar-dropdown">
+                        <a href="#" class="sidebar-link sidebar-dropdown-toggle" id="beforeAfterToggle">
+                            <i class="fa fa-images"></i> Before & After
+                            <i class="fa fa-chevron-down dropdown-icon"></i>
+                        </a>
+                        <div class="sidebar-submenu" id="beforeAfterSubmenu">
+                            <a href="#" class="sidebar-sublink"><i class="fa fa-list"></i> Manage Gallery</a>
+                            <a href="#" class="sidebar-sublink"><i class="fa fa-plus-circle"></i> Add New</a>
+                        </div>
+                    </div>
+                    
                     <a href="../CRM/admin/dashboard.php" class="sidebar-link"><i class="fa fa-sign-out-alt"></i> Go back to MedSpa CRM </a>
                 </nav>
             </aside>
@@ -128,6 +140,25 @@ if (!isset($_SESSION['user'])) {
                             this.classList.remove('active');
                         } else {
                             bookingPageSubmenu.classList.add('open');
+                            this.classList.add('active');
+                        }
+                    });
+                }
+
+                // Before & After dropdown toggle
+                const beforeAfterToggle = document.getElementById('beforeAfterToggle');
+                const beforeAfterSubmenu = document.getElementById('beforeAfterSubmenu');
+                
+                if (beforeAfterToggle && beforeAfterSubmenu) {
+                    beforeAfterToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const isOpen = beforeAfterSubmenu.classList.contains('open');
+                        
+                        if (isOpen) {
+                            beforeAfterSubmenu.classList.remove('open');
+                            this.classList.remove('active');
+                        } else {
+                            beforeAfterSubmenu.classList.add('open');
                             this.classList.add('active');
                         }
                     });
