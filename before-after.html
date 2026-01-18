@@ -427,57 +427,36 @@
     </footer>
 
     <script>
-        // Sample gallery data - Replace with actual images
-        const galleryData = [
-            {
-                category: 'injectables',
-                title: 'Lip Enhancement',
-                treatment: 'Dermal Fillers',
-                description: 'Natural-looking volume and definition with hyaluronic acid fillers.',
-                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
-                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
-            },
-            {
-                category: 'injectables',
-                title: 'Wrinkle Reduction',
-                treatment: 'Botox',
-                description: 'Smooth forehead lines and crow\'s feet for a refreshed appearance.',
-                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
-                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
-            },
-            {
-                category: 'skin',
-                title: 'Skin Rejuvenation',
-                treatment: 'Hydrafacial',
-                description: 'Brighter, clearer, and more radiant skin texture.',
-                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
-                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
-            },
-            {
-                category: 'laser',
-                title: 'Hair Removal',
-                treatment: 'Laser Hair Removal',
-                description: 'Permanent hair reduction with our pain-free laser technology.',
-                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
-                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
-            },
-            {
-                category: 'skin',
-                title: 'Acne Treatment',
-                treatment: 'Chemical Peel',
-                description: 'Reduced acne scarring and improved skin texture.',
-                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
-                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
-            },
-            {
-                category: 'body',
-                title: 'Body Sculpting',
-                treatment: 'CoolSculpting',
-                description: 'Non-invasive fat reduction for a contoured silhouette.',
-                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
-                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
+        // Global state
+        let galleryData = [];
+
+        // Fetch Data from JSON
+        async function loadGalleryData() {
+            try {
+                // Determine path based on environment - simple check
+                // In production, might need absolute path or config
+                const response = await fetch('admin/data/gallery.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('Failed to load data');
+
+                const data = await response.json();
+
+                // Update Page Content
+                if (data.pageContent) {
+                    if (data.pageContent.heroTitle) document.querySelector('.hero-title').textContent = data.pageContent.heroTitle;
+                    if (data.pageContent.heroSubtitle) document.querySelector('.hero-subtitle').textContent = data.pageContent.heroSubtitle;
+                }
+
+                // Update Gallery Data
+                if (data.galleryItems && Array.isArray(data.galleryItems)) {
+                    galleryData = data.galleryItems;
+                    renderGallery(); // Render with all data initially
+                }
+            } catch (error) {
+                console.error('Error loading gallery data:', error);
+                // Fallback or empty state could be handled here
+                document.getElementById('galleryGrid').innerHTML = '<p style="text-align:center; width:100%;">Gallery content is currently unavailable.</p>';
             }
-        ];
+        }
 
         // Render gallery
         function renderGallery(filter = 'all') {
@@ -553,7 +532,7 @@
         });
 
         // Initial render
-        renderGallery();
+        loadGalleryData();
 
         // Update year
         document.getElementById('year').textContent = new Date().getFullYear();

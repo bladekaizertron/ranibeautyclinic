@@ -1,0 +1,62 @@
+{
+    "pageContent": {
+        "heroTitle": "Before & After Gallery",
+        "heroSubtitle": "See the transformative results our clients have achieved with our expert treatments and personalized care."
+    },
+    "galleryItems": [
+        {
+            "id": "item_1",
+            "category": "injectables",
+            "title": "Lip Enhancement",
+            "treatment": "Dermal Fillers",
+            "description": "Natural-looking volume and definition with hyaluronic acid fillers.",
+            "beforeImage": "https://via.placeholder.com/400x400/e8e8e8/666666?text=Before",
+            "afterImage": "https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After"
+        },
+        {
+            "id": "item_2",
+            "category": "injectables",
+            "title": "Wrinkle Reduction",
+            "treatment": "Botox",
+            "description": "Smooth forehead lines and crow's feet for a refreshed appearance.",
+            "beforeImage": "https://via.placeholder.com/400x400/e8e8e8/666666?text=Before",
+            "afterImage": "https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After"
+        },
+        {
+            "id": "item_3",
+            "category": "skin",
+            "title": "Skin Rejuvenation",
+            "treatment": "Hydrafacial",
+            "description": "Brighter, clearer, and more radiant skin texture.",
+            "beforeImage": "https://via.placeholder.com/400x400/e8e8e8/666666?text=Before",
+            "afterImage": "https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After"
+        },
+        {
+            "id": "item_4",
+            "category": "laser",
+            "title": "Hair Removal",
+            "treatment": "Laser Hair Removal",
+            "description": "Permanent hair reduction with our pain-free laser technology.",
+            "beforeImage": "https://via.placeholder.com/400x400/e8e8e8/666666?text=Before",
+            "afterImage": "https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After"
+        },
+        {
+            "id": "item_5",
+            "category": "skin",
+            "title": "Acne Treatment",
+            "treatment": "Chemical Peel",
+            "description": "Reduced acne scarring and improved skin texture.",
+            "beforeImage": "https://via.placeholder.com/400x400/e8e8e8/666666?text=Before",
+            "afterImage": "https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After"
+        },
+        {
+            "id": "item_6",
+            "category": "body",
+            "title": "Body Sculpting",
+            "treatment": "CoolSculpting",
+            "description": "Non-invasive fat reduction for a contoured silhouette.",
+            "beforeImage": "https://via.placeholder.com/400x400/e8e8e8/666666?text=Before",
+            "afterImage": "https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After"
+        }
+    ]
+}

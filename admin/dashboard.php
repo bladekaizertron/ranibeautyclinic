@@ -50,8 +50,8 @@ if (!isset($_SESSION['user'])) {
                             <i class="fa fa-chevron-down dropdown-icon"></i>
                         </a>
                         <div class="sidebar-submenu" id="beforeAfterSubmenu">
-                            <a href="#" class="sidebar-sublink"><i class="fa fa-list"></i> Manage Gallery</a>
-                            <a href="#" class="sidebar-sublink"><i class="fa fa-plus-circle"></i> Add New</a>
+                            <a href="edit_before_after.php" class="sidebar-sublink"><i class="fa fa-list"></i> Manage Gallery</a>
+                            <a href="edit_before_after.php" class="sidebar-sublink"><i class="fa fa-plus-circle"></i> Add New</a>
                         </div>
                     </div>
                     
