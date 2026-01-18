@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Frequently Asked Questions about Rani Beauty Clinic treatments, booking, and policies.">
+    <title>FAQs | Rani Beauty Clinic - Award Winning Medical Aesthetics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-navy: #0F1D2C;
+            --accent-gold: #F3D6BE;
+            --pure-white: #FFFFFF;
+            --light-bg: #FAF8F5;
+            --text-dark: #2A2A2A;
+            --text-gray: rgba(42, 42, 42, 0.72);
+            --font-primary: 'Montserrat', sans-serif;
+            --font-secondary: 'Playfair Display', serif;
+            --max-w: 1400px;
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            color: var(--text-dark);
+            background: var(--light-bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: var(--primary-navy);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-name {
+            color: var(--pure-white);
+            font-family: var(--font-secondary);
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(243, 214, 190, 0.2);
+            color: var(--accent-gold);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 100px 24px;
+            min-height: calc(100vh - 300px);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            font-weight: 800;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 52px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin: 0 0 16px 0;
+            line-height: 1.1;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .faq-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--pure-white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(15, 29, 44, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .faq-item[open] {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-color: rgba(243, 214, 190, 0.5);
+        }
+
+        .faq-item summary {
+            padding: 24px;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            color: var(--primary-navy);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item summary::after {
+            content: '+';
+            font-weight: 400;
+            font-size: 24px;
+            color: var(--accent-gold);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-content {
+            padding: 0 24px 24px 24px;
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-size: 15px;
+            opacity: 0.9;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 0.9;
+                transform: translateY(0);
+            }
+        }
+
+        /* CTA Section */
+        .cta-wrapper {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--primary-navy);
+            color: var(--pure-white);
+            box-shadow: 0 10px 20px rgba(15, 29, 44, 0.15);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(15, 29, 44, 0.2);
+            background: #1a3a52;
+        }
+
+        /* Footer */
+        footer {
+            padding: 48px 24px 32px;
+            background: linear-gradient(180deg, rgba(15, 29, 44, 0.02) 0%, rgba(15, 29, 44, 0.04) 100%);
+            border-top: 2px solid rgba(15, 29, 44, 0.08);
+            color: rgba(42, 42, 42, 0.78);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 36px;
+            }
+
+            .faq-item summary {
+                font-size: 16px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="brand-name">Rani Beauty Clinic</a>
+            <a href="index.html" class="nav-link">← Back to Home</a>
+        </div>
+    </header>
+
+    <section class="faq-section">
+        <div class="faq-container">
+            <div class="section-header">
+                <span class="section-badge">Support</span>
+                <h1 class="section-title">Common Questions</h1>
+                <p class="section-subtitle">Everything you need to know about our treatments, booking policy, and
+                    financing.</p>
+            </div>
+
+            <div class="faq-grid">
+                <details class="faq-item">
+                    <summary>How do I book an appointment?</summary>
+                    <div class="faq-content">
+                        <p>You can book your appointment easily through our online booking portal by clicking the "Book
+                            Now" button on the home page. Alternatively, you can call our clinic directly at +1 (425)
+                            539-4440 to speak with our concierge.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What is your cancellation policy?</summary>
+                    <div class="faq-content">
+                        <p>We kindly request 24 hours' notice for any cancellations or rescheduling. Cancellations made
+                            with less than 24 hours' notice may be subject to a cancellation fee. This allows us to
+                            offer the appointment time to other waiting clients.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Do you offer financing options?</summary>
+                    <div class="faq-content">
+                        <p>Yes, we partner with Cherry and CareCredit to offer flexible payment plans that fit your
+                            budget. You can apply directly through our partners or ask us for more details during your
+                            visit.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>I'm not sure which treatment is right for me.</summary>
+                    <div class="faq-content">
+                        <p>We recommend booking a complimentary consultation. Our expert providers will assess your skin
+                            and discussing your aesthetic goals to create a personalized treatment plan just for you.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Is there downtime after treatments?</summary>
+                    <div class="faq-content">
+                        <p>Downtime varies by treatment. Many of our procedures, like HydraFacial and some injectables,
+                            have little to no downtime ("lunchtime treatments"). Others, like deeper peels or laser
+                            treatments, may require a few days of social downtime. Your provider will explain everything
+                            during your consultation.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Where are you located?</summary>
+                    <div class="faq-content">
+                        <p>We are located at 401 Olympia Ave NE #101, Renton, WA 98056. Use the map on our home page for
+                            directions.</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="cta-wrapper">
+                <a href="index.html#services" class="btn">View Treatments</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <strong style="color: var(--primary-navy);">Rani Beauty Clinic</strong> — Award Winning Medical
+            Aesthetics<br>
+            401 Olympia Ave NE #101, Renton, WA 98056<br>
+            <a href="tel:+14255394440" style="color: inherit; text-decoration: none;">+1 (425) 539-4440</a> •
+            <a href="mailto:Info@ranibeautyclinic.com"
+                style="color: inherit; text-decoration: none;">Info@ranibeautyclinic.com</a>
+        </div>
+        <div style="margin-top: 16px;">© <span id="year">2025</span> All rights reserved.</div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>
