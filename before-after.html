@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="See real results from Rani Beauty Clinic - before and after photos of our treatments.">
+    <title>Before & After Gallery | Rani Beauty Clinic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-navy: #0F1D2C;
+            --accent-gold: #F3D6BE;
+            --pure-white: #FFFFFF;
+            --light-bg: #FAF8F5;
+            --text-dark: #2A2A2A;
+            --text-gray: rgba(42, 42, 42, 0.72);
+            --font-primary: 'Montserrat', sans-serif;
+            --font-secondary: 'Playfair Display', serif;
+            --max-w: 1400px;
+            --radius-sm: 16px;
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            color: var(--text-dark);
+            background: var(--pure-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: var(--primary-navy);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-name {
+            color: var(--pure-white);
+            font-family: var(--font-secondary);
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(243, 214, 190, 0.2);
+            color: var(--accent-gold);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 24px 60px;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #1a3a52 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(243, 214, 190, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            font-family: var(--font-primary);
+            font-weight: 800;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-family: var(--font-secondary);
+            font-size: 56px;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.85);
+            margin: 0 0 32px 0;
+            line-height: 1.6;
+        }
+
+        /* Filter Tabs */
+        .filter-section {
+            padding: 40px 24px;
+            background: var(--light-bg);
+            border-bottom: 1px solid rgba(15, 29, 44, 0.08);
+        }
+
+        .filter-container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid rgba(15, 29, 44, 0.1);
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--accent-gold);
+            background: rgba(243, 214, 190, 0.1);
+        }
+
+        .filter-tab.active {
+            background: var(--primary-navy);
+            color: white;
+            border-color: var(--primary-navy);
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 80px 24px;
+            background: white;
+        }
+
+        .gallery-container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        .comparison-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .before-image,
+        .after-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .after-image {
+            clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-gold);
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+
+        .slider-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-handle::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary-navy);
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .label {
+            position: absolute;
+            top: 20px;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .label-before {
+            left: 20px;
+        }
+
+        .label-after {
+            right: 20px;
+        }
+
+        .gallery-info {
+            padding: 24px;
+        }
+
+        .gallery-title {
+            font-family: var(--font-secondary);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin: 0 0 8px 0;
+        }
+
+        .gallery-treatment {
+            font-size: 14px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .gallery-description {
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            max-width: var(--max-w);
+            margin: 60px auto 0;
+            padding: 24px;
+            background: rgba(243, 214, 190, 0.1);
+            border-left: 4px solid var(--accent-gold);
+            border-radius: 12px;
+        }
+
+        .disclaimer p {
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding: 48px 24px 32px;
+            background: linear-gradient(180deg, rgba(15, 29, 44, 0.02) 0%, rgba(15, 29, 44, 0.04) 100%);
+            border-top: 2px solid rgba(15, 29, 44, 0.08);
+            color: rgba(42, 42, 42, 0.78);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .comparison-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="brand-name">Rani Beauty Clinic</a>
+            <a href="index.html" class="nav-link">← Back to Home</a>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="section-badge">Real Results</span>
+            <h1 class="hero-title">Before & After Gallery</h1>
+            <p class="hero-subtitle">See the transformative results our clients have achieved with our expert treatments
+                and personalized care.</p>
+        </div>
+    </section>
+
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Treatments</button>
+                <button class="filter-tab" data-filter="injectables">Injectables</button>
+                <button class="filter-tab" data-filter="skin">Skin Treatments</button>
+                <button class="filter-tab" data-filter="laser">Laser</button>
+                <button class="filter-tab" data-filter="body">Body Contouring</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <div class="gallery-container">
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be dynamically generated -->
+            </div>
+
+            <div class="disclaimer">
+                <p><strong>Disclaimer:</strong> Individual results may vary. The before and after photos shown are of
+                    actual patients and represent typical results. Not all patients will achieve the same outcomes.
+                    Results depend on individual factors including skin type, age, lifestyle, and adherence to
+                    post-treatment care instructions. Consult with our providers to understand what results you can
+                    expect.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <strong style="color: var(--primary-navy);">Rani Beauty Clinic</strong> — Award Winning Medical
+            Aesthetics<br>
+            401 Olympia Ave NE #101, Renton, WA 98056<br>
+            <a href="tel:+14255394440" style="color: inherit; text-decoration: none;">+1 (425) 539-4440</a> •
+            <a href="mailto:Info@ranibeautyclinic.com"
+                style="color: inherit; text-decoration: none;">Info@ranibeautyclinic.com</a>
+        </div>
+        <div style="margin-top: 16px;">© <span id="year">2025</span> All rights reserved.</div>
+    </footer>
+
+    <script>
+        // Sample gallery data - Replace with actual images
+        const galleryData = [
+            {
+                category: 'injectables',
+                title: 'Lip Enhancement',
+                treatment: 'Dermal Fillers',
+                description: 'Natural-looking volume and definition with hyaluronic acid fillers.',
+                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
+                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
+            },
+            {
+                category: 'injectables',
+                title: 'Wrinkle Reduction',
+                treatment: 'Botox',
+                description: 'Smooth forehead lines and crow\'s feet for a refreshed appearance.',
+                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
+                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
+            },
+            {
+                category: 'skin',
+                title: 'Skin Rejuvenation',
+                treatment: 'Hydrafacial',
+                description: 'Brighter, clearer, and more radiant skin texture.',
+                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
+                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
+            },
+            {
+                category: 'laser',
+                title: 'Hair Removal',
+                treatment: 'Laser Hair Removal',
+                description: 'Permanent hair reduction with our pain-free laser technology.',
+                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
+                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
+            },
+            {
+                category: 'skin',
+                title: 'Acne Treatment',
+                treatment: 'Chemical Peel',
+                description: 'Reduced acne scarring and improved skin texture.',
+                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
+                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
+            },
+            {
+                category: 'body',
+                title: 'Body Sculpting',
+                treatment: 'CoolSculpting',
+                description: 'Non-invasive fat reduction for a contoured silhouette.',
+                beforeImage: 'https://via.placeholder.com/400x400/e8e8e8/666666?text=Before',
+                afterImage: 'https://via.placeholder.com/400x400/f3d6be/0f1d2c?text=After'
+            }
+        ];
+
+        // Render gallery
+        function renderGallery(filter = 'all') {
+            const grid = document.getElementById('galleryGrid');
+            const filteredData = filter === 'all' ? galleryData : galleryData.filter(item => item.category === filter);
+
+            grid.innerHTML = filteredData.map((item, index) => `
+                <div class="gallery-item" data-category="${item.category}">
+                    <div class="comparison-container">
+                        <div class="comparison-slider" data-slider="${index}">
+                            <img src="${item.beforeImage}" alt="Before ${item.title}" class="before-image">
+                            <img src="${item.afterImage}" alt="After ${item.title}" class="after-image" data-after="${index}">
+                            <div class="slider-handle" data-handle="${index}"></div>
+                            <div class="label label-before">Before</div>
+                            <div class="label label-after">After</div>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <div class="gallery-treatment">${item.treatment}</div>
+                        <h3 class="gallery-title">${item.title}</h3>
+                        <p class="gallery-description">${item.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Initialize sliders
+            initializeSliders();
+        }
+
+        // Initialize comparison sliders
+        function initializeSliders() {
+            const handles = document.querySelectorAll('.slider-handle');
+
+            handles.forEach(handle => {
+                const index = handle.dataset.handle;
+                const afterImage = document.querySelector(`[data-after="${index}"]`);
+                const container = handle.closest('.comparison-slider');
+
+                let isDragging = false;
+
+                const updateSlider = (e) => {
+                    if (!isDragging && e.type !== 'click') return;
+
+                    const rect = container.getBoundingClientRect();
+                    const x = (e.type.includes('touch') ? e.touches[0].clientX : e.clientX) - rect.left;
+                    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+                    handle.style.left = percentage + '%';
+                    afterImage.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+                };
+
+                handle.addEventListener('mousedown', () => isDragging = true);
+                handle.addEventListener('touchstart', () => isDragging = true);
+
+                document.addEventListener('mousemove', updateSlider);
+                document.addEventListener('touchmove', updateSlider);
+
+                document.addEventListener('mouseup', () => isDragging = false);
+                document.addEventListener('touchend', () => isDragging = false);
+
+                container.addEventListener('click', updateSlider);
+            });
+        }
+
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderGallery(tab.dataset.filter);
+            });
+        });
+
+        // Initial render
+        renderGallery();
+
+        // Update year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>

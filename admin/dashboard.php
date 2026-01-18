@@ -16,7 +16,7 @@ if (!isset($_SESSION['user'])) {
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
 
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=2" />
 </head>
     <body>
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
@@ -30,8 +30,19 @@ if (!isset($_SESSION['user'])) {
 
                 <nav class="sidebar-nav">
                     <a href="dashboard.php" class="sidebar-link active"><i class="fa fa-home"></i> Dashboard</a>
-                    <a href="edit_media.php" class="sidebar-link"><i class="fa fa-image"></i> Media</a>
-                    <a href="edit_content.php" class="sidebar-link"><i class="fa fa-file-alt"></i> Content</a>
+                    
+                    <!-- Booking Page with collapsible submenu -->
+                    <div class="sidebar-dropdown">
+                        <a href="#" class="sidebar-link sidebar-dropdown-toggle" id="bookingPageToggle">
+                            <i class="fa fa-globe"></i> Booking Page
+                            <i class="fa fa-chevron-down dropdown-icon"></i>
+                        </a>
+                        <div class="sidebar-submenu" id="bookingPageSubmenu">
+                            <a href="edit_media.php" class="sidebar-sublink"><i class="fa fa-image"></i> Media</a>
+                            <a href="edit_content.php" class="sidebar-sublink"><i class="fa fa-file-alt"></i> Content</a>
+                        </div>
+                    </div>
+                    
                     <a href="../CRM/admin/dashboard.php" class="sidebar-link"><i class="fa fa-sign-out-alt"></i> Go back to MedSpa CRM </a>
                 </nav>
             </aside>
@@ -100,6 +111,25 @@ if (!isset($_SESSION['user'])) {
                                 closeMenu();
                             }
                         });
+                    });
+                }
+
+                // Booking Page dropdown toggle
+                const bookingPageToggle = document.getElementById('bookingPageToggle');
+                const bookingPageSubmenu = document.getElementById('bookingPageSubmenu');
+                
+                if (bookingPageToggle && bookingPageSubmenu) {
+                    bookingPageToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const isOpen = bookingPageSubmenu.classList.contains('open');
+                        
+                        if (isOpen) {
+                            bookingPageSubmenu.classList.remove('open');
+                            this.classList.remove('active');
+                        } else {
+                            bookingPageSubmenu.classList.add('open');
+                            this.classList.add('active');
+                        }
                     });
                 }
             });
