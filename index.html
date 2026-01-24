@@ -6960,33 +6960,6 @@
                     qtyControls.appendChild(qtyDisplay);
                     qtyControls.appendChild(incrementBtn);
 
-                    const editBtn = document.createElement('button');
-                    editBtn.type = 'button';
-                    editBtn.className = 'icon-btn';
-                    editBtn.title = 'Edit';
-                    editBtn.setAttribute('aria-label', 'Edit service');
-                    editBtn.innerHTML = '✎';
-                    editBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const newPriceRaw = prompt('Edit price (USD):', String(Number(item.price).toFixed(2)));
-                        if (newPriceRaw === null) return;
-                        const newPrice = Number(String(newPriceRaw).replace(/[^\d.]/g, ''));
-                        if (!Number.isFinite(newPrice)) return;
-
-                        const newDurationRaw = prompt('Edit duration (minutes):', String(Number(item.duration)));
-                        if (newDurationRaw === null) return;
-                        const newDuration = Number(String(newDurationRaw).replace(/[^\d]/g, ''));
-                        if (!Number.isFinite(newDuration) || newDuration <= 0) return;
-
-                        const newQuantityRaw = prompt('Edit quantity:', String(item.quantity || 1));
-                        if (newQuantityRaw === null) return;
-                        const newQuantity = Number(String(newQuantityRaw).replace(/[^\d]/g, ''));
-                        if (!Number.isFinite(newQuantity) || newQuantity <= 0) return;
-
-                        updateCartItem(item.id, { price: newPrice, duration: newDuration, quantity: newQuantity });
-                    });
-
                     const removeBtn = document.createElement('button');
                     removeBtn.type = 'button';
                     removeBtn.className = 'icon-btn';
@@ -7000,7 +6973,6 @@
                     });
 
                     actions.appendChild(qtyControls);
-                    actions.appendChild(editBtn);
                     actions.appendChild(removeBtn);
 
                     li.appendChild(left);
