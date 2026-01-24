@@ -1,11 +1,11 @@
 <?php
-// Email Configuration
-// PLEASE UPDATE THESE VALUES WITH YOUR REAL SMTP CREDENTIALS
+// Email Configuration - Hostinger SMTP
+// Updated for Info@ranibeautyclinic.com
 
-define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_USER', 'coderebuilt@gmail.com'); // REPLACE THIS
-define('SMTP_PASS', 'rrmb ccsz xnxa dzqw');    // REPLACE THIS
-define('SMTP_PORT', 587);                    // TCP port to connect to
-define('SMTP_FROM_EMAIL', 'coderebuilt@gmail.com'); // REPLACE THIS
-define('SMTP_FROM_NAME', 'Rani Beauty Clinic');
+define('SMTP_HOST', 'smtp.hostinger.com');
+define('SMTP_USER', 'info@medspacrm.io');
+define('SMTP_PASS', 'C0d3r3bu1lt2026*');    // REPLACE WITH YOUR ACTUAL PASSWORD
+define('SMTP_PORT', 465);                            // Using SSL
+define('SMTP_FROM_EMAIL', 'info@medspacrm.io');
+define('SMTP_FROM_NAME', 'MedSpa CRM');
 ?>

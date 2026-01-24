@@ -120,7 +120,7 @@ function sendAppointmentConfirmation($appointmentId, $conn) {
         $mail->SMTPAuth   = true;
         $mail->Username   = SMTP_USER;
         $mail->Password   = SMTP_PASS;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // SSL for port 465
         $mail->Port       = SMTP_PORT;
 
         // Recipients
